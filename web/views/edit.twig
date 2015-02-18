@@ -1,0 +1,10 @@
+{% include 'head.twig' %}
+
+<form action="" method="POST">
+    <textarea id="content" name="content">{{app.request.content}}</textarea>
+    <input type="submit" name="action" value="save" />
+    <input type="reset" name="action" value="abort"/>
+    <input type="hidden" name="path" value="{{app.request.path}}"/>
+</form>
+
+{% include 'footer.twig' %}
