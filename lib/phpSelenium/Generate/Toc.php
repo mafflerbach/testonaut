@@ -53,16 +53,16 @@ class Toc {
      *
      * @return string
      */
-    protected function makeList($array, $path = 'root') {
-
+    protected function makeList($array, $path = 'root', $count = 0) {
         $path = str_replace('root/', '', $path);
         $output = '<ul>';
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $_path = $path.'/'.$key;
-                $output .= $this->makeList($value, $_path);
+                $count++;
+                $output .= $this->makeList($value, $_path, $count);
             } else {
-                if ($path == 'root') {
+                if ($count == 0) {
                     continue;
                 }
                 $pathArr = explode('/', $path);
@@ -72,7 +72,6 @@ class Toc {
             }
         }
         $output .= '</ul>';
-
         return $output;
     }
 

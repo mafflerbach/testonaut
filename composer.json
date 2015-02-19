@@ -13,6 +13,7 @@
         "erusev/parsedown": "dev-master",
         "silex/silex": "2.0.x-dev",
         "twig/twig": ">=1.10,<2.0-dev",
-        "symfony/twig-bridge": "<3.0-dev"
+        "symfony/twig-bridge": "<3.0-dev",
+        "facebook/webdriver": "dev-master"
     }
 }
