@@ -1,7 +1,8 @@
 <?php
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
-
+$loader->add('phpSelenium', __DIR__ . '/../lib/');
+/*
 $config = \phpSelenium\Config::getInstance();
 $config->define('Path', __DIR__);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
@@ -19,3 +20,19 @@ $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());
 
 $app->run();
+*/
+
+use phpSelenium\Selenese\Test,
+    phpSelenium\Selenese\Runner;
+try {
+    // get the test rolling
+    $test = new Test();
+    $test->loadFromSeleneseHtml('test.html');
+    $capabilities = DesiredCapabilities::firefox();
+    $runner = new Runner($test, 'http://localhost:4444/wd/hub');
+    $runner->run($capabilities);
+}
+catch (\Exception $e) {
+    // oops.
+    echo 'Test failed: ' . $e->getMessage() . "\n";
+}
