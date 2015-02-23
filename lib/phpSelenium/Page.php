@@ -6,6 +6,7 @@ class Page
 {
     protected $path;
     protected $root;
+
     public function __construct($path)
     {
         $this->path = $path;
@@ -13,19 +14,24 @@ class Page
 
     }
 
-    public function content($content = NULL)
+    public function content($content = NULL, $save = NULL)
     {
         $file = $this->transCodePath() . '/content';
-        if (!file_exists($file)) {
+        if (!file_exists($file) && $save === NULL) {
             return '';
         }
-
         if ($content == null) {
             $pageContent = file_get_contents($file);
-
             return $pageContent;
         } else {
-            file_put_contents($this->transCodePath() . '/content', $content);
+            $filename = $this->transCodePath() . '/content';
+
+            if(!is_dir($this->transCodePath())) {
+                if(!mkdir($this->transCodePath(), 0755, true)) {
+                    throw new \Exception();
+                }
+            }
+            file_put_contents($filename, $content);
         }
     }
 
@@ -40,6 +46,6 @@ class Page
 
     protected function transCodePath()
     {
-        return str_replace('.', '/', $this->root.'/'.$this->path);
+        return str_replace('.', '/', $this->root . '/' . $this->path);
     }
 } 

@@ -17,7 +17,8 @@ class Edit implements ControllerProviderInterface
             $app['request'] = array(
                 'content' => $content,
                 'path' => $path,
-                'baseUrl' => $request->getBaseUrl()
+                'baseUrl' => $request->getBaseUrl(),
+                'mode' => 'edit'
             );
             return $app['twig']->render('edit.twig');
         });
@@ -25,7 +26,7 @@ class Edit implements ControllerProviderInterface
         $edit->post('/', function (Request $request, $path) use ($app) {
             $content = $request->request->get('content');
             $page = new \phpSelenium\Page($path);
-            $content = $page->content($content);
+            $content = $page->content($content, TRUE);
             return $app->redirect($request->getBaseUrl() . '/' . $path);
         });
         return $edit;
