@@ -21,7 +21,9 @@ class Page
         }
 
         if ($content == null) {
-            return file_get_contents($file);
+            $pageContent = file_get_contents($file);
+
+            return $pageContent;
         } else {
             file_put_contents($this->transCodePath() . '/content', $content);
         }

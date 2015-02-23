@@ -35,14 +35,8 @@ class Test {
 
         libxml_use_internal_errors(true);
         $dom = new \DOMDocument;
-//        $loaded = $dom->loadHTMLFile($file);
-        // todo: deal with badly loading HTML if needed
-//        if (!$loaded) {
-//            foreach (libxml_get_errors() as $error) {
-//                // handle errors here
-//            }
-//            libxml_clear_errors();
-//        }
+        $dom->loadHTMLFile($file);
+
 
         // get the base url
         $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');

@@ -1,9 +1,4 @@
-
-
 {% include 'head.twig' %}
-
-{{app.request.content}}
-
+{{app.request.content|raw}}
 <a href="{{app.request.baseUrl}}/edit/{{app.request.path}}" data-action="add" data-path="{{app.request.path}}">Edit</a>
-
 {% include 'footer.twig' %}

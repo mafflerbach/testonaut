@@ -2,7 +2,7 @@
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
-/*
+
 $config = \phpSelenium\Config::getInstance();
 $config->define('Path', __DIR__);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
@@ -20,8 +20,8 @@ $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());
 
 $app->run();
-*/
 
+/*
 use phpSelenium\Selenese\Test,
     phpSelenium\Selenese\Runner;
 try {
@@ -36,3 +36,4 @@ catch (\Exception $e) {
     // oops.
     echo 'Test failed: ' . $e->getMessage() . "\n";
 }
+*/

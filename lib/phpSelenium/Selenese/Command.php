@@ -44,7 +44,6 @@ abstract class Command {
     protected function assert($valueis, $pattern) {
         $patternobj = new Pattern($pattern);
         $matched = $patternobj->match($valueis);
-        var_dump($matched);
         return new CommandResult($matched, $matched, $matched ? 'Matched' : 'Did not match');
     }
 
