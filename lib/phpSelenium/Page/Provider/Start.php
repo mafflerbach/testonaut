@@ -19,7 +19,8 @@ class Start implements ControllerProviderInterface
             $post = array(
                 'path' => $request->request->get('path'),
                 'action' => $request->request->get('action'),
-                'content' => $request->request->get('content'),
+                'content' => $request->request->get('content')
+
             );
 
             $page = new \phpSelenium\Page($path);
@@ -31,7 +32,13 @@ class Start implements ControllerProviderInterface
 
         $start->get('/', function (Request $request) use ($app) {
             $app['menu'] = $this->getToc();
-            $app['request'] = array('baseUrl' => $request->getBaseUrl());
+            $app['request'] = array(
+              'baseUrl' => $request->getBaseUrl(),
+              'path' => '',
+              'content' => '',
+              'mode' => 'show',
+              'type' => 'start'
+            );
             return $app['twig']->render('index.twig');
         });
         return $start;

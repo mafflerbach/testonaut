@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ app.request.baseUrl }}/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ app.request.baseUrl }}/css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="{{ app.request.baseUrl }}/js/custom.js"></script>
 </head>
@@ -16,16 +16,21 @@
                        data-path="{{ app.request.path }}">Run Test</a>
                 </li>
                 <li>
-                    <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}" data-action="add"
+                    <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+                       data-action="add"
                        data-path="{{ app.request.path }}">Edit</a>
                 </li>
                 <li>
-                    <a href="{{ app.request.baseUrl }}/delete/{{ app.request.path }}" data-action="delete"
+                    <a href="{{ app.request.baseUrl }}/delete/{{ app.request.path }}"
+                       data-action="delete"
                        data-path="{{ app.request.path }}">Delete</a>
                 </li>
             {% else %}
-                <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}" data-action="add"
-                   data-path="{{ app.request.path }}">Add Page</a>
+                {% if app.request.type != 'start' %}
+                    <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+                       data-action="add"
+                       data-path="{{ app.request.path }}">Add Page</a>
+                {% endif %}
             {% endif %}
         {% endif %}
 
