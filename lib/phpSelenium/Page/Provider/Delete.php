@@ -12,22 +12,20 @@ class Delete implements ControllerProviderInterface
     {
         $edit = $app['controllers_factory'];
         $edit->get('/', function (Request $request, $path) use ($app) {
-            $page = new \phpSelenium\Page($path);
-            $content = $page->delete();
             $app['request'] = array(
-                'content' => $content,
                 'path' => $path,
                 'baseUrl' => $request->getBaseUrl(),
                 'mode' => 'delete'
             );
-          return $app->redirect($request->getBaseUrl() . '/' . $path);
+
+            $foo = $app['twig']->render('delete.twig');
+            return $foo;
         });
 
         $edit->post('/', function (Request $request, $path) use ($app) {
-            $content = $request->request->get('content');
             $page = new \phpSelenium\Page($path);
-            $content = $page->content($content, TRUE);
-            return $app->redirect($request->getBaseUrl() . '/' . $path);
+            $content = $page->delete();
+            return $app->redirect($request->getBaseUrl() . '/');
         });
         return $edit;
     }

@@ -1,6 +1,7 @@
 <?php
 namespace phpSelenium\Page\Provider;
 
+use phpSelenium\Page\Breadcrumb;
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,9 @@ class Page implements ControllerProviderInterface
                 'baseUrl' => $request->getBaseUrl(),
                 'mode' => 'show'
             );
+            $crumb = new Breadcrumb($path);
+            $app['crumb'] = $crumb->getBreadcrumb();
+
             $foo = $app['twig']->render('page.twig');
             return $foo;
         });

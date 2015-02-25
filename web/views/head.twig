@@ -8,7 +8,6 @@
 
 <div>
     <ul>
-
         {% if app.request.mode == 'show' %}
             {% if app.request.content %}
                 <li>
@@ -26,16 +25,24 @@
                        data-path="{{ app.request.path }}">Delete</a>
                 </li>
             {% else %}
-                {% if app.request.type != 'start' %}
+                {% if app.request.type is not defined %}
                     <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
                        data-action="add"
                        data-path="{{ app.request.path }}">Add Page</a>
                 {% endif %}
             {% endif %}
         {% endif %}
-
     </ul>
 
 
+    {% if app.crumb is defined  %}
+        <ul>
+        {% for crumbie in app.crumb %}
+            <li>
+                <a href="{{ app.request.baseUrl }}/{{ crumbie }}">{{ crumbie }}</a>
+                </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 

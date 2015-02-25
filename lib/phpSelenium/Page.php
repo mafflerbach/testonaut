@@ -9,7 +9,6 @@ class Page {
   public function __construct($path) {
     $this->path = $path;
     $this->root = Config::getInstance()->wikiPath;
-
   }
 
   public function content($content = NULL, $save = NULL) {
@@ -17,13 +16,13 @@ class Page {
     if (!file_exists($file) && $save === NULL) {
       return '';
     }
-    if ($content == null) {
+    if ($content == null && $save === NULL) {
       $pageContent = file_get_contents($file);
       return $pageContent;
     } else {
       $filename = $this->transCodePath() . '/content';
-
       if (!is_dir($this->transCodePath())) {
+        print($this->transCodePath());
         if (!mkdir($this->transCodePath(), 0755, true)) {
           throw new \Exception();
         }
@@ -40,25 +39,20 @@ class Page {
     }
   }
 
-  public function delete($dir) {
-    if (is_dir($dir)) {
-      $objects = scandir($dir);
-      foreach ($objects as $object) {
-        if ($object != "." && $object != "..") {
-          if (filetype($dir . "/" . $object) == "dir") {
-            $this->delete($dir . "/" . $object);
-          } else {
-            unlink($dir . "/" . $object);
-          }
-        }
-      }
-      reset($objects);
-      rmdir($dir);
+  protected function _delete($dir) {
+    $files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file) {
+      (is_dir("$dir/$file")) ? $this->_delete("$dir/$file") : unlink("$dir/$file");
     }
+    return rmdir($dir);
+  }
+
+  public function delete() {
+    $this->_delete($this->transCodePath());
   }
 
 
-  protected function transCodePath() {
+  public function transCodePath() {
     return str_replace('.', '/', $this->root . '/' . $this->path);
   }
 } 
