@@ -17,25 +17,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->mount('/', new phpSelenium\Page\Provider\Start());
 $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
+$app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());
 
 $app->run();
-
-/*
-use phpSelenium\Selenese\Test,
-    phpSelenium\Selenese\Runner;
-try {
-    // get the test rolling
-    $test = new Test();
-    $test->loadFromSeleneseHtml('test.html');
-    $capabilities = DesiredCapabilities::firefox();
-    $runner = new Runner($test, 'http://selenium-hub.dim:4444/wd/hub');
-    $runner->run($capabilities);
-}
-catch (\Exception $e) {
-    // oops.
-    echo 'Test failed: ' . $e->getMessage() . "\n";
-}
-
- */
 

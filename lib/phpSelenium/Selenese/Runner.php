@@ -10,6 +10,8 @@ class Runner {
   /** @var string */
   public $hubUrl;
 
+  private $result = array();
+
   /**
    * @param Test $test
    * @param string $hubUrl
@@ -19,6 +21,10 @@ class Runner {
     $this->hubUrl = $hubUrl;
   }
 
+  public function result() {
+    return $this->result;
+  }
+
   /**
    * Run the test!
    *
@@ -26,11 +32,10 @@ class Runner {
    */
   public function run($capabilities) {
     $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
-
     $results = array();
     foreach ($this->test->commands as $command) {
       // todo: verbosity option
-      echo "Running: | " . str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command)) . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | <br/>';
+      $result[] = "Running: | " . str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command)) . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | <br/>';
 
       try {
         $commandResult = $command->runWebDriver($webDriver);
@@ -40,8 +45,7 @@ class Runner {
 
       // todo: screenshots after each command option
 
-      echo ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message . "\n";
-
+      $result[] = ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message . "\n";
       $results[] = array(
         $command,
         $commandResult
@@ -54,7 +58,7 @@ class Runner {
       // todo: screenshot on fail option
     }
     $webDriver->close();
-    return $results;
+    return $result;
   }
 
 }

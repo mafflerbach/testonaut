@@ -3,7 +3,6 @@
 namespace phpSelenium\Selenese;
 
 use phpSelenium\Selenese;
-use phpSelenium\Selenese\Exception\NoSuchElement;
 
 abstract class Command {
 
@@ -33,7 +32,7 @@ abstract class Command {
       $element = null;
     }
     if ($element === null) {
-      throw new NoSuchElement($locator);
+      throw new \NoSuchElementException($locator);
     }
     return $element;
   }

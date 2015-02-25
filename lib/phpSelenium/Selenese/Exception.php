@@ -2,7 +2,7 @@
 
 namespace phpSelenium\Selenese\Exception;
 
-class SeleneseException extends \Exception {
+class Exception extends \Exception {
 }
 
 ;
