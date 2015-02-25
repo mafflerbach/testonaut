@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // metaKeyUp()
 class metaKeyUp extends Stub {
-    public $command = "metaKeyUp";
+  public $command = "metaKeyUp";
 }

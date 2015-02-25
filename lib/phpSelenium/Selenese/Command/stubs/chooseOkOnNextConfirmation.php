@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // chooseOkOnNextConfirmation()
 class chooseOkOnNextConfirmation extends Stub {
-    public $command = "chooseOkOnNextConfirmation";
+  public $command = "chooseOkOnNextConfirmation";
 }

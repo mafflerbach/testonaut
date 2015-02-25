@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // assertErrorOnNext(message)
 class assertErrorOnNext extends Stub {
-    public $command = "assertErrorOnNext";
+  public $command = "assertErrorOnNext";
 }

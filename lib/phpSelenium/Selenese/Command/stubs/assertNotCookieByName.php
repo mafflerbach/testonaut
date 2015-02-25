@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // assertNotCookieByName(name,pattern)
 class assertNotCookieByName extends Stub {
-    public $command = "assertNotCookieByName";
+  public $command = "assertNotCookieByName";
 }

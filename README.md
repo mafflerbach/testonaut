@@ -1,6 +1,5 @@
 ###TODO###
 
-* Breadcrumb Navigation implementieren
 * Test Laufen lassen implementieren
 * parallele test auf verschiedenen Browsern laufen lassen
 * Seitentypen implementieren

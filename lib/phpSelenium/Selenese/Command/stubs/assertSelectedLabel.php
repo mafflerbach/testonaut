@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // assertSelectedLabel(selectLocator,pattern)
 class assertSelectedLabel extends Stub {
-    public $command = "assertSelectedLabel";
+  public $command = "assertSelectedLabel";
 }

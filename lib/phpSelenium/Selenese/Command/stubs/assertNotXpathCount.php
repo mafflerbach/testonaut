@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // assertNotXpathCount(xpath,pattern)
 class assertNotXpathCount extends Stub {
-    public $command = "assertNotXpathCount";
+  public $command = "assertNotXpathCount";
 }

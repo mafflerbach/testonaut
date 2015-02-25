@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // verifyAllWindowNames(pattern)
 class verifyAllWindowNames extends Stub {
-    public $command = "verifyAllWindowNames";
+  public $command = "verifyAllWindowNames";
 }

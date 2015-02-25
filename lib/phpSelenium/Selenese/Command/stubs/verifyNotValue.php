@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // verifyNotValue(locator,pattern)
 class verifyNotValue extends Stub {
-    public $command = "verifyNotValue";
+  public $command = "verifyNotValue";
 }

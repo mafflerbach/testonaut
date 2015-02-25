@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // assertPrompt(pattern)
 class assertPrompt extends Stub {
-    public $command = "assertPrompt";
+  public $command = "assertPrompt";
 }

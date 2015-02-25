@@ -1,7 +1,6 @@
 <?php
 namespace phpSelenium\Page;
 
-
 class Breadcrumb {
   private $path;
 
@@ -9,23 +8,18 @@ class Breadcrumb {
     $this->path = $path;
   }
 
-
   public function getBreadcrumb() {
-    $links = explode('.', $this->path);
-    $path = array();
+    $crumbs = explode(".", $this->path);
+    $foo = array();
     $b = '';
     $i = 0;
-    foreach ($links as $l) {
-      if ($i < count($links)-1 ) {
-        $b .= $l. ".";
-      } else {
-        $b .= $l;
+    foreach ($crumbs as $crumb) {
+      if ($b != $crumb && $b != '') {
+        $b .= '.';
       }
-      $path[] = $b;
-      print(count($links) ."<br/>");
-      print($i ."<br/>");
+      $foo[$crumb] = $b .= $crumb;
       $i++;
     }
-    return $path;
+    return $foo;
   }
 }

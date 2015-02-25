@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // verifySpeed(pattern)
 class verifySpeed extends Stub {
-    public $command = "verifySpeed";
+  public $command = "verifySpeed";
 }

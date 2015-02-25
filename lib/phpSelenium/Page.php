@@ -31,6 +31,10 @@ class Page {
     }
   }
 
+  public function transCodePath() {
+    return str_replace('.', '/', $this->root . '/' . $this->path);
+  }
+
   public function setConfig($config = array()) {
     if ($config == null) {
       return json_decode(file_get_contents($this->transCodePath() . '/config'));
@@ -39,20 +43,18 @@ class Page {
     }
   }
 
-  protected function _delete($dir) {
-    $files = array_diff(scandir($dir), array('.','..'));
-    foreach ($files as $file) {
-      (is_dir("$dir/$file")) ? $this->_delete("$dir/$file") : unlink("$dir/$file");
-    }
-    return rmdir($dir);
-  }
-
   public function delete() {
     $this->_delete($this->transCodePath());
   }
 
-
-  public function transCodePath() {
-    return str_replace('.', '/', $this->root . '/' . $this->path);
+  protected function _delete($dir) {
+    $files = array_diff(scandir($dir), array(
+        '.',
+        '..'
+      ));
+    foreach ($files as $file) {
+      (is_dir("$dir/$file")) ? $this->_delete("$dir/$file") : unlink("$dir/$file");
+    }
+    return rmdir($dir);
   }
 } 

@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // assertAlertNotPresent()
 class assertAlertNotPresent extends Stub {
-    public $command = "assertAlertNotPresent";
+  public $command = "assertAlertNotPresent";
 }

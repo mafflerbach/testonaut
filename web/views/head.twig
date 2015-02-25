@@ -1,48 +1,54 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ app.request.baseUrl }}/css/style.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="{{ app.request.baseUrl }}/js/custom.js"></script>
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{ app.request.baseUrl }}/css/style.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="{{ app.request.baseUrl }}/js/custom.js"></script>
 </head>
 <body>
 
 <div>
-    <ul>
-        {% if app.request.mode == 'show' %}
-            {% if app.request.content %}
-                <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}" data-action="run"
-                       data-path="{{ app.request.path }}">Run Test</a>
-                </li>
-                <li>
-                    <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
-                       data-action="add"
-                       data-path="{{ app.request.path }}">Edit</a>
-                </li>
-                <li>
-                    <a href="{{ app.request.baseUrl }}/delete/{{ app.request.path }}"
-                       data-action="delete"
-                       data-path="{{ app.request.path }}">Delete</a>
-                </li>
-            {% else %}
-                {% if app.request.type is not defined %}
-                    <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
-                       data-action="add"
-                       data-path="{{ app.request.path }}">Add Page</a>
-                {% endif %}
-            {% endif %}
+  <ul>
+    {% if app.request.mode == 'show' %}
+      {% if app.request.content %}
+        <li>
+          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}"
+             data-action="run"
+             data-path="{{ app.request.path }}">Run Test</a>
+        </li>
+        <li>
+          <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+             data-action="add"
+             data-path="{{ app.request.path }}">Edit</a>
+        </li>
+        <li>
+          <a href="{{ app.request.baseUrl }}/delete/{{ app.request.path }}"
+             data-action="delete"
+             data-path="{{ app.request.path }}">Delete</a>
+        </li>
+      {% else %}
+        {% if app.request.type is not defined %}
+          <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+             data-action="add"
+             data-path="{{ app.request.path }}">Add Page</a>
         {% endif %}
-    </ul>
-
-
-    {% if app.crumb is defined  %}
-        <ul>
-        {% for crumbie in app.crumb %}
-            <li>
-                <a href="{{ app.request.baseUrl }}/{{ crumbie }}">{{ crumbie }}</a>
-                </li>
-        {% endfor %}
-        </ul>
+      {% endif %}
     {% endif %}
+  </ul>
+
+
+  {% if app.crumb is defined %}
+    <ul>
+      <li>
+        <a href="{{ app.request.baseUrl }}/">root</a>
+      </li>
+      {% for crumbie, key in app.crumb %}
+        <li>
+          <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 </div>
 

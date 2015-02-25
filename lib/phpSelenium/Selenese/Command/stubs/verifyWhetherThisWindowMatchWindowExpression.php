@@ -4,5 +4,5 @@ namespace phpSelenium\Selenese\Command;
 
 // verifyWhetherThisWindowMatchWindowExpression(currentWindowString,target)
 class verifyWhetherThisWindowMatchWindowExpression extends Stub {
-    public $command = "verifyWhetherThisWindowMatchWindowExpression";
+  public $command = "verifyWhetherThisWindowMatchWindowExpression";
 }

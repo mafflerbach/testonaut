@@ -11,10 +11,10 @@ $app = new Silex\Application();
 $app['debug'] = true;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__ . '/views',
+  'twig.path' => __DIR__ . '/views',
 ));
 
-$app->mount( '/', new phpSelenium\Page\Provider\Start());
+$app->mount('/', new phpSelenium\Page\Provider\Start());
 $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());

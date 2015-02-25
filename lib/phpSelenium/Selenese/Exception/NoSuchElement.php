@@ -2,4 +2,7 @@
 
 namespace phpSelenium\Selenese\Exception;
 
-class NoSuchElement extends SeleneseException {};
+class NoSuchElement extends SeleneseException {
+}
+
+;
