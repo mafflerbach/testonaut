@@ -37,8 +37,6 @@ class Test {
     $dom = new \DOMDocument;
     $dom->loadHTMLFile($file);
 
-    print($dom->saveHTML());
-
     // get the base url
     $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
     $this->baseUrl = rtrim($this->baseUrl, '/');

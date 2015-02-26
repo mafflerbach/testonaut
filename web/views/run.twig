@@ -1,9 +1,9 @@
 {% include 'head.twig' %}
-
-
-{% for result in app.result %}
-
+<a href="{{ app.request.baseUrl }}/">root</a>
+{% for results in app.result %}
+  {% for result in results %}
     <p>{{ result }}</p>
+  {% endfor %}
 {% endfor %}
 
 {% include 'footer.twig' %}

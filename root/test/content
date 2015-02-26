@@ -1,8 +1,9 @@
-Hallo welt dies ist ein test
-<link rel="selenium.base" href="https://www.google.de" />
+
+    Hallo welt dies ist ein test
+<link rel="selenium.base" href="https://www.google.de">
 <title>test</title>
-</head>
-<body>
+
+
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr><td rowspan="1" colspan="3">test</td></tr>
@@ -19,7 +20,7 @@ Hallo welt dies ist ein test
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=gbqfq</td>
+	<td>id=lst-ib</td>
 	<td>Hallo welt</td>
 </tr>
 <tr>
@@ -43,4 +44,6 @@ Hallo welt dies ist ein test
 	<td></td>
 </tr>
 </tbody></table>
-</body>
+
+
+  
