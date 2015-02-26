@@ -1,7 +1,6 @@
 <?php
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
-$loader->add('phpSelenium', __DIR__ . '/../lib/');
 
 $config = \phpSelenium\Config::getInstance();
 $config->define('Path', __DIR__);
