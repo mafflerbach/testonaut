@@ -35,7 +35,7 @@ class Runner {
     $results = array();
     foreach ($this->test->commands as $command) {
       // todo: verbosity option
-      $result[] = "Running: | " . str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command)) . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | <br/>';
+      $result[] = "Running: | " . str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command)) . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ';
 
       try {
         $commandResult = $command->runWebDriver($webDriver);
@@ -45,7 +45,7 @@ class Runner {
 
       // todo: screenshots after each command option
 
-      $result[] = ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message . "\n";
+      $result[] = ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message ;
       $results[] = array(
         $command,
         $commandResult

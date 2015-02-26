@@ -14,7 +14,7 @@ Hallo welt dies ist ein test
 </tr>
 <tr>
 	<td>pause</td>
-	<td>1500</td>
+	<td>3500</td>
 	<td></td>
 </tr>
 <tr>
@@ -24,7 +24,17 @@ Hallo welt dies ist ein test
 </tr>
 <tr>
 	<td>pause</td>
-	<td>1500</td>
+	<td>2500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=btnG</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>2500</td>
 	<td></td>
 </tr>
 <tr>

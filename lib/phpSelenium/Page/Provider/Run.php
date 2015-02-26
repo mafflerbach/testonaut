@@ -34,7 +34,7 @@ class Run implements ControllerProviderInterface {
       $test = new Test();
       $test->loadFromSeleneseHtml($path.'/content');
       $capabilities = \DesiredCapabilities::firefox();
-      $runner = new Runner($test, 'http://localhost:4444/wd/hub');
+      $runner = new Runner($test, 'http://selenium-hub.dim:4444/wd/hub');
       return $runner->run($capabilities);
     } catch (\Exception $e) {
       // oops.
