@@ -17,9 +17,9 @@ class Run implements ControllerProviderInterface {
     $edit->get('/', function (Request $request, $path) use ($app) {
       $page = new \phpSelenium\Page($path);
       $this->basePath = $page->transCodePath();
+      // todo get request for suite or test
       $result = $this->runSuite($page->transCodePath());
 
-      var_dump($result);
       $app['request'] = array(
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
@@ -58,16 +58,13 @@ class Run implements ControllerProviderInterface {
   private function _run(array $tests) {
     try {
       $capabilities = \DesiredCapabilities::firefox();
-      $runner = new Runner($tests, 'http://localhost:4444/wd/hub');
+      $runner = new Runner($tests, Config::getInstance()->seleniumHub);
       return $runner->run($capabilities);
     } catch (\Exception $e) {
       // oops.
       echo 'Test failed: ' . $e->getMessage() . "\n";
     }
   }
-
-
-
 
   protected function collect($outerDir, $tests = array()) {
     $dirs = array_diff(scandir($outerDir), Array(

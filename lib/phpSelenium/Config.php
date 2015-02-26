@@ -6,6 +6,10 @@ class Config {
   private $register = array();
   private $readOnly = array();
 
+  /**
+   * @var $path, $wikiPath, $seleniumHub
+   */
+
   private function __construct() {
   }
 

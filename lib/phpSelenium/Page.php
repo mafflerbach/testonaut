@@ -35,8 +35,8 @@ class Page {
     return str_replace('.', '/', $this->root . '/' . $this->path);
   }
 
-  public function setConfig($config = array()) {
-    if ($config == null) {
+  public function config($config = array()) {
+    if (empty($config)) {
       return json_decode(file_get_contents($this->transCodePath() . '/config'));
     } else {
       file_put_contents(json_encode($this->transCodePath() . '/config'), $config);

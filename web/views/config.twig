@@ -1,0 +1,14 @@
+{% include 'head.twig' %}
+{{ dump(app.browser) }}
+
+{% if app.browser is defined %}
+  {% for browser  in app.browser %}
+    <lable>{{ browser.browserName }}</lable>
+    <input type="checkbox" value="{{ browser.browserName }}" name="browsers"/>
+  {% endfor %}
+{% endif %}
+
+
+
+{% include 'footer.twig' %}
+
