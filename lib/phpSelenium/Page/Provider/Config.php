@@ -1,29 +1,30 @@
 <?php
 namespace phpSelenium\Page\Provider;
 
+use phpSelenium\Page\Base;
+use phpSelenium\Page\Breadcrumb;
 use phpSelenium\Parser\Config\Browser;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class Config implements ControllerProviderInterface {
+class Config extends Base implements ControllerProviderInterface {
+
+  private $path;
+
   public function connect(Application $app) {
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request, $path) use ($app) {
+
+    $config = $app['controllers_factory'];
+    $config->get('/', function (Request $request, $path) use ($app) {
+      $this->path = $path;
       $page = new \phpSelenium\Page($path);
       $content = $page->content();
 
+      $crumb = new Breadcrumb($path);
+      $app['crumb'] = $crumb->getBreadcrumb();
 
-      $pathArray = explode('.', $path);
-
-      if (count($pathArray) == 1) {
-        $browser = new Browser();
-        $browser->config(\phpSelenium\Config::getInstance()->seleniumConsole);
-        $app['browser'] = $browser->browser;
-        $bSettings = new \phpSelenium\Settings\Browser($path);
-        var_dump($bSettings->getSettings());
-
-      }
+      $app['browser'] = $this->browserSettings();
+      $app['type'] = $this->pageSettings();
 
       $app['request'] = array(
         'content' => $content,
@@ -32,16 +33,28 @@ class Config implements ControllerProviderInterface {
         'mode' => 'show'
       );
 
-
       return $app['twig']->render('config.twig');
     });
 
-    $edit->post('/', function (Request $request, $path) use ($app) {
+    $config->post('/', function (Request $request, $path) use ($app) {
       $content = $request->request->get('content');
       $page = new \phpSelenium\Page($path);
       $content = $page->content($content, TRUE);
       return $app->redirect($request->getBaseUrl() . '/' . $path);
     });
-    return $edit;
+    return $config;
+  }
+
+  protected function browserSettings() {
+    $pathArray = explode('.', $this->path);
+    if (count($pathArray) == 1) {
+      $bSettings = new \phpSelenium\Settings\Browser($this->path);
+      return $bSettings->getSettings();
+    }
+  }
+
+  protected function pageSettings() {
+    $pSettings = new \phpSelenium\Settings\Page($this->path);
+    return $pSettings->getSettings();
   }
 }

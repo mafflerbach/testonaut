@@ -37,7 +37,7 @@ class Page {
 
   public function config($config = array()) {
     if (empty($config)) {
-      return json_decode(file_get_contents($this->transCodePath() . '/config'));
+      return json_decode(file_get_contents($this->transCodePath() . '/config', true));
     } else {
       file_put_contents(json_encode($this->transCodePath() . '/config'), $config);
     }

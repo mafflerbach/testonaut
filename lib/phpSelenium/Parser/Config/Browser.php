@@ -4,15 +4,10 @@ namespace phpSelenium\Parser\Config;
 
 class Browser {
   public $browser;
-  public $active = FALSE;
-
 
   public function __construct() {
 
   }
-
-
-
 
   public function config($url = "") {
     $page = \file_get_contents($url);

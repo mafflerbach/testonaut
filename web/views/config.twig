@@ -1,13 +1,45 @@
 {% include 'head.twig' %}
-{{ dump(app.browser) }}
 
-{% if app.browser is defined %}
-  {% for browser  in app.browser %}
-    <lable>{{ browser.browserName }}</lable>
-    <input type="checkbox" value="{{ browser.browserName }}" name="browsers"/>
-  {% endfor %}
-{% endif %}
+<form action=""
+      method="POST">
+  {% if app.browser is defined %}
+    {% for browser  in app.browser %}
+      <lable>{{ browser.browserName }}</lable>
+      {% if browser.active is defined and browser.active == true %}
+        <input type="checkbox"
+               value="{{ browser.browserName }}"
+               name="browsers"
+               checked="checked"/>
+      {% else %}
+        <input type="checkbox"
+               value="{{ browser.browserName }}"
+               name="browsers"/>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  <br/>
+  {% if app.type is defined %}
+    {% for type, key  in app.type %}
+      <lable>{{ type }}</lable>
+      {% if  key == true %}
+        <input type="radio"
+               value="{{ type }}"
+               name="type"
+               checked="checked"/>
+      {% else %}
+        <input type="radio"
+               value="{{ type }}"
+               name="type"/>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  <br/>
 
+  <input type="submit"
+         name="action"
+         value="save"/>
+
+</form>
 
 
 {% include 'footer.twig' %}
