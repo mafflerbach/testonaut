@@ -15,16 +15,15 @@ class Browser {
 
   public function getSettings() {
     $settings = $this->page->config();
-
     $list = $this->getBrowserList();
-
     for ($i = 0; $i < count($list->browser); $i++) {
-      $browserName = $list->browser[$i]['browserName'];
-      if (property_exists($settings->browser, $browserName)) {
-        $list->browser[$i]['active'] = $settings->browser->$browserName;
+      if (isset($settings->browser)) {
+        $browserName = $list->browser[$i]['browserName'];
+        if (property_exists($settings->browser, $browserName)) {
+          $list->browser[$i]['active'] = $settings->browser->$browserName;
+        }
       }
     }
-
     return $list->browser;
   }
 

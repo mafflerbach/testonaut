@@ -37,7 +37,13 @@ class Page {
 
   public function config($config = array()) {
     if (empty($config)) {
-      return json_decode(file_get_contents($this->transCodePath() . '/config', true));
+      $file = $this->transCodePath() . '/config';
+      if (!file_exists($file) && is_dir($this->transCodePath())) {
+        file_put_contents($this->transCodePath() . '/config', '{"type":"static","browser":[]}');
+      }
+      if (file_exists($file)) {
+        return json_decode(file_get_contents($this->transCodePath() . '/config', true));
+      }
     } else {
       file_put_contents(json_encode($this->transCodePath() . '/config'), $config);
     }

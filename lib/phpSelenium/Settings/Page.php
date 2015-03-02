@@ -2,8 +2,6 @@
 
 namespace phpSelenium\Settings;
 
-use phpSelenium\Selenese\Exception\Exception;
-
 class Page {
   private $setting;
   private $page;
@@ -23,14 +21,22 @@ class Page {
     $settings = $this->page->config();
     $return = array();
 
-    for ($i = 0; $i < count($this->type); $i++) {
-      if ($settings->type == $this->type[$i]) {
-        $return[$this->type[$i]] = true;
-      } else {
-        $return[$this->type[$i]] = false;
+    if (isset($settings->type)) {
+      for ($i = 0; $i < count($this->type); $i++) {
+        if ($settings->type == $this->type[$i]) {
+          $return[$this->type[$i]] = true;
+        } else {
+          $return[$this->type[$i]] = false;
+        }
       }
+    } else {
+      $return = array(
+        'static' => true,
+        'suite' => false,
+        'test' => false,
+        'project' => false,
+      );
     }
-
     return $return;
   }
 

@@ -58,7 +58,7 @@ class Run implements ControllerProviderInterface {
   private function _run(array $tests) {
     try {
       $capabilities = \DesiredCapabilities::firefox();
-      $runner = new Runner($tests, Config::getInstance()->seleniumHub);
+      $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
       return $runner->run($capabilities);
     } catch (\Exception $e) {
       // oops.

@@ -3,7 +3,6 @@ namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Page\Base;
 use phpSelenium\Page\Breadcrumb;
-use phpSelenium\Parser\Config\Browser;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +37,9 @@ class Config extends Base implements ControllerProviderInterface {
 
     $config->post('/', function (Request $request, $path) use ($app) {
       $content = $request->request->get('content');
+
+      var_dump($request->request); die;
+
       $page = new \phpSelenium\Page($path);
       $content = $page->content($content, TRUE);
       return $app->redirect($request->getBaseUrl() . '/' . $path);
@@ -57,4 +59,5 @@ class Config extends Base implements ControllerProviderInterface {
     $pSettings = new \phpSelenium\Settings\Page($this->path);
     return $pSettings->getSettings();
   }
+
 }

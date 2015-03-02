@@ -4,17 +4,22 @@
       method="POST">
   {% if app.browser is defined %}
     {% for browser  in app.browser %}
-      <lable>{{ browser.browserName }}</lable>
+      <label>Baseurl for {{ browser.browserName }}</label>
+      <input type="text" value="" name="{{ browser.browserName }}Url"/>
+      <br/>
+      <label>{{ browser.browserName }}</label>
       {% if browser.active is defined and browser.active == true %}
         <input type="checkbox"
                value="{{ browser.browserName }}"
-               name="browsers"
+               name="{{ browser.browserName }}"
                checked="checked"/>
       {% else %}
         <input type="checkbox"
                value="{{ browser.browserName }}"
-               name="browsers"/>
+               name="{{ browser.browserName }}"/>
       {% endif %}
+
+      <br/>
     {% endfor %}
   {% endif %}
   <br/>

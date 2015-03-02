@@ -6,7 +6,7 @@
         <option name="HTML_ATTRIBUTE_WRAP" value="2" />
         <option name="HTML_ELEMENTS_TO_INSERT_NEW_LINE_BEFORE" value="body,div,p,form,h1,h2,h3,a,img" />
         <XML>
-          <option name="XML_ATTRIBUTE_WRAP" value="2" />
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
         <codeStyleSettings language="CSS">
           <indentOptions>
