@@ -38,7 +38,13 @@ class Config extends Base implements ControllerProviderInterface {
     $config->post('/', function (Request $request, $path) use ($app) {
       $content = $request->request->get('content');
 
-      var_dump($request->request); die;
+      var_dump($request->request);
+      $browserUrls = $request->request->get('browser');
+      $activeBrowser = $request->request->get('active');
+
+      $this->browserSettings($browserUrls);
+
+      die;
 
       $page = new \phpSelenium\Page($path);
       $content = $page->content($content, TRUE);
@@ -47,17 +53,29 @@ class Config extends Base implements ControllerProviderInterface {
     return $config;
   }
 
-  protected function browserSettings() {
+  protected function browserSettings($settings = NULL) {
     $pathArray = explode('.', $this->path);
     if (count($pathArray) == 1) {
-      $bSettings = new \phpSelenium\Settings\Browser($this->path);
-      return $bSettings->getSettings();
+      if ($settings != NULL) {
+        $bSettings = new \phpSelenium\Settings\Browser($this->path);
+        return $bSettings->setSettings($settings);
+      } else {
+        $bSettings = new \phpSelenium\Settings\Browser($this->path);
+        return $bSettings->getSettings();
+      }
     }
+
   }
 
-  protected function pageSettings() {
-    $pSettings = new \phpSelenium\Settings\Page($this->path);
-    return $pSettings->getSettings();
+  protected function pageSettings($settings = NULL) {
+    if ($settings != NULL) {
+      $pSettings = new \phpSelenium\Settings\Page($this->path);
+      return $pSettings->setSettings($settings);
+    } else {
+      $pSettings = new \phpSelenium\Settings\Page($this->path);
+      return $pSettings->getSettings();
+    }
+
   }
 
 }

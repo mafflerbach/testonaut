@@ -5,18 +5,18 @@
   {% if app.browser is defined %}
     {% for browser  in app.browser %}
       <label>Baseurl for {{ browser.browserName }}</label>
-      <input type="text" value="" name="{{ browser.browserName }}Url"/>
+      <input type="text" value="" name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
       <br/>
       <label>{{ browser.browserName }}</label>
       {% if browser.active is defined and browser.active == true %}
         <input type="checkbox"
                value="{{ browser.browserName }}"
-               name="{{ browser.browserName }}"
+               name="active[]{{ browser.browserName }}"
                checked="checked"/>
       {% else %}
         <input type="checkbox"
                value="{{ browser.browserName }}"
-               name="{{ browser.browserName }}"/>
+               name="active[]{{ browser.browserName }}"/>
       {% endif %}
 
       <br/>
