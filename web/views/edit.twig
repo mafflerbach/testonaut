@@ -6,12 +6,12 @@
   <input type="submit"
          name="action"
          value="save"/>
-  <input type="reset"
-         name="action"
-         value="abort"/>
+
+  <a href="{{ app.request.baseUrl }}/{{ app.request.path }}">Zurück</a>
+
   <input type="hidden"
          name="path"
-         value="{{ app.request.path }}"/>
+         value="{{ app.request.baseUrl }}"/>
 
   <div id="toolBar1"><select
             onchange="formatDoc('formatblock' ,this[this.selectedIndex].value),this.selectedIndex=0">
