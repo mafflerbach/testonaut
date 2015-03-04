@@ -46,12 +46,13 @@ class Page {
       }
     } else {
       $conf = json_decode(file_get_contents($this->transCodePath() . '/config'), true);
-
       foreach($config as $key => $val) {
         $conf[$key] = $val;
       }
-
-      file_put_contents($this->transCodePath() . '/config', json_encode($conf));
+      if (!file_put_contents($this->transCodePath() . '/config', json_encode($conf))) {
+          return FALSE;
+      };
+      return TRUE;
     }
   }
 

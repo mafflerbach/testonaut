@@ -1,1 +1,1 @@
-{"type":"project","browser":{"urls":{"chrome":"testurl","firefox":""},"active":["chrome"]}}
+{"type":"suite","browser":{"urls":{"chrome":"testurl3","firefox":""},"active":["chrome"]}}

@@ -20,10 +20,9 @@ class Page {
   public function getSettings() {
     $settings = $this->page->config();
     $return = array();
-
-    if (isset($settings->type)) {
+    if (isset($settings['type'])) {
       for ($i = 0; $i < count($this->type); $i++) {
-        if ($settings->type == $this->type[$i]) {
+        if ($settings['type'] == $this->type[$i]) {
           $return[$this->type[$i]] = true;
         } else {
           $return[$this->type[$i]] = false;
@@ -47,7 +46,7 @@ class Page {
     } else {
       throw new \Exception('Bad Page Type');
     }
-    $this->page->config($this->setting);
+    return $this->page->config($this->setting);
   }
 
   protected function getBrowserList() {

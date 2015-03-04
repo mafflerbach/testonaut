@@ -5,7 +5,7 @@
   {% if app.browser is defined %}
     {% for browser  in app.browser %}
       <label>Baseurl for {{ browser.browserName }}</label>
-      <input type="text" value="" name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+      <input type="text" value="{{ browser.url }}" name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
       <br/>
       <label>{{ browser.browserName }}</label>
       {% if browser.active is defined and browser.active == true %}
@@ -24,6 +24,7 @@
   {% endif %}
   <br/>
   {% if app.type is defined %}
+    {{ dump(app.type) }}
     {% for type, key  in app.type %}
       <lable>{{ type }}</lable>
       {% if  key == true %}
@@ -45,6 +46,10 @@
          value="save"/>
 
 </form>
+
+{% if app.request.message is defined %}
+  <p>{{ app.request.message }}</p>
+{% endif %}
 
 
 {% include 'footer.twig' %}

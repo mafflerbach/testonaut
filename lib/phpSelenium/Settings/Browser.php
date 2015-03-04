@@ -17,12 +17,15 @@ class Browser {
   public function getSettings() {
     $settings = $this->page->config();
     $list = $this->getBrowserList();
+
     for ($i = 0; $i < count($list->browser); $i++) {
-      if (isset($settings->browser)) {
+      if (isset($settings['browser']['active'])) {
+        $active = $settings['browser']['active'];
         $browserName = $list->browser[$i]['browserName'];
-        if (property_exists($settings->browser, $browserName)) {
-          $list->browser[$i]['active'] = $settings->browser->$browserName;
+        if (in_array($browserName, $active)) {
+          $list->browser[$i]['active'] = $browserName;
         }
+        $list->browser[$i]['url'] = $settings['browser']['urls'][$browserName];
       }
     }
     return $list->browser;
@@ -41,7 +44,7 @@ class Browser {
 
   public function setSettings(array $browser) {
     $this->setting['browser'] = $browser;
-    $this->page->config($this->setting);
+    return $this->page->config($this->setting);
   }
 
   protected function getBrowserList() {
