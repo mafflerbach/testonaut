@@ -1,1 +1,1 @@
-{"type":"suite","browser":{"urls":{"chrome":"testurl3","firefox":""},"active":["chrome"]}}
+{"type":"test","browser":{"urls":{"chrome":"sdfasdf","firefox":""},"active":null}}

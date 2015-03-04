@@ -15,7 +15,7 @@ class Test {
   /**
    * @var string
    */
-  public $baseUrl;
+  public $baseUrl = '';
 
   /**
    * @param string $file
@@ -38,10 +38,10 @@ class Test {
     $dom->loadHTMLFile($file);
 
     // get the base url
-    $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
-    $this->baseUrl = rtrim($this->baseUrl, '/');
-
-    //<link rel="selenium.base" href="https://www.creditkarma.com/" />
+    if ($this->baseUrl == '') {
+      $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
+      $this->baseUrl = rtrim($this->baseUrl, '/');
+    }
 
     // todo: catch loading of things NOT selenese
     $rows = $dom->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr');
@@ -51,12 +51,10 @@ class Test {
       /** @var \DOMElement $row */
       $tds = $row->getElementsByTagName('td');
 
-      // gold!
       $command = $tds->item(0)->nodeValue;
       $target = $tds->item(1)->nodeValue;
       $value = $tds->item(2)->nodeValue;
 
-      // there is no "andWait"
       $command = str_replace('andWait', '', $command);
 
       $commandClass = 'phpSelenium\\Selenese\\Command\\' . $command;

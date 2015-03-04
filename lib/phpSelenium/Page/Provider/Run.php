@@ -18,7 +18,7 @@ class Run implements ControllerProviderInterface {
       $page = new \phpSelenium\Page($path);
       $this->basePath = $page->transCodePath();
       // todo get request for suite or test
-      $result = $this->runSuite($page->transCodePath());
+      $result = $this->run($page->transCodePath());
 
       $app['request'] = array(
         'path' => $path,

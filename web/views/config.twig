@@ -1,11 +1,20 @@
 {% include 'head.twig' %}
+<a href="{{ app.request.baseUrl }}/{{ app.request.path }}">Zurück</a>
 
 <form action=""
       method="POST">
   {% if app.browser is defined %}
     {% for browser  in app.browser %}
       <label>Baseurl for {{ browser.browserName }}</label>
-      <input type="text" value="{{ browser.url }}" name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+      {% if browser.url is defined %}
+        <input type="text"
+               value="{{ browser.url }}"
+               name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+      {% else %}
+        <input type="text"
+               value=""
+               name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+      {% endif %}
       <br/>
       <label>{{ browser.browserName }}</label>
       {% if browser.active is defined and browser.active == true %}
@@ -24,7 +33,6 @@
   {% endif %}
   <br/>
   {% if app.type is defined %}
-    {{ dump(app.type) }}
     {% for type, key  in app.type %}
       <lable>{{ type }}</lable>
       {% if  key == true %}
