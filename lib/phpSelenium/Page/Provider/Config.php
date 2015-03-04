@@ -36,15 +36,20 @@ class Config extends Base implements ControllerProviderInterface {
     });
 
     $config->post('/', function (Request $request, $path) use ($app) {
+      $this->path = $path;
       $content = $request->request->get('content');
 
       var_dump($request->request);
       $browserUrls = $request->request->get('browser');
       $activeBrowser = $request->request->get('active');
+      $type = $request->request->get('type');
 
-      $this->browserSettings($browserUrls);
-
+      $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser ));
+      $this->browserSettings($browserSettings);
+      $this->pageSettings($type);
       die;
+
+
 
       $page = new \phpSelenium\Page($path);
       $content = $page->content($content, TRUE);

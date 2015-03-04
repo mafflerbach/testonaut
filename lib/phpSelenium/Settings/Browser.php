@@ -9,6 +9,7 @@ class Browser {
   private $page;
 
   public function __construct($path) {
+
     $this->page = new Page($path);
     $this->settings = $this->page->config();
   }
@@ -39,9 +40,8 @@ class Browser {
    */
 
   public function setSettings(array $browser) {
-    $page = new Page($this->path);
     $this->setting['browser'] = $browser;
-    $page->config($this->setting);
+    $this->page->config($this->setting);
   }
 
   protected function getBrowserList() {

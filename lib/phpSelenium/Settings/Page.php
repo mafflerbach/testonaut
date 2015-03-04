@@ -41,15 +41,13 @@ class Page {
   }
 
   public function setSettings($type) {
-    $page = new \phpSelenium\Page($this->path);
 
     if (in_array($type, $this->type)) {
       $this->setting['type'] = $type;
     } else {
       throw new \Exception('Bad Page Type');
     }
-
-    $page->config($this->setting);
+    $this->page->config($this->setting);
   }
 
   protected function getBrowserList() {
