@@ -30,6 +30,7 @@ class Toc {
       }
       $r = array_merge_recursive($r, $path);
     }
+
     $this->dirArray = $r;
   }
 
@@ -37,9 +38,7 @@ class Toc {
    * @return string
    */
   public function generateMenu() {
-    $dirlist = str_replace('<ul><ul>', '<ul>', $this->makeList($this->dirArray, 'root'));
-    $dirlist = str_replace('</ul></ul>', '</ul>', $dirlist);
-    return $dirlist;
+    return $this->makeList($this->dirArray);
   }
 
   /**
@@ -50,26 +49,33 @@ class Toc {
    *
    * @return string
    */
-  protected function makeList($array, $path = 'root', $count = 0) {
-    $path = str_replace('root/', '', $path);
-    $output = '<ul>';
+  protected function makeList($array, $path = '', $tree = '') {
+
     foreach ($array as $key => $value) {
       if (is_array($value)) {
-        $_path = $path . '/' . $key;
-        $count++;
-        $output .= $this->makeList($value, $_path, $count);
-      } else {
-        if ($count == 0) {
-          continue;
+        if ($path != '') {
+          $_path = $path . '.' . $key;
+        } else {
+          $_path = $key;
         }
-        $pathArr = explode('/', $path);
-        if (strpos($value, 'content') !== FALSE) {
-          $output .= '<li><a href="' . str_replace('/', '.', $path) . '" data-action="open">' . $pathArr[count($pathArr) - 1] . '</a></li>';
+
+        $link = '<a href="' . $_path . '">' . $key . '</a>';
+        $tree .= '<li>' . $link;
+        $tree .= $this->makeList($value, $_path);
+        $tree .= '</li>';
+
+      } else {
+        if ($value == 'content' || $value == 'config') {
+          continue;
         }
       }
     }
-    $output .= '</ul>';
-    return $output;
+
+    if ($tree != '') {
+      $tree = '<ul>' . $tree . '</ul>';
+    }
+
+    return $tree;
   }
 
 }

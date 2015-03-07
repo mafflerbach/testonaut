@@ -7,6 +7,8 @@ $config->define('Path', __DIR__);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
 $config->define('seleniumHub', 'http://localhost:4444/wd/hub');
 $config->define('seleniumConsole', 'http://localhost:4444/grid/console');
+$config->define('appPath', 'phpSelenium/web');
+
 
 $app = new Silex\Application();
 $app['debug'] = true;

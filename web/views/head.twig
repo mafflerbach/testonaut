@@ -9,7 +9,7 @@
 <body>
 
 <div>
-  <ul>
+  <ul class="fancyNav">
     {% if app.request.mode == 'show' %}
       {% if app.request.content %}
         <li>
@@ -44,16 +44,18 @@
 
 
   {% if app.crumb is defined %}
-    <ul>
-      <li>
-        <a href="{{ app.request.baseUrl }}/">root</a>
-      </li>
-      {% for crumbie, key in app.crumb %}
+<div id="crumbs">
+      <ul class="crumb">
         <li>
-          <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
+          <a href="{{ app.request.baseUrl }}/">root</a>
         </li>
-      {% endfor %}
-    </ul>
+        {% for crumbie, key in app.crumb %}
+          <li>
+            <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+</div>
   {% endif %}
 </div>
 

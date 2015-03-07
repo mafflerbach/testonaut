@@ -26,8 +26,6 @@ class Start implements ControllerProviderInterface {
       return $app->json($post, 201);
     });
 
-    $this->getToc();
-
     $start->get('/', function (Request $request) use ($app) {
       $app['menu'] = $this->getToc();
       $app['request'] = array(
