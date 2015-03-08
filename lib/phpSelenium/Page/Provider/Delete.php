@@ -12,7 +12,7 @@ class Delete implements ControllerProviderInterface {
       $app['request'] = array(
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'delete'
+        'mode' => 'show'
       );
 
       $foo = $app['twig']->render('delete.twig');

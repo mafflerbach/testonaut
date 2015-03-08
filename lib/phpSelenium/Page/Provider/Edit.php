@@ -1,6 +1,7 @@
 <?php
 namespace phpSelenium\Page\Provider;
 
+use phpSelenium\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,12 @@ class Edit implements ControllerProviderInterface {
         'baseUrl' => $request->getBaseUrl(),
         'mode' => 'edit'
       );
+
+      $crumb = new Breadcrumb($path);
+      $app['crumb'] = $crumb->getBreadcrumb();
+
       return $app['twig']->render('edit.twig');
+
     });
 
     $edit->post('/', function (Request $request, $path) use ($app) {
