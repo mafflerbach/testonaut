@@ -1,7 +1,9 @@
 <?php
 namespace phpSelenium\Page\Provider;
 
+use phpSelenium\Capabilities;
 use phpSelenium\Page\Breadcrumb;
+use phpSelenium\Settings\Page;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,19 +13,31 @@ use phpSelenium\Selenese\Runner;
 class Run implements ControllerProviderInterface {
   private $basePath;
   private $dirArray = array();
+  private $path;
+  private $browser = '';
 
   public function connect(Application $app) {
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request, $path) use ($app) {
+      $this->path = $path;
       $page = new \phpSelenium\Page($path);
       $this->basePath = $page->transCodePath();
-      // todo get request for suite or test
-      $result = $this->run($page->transCodePath());
+
+      $this->browser = $request->query->get('browser');
+      if ($this->browser == '') {
+        $this->browser = 'all';
+      }
+
+      if ($request->query->get('suite') == 'true') {
+        $result = $this->runSuite($page->transCodePath());
+      } else {
+        $result = $this->run($page->transCodePath());
+      }
 
       $app['request'] = array(
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'show'
+        'mode' => 'edit'
       );
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
@@ -38,12 +52,14 @@ class Run implements ControllerProviderInterface {
     $this->collect($path);
 
     $testCollect = array();
-    for($i = 0; $i < count($this->dirArray); $i++) {
+    for ($i = 0; $i < count($this->dirArray); $i++) {
       $test = new Test();
       $test->loadFromSeleneseHtml($this->dirArray[$i] . '/content');
       $testCollect[] = $test;
     }
+
     $result = $this->_run($testCollect);
+
     return $result;
   }
 
@@ -51,17 +67,24 @@ class Run implements ControllerProviderInterface {
     $test = new Test();
     $test->loadFromSeleneseHtml($path . '/content');
     $testCollect[] = $test;
-
     return $this->_run($testCollect);
   }
 
   private function _run(array $tests) {
     try {
-      $capabilities = \DesiredCapabilities::firefox();
-      $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
-      return $runner->run($capabilities);
+      $capabilities = $this->getCapabilities();
+      if (!is_array($capabilities)) {
+        $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
+        $result = $runner->run($capabilities);
+        return $result;
+      } else {
+        for ($i = 0; $i < count($capabilities); $i++) {
+          $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
+          $result[] = $runner->run($capabilities[$i]);
+        }
+        return $result;
+      }
     } catch (\Exception $e) {
-      // oops.
       echo 'Test failed: ' . $e->getMessage() . "\n";
     }
   }
@@ -71,6 +94,7 @@ class Run implements ControllerProviderInterface {
       ".",
       ".."
     ));
+
     $dir_array = Array();
     foreach ($dirs as $d) {
       if (is_dir($outerDir . "/" . $d)) {
@@ -85,7 +109,34 @@ class Run implements ControllerProviderInterface {
         $dir_array[$d] = $d;
       }
     }
+
     return $dir_array;
+  }
+
+  private function getCapabilities() {
+
+    $capabilities = '';
+    switch ($this->browser) {
+      case 'firefox':
+        $capabilities = \DesiredCapabilities::firefox();
+        break;
+      case 'chrome':
+        $capabilities = \DesiredCapabilities::chrome();
+        break;
+      case 'iexplore':
+        $capabilities = Capabilities::ieExplorer();
+        break;
+      default:
+        $capabilities = array(
+          \DesiredCapabilities::firefox(),
+          \DesiredCapabilities::chrome(),
+          Capabilities::ieExplorer()
+        );
+        break;
+    }
+
+    return $capabilities;
+
   }
 
 }

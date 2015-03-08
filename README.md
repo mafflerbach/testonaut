@@ -1,21 +1,11 @@
 ###TODO###
 
-* Browserauswahl implementieren
-* möglichkeiten für je browser eine eigene baseurl zu hinterlegen
+* baseurl aus der config berücksichtigen
 * parallele test auf verschiedenen Browsern laufen lassen
 * websocket nachrichten implementieren für testresults;
-* Seitentypen implementieren
 * Screenshoteintellung implementieren
 * Screenshotvergleich implementieren
 * Screenshotübersichtseite implementieren.
-
-
-
-
-
-seitentyp
-browser
-screenshoot einstellungen
 
 
 

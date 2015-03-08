@@ -2,15 +2,14 @@
 
 namespace phpSelenium\Settings;
 
-use phpSelenium\Page;
+use phpSelenium\Page as PageHandler;
 
 class Browser {
   private $setting;
   private $page;
 
   public function __construct($path) {
-
-    $this->page = new Page($path);
+    $this->page = new PageHandler($path);
     $this->settings = $this->page->config();
   }
 

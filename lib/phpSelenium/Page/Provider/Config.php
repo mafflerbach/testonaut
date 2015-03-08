@@ -3,6 +3,7 @@ namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Page\Base;
 use phpSelenium\Page\Breadcrumb;
+use phpSelenium\Settings\Browser;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +24,10 @@ class Config extends Base implements ControllerProviderInterface {
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
 
-      $app['browser'] = $this->browserSettings();
       $app['type'] = $this->pageSettings();
+      if ($app['type']['project']) {
+        $app['browser'] = $this->browserSettings();
+      }
 
       $app['request'] = array(
         'content' => $content,
@@ -47,10 +50,18 @@ class Config extends Base implements ControllerProviderInterface {
 
       $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser));
 
-      if ($this->browserSettings($browserSettings) && $this->pageSettings($type)) {
+      if ($type == 'project') {
+        if ($this->browserSettings($browserSettings)) {
+          $message = 'Saved';
+        } else {
+          $message = 'Can not save browser config';
+        }
+      }
+
+      if ($this->pageSettings($type)) {
         $message = 'Saved';
       } else {
-        $message = 'Can not save config';
+        $message = 'Can not save page config';
       }
 
       $crumb = new Breadcrumb($path);
@@ -75,7 +86,7 @@ class Config extends Base implements ControllerProviderInterface {
   protected function browserSettings($settings = NULL) {
     $pathArray = explode('.', $this->path);
     if (count($pathArray) == 1) {
-      $bSettings = new \phpSelenium\Settings\Browser($this->path);
+      $bSettings = new Browser($this->path);
       if ($settings != NULL) {
         return $bSettings->setSettings($settings);
       } else {

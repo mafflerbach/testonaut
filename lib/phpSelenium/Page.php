@@ -70,4 +70,9 @@ class Page {
     }
     return rmdir($dir);
   }
+
+  public function getPath() {
+    return $this->path;
+  }
+
 } 
