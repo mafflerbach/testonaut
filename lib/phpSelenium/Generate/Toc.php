@@ -20,10 +20,20 @@ class Toc {
     $ritit = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath), \RecursiveIteratorIterator::CHILD_FIRST);
     $r = array();
     foreach ($ritit as $splFileInfo) {
-      if ($splFileInfo->getFilename() == '.' || $splFileInfo->getFilename() == '..') {
+
+      if ($splFileInfo->getFilename() == '__IMAGES' || strpos($splFileInfo->getFilename(), '.png') > 0) {
         continue;
       }
-      $path = $splFileInfo->isDir() ? array($splFileInfo->getFilename() => array()) : array($splFileInfo->getFilename());
+      if ($splFileInfo->getFilename() == '.' ||
+        $splFileInfo->getFilename() == '..' ) {
+        continue;
+      }
+
+      if ($splFileInfo->isDir()) {
+        $path = array($splFileInfo->getFilename() => array());
+      } else {
+        $path = array($splFileInfo->getFilename());
+      }
 
       for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
         $path = array($ritit->getSubIterator($depth)->current()->getFilename() => $path);
@@ -65,7 +75,7 @@ class Toc {
         $tree .= '</li>';
 
       } else {
-        if ($value == 'content' || $value == 'config') {
+        if ($value == 'content' || $value == 'config' ) {
           continue;
         }
       }

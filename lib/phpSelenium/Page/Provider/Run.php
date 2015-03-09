@@ -72,7 +72,8 @@ class Run implements ControllerProviderInterface {
   private function _run(array $tests) {
     try {
       $capabilities = $this->getCapabilities();
-        $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
+      $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath);
+
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);
         return $result;
@@ -126,10 +127,12 @@ class Run implements ControllerProviderInterface {
         break;
       default:
         $capabilities = array(
+          /*
           \DesiredCapabilities::firefox(),
           \DesiredCapabilities::chrome(),
-          Capabilities::ieExplorer()
+          Capabilities::ieExplorer() */
         );
+        $capabilities = \DesiredCapabilities::firefox();
         break;
     }
 

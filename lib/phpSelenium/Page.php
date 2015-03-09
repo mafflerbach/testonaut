@@ -31,6 +31,10 @@ class Page {
     }
   }
 
+  public function getImages() {
+
+  }
+
   public function transCodePath() {
     return str_replace('.', '/', $this->root . '/' . $this->path);
   }

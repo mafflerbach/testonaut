@@ -60,20 +60,14 @@
       <label  class="checkbox"  for="switchBox">Show HTML</label>
     </div>
     <div id="textBox"
-         contenteditable="true">
-      {{ app.request.content|raw }}
-    </div>
-
+         contenteditable="true">{{ app.request.content|raw }}</div>
 
     <input type="submit"
            name="action"
            value="save"
            class="btn"/>
-
     <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
        class="backLink btn">Zurück</a>
-
-
     <input type="hidden"
            name="content"
            value=""/>

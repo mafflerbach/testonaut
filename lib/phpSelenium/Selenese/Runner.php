@@ -9,6 +9,7 @@ class Runner {
 
   /** @var string */
   public $hubUrl;
+  public $pageUrl;
 
   private $result = array();
 
@@ -16,9 +17,10 @@ class Runner {
    * @param Test $test
    * @param string $hubUrl
    */
-  public function __construct(Array $test, $hubUrl) {
+  public function __construct(Array $test, $hubUrl, $pagePath = '') {
     $this->test = $test;
     $this->hubUrl = $hubUrl;
+    $this->pagePath = $pagePath;
   }
 
   public function result() {
@@ -32,7 +34,16 @@ class Runner {
 
     foreach ($test->commands as $command) {
       // todo: verbosity option
-      $result[] = "Running: | " . str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command)) . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ';
+      $commandStr = str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command));
+      $result[] = "Running: | " . $commandStr . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ';
+
+      if ($commandStr == 'captureEntirePageScreenshot') {
+        $imageDir = $this->pagePath."/__IMAGES";
+        if(!file_exists($imageDir)) {
+          mkdir($imageDir, '775');
+        }
+        $command->arg1 = $imageDir."/".$command->arg1;
+      }
 
       try {
         $commandResult = $command->runWebDriver($webDriver);

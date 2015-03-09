@@ -27,7 +27,10 @@ class Start implements ControllerProviderInterface {
     });
 
     $start->get('/', function (Request $request) use ($app) {
-      $app['menu'] = $this->getToc();
+      $toc  = $this->getToc();
+
+      $app['menu'] = $toc;
+
       $app['request'] = array(
         'baseUrl' => $request->getBaseUrl(),
         'path' => '',
