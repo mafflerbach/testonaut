@@ -2,4 +2,28 @@
 <div class="content">
   {{ app.request.content|raw }}
 </div>
+
+http://localhost/phpSelenium/root/test/hallo/welt/__IMAGES/src/firefox/test2.png
+
+<div class="screens">
+  {% if app.request.images.src is defined %}
+    {{ dump(app.request.images) }}
+    <table>
+    {% for key, val  in app.request.images.src%}
+      <tr>
+        <th>{{ key }}</th>
+      </tr>
+      <tr>
+
+      {% for image in val %}
+        <td><img src="{{ app.request.imagePath}}/src/{{ key }}/{{ image }}" width="20%"/></td>
+        <td><img src="{{ app.request.imagePath}}/ref/{{ key }}/{{ image }}" width="20%"/></td>
+        <td><img src="{{ app.request.imagePath}}/comp/{{ key }}/{{ image }}" width="20%" /></td>
+      {% endfor %}
+      </tr>
+    {% endfor %}
+    </table>
+  {% endif %}
+</div>
+
 {% include 'footer.twig' %}

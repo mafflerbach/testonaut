@@ -8,7 +8,7 @@ $config->define('Path', __DIR__);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
 $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
-$config->define('appPath', 'phpSelenium/web');
+$config->define('appPath', '/phpSelenium');
 
 
 $app = new Silex\Application();

@@ -39,10 +39,16 @@ class Runner {
 
       if ($commandStr == 'captureEntirePageScreenshot') {
         $imageDir = $this->pagePath."/__IMAGES";
-        if(!file_exists($imageDir)) {
-          mkdir($imageDir, '775');
+
+        $path = $imageDir."/src/".$capabilities->getBrowserName();
+
+        if (!file_exists($imageDir)) {
+          mkdir($path, 775, true);
+          mkdir($imageDir."/comp/".$capabilities->getBrowserName(), 775, true);
+          mkdir($imageDir."/ref/".$capabilities->getBrowserName(), 775, true);
         }
-        $command->arg1 = $imageDir."/".$command->arg1;
+
+        $command->arg1 = $path."/".$command->arg1;
       }
 
       try {

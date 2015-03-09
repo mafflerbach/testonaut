@@ -18,13 +18,16 @@ class Page implements ControllerProviderInterface {
       $browserSettings = new Browser($path);
       $browsers = $browserSettings->getSettings();
 
+      $images = $page->getImages();
       $app['request'] = array(
         'content' => $content,
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
         'mode' => 'show',
         'type' => $settings->getType(),
-        'browsers' => $browsers
+        'browsers' => $browsers,
+        'images' => $images,
+        'imagePath' => $page->getImagePath()
       );
 
       $crumb = new Breadcrumb($path);
@@ -36,4 +39,5 @@ class Page implements ControllerProviderInterface {
 
     return $page;
   }
+
 }
