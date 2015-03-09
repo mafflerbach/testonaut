@@ -3,7 +3,6 @@ namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Capabilities;
 use phpSelenium\Page\Breadcrumb;
-use phpSelenium\Settings\Page;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,13 +72,12 @@ class Run implements ControllerProviderInterface {
   private function _run(array $tests) {
     try {
       $capabilities = $this->getCapabilities();
-      if (!is_array($capabilities)) {
         $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
+      if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);
         return $result;
       } else {
         for ($i = 0; $i < count($capabilities); $i++) {
-          $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub);
           $result[] = $runner->run($capabilities[$i]);
         }
         return $result;

@@ -24,7 +24,9 @@ class Browser {
         if (in_array($browserName, $active)) {
           $list->browser[$i]['active'] = $browserName;
         }
-        $list->browser[$i]['url'] = $settings['browser']['urls'][$browserName];
+        if (isset($settings['browser']['urls'][$browserName])) {
+         $list->browser[$i]['url'] = $settings['browser']['urls'][$browserName];
+        }
       }
     }
     return $list->browser;

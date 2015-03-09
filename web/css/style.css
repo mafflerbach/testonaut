@@ -380,6 +380,7 @@ table tr:hover td {
   font-size: 14px;
   padding: 6px 6px 6px 6px;
   text-decoration: none;
+  border: 1px solid #999;
 }
 
 .btn:hover {
@@ -391,3 +392,71 @@ table tr:hover td {
   background-image: linear-gradient(to bottom, #e3e3e3, #b8b8b8);
   text-decoration: none;
 }
+
+input[type=radio] {
+ display: none;
+}
+
+label[class=radio], label[class=checkbox] {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  padding-left: 25px;
+  margin-right: 15px;
+
+}
+
+label[class=radio]:before , label[class=checkbox]:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+
+  margin-right: 10px;
+  position: relative;
+  left: 0;
+  bottom: 1px;
+  background-color: #aaa;
+  box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+ label.radio:before {
+  border-radius: 8px;
+}
+
+input[type=radio]:checked + label:before {
+  content: "\2022";
+  color: #f3f3f3;
+  font-size: 26px;
+  text-align: center;
+  line-height: 21px;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+label.checkbox:before {
+  border-radius: 3px;
+}
+
+input[type=checkbox]:checked + label:before {
+  content: "\2713";
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+  font-size: 15px;
+  color: #f3f3f3;
+  text-align: center;
+  line-height: 20px;
+}
+
+input[type=text]{
+  color: #515151;
+  line-height: 21px;
+  background-color: #aaa;
+  border: 1px solid gray;
+  background-color: #DBDBDB;
+  box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+  border-radius: 4px;
+  width: 20em;
+}
+

@@ -1,63 +1,69 @@
 {% include 'head.twig' %}
-<a href="{{ app.request.baseUrl }}/{{ app.request.path }}" class="backLink btn">Zurück</a>
+<div class="content">
 
-<form action=""
-      method="POST">
-  {% if app.browser is defined %}
-    {% for browser  in app.browser %}
-      <label>Baseurl for {{ browser.browserName }}</label>
-      {% if browser.url is defined %}
-        <input type="text"
-               value="{{ browser.url }}"
-               name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
-      {% else %}
-        <input type="text"
-               value=""
-               name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
-      {% endif %}
-      <br/>
-      <label>{{ browser.browserName }}</label>
-      {% if browser.active is defined and browser.active == true %}
-        <input type="checkbox"
-               value="{{ browser.browserName }}"
-               name="active[]{{ browser.browserName }}"
-               checked="checked"/>
-      {% else %}
-        <input type="checkbox"
-               value="{{ browser.browserName }}"
-               name="active[]{{ browser.browserName }}"/>
-      {% endif %}
+  <form action=""
+        method="POST">
+    {% if app.browser is defined %}
+      {% for browser  in app.browser %}
+        <label>Baseurl for {{ browser.browserName }}</label>
+        {% if browser.url is defined %}
+          <input type="text"
+                 value="{{ browser.url }}"
+                 name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+        {% else %}
+          <input type="text"
+                 value=""
+                 name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+        {% endif %}
+        <br/>
+        {% if browser.active is defined and browser.active == true %}
+          <input type="checkbox"
+                 value="{{ browser.browserName }}"
+                 name="active[]{{ browser.browserName }}"
+                 checked="checked" id="{{ browser.browserName }}"/>
+        {% else %}
+          <input type="checkbox"
+                 value="{{ browser.browserName }}"
+                 name="active[]{{ browser.browserName }}" id="{{ browser.browserName }}"/>
+        {% endif %}
+        <label class="checkbox" for="{{ browser.browserName }}">{{ browser.browserName }}</label>
 
-      <br/>
-    {% endfor %}
+        <br/>
+      {% endfor %}
+    {% endif %}
+    <br/>
+    {% if app.type is defined %}
+      {% for type, key  in app.type %}
+        {% if  key == true %}
+          <input type="radio"
+                 value="{{ type }}"
+                 name="type"
+                 checked="checked" id="{{ type }}"/>
+        {% else %}
+          <input type="radio"
+                 value="{{ type }}"
+                 name="type" id="{{ type }}"/>
+        {% endif %}
+        <label class="radio" for="{{ type }}">{{ type }}</label>
+
+      {% endfor %}
+    {% endif %}
+    <br/>
+
+    <input type="submit"
+           name="action"
+           value="save"
+           class="btn"/>
+
+    <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+       class="backLink btn">Zurück</a>
+
+  </form>
+
+  {% if app.request.message is defined %}
+    <p>{{ app.request.message }}</p>
   {% endif %}
-  <br/>
-  {% if app.type is defined %}
-    {% for type, key  in app.type %}
-      <lable>{{ type }}</lable>
-      {% if  key == true %}
-        <input type="radio"
-               value="{{ type }}"
-               name="type"
-               checked="checked"/>
-      {% else %}
-        <input type="radio"
-               value="{{ type }}"
-               name="type"/>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-  <br/>
-
-  <input type="submit"
-         name="action"
-         value="save"/>
-
-</form>
-
-{% if app.request.message is defined %}
-  <p>{{ app.request.message }}</p>
-{% endif %}
+</div>
 
 
 {% include 'footer.twig' %}

@@ -12,6 +12,10 @@ $(document).ready(function () {
         }
         $("input[name='content']").attr('value', content);
     });
+
+
+
+
 })
 
 
@@ -43,3 +47,6 @@ function printDoc() {
     }
 }
 var oDoc, sDefTxt;
+
+
+
