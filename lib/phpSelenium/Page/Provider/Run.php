@@ -73,6 +73,7 @@ class Run implements ControllerProviderInterface {
     try {
       $capabilities = $this->getCapabilities();
       $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath);
+//      $runner->screenshotsAfterEveryStep();
 
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);

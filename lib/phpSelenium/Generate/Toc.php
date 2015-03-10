@@ -2,6 +2,8 @@
 
 namespace phpSelenium\Generate;
 
+use phpSelenium\Parser\Config\Browser;
+
 class Toc {
 
   private $basePath = 'root';
@@ -18,29 +20,32 @@ class Toc {
    */
   public function runDir() {
     $ritit = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath), \RecursiveIteratorIterator::CHILD_FIRST);
+    $dirs = array(
+      '__IMAGES',
+      '.png',
+      'src',
+      'ref',
+      'comp',
+    );
+
+    $dirs = $this->appendBrowserList($dirs);
+
     $r = array();
     foreach ($ritit as $splFileInfo) {
 
-      if ($splFileInfo->getFilename() == '__IMAGES' || strpos($splFileInfo->getFilename(), '.png') > 0) {
-        continue;
-      }
-      if ($splFileInfo->getFilename() == '.' ||
-        $splFileInfo->getFilename() == '..' ) {
+      if ($splFileInfo->getFilename() == '.' || $splFileInfo->getFilename() == '..') {
         continue;
       }
 
-      if ($splFileInfo->isDir()) {
+      if ($splFileInfo->isDir() && !in_array($splFileInfo->getFilename(), $dirs)) {
         $path = array($splFileInfo->getFilename() => array());
-      } else {
-        $path = array($splFileInfo->getFilename());
-      }
 
-      for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
-        $path = array($ritit->getSubIterator($depth)->current()->getFilename() => $path);
+        for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
+          $path = array($ritit->getSubIterator($depth)->current()->getFilename() => $path);
+        }
+        $r = array_merge_recursive($r, $path);
       }
-      $r = array_merge_recursive($r, $path);
     }
-
     $this->dirArray = $r;
   }
 
@@ -75,7 +80,7 @@ class Toc {
         $tree .= '</li>';
 
       } else {
-        if ($value == 'content' || $value == 'config' ) {
+        if ($value == 'content' || $value == 'config') {
           continue;
         }
       }
@@ -86,6 +91,16 @@ class Toc {
     }
 
     return $tree;
+  }
+
+  private function appendBrowserList($dirs) {
+    $browser = new Browser();
+    $list = $browser->config();
+    for ($i = 0; $i < count($list); $i++) {
+      $dirs[] = $list[$i]['browserName'];
+    }
+
+    return $dirs;
   }
 
 }

@@ -2,6 +2,7 @@
 
 namespace phpSelenium\Parser\Config;
 
+use phpSelenium\Config;
 use phpSelenium\Selenese\Exception\Exception;
 
 class Browser {
@@ -12,7 +13,7 @@ class Browser {
   }
 
   public function config($url = "") {
-    $page = @\file_get_contents($url);
+    $page = @\file_get_contents(Config::getInstance()->seleniumConsole);
 
     if ($page === FALSE ) {
       throw new \Exception("Can't reach " . $url);

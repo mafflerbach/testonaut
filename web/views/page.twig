@@ -3,24 +3,20 @@
   {{ app.request.content|raw }}
 </div>
 
-http://localhost/phpSelenium/root/test/hallo/welt/__IMAGES/src/firefox/test2.png
-
 <div class="screens">
-  {% if app.request.images.src is defined %}
-    {{ dump(app.request.images) }}
+  {% if app.request.images is defined %}
     <table>
-    {% for key, val  in app.request.images.src%}
+    {% for key, val  in app.request.images %}
       <tr>
         <th>{{ key }}</th>
       </tr>
-      <tr>
-
-      {% for image in val %}
-        <td><img src="{{ app.request.imagePath}}/src/{{ key }}/{{ image }}" width="20%"/></td>
-        <td><img src="{{ app.request.imagePath}}/ref/{{ key }}/{{ image }}" width="20%"/></td>
-        <td><img src="{{ app.request.imagePath}}/comp/{{ key }}/{{ image }}" width="20%" /></td>
-      {% endfor %}
-      </tr>
+        {% for image in val.src %}
+          <tr>
+          <td><img src="{{ app.request.imagePath}}/{{ key }}/src/{{ image }}" width="30%"/></td>
+        <td><img src="{{ app.request.imagePath}}/{{ key }}/ref/{{ image }}" width="30%"/></td>
+        <td><img src="{{ app.request.imagePath}}/{{ key }}/comp/{{ image }}" width="30%" /></td>
+          </tr>
+        {% endfor %}
     {% endfor %}
     </table>
   {% endif %}

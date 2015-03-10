@@ -2,6 +2,8 @@
 
 namespace phpSelenium\Selenese;
 
+use phpSelenium\Selenese\Command\captureEntirePageScreenshot;
+
 class Runner {
 
   /** @var Test */
@@ -12,6 +14,7 @@ class Runner {
   public $pageUrl;
 
   private $result = array();
+  private $screenshotsAfterEveryStep = FALSE;
 
   /**
    * @param Test $test
@@ -32,29 +35,34 @@ class Runner {
     $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
     $results = array();
 
+    $k = 1;
     foreach ($test->commands as $command) {
       // todo: verbosity option
       $commandStr = str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command));
       $result[] = "Running: | " . $commandStr . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ';
 
+      $imageDir = $this->pagePath . "/__IMAGES";
+      $path = $imageDir . '/' . $capabilities->getBrowserName() . "/src/";
+
       if ($commandStr == 'captureEntirePageScreenshot') {
-        $imageDir = $this->pagePath."/__IMAGES";
-
-        $path = $imageDir."/src/".$capabilities->getBrowserName();
-
         if (!file_exists($imageDir)) {
-          mkdir($path, 775, true);
-          mkdir($imageDir."/comp/".$capabilities->getBrowserName(), 775, true);
-          mkdir($imageDir."/ref/".$capabilities->getBrowserName(), 775, true);
+          mkdir($path, 775, TRUE);
+          mkdir($imageDir . '/' . $capabilities->getBrowserName() . "/comp/", 775, TRUE);
+          mkdir($imageDir . '/' . $capabilities->getBrowserName() . "/ref/", 775, TRUE);
         }
-
-        $command->arg1 = $path."/".$command->arg1;
+        $command->arg1 = $path . "/" . $command->arg1;
       }
 
       try {
         $commandResult = $command->runWebDriver($webDriver);
+        if ($this->screenshotsAfterEveryStep) {
+          $screenCommand = new captureEntirePageScreenshot();
+          $screenCommand->arg1 = $path . 'image'.$k.'.png';
+          $screenCommand->runWebDriver($webDriver);
+        }
+
       } catch (\Exception $e) {
-        $commandResult = new CommandResult(false, false, $e->getMessage());
+        $commandResult = new CommandResult(FALSE, FALSE, $e->getMessage());
       }
 
       // todo: screenshots after each command option
@@ -65,10 +73,11 @@ class Runner {
         $commandResult
       );
 
-      if ($commandResult->continue === false) {
+      if ($commandResult->continue === FALSE) {
         break;
       }
       // todo: screenshot on fail option
+      $k++;
     }
     $webDriver->close();
     return $result;
@@ -80,7 +89,7 @@ class Runner {
    * @return array An array of arrays containing the command and the commandResult
    */
   public function run($capabilities) {
-    $return= array();
+    $return = array();
 
     if (is_array($this->test)) {
       for ($i = 0; $i < count($this->test); $i++) {
@@ -92,5 +101,8 @@ class Runner {
     return $return;
   }
 
+  public function screenshotsAfterEveryStep() {
+    $this->screenshotsAfterEveryStep = TRUE;
+  }
 
 }

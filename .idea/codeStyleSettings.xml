@@ -5,6 +5,11 @@
       <value>
         <option name="HTML_ATTRIBUTE_WRAP" value="2" />
         <option name="HTML_ELEMENTS_TO_INSERT_NEW_LINE_BEFORE" value="body,div,p,form,h1,h2,h3,a,img" />
+        <PHPCodeStyleSettings>
+          <option name="ALIGN_KEY_VALUE_PAIRS" value="true" />
+          <option name="UPPER_CASE_BOOLEAN_CONST" value="true" />
+          <option name="UPPER_CASE_NULL_CONST" value="true" />
+        </PHPCodeStyleSettings>
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
@@ -28,6 +33,7 @@
           <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1" />
           <option name="CLASS_BRACE_STYLE" value="1" />
           <option name="METHOD_BRACE_STYLE" value="1" />
+          <option name="SPECIAL_ELSE_IF_TREATMENT" value="true" />
           <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
           <option name="ALIGN_MULTILINE_ARRAY_INITIALIZER_EXPRESSION" value="true" />
           <option name="ARRAY_INITIALIZER_WRAP" value="2" />

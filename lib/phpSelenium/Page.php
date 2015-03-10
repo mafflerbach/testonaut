@@ -34,7 +34,7 @@ class Page {
   }
 
   public function getImagePath() {
-    return \phpSelenium\Config::getInstance()->appPath . "/".$this->relativePath() . '/__IMAGES';
+    return \phpSelenium\Config::getInstance()->appPath . "/" . $this->relativePath() . '/__IMAGES';
   }
 
   public function getImages() {
@@ -46,26 +46,26 @@ class Page {
 
     for ($i = 0; $i < count($browser->browser); $i++) {
       $name = $browser->browser[$i]['browserName'];
-      if (file_exists($imageDir . "/src/" . $name)) {
-        $src = array_diff(scandir($imageDir . "/src/" . $name), array(
+      if (file_exists($imageDir . "/" . $name . "/src/")) {
+        $src = array_diff(scandir($imageDir . "/" . $name . "/src/"), array(
           '.',
           '..'
         ));
-        $return['src'][$name] = $src;
+        $return[$name]['src'] = $src;
       }
-      if (file_exists($imageDir . "/comp/" . $name)) {
-        $src = array_diff(scandir($imageDir . "/comp/" . $name), array(
+      if (file_exists($imageDir . "/" . $name . "/comp/")) {
+        $src = array_diff(scandir($imageDir . "/" . $name . "/comp/"), array(
           '.',
           '..'
         ));
-        $return['comp'][$name] = $src;
+        $return[$name]['comp'] = $src;
       }
-      if (file_exists($imageDir . "/ref/" . $name)) {
-        $src = array_diff(scandir($imageDir . "/ref/" . $name), array(
+      if (file_exists($imageDir . "/" . $name . "/ref/")) {
+        $src = array_diff(scandir($imageDir . "/" . $name . "/ref/"), array(
           '.',
           '..'
         ));
-        $return['ref'][$name] = $src;
+        $return[$name]['ref'] = $src;
       }
     }
 
