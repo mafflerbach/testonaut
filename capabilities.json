@@ -1,0 +1,44 @@
+{
+    "capabilities":
+        [
+            {
+                "browserName": "*firefox",
+                "maxInstances": 5,
+                "seleniumProtocol": "Selenium"
+            },
+            {
+                "browserName": "*googlechrome",
+                "maxInstances": 5,
+                "seleniumProtocol": "Selenium"
+            },
+            {
+                "browserName": "*iexplore",
+                "maxInstances": 5,
+                "seleniumProtocol": "Selenium"
+            },
+            {
+                "browserName": "firefox",
+                "maxInstances": 5,
+                "seleniumProtocol": "WebDriver"
+            },
+            {
+                "browserName": "chrome",
+                "maxInstances": 5,
+                "seleniumProtocol": "WebDriver"
+            },
+            {
+                "browserName": "internet explorer",
+                "maxInstances": 5,
+                "seleniumProtocol": "WebDriver"
+            }
+        ],
+    "configuration":
+    {
+        "maxSession": 5,
+        "port": 5555,
+        "register": true,
+        "registerCycle": 5000,
+        "hubPort": 4444,
+        "hubHost": localhost
+    }
+}
