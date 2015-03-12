@@ -38,3 +38,5 @@ $conf = array(
 
 print(json_encode($conf));
 */
+
+var_dump(explode(' ', 'fooBa'));

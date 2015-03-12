@@ -35,9 +35,9 @@ class Run implements ControllerProviderInterface {
       }
 
       $app['request'] = array(
-        'path' => $path,
+        'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit'
+        'mode'    => 'edit'
       );
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
@@ -53,9 +53,7 @@ class Run implements ControllerProviderInterface {
 
     $testCollect = array();
     for ($i = 0; $i < count($this->dirArray); $i++) {
-      $test = new Test();
-      $test->loadFromSeleneseHtml($this->dirArray[$i] . '/content');
-      $testCollect[] = $test;
+      $testCollect[] = $this->dirArray[$i] . '/content';
     }
 
     $result = $this->_run($testCollect);
@@ -64,9 +62,10 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function run($path) {
-    $test = new Test();
-    $test->loadFromSeleneseHtml($path . '/content');
-    $testCollect[] = $test;
+
+    $content = $path . '/content';
+    $testCollect[] = $content;
+
     return $this->_run($testCollect);
   }
 
@@ -117,29 +116,36 @@ class Run implements ControllerProviderInterface {
   private function getCapabilities() {
 
     $DesiredCapabilities = new \DesiredCapabilities();
-    $browserName = str_replace(' ', '', $this->browser);
-    // TODO explode browser name for uppercase,
-    if ($browserName == 'all') {
+
+    if ($this->browser == 'all') {
       $api = new Api();
       $list = $api->getBrowserList();
-
       $capabilities = array();
+
       for ($i = 0; $i < count($list); $i++) {
-        // TODO check for methode exist
-        // TODO explode browser name for uppercase,
-        $name = str_replace(' ', '', $list[$i]['browserName']);
+        $browserName = $this->normalizeBrowserName($list[$i]['browserName']);
         if (method_exists($DesiredCapabilities, $browserName)) {
           $capabilities[] = \DesiredCapabilities::$browserName();
         }
-
       }
-      return $capabilities;
+    } else {
+      $browserName = $this->normalizeBrowserName($this->browser);
+      if (method_exists($DesiredCapabilities, $browserName)) {
+        $capabilities = \DesiredCapabilities::$browserName();
+      }
     }
-
-    if (method_exists($DesiredCapabilities, $browserName)) {
-      return \DesiredCapabilities::$browserName();
-    }
-
+    return $capabilities;
   }
 
+  private function normalizeBrowserName($browserString) {
+
+    if (strpos($browserString, ' ') > 0) {
+      $expl = explode(' ', $browserString);
+      $browserName = $expl[0] . ucfirst($expl[1]);
+    } else {
+      $browserName = $browserString;
+    }
+
+    return $browserName;
+  }
 }

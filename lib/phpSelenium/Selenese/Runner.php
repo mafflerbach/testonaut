@@ -20,7 +20,7 @@ class Runner {
    * @param Test $test
    * @param string $hubUrl
    */
-  public function __construct(Array $test, $hubUrl, $pagePath = '') {
+  public function __construct(Array $test, $hubUrl, $pagePath) {
     $this->test = $test;
     $this->hubUrl = $hubUrl;
     $this->pagePath = $pagePath;
@@ -30,29 +30,34 @@ class Runner {
     return $this->result;
   }
 
-  protected function _run(Test $test, \DesiredCapabilities $capabilities) {
+  protected function _run($content, \DesiredCapabilities $capabilities) {
+    $test = new Test();
+    $test->loadFromSeleneseHtml($content);
 
     $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
     $results = array();
 
+    $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
+    $imageDir = $this->pagePath . "/__IMAGES";
+    $path = $imageDir . '/' . $browserName . "/src/";
+
     $k = 1;
     foreach ($test->commands as $command) {
       // todo: verbosity option
-      $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
       $commandStr = str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command));
       $result[] = "Running: | " . $commandStr . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ';
 
-      $imageDir = $this->pagePath . "/__IMAGES";
-      $path = $imageDir . '/' . $browserName . "/src/";
-
       if ($commandStr == 'captureEntirePageScreenshot') {
-        if (!file_exists($imageDir)) {
+        if (!file_exists($path)) {
           mkdir($path, 775, TRUE);
           mkdir($imageDir . '/' . $browserName . "/comp/", 775, TRUE);
           mkdir($imageDir . '/' . $browserName . "/ref/", 775, TRUE);
         }
-        $command->arg1 = $path . $command->arg1.'.png';
+        //clear Arg;
+        $tmp = $command->arg1;
+        $command->arg1 = $path . $tmp .'.png';
       }
+      var_dump($command->arg1);
 
       try {
         $commandResult = $command->runWebDriver($webDriver);
