@@ -3,6 +3,7 @@ namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Capabilities;
 use phpSelenium\Page\Breadcrumb;
+use phpSelenium\Selenium\Api;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,29 +116,29 @@ class Run implements ControllerProviderInterface {
 
   private function getCapabilities() {
 
-    $capabilities = '';
-    switch ($this->browser) {
-      case 'firefox':
-        $capabilities = \DesiredCapabilities::firefox();
-        break;
-      case 'chrome':
-        $capabilities = \DesiredCapabilities::chrome();
-        break;
-      case 'iexplore':
-        $capabilities = Capabilities::ieExplorer();
-        break;
-      default:
-        $capabilities = array(
-          /*
-          \DesiredCapabilities::firefox(),
-          \DesiredCapabilities::chrome(),
-          Capabilities::ieExplorer() */
-        );
-        $capabilities = \DesiredCapabilities::firefox();
-        break;
+    $DesiredCapabilities = new \DesiredCapabilities();
+    $browserName = str_replace(' ', '', $this->browser);
+    // TODO explode browser name for uppercase,
+    if ($browserName == 'all') {
+      $api = new Api();
+      $list = $api->getBrowserList();
+
+      $capabilities = array();
+      for ($i = 0; $i < count($list); $i++) {
+        // TODO check for methode exist
+        // TODO explode browser name for uppercase,
+        $name = str_replace(' ', '', $list[$i]['browserName']);
+        if (method_exists($DesiredCapabilities, $browserName)) {
+          $capabilities[] = \DesiredCapabilities::$browserName();
+        }
+
+      }
+      return $capabilities;
     }
 
-    return $capabilities;
+    if (method_exists($DesiredCapabilities, $browserName)) {
+      return \DesiredCapabilities::$browserName();
+    }
 
   }
 

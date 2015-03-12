@@ -2,6 +2,8 @@
 
 namespace phpSelenium\Settings;
 
+use phpSelenium\Selenium\Api;
+
 class Page {
   private $setting;
   private $page;
@@ -28,7 +30,6 @@ class Page {
 
   protected function getProjectPage() {
     $path = $this->page->getPath();
-
   }
 
   public function getProjectSettings() {
@@ -46,17 +47,17 @@ class Page {
     if (isset($settings['type'])) {
       for ($i = 0; $i < count($this->types); $i++) {
         if ($settings['type'] == $this->types[$i]) {
-          $return[$this->types[$i]] = true;
+          $return[$this->types[$i]] = TRUE;
         } else {
-          $return[$this->types[$i]] = false;
+          $return[$this->types[$i]] = FALSE;
         }
       }
     } else {
       $return = array(
-        'static' => true,
-        'suite' => false,
-        'test' => false,
-        'project' => false,
+        'static'  => TRUE,
+        'suite'   => FALSE,
+        'test'    => FALSE,
+        'project' => FALSE,
       );
     }
     return $return;
@@ -71,11 +72,4 @@ class Page {
     }
     return $this->page->config($this->setting);
   }
-
-  protected function getBrowserList() {
-    $browser = new \phpSelenium\Parser\Config\Browser();
-    $browser->config(\phpSelenium\Config::getInstance()->seleniumConsole);
-    return $browser;
-  }
-
 }

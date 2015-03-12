@@ -3,6 +3,7 @@
 namespace phpSelenium\Generate;
 
 use phpSelenium\Parser\Config\Browser;
+use phpSelenium\Selenium\Api;
 
 class Toc {
 
@@ -94,8 +95,9 @@ class Toc {
   }
 
   private function appendBrowserList($dirs) {
-    $browser = new Browser();
-    $list = $browser->config();
+    $api = new Api();
+    $list = $api->getBrowserList();
+
     for ($i = 0; $i < count($list); $i++) {
       $dirs[] = $list[$i]['browserName'];
     }

@@ -3,6 +3,7 @@
 namespace phpSelenium;
 
 use phpSelenium\Parser\Config\Browser;
+use phpSelenium\Selenium\Api;
 
 class Page {
   protected $path;
@@ -44,8 +45,10 @@ class Page {
     $browser = new \phpSelenium\Parser\Config\Browser();
     $browser->config(\phpSelenium\Config::getInstance()->seleniumConsole);
 
-    for ($i = 0; $i < count($browser->browser); $i++) {
-      $name = $browser->browser[$i]['browserName'];
+    $api = new Api();
+    $browser = $api->getBrowserList();
+    for ($i = 0; $i < count($browser); $i++) {
+      $name = $browser[$i]['browserName'];
       if (file_exists($imageDir . "/" . $name . "/src/")) {
         $src = array_diff(scandir($imageDir . "/" . $name . "/src/"), array(
           '.',

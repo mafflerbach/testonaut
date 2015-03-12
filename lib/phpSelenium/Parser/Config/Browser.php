@@ -48,28 +48,14 @@ class Browser {
     $dom = new \DOMDocument();
     @$dom->loadHTML($str);
 
-    $ips = array();
-    $ports = array();
-
+    $nodes = array();
     $xpath = new \DOMXPath($dom);
-    $nodeList = $xpath->query('//div[@type="config"]/p[contains(., "host:")]');
+    $nodeList = $xpath->query('//div[@type="config"]/p[contains(., "url:")]');
     foreach ($nodeList as $node) {
-      $ips[] = str_replace('host:', '', $node->nodeValue);
+      $nodes[] = str_replace('url:', '', $node->nodeValue);
     }
 
-    $xpath = new \DOMXPath($dom);
-    $nodeList = $xpath->query('//div[@type="config"]/p[contains(., "port:")]');
-    foreach ($nodeList as $node) {
-      $ports[] = str_replace('port:', '', $node->nodeValue);
-    }
-
-    $instances = array();
-
-    for($i = 0; $i < count($ips); $i++) {
-      $instances[] = $ips[$i].":".$ports[$i];
-    }
-
-    return $instances;
+    return $nodes;
 
   }
 

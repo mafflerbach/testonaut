@@ -3,6 +3,7 @@
 namespace phpSelenium\Settings;
 
 use phpSelenium\Page as PageHandler;
+use phpSelenium\Selenium\Api;
 
 class Browser {
   private $setting;
@@ -15,21 +16,23 @@ class Browser {
 
   public function getSettings() {
     $settings = $this->page->config();
-    $list = $this->getBrowserList();
 
-    for ($i = 0; $i < count($list->browser); $i++) {
+    $api = new Api();
+    $list = $api->getBrowserList();
+
+    for ($i = 0; $i < count($list); $i++) {
       if (isset($settings['browser']['active'])) {
         $active = $settings['browser']['active'];
-        $browserName = $list->browser[$i]['browserName'];
+        $browserName = $list[$i]['browserName'];
         if (in_array($browserName, $active)) {
-          $list->browser[$i]['active'] = $browserName;
+          $list[$i]['active'] = $browserName;
         }
         if (isset($settings['browser']['urls'][$browserName])) {
-         $list->browser[$i]['url'] = $settings['browser']['urls'][$browserName];
+         $list[$i]['url'] = $settings['browser']['urls'][$browserName];
         }
       }
     }
-    return $list->browser;
+    return $list;
   }
 
   /**

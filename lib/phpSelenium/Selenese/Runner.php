@@ -38,19 +38,20 @@ class Runner {
     $k = 1;
     foreach ($test->commands as $command) {
       // todo: verbosity option
+      $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
       $commandStr = str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command));
       $result[] = "Running: | " . $commandStr . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ';
 
       $imageDir = $this->pagePath . "/__IMAGES";
-      $path = $imageDir . '/' . $capabilities->getBrowserName() . "/src/";
+      $path = $imageDir . '/' . $browserName . "/src/";
 
       if ($commandStr == 'captureEntirePageScreenshot') {
         if (!file_exists($imageDir)) {
           mkdir($path, 775, TRUE);
-          mkdir($imageDir . '/' . $capabilities->getBrowserName() . "/comp/", 775, TRUE);
-          mkdir($imageDir . '/' . $capabilities->getBrowserName() . "/ref/", 775, TRUE);
+          mkdir($imageDir . '/' . $browserName . "/comp/", 775, TRUE);
+          mkdir($imageDir . '/' . $browserName . "/ref/", 775, TRUE);
         }
-        $command->arg1 = $path . "/" . $command->arg1;
+        $command->arg1 = $path . $command->arg1.'.png';
       }
 
       try {

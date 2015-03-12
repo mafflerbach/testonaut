@@ -12,20 +12,17 @@ class Api {
     $this->seleniumAddress = $hub->seleniumAddress;
   }
 
-
-  public function test () {
-
-    print_r($this->getBrowserName());
-
-  }
-
-
-  public function getBrowserName() {
+  private function getNodeInformations() {
     $pars = new Browser();
     $nodes = $pars->getNodes(@\file_get_contents(Config::getInstance()->seleniumConsole));
-    $endpoint='grid/api/proxy?id=http://'.$nodes[0];
+    $endpoint='grid/api/proxy?id='.$nodes[0];
     $data = $this->getData($endpoint);
     return $data;
+  }
+
+  public function getBrowserList() {
+    $data = $this->getNodeInformations();
+    return $data['request']['capabilities'];
   }
 
   private function getData($endpoints) {
