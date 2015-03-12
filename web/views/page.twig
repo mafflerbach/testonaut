@@ -5,19 +5,22 @@
 
 <div class="screens">
   {% if app.request.images is defined %}
-    <table>
-    {% for key, val  in app.request.images %}
-      <tr>
-        <th>{{ key }}</th>
-      </tr>
+    <table class="images">
+      {% for key, val  in app.request.images %}
+        <tr>
+          <th class="headline" colspan="3">{{ key }}</th>
+        </tr>
         {% for image in val.src %}
           <tr>
-          <td><img src="{{ app.request.imagePath}}/{{ key }}/src/{{ image }}" width="30%"/></td>
-        <td><img src="{{ app.request.imagePath}}/{{ key }}/ref/{{ image }}" width="30%"/></td>
-        <td><img src="{{ app.request.imagePath}}/{{ key }}/comp/{{ image }}" width="30%" /></td>
+            <th class="subline" colspan="3">{{ image }}</th>
+          </tr>
+          <tr>
+            <td><img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/></td>
+            <td><img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></td>
+            <td><img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></td>
           </tr>
         {% endfor %}
-    {% endfor %}
+      {% endfor %}
     </table>
   {% endif %}
 </div>

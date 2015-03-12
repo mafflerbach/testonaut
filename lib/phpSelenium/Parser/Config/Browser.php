@@ -42,5 +42,36 @@ class Browser {
     $this->browser = $browserCapList;
     return $browserCapList;
   }
+
+
+  public  function getNodes($str) {
+    $dom = new \DOMDocument();
+    @$dom->loadHTML($str);
+
+    $ips = array();
+    $ports = array();
+
+    $xpath = new \DOMXPath($dom);
+    $nodeList = $xpath->query('//div[@type="config"]/p[contains(., "host:")]');
+    foreach ($nodeList as $node) {
+      $ips[] = str_replace('host:', '', $node->nodeValue);
+    }
+
+    $xpath = new \DOMXPath($dom);
+    $nodeList = $xpath->query('//div[@type="config"]/p[contains(., "port:")]');
+    foreach ($nodeList as $node) {
+      $ports[] = str_replace('port:', '', $node->nodeValue);
+    }
+
+    $instances = array();
+
+    for($i = 0; $i < count($ips); $i++) {
+      $instances[] = $ips[$i].":".$ports[$i];
+    }
+
+    return $instances;
+
+  }
+
 }
 

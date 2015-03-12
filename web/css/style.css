@@ -98,12 +98,13 @@ table {
 }
 
 table th {
-  padding: 21px 25px 22px 25px;
+  padding: 10px 20px 10px 20px;
   border-top: 1px solid #fafafa;
   border-bottom: 1px solid #e0e0e0;
   background: #ededed;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
-  background: -moz-linear-gradient(top, #ededed, #ebebeb);
+  background: -webkit-gradient(linear, left top, left bottom, from(#eaeaea), to(#d9d9d9));
+  background: -moz-linear-gradient(top, #eaeaea, #d9d9d9);
+  font-size: 20px;
 }
 
 table th:first-child {
@@ -460,3 +461,16 @@ input[type=text]{
   width: 20em;
 }
 
+.images img{
+  width:100%;
+}
+
+.subline {
+  padding: 5px 5px 5px 5px;
+  font-size: 15px;
+  background: #ededed;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e8e8e8));
+  background: -moz-linear-gradient(top, #f4f4f4, #e8e8e8);
+}
+.headline {
+}
