@@ -57,9 +57,9 @@ class Runner {
         $tmp = $command->arg1;
         $command->arg1 = $path . $tmp .'.png';
       }
-      var_dump($command->arg1);
 
       try {
+        // todo: screenshots after each command option settings
         $commandResult = $command->runWebDriver($webDriver);
         if ($this->screenshotsAfterEveryStep) {
           $screenCommand = new captureEntirePageScreenshot();
@@ -71,7 +71,6 @@ class Runner {
         $commandResult = new CommandResult(FALSE, FALSE, $e->getMessage());
       }
 
-      // todo: screenshots after each command option
 
       $result[] = ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message;
       $results[] = array(
