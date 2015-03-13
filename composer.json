@@ -15,6 +15,7 @@
         "twig/twig": ">=1.10,<2.0-dev",
         "symfony/twig-bridge": "<3.0-dev",
         "facebook/webdriver": "dev-master",
-        "symfony/process": "~2.6"
+        "symfony/process": "~2.6",
+        "cboden/ratchet": "0.3.*"
     }
 }

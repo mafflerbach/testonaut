@@ -42,11 +42,11 @@ class Page {
     $imageDir = $this->transCodePath() . '/__IMAGES';
     $return = array();
 
+
     $api = new Api();
     $browser = $api->getBrowserList();
-
     for ($i = 0; $i < count($browser); $i++) {
-      $name = $browser[$i]['browserName'];
+      $name = str_replace(' ','_', $browser[$i]['browserName']);
       if (file_exists($imageDir . "/" . $name . "/src/")) {
         $src = array_diff(scandir($imageDir . "/" . $name . "/src/"), array(
           '.',

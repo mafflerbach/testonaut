@@ -99,7 +99,7 @@ class Toc {
     $list = $api->getBrowserList();
 
     for ($i = 0; $i < count($list); $i++) {
-      $dirs[] = $list[$i]['browserName'];
+      $dirs[] = str_replace(' ', '_', $list[$i]['browserName']);
     }
 
     return $dirs;

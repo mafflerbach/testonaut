@@ -42,8 +42,4 @@ class Api {
     $content =file_get_contents($apiString);
     return json_decode($content, true);
   }
-
-
-
-
 }
