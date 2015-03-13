@@ -42,11 +42,9 @@ class Page {
     $imageDir = $this->transCodePath() . '/__IMAGES';
     $return = array();
 
-    $browser = new \phpSelenium\Parser\Config\Browser();
-    $browser->config(\phpSelenium\Config::getInstance()->seleniumConsole);
-
     $api = new Api();
     $browser = $api->getBrowserList();
+
     for ($i = 0; $i < count($browser); $i++) {
       $name = $browser[$i]['browserName'];
       if (file_exists($imageDir . "/" . $name . "/src/")) {

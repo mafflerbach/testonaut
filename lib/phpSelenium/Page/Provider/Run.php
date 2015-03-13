@@ -130,6 +130,7 @@ class Run implements ControllerProviderInterface {
       }
     } else {
       $browserName = $this->normalizeBrowserName($this->browser);
+      var_dump($this->browser);
       if (method_exists($DesiredCapabilities, $browserName)) {
         $capabilities = \DesiredCapabilities::$browserName();
       }

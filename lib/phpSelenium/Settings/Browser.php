@@ -50,11 +50,4 @@ class Browser {
     $this->setting['browser'] = $browser;
     return $this->page->config($this->setting);
   }
-
-  protected function getBrowserList() {
-    $browser = new \phpSelenium\Parser\Config\Browser();
-    $browser->config(\phpSelenium\Config::getInstance()->seleniumConsole);
-    return $browser;
-  }
-
 }

@@ -15,14 +15,26 @@ class Api {
   private function getNodeInformations() {
     $pars = new Browser();
     $nodes = $pars->getNodes(@\file_get_contents(Config::getInstance()->seleniumConsole));
-    $endpoint='grid/api/proxy?id='.$nodes[0];
+
+    $browsers = array();
+    for($i =0; $i < count($nodes); $i++) {
+    $endpoint='grid/api/proxy?id='.$nodes[$i];
     $data = $this->getData($endpoint);
-    return $data;
+      if(count($data['request']['capabilities']) > 1) {
+        for($k = 0; $k < count($data['request']['capabilities']); $k++) {
+          $browsers[] = $data['request']['capabilities'][$k];
+        }
+      } else {
+        $browsers[] = $data['request']['capabilities'][0];
+      }
+    }
+
+    return $browsers;
   }
 
   public function getBrowserList() {
     $data = $this->getNodeInformations();
-    return $data['request']['capabilities'];
+    return $data;
   }
 
   private function getData($endpoints) {
