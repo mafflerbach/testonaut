@@ -8,4 +8,6 @@
 * Screenshotübersichtseite implementieren.
 
 
+* max executointime auf 0 setzen.
+* paralellität mit ajax request ermöglichen
 

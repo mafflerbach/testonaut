@@ -41,6 +41,10 @@ class Runner {
     $imageDir = $this->pagePath . "/__IMAGES";
     $path = $imageDir . '/' . $browserName . "/src/";
 
+    $context = new ZMQContext();
+    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+    $socket->connect("tcp://localhost:8888");
+
     $k = 1;
     foreach ($test->commands as $command) {
       // todo: verbosity option
@@ -71,12 +75,13 @@ class Runner {
         $commandResult = new CommandResult(FALSE, FALSE, $e->getMessage());
       }
 
-
       $result[] = ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message;
       $results[] = array(
         $command,
         $commandResult
       );
+
+      $socket->send(json_encode($results));
 
       if ($commandResult->continue === FALSE) {
         break;
