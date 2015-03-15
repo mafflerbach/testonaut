@@ -2,6 +2,8 @@
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
 
+
+
 $seleniumAddress = 'http://localhost:4444';
 $config = \phpSelenium\Config::getInstance();
 $config->define('Path', __DIR__);

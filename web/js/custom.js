@@ -14,9 +14,39 @@ $(document).ready(function () {
     });
 
 
+    $('.run-test').click(function (e) {
+        e.preventDefault();
 
+        var url = $('.run-test').data('path');
+        var run = $('.run-test').attr('href');
+
+        $.ajax({
+            method: "GET",
+            url: run
+        });
+        getContent(0, url);
+    });
 
 })
+
+function getContent(timestamp, url) {
+    var queryString = {'timestamp': timestamp, 'url': url};
+
+    $.ajax(
+        {
+            type: 'GET',
+            url: 'http://localhost/phpSelenium/server.php',
+            data: queryString,
+            success: function (data) {
+                var obj = jQuery.parseJSON(data);
+                $('.result').html(obj.data_from_file);
+                console.log(obj);
+                getContent(obj.timestamp, url);
+            }
+        }
+    );
+
+}
 
 
 function initDoc() {

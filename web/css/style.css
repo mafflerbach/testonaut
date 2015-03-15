@@ -474,3 +474,10 @@ input[type=text]{
 }
 .headline {
 }
+
+.result {
+  position: absolute;
+  top:0;
+  right: 0;
+
+}

@@ -21,7 +21,7 @@
               <ul>
                 {% for browser in app.request.browsers %}
                   <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?suite=true&browser={{ browser.browserName }}">{{ browser.browserName }}</a>
+                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?suite=true&browser={{ browser.browserName }}" data-path="{{ app.request.path }}" class="run-test">{{ browser.browserName }}</a>
                   </li>
                 {% endfor %}
               </ul>
@@ -34,7 +34,7 @@
               <ul>
                 {% for browser in app.request.browsers %}
                   <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}">{{ browser.browserName }}</a>
+                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}" data-path="{{ app.request.path }}" class="run-test">{{ browser.browserName }}</a>
                   </li>
                 {% endfor %}
               </ul>

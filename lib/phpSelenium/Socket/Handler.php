@@ -8,13 +8,12 @@ class Handler implements MessageComponentInterface {
   protected $clients;
 
   public function __construct() {
-    $this->clients = new \SplObjectStorage;
+    $this->clients = array();
   }
 
   public function onOpen(ConnectionInterface $conn) {
     // Store the new connection to send messages to later
-    $this->clients->attach($conn);
-
+    $this->clients[$conn->resourceId] = $conn;
     echo "New connection! ({$conn->resourceId})\n";
   }
 
@@ -23,19 +22,20 @@ class Handler implements MessageComponentInterface {
     echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
       , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
-    var_dump($this->clients);
-
-    foreach ($this->clients as $client) {
+    foreach ($this->clients as $key => $client) {
       if ($from !== $client) {
         // The sender is not the receiver, send to each client connected
         $client->send($msg);
       }
     }
+    // Send a message to a known resourceId (in this example the sender)
+    $client = $this->clients[$from->resourceId];
+    $client->send("Message successfully sent to $numRecv users.");
   }
 
   public function onClose(ConnectionInterface $conn) {
     // The connection is closed, remove it, as we can no longer send it messages
-    $this->clients->detach($conn);
+    unset($this->clients[$conn->resourceId]);
 
     echo "Connection {$conn->resourceId} has disconnected\n";
   }
