@@ -17,20 +17,26 @@ $(document).ready(function () {
     $('.run-test').click(function (e) {
         e.preventDefault();
 
-        var url = $('.run-test').data('path');
-        var run = $('.run-test').attr('href');
+        var url = $(this).data('path');
+        var run = $(this).attr('href');
+        var browser = $(this).data('browser');
 
         $.ajax({
             method: "GET",
             url: run
         });
-        getContent(0, url);
+
+        getContent(0, url, browser);
     });
 
 })
 
-function getContent(timestamp, url) {
-    var queryString = {'timestamp': timestamp, 'url': url};
+function getContent(timestamp, url, browser) {
+    var queryString = {'timestamp': timestamp, 'url': url, 'browser' : browser};
+    console.log('getContent');
+    if ($('table.'+browser).length <= 0) {
+        $('.result').append('<table class="'+browser+'"/>');
+    }
 
     $.ajax(
         {
@@ -38,10 +44,10 @@ function getContent(timestamp, url) {
             url: 'http://localhost/phpSelenium/server.php',
             data: queryString,
             success: function (data) {
+                console.log('poll')
                 var obj = jQuery.parseJSON(data);
-                $('.result').html(obj.data_from_file);
-                console.log(obj);
-                getContent(obj.timestamp, url);
+                $('table.'+browser).html(obj.data_from_file);
+                getContent(obj.timestamp, url, browser);
             }
         }
     );

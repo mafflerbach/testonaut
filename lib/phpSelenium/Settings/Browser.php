@@ -24,6 +24,7 @@ class Browser {
       if (isset($settings['browser']['active'])) {
         $active = $settings['browser']['active'];
         $browserName = $list[$i]['browserName'];
+        $browserName = str_replace(' ','_', $browserName);
         if (in_array($browserName, $active)) {
           $list[$i]['active'] = $browserName;
         }

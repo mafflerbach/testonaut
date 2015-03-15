@@ -17,11 +17,11 @@ class Api {
     $nodes = $pars->getNodes(@\file_get_contents(Config::getInstance()->seleniumConsole));
 
     $browsers = array();
-    for($i =0; $i < count($nodes); $i++) {
-    $endpoint='grid/api/proxy?id='.$nodes[$i];
-    $data = $this->getData($endpoint);
-      if(count($data['request']['capabilities']) > 1) {
-        for($k = 0; $k < count($data['request']['capabilities']); $k++) {
+    for ($i = 0; $i < count($nodes); $i++) {
+      $endpoint = 'grid/api/proxy?id=' . $nodes[$i];
+      $data = $this->getData($endpoint);
+      if (count($data['request']['capabilities']) > 1) {
+        for ($k = 0; $k < count($data['request']['capabilities']); $k++) {
           $browsers[] = $data['request']['capabilities'][$k];
         }
       } else {
@@ -38,8 +38,8 @@ class Api {
   }
 
   private function getData($endpoints) {
-    $apiString = $this->seleniumAddress . "/" .$endpoints;
-    $content =file_get_contents($apiString);
-    return json_decode($content, true);
+    $apiString = $this->seleniumAddress . "/" . $endpoints;
+    $content = file_get_contents($apiString);
+    return json_decode($content, TRUE);
   }
 }

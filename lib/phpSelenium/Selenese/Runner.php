@@ -42,12 +42,12 @@ class Runner {
     $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
     $imageDir = $this->pagePath . "/__IMAGES";
     $path = $imageDir . '/' . $browserName . "/src/";
-
+    $this->polling .= '-'.$browserName;
     $k = 1;
     foreach ($test->commands as $command) {
       // todo: verbosity option
       $commandStr = str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command));
-      $result = "Running: | " . $commandStr . ' | ' . $command->arg1 . ' | ' . $command->arg2 . ' | ' . "<br/>";
+      $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "<tr>";
       file_put_contents($this->polling, $result, FILE_APPEND);
       if ($commandStr == 'captureEntirePageScreenshot') {
         if (!file_exists($path)) {
@@ -72,14 +72,17 @@ class Runner {
         $commandResult = new CommandResult(FALSE, FALSE, $e->getMessage());
       }
 
-      print('asfd');
-      $result = ($commandResult->success ? 'SUCCESS | ' : 'FAILED | ') . $commandResult->message . "<br/>";
+      if($commandResult->success) {
+        $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">'.$commandResult->message.'</td></tr>';
+      } else {
+        $result = '<tr class="failed"><td>FAILED</td><td colspan="2">'.$commandResult->message.'</td></tr>';
+      }
+
       file_put_contents($this->polling, $result, FILE_APPEND);
 
       if ($commandResult->continue === FALSE) {
         break;
       }
-      // todo: screenshot on fail option
       $k++;
     }
 
