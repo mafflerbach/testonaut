@@ -138,14 +138,15 @@ class Run implements ControllerProviderInterface {
   }
 
   private function normalizeBrowserName($browserString) {
-
     if (strpos($browserString, ' ') > 0) {
       $expl = explode(' ', $browserString);
+      $browserName = $expl[0] . ucfirst($expl[1]);
+    } else if (strpos($browserString, '_') > 0) {
+      $expl = explode('_', $browserString);
       $browserName = $expl[0] . ucfirst($expl[1]);
     } else {
       $browserName = $browserString;
     }
-
     return $browserName;
   }
 }

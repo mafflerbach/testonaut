@@ -16,15 +16,14 @@ class Browser {
 
   public function getSettings() {
     $settings = $this->page->config();
-
     $api = new Api();
     $list = $api->getBrowserList();
-
     for ($i = 0; $i < count($list); $i++) {
+      $browserName = $list[$i]['browserName'] = str_replace(' ','_', $list[$i]['browserName']);
+
       if (isset($settings['browser']['active'])) {
         $active = $settings['browser']['active'];
-        $browserName = $list[$i]['browserName'];
-        $browserName = str_replace(' ','_', $browserName);
+
         if (in_array($browserName, $active)) {
           $list[$i]['active'] = $browserName;
         }
@@ -32,7 +31,9 @@ class Browser {
          $list[$i]['url'] = $settings['browser']['urls'][$browserName];
         }
       }
+
     }
+    
     return $list;
   }
 

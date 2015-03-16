@@ -18,6 +18,8 @@ class Page implements ControllerProviderInterface {
       $browserSettings = new Browser($path);
       $browsers = $browserSettings->getSettings();
 
+
+
       $images = $page->getImages();
       $app['request'] = array(
         'content' => $content,

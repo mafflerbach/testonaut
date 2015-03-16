@@ -28,7 +28,6 @@ class Api {
         $browsers[] = $data['request']['capabilities'][0];
       }
     }
-
     return $browsers;
   }
 

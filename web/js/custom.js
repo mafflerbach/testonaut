@@ -32,10 +32,9 @@ $(document).ready(function () {
 })
 
 function getContent(timestamp, url, browser) {
-    var queryString = {'timestamp': timestamp, 'url': url, 'browser' : browser};
-    console.log('getContent');
-    if ($('table.'+browser).length <= 0) {
-        $('.result').append('<table class="'+browser+'"/>');
+    var queryString = {'timestamp': timestamp, 'url': url, 'browser': browser};
+    if ($('table.' + browser).length <= 0) {
+        $('.result').append('<table class="' + browser + '"/>');
     }
 
     $.ajax(
@@ -46,9 +45,13 @@ function getContent(timestamp, url, browser) {
             success: function (data) {
                 console.log('poll')
                 var obj = jQuery.parseJSON(data);
-                $('table.'+browser).html(obj.data_from_file);
+                $('table.' + browser).html(obj.data_from_file);
                 getContent(obj.timestamp, url, browser);
+            },
+            fail: function (data) {
+                console.log(data);
             }
+
         }
     );
 
