@@ -13,7 +13,6 @@ class Edit implements ControllerProviderInterface {
       $page = new \phpSelenium\Page($path);
       $content = $page->content();
 
-      var_dump($path); die;
       $app['request'] = array(
         'content' => $content,
         'path' => $path,
@@ -30,6 +29,8 @@ class Edit implements ControllerProviderInterface {
 
     $edit->post('/', function (Request $request, $path) use ($app) {
       $content = $request->request->get('content');
+
+
       $page = new \phpSelenium\Page($path);
       $content = $page->content($content, TRUE);
       return $app->redirect($request->getBaseUrl() . '/' . $path);

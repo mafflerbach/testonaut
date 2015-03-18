@@ -38,16 +38,26 @@ class Runner {
     $test = new Test();
     $test->loadFromSeleneseHtml($content);
 
+    if ($test->commands == '') {
+      throw new \Exception('Test not found');
+      return NULL;
+    }
+
     $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
     $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
+
     $imageDir = $this->pagePath . "/__IMAGES";
     $path = $imageDir . '/' . $browserName . "/src/";
     $this->polling .= '-'.$browserName;
     $k = 1;
+
+    $result = "<tr><th colspan='3'>".$browserName. "</th></tr>";
+    file_put_contents($this->polling, $result, FILE_APPEND);
+
     foreach ($test->commands as $command) {
       // todo: verbosity option
-      $commandStr = str_replace('phpSelenium\\Selenese\\Command\\', '', get_class($command));
-      $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "<tr>";
+      $commandStr = str_replace('phpSelenGium\\Selenese\\Command\\', '', get_class($command));
+      $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
       file_put_contents($this->polling, $result, FILE_APPEND);
       if ($commandStr == 'captureEntirePageScreenshot') {
         if (!file_exists($path)) {
@@ -114,6 +124,10 @@ class Runner {
 
   public function screenshotsAfterEveryStep() {
     $this->screenshotsAfterEveryStep = TRUE;
+  }
+
+  protected function getImagePath() {
+    var_dump($this->pagePath);
   }
 
 }

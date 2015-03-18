@@ -9,36 +9,34 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Start implements ControllerProviderInterface {
   private $edit = FALSE;
+
   public function __construct($edit = FALSE) {
     $this->edit = $edit;
   }
-
 
   public function connect(Application $app) {
     $start = $app['controllers_factory'];
     $start->post('/', function (Request $request) use ($app) {
       $path = $request->request->get('path');
       $content = $request->request->get('content');
-      $page = new \phpSelenium\Page($path);
+      $page = new \phpSelenium\Page('');
       $page->content($content, TRUE);
       return $app->redirect($request->getBaseUrl() . '/');
     });
 
     $start->get('/', function (Request $request) use ($app) {
-      $toc  = $this->getToc();
+      $toc = $this->getToc();
       $app['menu'] = $toc;
 
-      $page = new \phpSelenium\Page('/web');
+      $page = new \phpSelenium\Page('');
       $content = $page->content();
-
-      var_dump($content);
 
       if ($this->edit) {
         $app['request'] = array(
           'content' => $content,
-          'path' => 'edit',
+          'path'    => 'edit',
           'baseUrl' => $request->getBaseUrl(),
-          'mode' => 'edit'
+          'mode'    => 'edit'
         );
         $crumb = new Breadcrumb('edit');
         $app['crumb'] = $crumb->getBreadcrumb();
@@ -47,15 +45,13 @@ class Start implements ControllerProviderInterface {
       } else {
         $app['request'] = array(
           'content' => $content,
-          'path' => '',
+          'path'    => '',
           'baseUrl' => $request->getBaseUrl(),
-          'mode' => 'show',
+          'mode'    => 'show',
+          'type' => 'start'
         );
         return $app['twig']->render('index.twig');
       }
-
-
-      var_dump('start');
 
     });
     return $start;
@@ -70,7 +66,5 @@ class Start implements ControllerProviderInterface {
   protected function editpage() {
 
   }
-
-
 
 }

@@ -2,7 +2,7 @@
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
 
-$seleniumAddress = 'http://selenium-hub.dim:4444';
+$seleniumAddress = 'http://localhost:4444';
 $config = \phpSelenium\Config::getInstance();
 $config->define('Path', __DIR__);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
@@ -10,7 +10,6 @@ $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
 $config->define('appPath', '');
 $config->define('seleniumAddress', $seleniumAddress);
-
 
 $app = new Silex\Application();
 $app['debug'] = true;

@@ -18,6 +18,7 @@ class Browser {
     $settings = $this->page->config();
     $api = new Api();
     $list = $api->getBrowserList();
+
     for ($i = 0; $i < count($list); $i++) {
       $browserName = $list[$i]['browserName'] = str_replace(' ','_', $list[$i]['browserName']);
 

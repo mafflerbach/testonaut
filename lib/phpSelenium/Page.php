@@ -16,7 +16,7 @@ class Page {
 
   public function content($content = NULL, $save = NULL) {
 
-    if ($this->path == '/web') {
+    if ($this->path == '') {
       $file = $this->root . '/content';
       $path = $this->root;
     } else {
@@ -24,13 +24,11 @@ class Page {
       $path = $this->transCodePath();
     }
 
-
     if (!file_exists($file) && $save === NULL) {
       return '';
     }
     if ($content == NULL && $save === NULL) {
-      $pageContent = file_get_contents($file);
-      var_dump($pageContent);
+        $pageContent = file_get_contents($file);
       return $pageContent;
     } else {
       $filename = $path . '/content';

@@ -1,4 +1,5 @@
 {% include 'head.twig' %}
+<div class="content">
 <a href="{{ app.request.baseUrl }}/">root</a>
 {% for results in app.result %}
   {% for result in results %}
@@ -6,4 +7,7 @@
   {% endfor %}
 {% endfor %}
 
+<a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+   class="backLink btn">Zurück</a>
+</div>
 {% include 'footer.twig' %}

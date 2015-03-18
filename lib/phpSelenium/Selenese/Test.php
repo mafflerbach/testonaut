@@ -39,11 +39,20 @@ class Test {
 
     // get the base url
     if ($this->baseUrl == '') {
-      $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
-      $this->baseUrl = rtrim($this->baseUrl, '/');
+
+      if ($dom->getElementsByTagName('link')->length > 0) {
+        $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
+        $this->baseUrl = rtrim($this->baseUrl, '/');
+
+      }
     }
 
     // todo: catch loading of things NOT selenese
+    if($dom->getElementsByTagName('tbody')->length == 0) {
+      $this->commands = '';
+      return;
+
+    }
     $rows = $dom->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr');
 
     // extract the commands

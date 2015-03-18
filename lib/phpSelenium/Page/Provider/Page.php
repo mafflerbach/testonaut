@@ -1,6 +1,7 @@
 <?php
 namespace phpSelenium\Page\Provider;
 
+use phpSelenium\Generate\Toc;
 use phpSelenium\Page\Breadcrumb;
 use phpSelenium\Settings\Browser;
 use Silex\Api\ControllerProviderInterface;
@@ -18,19 +19,21 @@ class Page implements ControllerProviderInterface {
       $browserSettings = new Browser($path);
       $browsers = $browserSettings->getSettings();
 
-
-
       $images = $page->getImages();
+
+
       $app['request'] = array(
-        'content' => $content,
-        'path' => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'show',
-        'browsers' => $browsers,
-        'images' => $images,
+        'content'   => $content,
+        'path'      => $path,
+        'baseUrl'   => $request->getBaseUrl(),
+        'mode'      => 'show',
+        'browsers'  => $browsers,
+        'images'    => $images,
         'imagePath' => $page->getImagePath(),
-        'type' => $settings->getType()
+        'type'      => $settings->getType()
       );
+      $toc = $this->getToc($page->transCodePath());
+      $app['menu'] = $toc;
 
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
@@ -41,5 +44,9 @@ class Page implements ControllerProviderInterface {
 
     return $page;
   }
-
+  protected function getToc($path) {
+    $toc = new Toc($path);
+    $toc->runDir();
+    return $toc->generateMenu();
+  }
 }

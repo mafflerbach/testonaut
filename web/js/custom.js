@@ -17,6 +17,7 @@ $(document).ready(function () {
     $('.run-test').click(function (e) {
         e.preventDefault();
 
+        console.log('http://'+location.host+''+ baseUrl + '/server.php');
         var url = $(this).data('path');
         var run = $(this).attr('href');
         var browser = $(this).data('browser');
@@ -37,10 +38,11 @@ function getContent(timestamp, url, browser) {
         $('.result').append('<table class="' + browser + '"/>');
     }
 
+
     $.ajax(
         {
             type: 'GET',
-            url: 'http://'+location.host + '/server.php',
+            url: 'http://'+location.host+''+ baseUrl + '/server.php',
             data: queryString,
             success: function (data) {
                 console.log('poll')

@@ -22,7 +22,6 @@ class Run implements ControllerProviderInterface {
       $this->path = $path;
       $page = new \phpSelenium\Page($path);
       $this->basePath = $page->transCodePath();
-
       $this->browser = $request->query->get('browser');
       if ($this->browser == '') {
         $this->browser = 'all';

@@ -14,6 +14,7 @@ class Toc {
     if ($basePath != 'root') {
       $this->basePath = $basePath;
     }
+
   }
 
   /**
