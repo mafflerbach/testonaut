@@ -24,7 +24,7 @@
               <ul>
                 {% for browser in app.request.browsers %}
                   <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?suite=true&browser={{ str_repalbrowser.browserName }}" data-path="{{ app.request.path }}" data-browser="{{ browser.browserName }}" class="run-test">{{ browser.browserName }}</a>
+                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?suite=true&browser={{ browser.browserName }}" data-path="{{ app.request.path }}" data-browser="{{ browser.browserName }}" class="run-test">{{ browser.browserName }}</a>
                   </li>
                 {% endfor %}
               </ul>
