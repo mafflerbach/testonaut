@@ -12,6 +12,8 @@ class Edit implements ControllerProviderInterface {
     $edit->get('/', function (Request $request, $path) use ($app) {
       $page = new \phpSelenium\Page($path);
       $content = $page->content();
+
+      var_dump($path); die;
       $app['request'] = array(
         'content' => $content,
         'path' => $path,

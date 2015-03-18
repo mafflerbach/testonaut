@@ -2,43 +2,61 @@
 namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Generate;
+use phpSelenium\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class Start implements ControllerProviderInterface {
-  public function connect(Application $app) {
+  private $edit = FALSE;
+  public function __construct($edit = FALSE) {
+    $this->edit = $edit;
+  }
 
+
+  public function connect(Application $app) {
     $start = $app['controllers_factory'];
     $start->post('/', function (Request $request) use ($app) {
       $path = $request->request->get('path');
       $content = $request->request->get('content');
-
-      $post = array(
-        'path' => $request->request->get('path'),
-        'action' => $request->request->get('action'),
-        'content' => $request->request->get('content')
-
-      );
-
       $page = new \phpSelenium\Page($path);
-      $content = $page->content($content);
-      return $app->json($post, 201);
+      $page->content($content, TRUE);
+      return $app->redirect($request->getBaseUrl() . '/');
     });
 
     $start->get('/', function (Request $request) use ($app) {
       $toc  = $this->getToc();
-
       $app['menu'] = $toc;
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'path' => '',
-        'content' => '',
-        'mode' => 'show',
-        'type' => 'start'
-      );
-      return $app['twig']->render('index.twig');
+      $page = new \phpSelenium\Page('/web');
+      $content = $page->content();
+
+      var_dump($content);
+
+      if ($this->edit) {
+        $app['request'] = array(
+          'content' => $content,
+          'path' => 'edit',
+          'baseUrl' => $request->getBaseUrl(),
+          'mode' => 'edit'
+        );
+        $crumb = new Breadcrumb('edit');
+        $app['crumb'] = $crumb->getBreadcrumb();
+
+        return $app['twig']->render('edit.twig');
+      } else {
+        $app['request'] = array(
+          'content' => $content,
+          'path' => '',
+          'baseUrl' => $request->getBaseUrl(),
+          'mode' => 'show',
+        );
+        return $app['twig']->render('index.twig');
+      }
+
+
+      var_dump('start');
+
     });
     return $start;
   }
@@ -48,4 +66,11 @@ class Start implements ControllerProviderInterface {
     $toc->runDir();
     return $toc->generateMenu();
   }
+
+  protected function editpage() {
+
+  }
+
+
+
 }

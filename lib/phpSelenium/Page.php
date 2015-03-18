@@ -15,18 +15,27 @@ class Page {
   }
 
   public function content($content = NULL, $save = NULL) {
-    $file = $this->transCodePath() . '/content';
+
+    if ($this->path == '/web') {
+      $file = $this->root . '/content';
+      $path = $this->root;
+    } else {
+      $file = $this->transCodePath() . '/content';
+      $path = $this->transCodePath();
+    }
+
+
     if (!file_exists($file) && $save === NULL) {
       return '';
     }
     if ($content == NULL && $save === NULL) {
       $pageContent = file_get_contents($file);
+      var_dump($pageContent);
       return $pageContent;
     } else {
-      $filename = $this->transCodePath() . '/content';
-      if (!is_dir($this->transCodePath())) {
-        print($this->transCodePath());
-        if (!mkdir($this->transCodePath(), 0755, TRUE)) {
+      $filename = $path . '/content';
+      if (!is_dir($path)) {
+        if (!mkdir($path, 0775, TRUE)) {
           throw new \Exception();
         }
       }
@@ -42,11 +51,10 @@ class Page {
     $imageDir = $this->transCodePath() . '/__IMAGES';
     $return = array();
 
-
     $api = new Api();
     $browser = $api->getBrowserList();
     for ($i = 0; $i < count($browser); $i++) {
-      $name = str_replace(' ','_', $browser[$i]['browserName']);
+      $name = str_replace(' ', '_', $browser[$i]['browserName']);
       if (file_exists($imageDir . "/" . $name . "/src/")) {
         $src = array_diff(scandir($imageDir . "/" . $name . "/src/"), array(
           '.',

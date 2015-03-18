@@ -51,9 +51,9 @@ class Runner {
       file_put_contents($this->polling, $result, FILE_APPEND);
       if ($commandStr == 'captureEntirePageScreenshot') {
         if (!file_exists($path)) {
-          mkdir($path, 775, TRUE);
-          mkdir($imageDir . '/' . $browserName . "/comp/", 775, TRUE);
-          mkdir($imageDir . '/' . $browserName . "/ref/", 775, TRUE);
+          mkdir($path, 0775, TRUE);
+          mkdir($imageDir . '/' . $browserName . "/comp/", 0775, TRUE);
+          mkdir($imageDir . '/' . $browserName . "/ref/", 0775, TRUE);
         }
         //clear Arg;
         $tmp = $command->arg1;

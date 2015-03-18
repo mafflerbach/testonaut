@@ -24,10 +24,10 @@ class Page implements ControllerProviderInterface {
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
         'mode' => 'show',
-        'type' => $settings->getType(),
         'browsers' => $browsers,
         'images' => $images,
-        'imagePath' => $page->getImagePath()
+        'imagePath' => $page->getImagePath(),
+        'type' => $settings->getType()
       );
 
       $crumb = new Breadcrumb($path);

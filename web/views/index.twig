@@ -1,5 +1,8 @@
 {% include 'head.twig' %}
-{{ app.menu|raw }}
 
+<div class="content">
+  {{ app.menu|raw }}
+  {{ app.request.content|raw }}
+</div>
 {% include 'footer.twig' %}
 

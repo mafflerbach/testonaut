@@ -41,7 +41,7 @@ function getContent(timestamp, url, browser) {
     $.ajax(
         {
             type: 'GET',
-            url: 'http://localhost/phpSelenium/server.php',
+            url: 'http://'+location.host + '/server.php',
             data: queryString,
             success: function (data) {
                 console.log('poll')
