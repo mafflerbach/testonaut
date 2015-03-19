@@ -17,7 +17,6 @@ $(document).ready(function () {
     $('.run-test').click(function (e) {
         e.preventDefault();
 
-        console.log('http://'+location.host+''+ baseUrl + '/server.php');
         var url = $(this).data('path');
         var run = $(this).attr('href');
         var browser = $(this).data('browser');
@@ -33,16 +32,16 @@ $(document).ready(function () {
 })
 
 function getContent(timestamp, url, browser) {
+    console.log(url);
     var queryString = {'timestamp': timestamp, 'url': url, 'browser': browser};
     if ($('table.' + browser).length <= 0) {
         $('.result').append('<table class="' + browser + '"/>');
     }
 
-
     $.ajax(
         {
             type: 'GET',
-            url: 'http://'+location.host+''+ baseUrl + '/server.php',
+            url: 'http://' + location.host + ''  + '/phpSelenium/server.php',
             data: queryString,
             success: function (data) {
                 console.log('poll')
@@ -51,6 +50,7 @@ function getContent(timestamp, url, browser) {
                 getContent(obj.timestamp, url, browser);
             },
             fail: function (data) {
+                console.log('poll')
                 console.log(data);
             }
 

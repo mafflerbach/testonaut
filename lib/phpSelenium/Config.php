@@ -1,14 +1,13 @@
 <?php
 namespace phpSelenium;
 
+
 class Config {
   private static $instance = null;
   private $register = array();
   private $readOnly = array();
 
-  /**
-   * @var $path, $wikiPath, $seleniumHub
-   */
+//  public $path, $wikiPath, $seleniumHub, $seleniumConsole, $appPath, $seleniumAddress;
 
   private function __construct() {
   }
