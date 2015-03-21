@@ -42,11 +42,11 @@ class Page {
   }
 
   public function getImagePath() {
-    return \phpSelenium\Config::getInstance()->appPath . "/" . $this->relativePath() . '/__IMAGES';
+    return \phpSelenium\Config::getInstance()->imageRoot. "/" . $this->relativePath();
   }
 
   public function getImages() {
-    $imageDir = $this->transCodePath() . '/__IMAGES';
+    $imageDir = $this->getImagePath();
     $return = array();
 
     $api = new Api();
@@ -83,8 +83,9 @@ class Page {
     return str_replace('.', '/', $this->root . '/' . $this->path);
   }
 
+
   public function relativePath() {
-    return str_replace('.', '/', 'root/' . $this->path);
+    return str_replace('.', '/', $this->path);
   }
 
   public function config($config = array()) {

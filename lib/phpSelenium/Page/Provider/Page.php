@@ -22,6 +22,9 @@ class Page implements ControllerProviderInterface {
       $images = $page->getImages();
 
 
+      $root = \phpSelenium\Config::getInstance()->Path;
+
+
       $app['request'] = array(
         'content'   => $content,
         'path'      => $path,
@@ -29,7 +32,7 @@ class Page implements ControllerProviderInterface {
         'mode'      => 'show',
         'browsers'  => $browsers,
         'images'    => $images,
-        'imagePath' => $page->getImagePath(),
+        'imagePath' => str_replace($root, '', $page->getImagePath()),
         'type'      => $settings->getType()
       );
       $toc = $this->getToc($page->transCodePath());

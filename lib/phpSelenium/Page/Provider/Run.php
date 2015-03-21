@@ -12,6 +12,7 @@ use phpSelenium\Selenese\Runner;
 
 class Run implements ControllerProviderInterface {
   private $basePath;
+  private $imagePath;
   private $dirArray = array();
   private $path;
   private $browser = '';
@@ -22,6 +23,8 @@ class Run implements ControllerProviderInterface {
       $this->path = $path;
       $page = new \phpSelenium\Page($path);
       $this->basePath = $page->transCodePath();
+      $this->imagePath= $page->getImagePath();
+
       $this->browser = $request->query->get('browser');
       if ($this->browser == '') {
         $this->browser = 'all';
@@ -71,7 +74,7 @@ class Run implements ControllerProviderInterface {
   private function _run(array $tests) {
     try {
       $capabilities = $this->getCapabilities();
-      $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath);
+      $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath, $this->imagePath);
 //      $runner->screenshotsAfterEveryStep();
 
       if (!is_array($capabilities)) {

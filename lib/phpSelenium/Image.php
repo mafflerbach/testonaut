@@ -14,7 +14,7 @@ class Image {
       $imageSrc = new \Imagick($image1);
       $imageRef = new \Imagick($image2);
 
-      $result = $imageSrc->compareImages($imageRef, Imagick::METRIC_MEANSQUAREERROR);
+      $result = $imageSrc->compareImages($imageRef, \Imagick::METRIC_MEANSQUAREERROR);
 
       if (isset($result[0])) {
         $result[0]->setImageFormat("png");

@@ -13,6 +13,7 @@ class Runner {
   /** @var string */
   public $hubUrl;
   public $pageUrl;
+  public $imagePath;
 
   private $result = array();
   private $screenshotsAfterEveryStep = FALSE;
@@ -22,10 +23,11 @@ class Runner {
    * @param Test $test
    * @param string $hubUrl
    */
-  public function __construct(Array $test, $hubUrl, $pagePath) {
+  public function __construct(Array $test, $hubUrl, $pagePath, $imagePath) {
     $this->test = $test;
     $this->hubUrl = $hubUrl;
     $this->pagePath = $pagePath;
+    $this->imagePath = $imagePath;
 
     $this->polling = $this->pagePath . '/poll';
 
@@ -44,13 +46,14 @@ class Runner {
       return NULL;
     }
 
-    $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
     $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
 
-    $imageDir = $this->pagePath . "/__IMAGES";
+    $imageDir = $this->imagePath;
     $path = $imageDir . '/' . $browserName . "/src/";
     $this->polling .= '-' . $browserName;
     $k = 1;
+
+    $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
 
     $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
@@ -118,9 +121,6 @@ class Runner {
     $this->screenshotsAfterEveryStep = TRUE;
   }
 
-  protected function getImagePath() {
-    var_dump($this->pagePath);
-  }
 
   protected function addToPoll($content) {
     file_put_contents($this->polling, $content, FILE_APPEND);
@@ -133,10 +133,8 @@ class Runner {
   }
 
   protected function captureAndCompare($command, $browserName) {
-    $imageDir = $this->pagePath . "/__IMAGES";
+    $imageDir = $this->imagePath;
     $path = $imageDir . '/' . $browserName . "/src/";
-
-    print($path);
 
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
@@ -155,7 +153,7 @@ class Runner {
   }
 
   protected function compare($browserName, $imgName) {
-    $imageDir = $this->pagePath . "/__IMAGES";
+    $imageDir = $this->imagePath;
     $path = $imageDir . '/' . $browserName . "/src/" . $imgName;
     $pathref = $imageDir . '/' . $browserName . "/ref/" . $imgName;
     $comp = $imageDir . '/' . $browserName . "/comp/" . $imgName;

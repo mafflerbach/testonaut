@@ -2,13 +2,15 @@
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('phpSelenium', __DIR__ . '/../lib/');
 
-$seleniumAddress = 'http://localhost:4444';
+$seleniumAddress = 'http://192.168.0.100:4444';
 $config = \phpSelenium\Config::getInstance();
-$config->define('Path', __DIR__);
+$config->define('Path', dirname(dirname(__FILE__)));
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
+$config->define('imageRoot', dirname(dirname(__FILE__)) . '/images');
+$config->define('result', dirname(dirname(__FILE__)) . '/result');
 $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
-$config->define('appPath', '/phpSelenium/');
+$config->define('appPath', '');
 $config->define('seleniumAddress', $seleniumAddress);
 
 $app = new Silex\Application();
