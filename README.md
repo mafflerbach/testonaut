@@ -1,7 +1,7 @@
 ###TODO###
 
 * baseurl aus der config berücksichtigen
-* Screenshoteintellung implementieren
+* ~~Screenshoteintellung implementieren~~
 * actuelles bild als referenz übernehmen
 * Buildergebnisse speichern mit compare bildern und jeweils gelaufenen test
 * Browsermatrix
@@ -12,7 +12,7 @@
 * Allegemeine screenshor übersicht seite
 * Filter für die screenshots implementieren
 * Editor verbessern oder austauschen
-* Screenshot einstellungen für configs (Nach jedem test, nach jedem Befehl)
+* ~~Screenshot einstellungen für configs (Nach jedem test, nach jedem Befehl)~~
 * entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
 
 

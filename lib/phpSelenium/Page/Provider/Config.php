@@ -29,11 +29,13 @@ class Config extends Base implements ControllerProviderInterface {
         $app['browser'] = $this->browserSettings();
       }
 
+      $app['screenshots'] = $this->screenshotSettings();
+
       $app['request'] = array(
         'content' => $content,
-        'path' => $path,
+        'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'show'
+        'mode'    => 'show'
       );
 
       return $app['twig']->render('config.twig');
@@ -58,6 +60,13 @@ class Config extends Base implements ControllerProviderInterface {
         }
       }
 
+      $screenshot = $request->request->get('screenshot');
+      if ($this->screenshotSettings($screenshot)) {
+        $message = 'Saved';
+      } else {
+        $message = 'Can not save page config';
+      }
+
       if ($this->pageSettings($type)) {
         $message = 'Saved';
       } else {
@@ -66,15 +75,14 @@ class Config extends Base implements ControllerProviderInterface {
 
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
-
       $app['browser'] = $this->browserSettings();
       $app['type'] = $this->pageSettings();
-
+      $app['screenshots'] = $this->screenshotSettings();
       $app['request'] = array(
         'content' => $content,
-        'path' => $path,
+        'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'show',
+        'mode'    => 'show',
         'message' => $message,
       );
 
@@ -93,7 +101,6 @@ class Config extends Base implements ControllerProviderInterface {
         return $bSettings->getSettings();
       }
     }
-
   }
 
   protected function pageSettings($settings = NULL) {
@@ -103,7 +110,15 @@ class Config extends Base implements ControllerProviderInterface {
     } else {
       return $pSettings->getSettings();
     }
+  }
 
+  protected function screenshotSettings($settings = NULL) {
+    $pSettings = new \phpSelenium\Settings\Page($this->path);
+    if ($settings != NULL) {
+      return $pSettings->setScreenshotSettings($settings);
+    } else {
+      return $pSettings->getScreenshotSettings();
+    }
   }
 
 }

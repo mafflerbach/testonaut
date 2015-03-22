@@ -32,22 +32,41 @@
       {% endfor %}
     {% endif %}
     <br/>
+    <h2>Pagetype</h2>
     {% if app.type is defined %}
       {% for type, key  in app.type %}
         {% if  key == true %}
           <input type="radio"
                  value="{{ type }}"
                  name="type"
-                 checked="checked" id="{{ type }}"/>
+                 checked="checked" id="pagetype_{{ type }}"/>
         {% else %}
           <input type="radio"
                  value="{{ type }}"
-                 name="type" id="{{ type }}"/>
+                 name="type" id="pagetype_{{ type }}"/>
         {% endif %}
-        <label class="radio" for="{{ type }}">{{ type }}</label>
-
+        <label class="radio" for="pagetype_{{ type }}">{{ type }}</label>
       {% endfor %}
     {% endif %}
+    <br/>
+
+    <h2>Screenshot Settings </h2>
+    {% if app.screenshots is defined %}
+      {% for screen, key  in app.screenshots %}
+        {% if  key == true %}
+          <input type="radio"
+                 value="{{ screen }}"
+                 name="screenshot"
+                 checked="checked" id="screenshot_{{ screen }}"/>
+        {% else %}
+          <input type="radio"
+                 value="{{ screen }}"
+                 name="screenshot" id="screenshot_{{ screen }}"/>
+        {% endif %}
+        <label class="radio" for="screenshot_{{ screen }}">{{ screen }}</label>
+      {% endfor %}
+    {% endif %}
+
     <br/>
 
     <input type="submit"

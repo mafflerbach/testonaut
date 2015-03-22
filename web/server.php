@@ -54,7 +54,7 @@ while (TRUE) {
 
   } else {
     // wait for 1 sec (not very sexy as this blocks the PHP/Apache process, but that's how it goes)
-    sleep(0.5);
+    sleep(1);
     continue;
   }
 }

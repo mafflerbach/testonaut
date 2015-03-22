@@ -13,6 +13,7 @@ $(document).ready(function () {
         $("input[name='content']").attr('value', content);
     });
 
+    $('')
 
     $('.run-test').click(function (e) {
         e.preventDefault();
@@ -32,30 +33,23 @@ $(document).ready(function () {
 })
 
 function getContent(timestamp, url, browser) {
-    console.log(url);
-    var queryString = {'timestamp': timestamp, 'url': url, 'browser': browser};
+
+    var queryString = {timestamp: timestamp, url: url, browser: browser};
     if ($('table.' + browser).length <= 0) {
         $('.result').append('<table class="' + browser + '"/>');
     }
 
-    $.ajax(
-        {
-            type: 'GET',
-            url: 'http://' + location.host + ''  + '/phpSelenium/server.php',
-            data: queryString,
-            success: function (data) {
-                console.log('poll')
-                var obj = jQuery.parseJSON(data);
-                $('table.' + browser).html(obj.data_from_file);
-                getContent(obj.timestamp, url, browser);
-            },
-            fail: function (data) {
-                console.log('poll')
-                console.log(data);
-            }
+    var server = 'http://' + location.host + ''  + '/server.php';
 
-        }
-    );
+    $.ajax({
+        url: server,
+        data : queryString
+    }).done(function(data) {
+        console.log('poll');
+        var obj = jQuery.parseJSON(data);
+        $('table.' + browser).html(obj.data_from_file);
+        getContent(obj.timestamp, url, browser);
+    });
 
 }
 

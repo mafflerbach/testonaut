@@ -428,9 +428,9 @@ label[class=radio]:before , label[class=checkbox]:before {
 input[type=radio]:checked + label:before {
   content: "\2022";
   color: #f3f3f3;
-  font-size: 26px;
+  font-size: 23px;
   text-align: center;
-  line-height: 21px;
+  line-height: 17px;
 }
 
 input[type=checkbox] {

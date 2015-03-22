@@ -26,6 +26,7 @@ $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/config/{path}', new phpSelenium\Page\Provider\Config());
 $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
 $app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
+$app->mount('/image', new phpSelenium\Page\Provider\Image());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());
 
 $app->run();

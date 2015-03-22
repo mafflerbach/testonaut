@@ -17,6 +17,7 @@ class Runner {
 
   private $result = array();
   private $screenshotsAfterEveryStep = FALSE;
+  private $screenshotsAfterTest = FALSE;
   private $polling = FALSE;
 
   /**
@@ -58,11 +59,19 @@ class Runner {
     $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
 
+    if ($this->screenshotsAfterTest) {
+      $screenCommand = new captureEntirePageScreenshot();
+      $screenCommand->arg1 = 'afterTest';
+      $test->commands[] = $screenCommand;
+    }
+
     foreach ($test->commands as $command) {
       // todo: verbosity option
+
       $commandStr = str_replace('phpSelenium\Selenese\Command\\', '', get_class($command));
       $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
       $this->addToPoll($result);
+
       if ($commandStr == 'captureEntirePageScreenshot') {
         $this->captureAndCompare($command, $browserName);
       }
@@ -83,6 +92,7 @@ class Runner {
       } else {
         $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
       }
+
       $this->addToPoll($result);
 
       if ($commandResult->continue === FALSE) {
@@ -119,6 +129,9 @@ class Runner {
 
   public function screenshotsAfterEveryStep() {
     $this->screenshotsAfterEveryStep = TRUE;
+  }
+  public function screenshotsAfterTest() {
+    $this->screenshotsAfterTest = TRUE;
   }
 
 

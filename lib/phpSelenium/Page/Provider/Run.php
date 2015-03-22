@@ -12,6 +12,10 @@ use phpSelenium\Selenese\Runner;
 
 class Run implements ControllerProviderInterface {
   private $basePath;
+  /**
+   * @var \phpSelenium\Page $page
+   */
+  private $page;
   private $imagePath;
   private $dirArray = array();
   private $path;
@@ -21,9 +25,9 @@ class Run implements ControllerProviderInterface {
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request, $path) use ($app) {
       $this->path = $path;
-      $page = new \phpSelenium\Page($path);
-      $this->basePath = $page->transCodePath();
-      $this->imagePath= $page->getImagePath();
+      $this->page = new \phpSelenium\Page($path);
+      $this->basePath = $this->page->transCodePath();
+      $this->imagePath = $this->page->getImagePath();
 
       $this->browser = $request->query->get('browser');
       if ($this->browser == '') {
@@ -31,9 +35,9 @@ class Run implements ControllerProviderInterface {
       }
 
       if ($request->query->get('suite') == 'true') {
-        $result = $this->runSuite($page->transCodePath());
+        $result = $this->runSuite($this->page->transCodePath());
       } else {
-        $result = $this->run($page->transCodePath());
+        $result = $this->run($this->page->transCodePath());
       }
 
       $app['request'] = array(
@@ -71,11 +75,35 @@ class Run implements ControllerProviderInterface {
     return $this->_run($testCollect);
   }
 
+  protected function screenshotSettings() {
+    $conf = $this->page->config();
+    switch ($conf['screenshots']) {
+      case 'step';
+        return 2;
+        break;
+      case 'test';
+        return 1;
+        break;
+      case 'none';
+        return 0;
+        break;
+      default:
+        return 0;
+        break;
+    }
+  }
+
   private function _run(array $tests) {
     try {
       $capabilities = $this->getCapabilities();
       $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath, $this->imagePath);
-//      $runner->screenshotsAfterEveryStep();
+      if($this->screenshotSettings() == 2) {
+        $runner->screenshotsAfterEveryStep();
+      }
+      if($this->screenshotSettings() == 1) {
+        $runner->screenshotsAfterTest();
+      }
+
 
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);

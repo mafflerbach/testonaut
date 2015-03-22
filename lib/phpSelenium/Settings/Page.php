@@ -13,6 +13,11 @@ class Page {
     'test',
     'project'
   );
+  private $screenshots= array(
+    'step',
+    'test',
+    'none'
+  );
 
   public function __construct($path) {
     $this->page = new \phpSelenium\Page($path);
@@ -63,12 +68,43 @@ class Page {
     return $return;
   }
 
+  public function getScreenshotSettings() {
+    $settings = $this->page->config();
+    $return = array();
+
+    if (isset($settings['screenshots'])) {
+      for ($i = 0; $i < count($this->screenshots); $i++) {
+        if ($settings['screenshots'] == $this->screenshots[$i]) {
+          $return[$this->screenshots[$i]] = TRUE;
+        } else {
+          $return[$this->screenshots[$i]] = FALSE;
+        }
+      }
+    } else {
+      $return = array(
+        'step' => FALSE,
+        'test' => FALSE,
+        'none' => TRUE
+      );
+    }
+    return $return;
+  }
+
   public function setSettings($types) {
 
     if (in_array($types, $this->types)) {
       $this->setting['type'] = $types;
     } else {
       throw new \Exception('Bad Page Type');
+    }
+    return $this->page->config($this->setting);
+  }
+
+  public function setScreenshotSettings($settings) {
+    if (in_array($settings, $this->screenshots)) {
+      $this->setting['screenshots'] = $settings;
+    } else {
+      throw new \Exception('Bad screenshot Settings ');
     }
     return $this->page->config($this->setting);
   }
