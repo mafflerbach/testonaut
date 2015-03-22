@@ -17,26 +17,72 @@ class Image extends Base implements ControllerProviderInterface {
     $image->get('/copy/{browser}/{image}/{path}', function (Request $request, $browser, $image, $path) use ($app) {
       $this->path = $path;
 
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'mode'    => 'edit'
+      );
+
+      return $app['twig']->render('copy.twig');
+    });
+
+    $image->post('/copy/{browser}/{image}/{path}', function (Request $request, $browser, $image, $path) use ($app) {
+
+      $this->path = $path;
+
       $src = $this->getImagePath() . '/' . $browser . '/src/' . $image;
       $ref = $this->getImagePath() . '/' . $browser . '/ref/' . $image;
 
       if (copy($src, $ref)) {
-        $app['request']['success'] = TRUE;
+        $message = 'copied';
       } else {
-        $app['request']['fail'] = TRUE;
+        $message = 'can not copy';
       }
 
-      return $app['twig']->render('empty.twig');
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'message' => $message,
+        'mode'    => 'edit'
+      );
+
+      return $app['twig']->render('copy.twig');
     });
 
-    $image->get('/delete/{browser}/{image}/{path}', function (Request $request, $browser, $image, $path) use ($app) {
+    $image->get('/delete/{type}/{browser}/{image}/{path}', function (Request $request, $type, $browser, $image, $path) use ($app) {
       $this->path = $path;
-      print($image);
-      print($path);
-      print($this->getImagePath() . '/' . $browser . '/' . $image);
-      print('delete');
-      return $app['twig']->render('empty.twig');
+
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'mode'    => 'edit'
+      );
+
+      return $app['twig']->render('deleteImage.twig');
     });
+
+    $image->post('/delete/{type}/{browser}/{image}/{path}', function (Request $request, $type, $browser, $image, $path) use ($app) {
+      $this->path = $path;
+      $src = $this->getImagePath() . '/' . $browser . '/' . $type . '/' . $image;
+
+      if (file_exists($src)) {
+        if (unlink($src)) {
+          $message = 'delete';
+        } else {
+          $message = 'can not delete';
+        }
+      }
+
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'message' => $message,
+        'mode'    => 'edit'
+      );
+
+      return $app['twig']->render('deleteImage.twig');
+    });
+
     return $image;
   }
 

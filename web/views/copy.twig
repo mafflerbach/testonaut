@@ -1,0 +1,25 @@
+{% include 'head.twig' %}
+
+<div class="content">
+  {% if app.request.message is defined %}
+    <p>{{ app.request.message }}</p>
+
+    <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+       class="backLink btn">Zurück</a>
+  {% else %}
+
+    <form action=""
+          method="POST">
+      Sind sie sicher das sie koppieren möchten?
+      <br/>
+      <input type="submit"
+             value="Ja"
+             name="copy"
+             class="btn"/>
+      <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+         class="backLink btn">Zurück</a>
+    </form>
+
+  {% endif %}
+</div>
+{% include 'footer.twig' %}
