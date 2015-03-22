@@ -2,7 +2,8 @@
 
 * baseurl aus der config berücksichtigen
 * ~~Screenshoteintellung implementieren~~
-* actuelles bild als referenz übernehmen
+* ~~aktuelles bild als referenz übernehmen~~
+* ~~Bilder löschen~~
 * Buildergebnisse speichern mit compare bildern und jeweils gelaufenen test
 * Browsermatrix
 * Template für seiteninhalte implementieren
