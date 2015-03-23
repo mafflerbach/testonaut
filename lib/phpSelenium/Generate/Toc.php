@@ -21,14 +21,11 @@ class Toc {
    *
    */
   public function runDir() {
+    if (!file_exists($this->basePath)) {
+      return '';
+    }
     $ritit = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath), \RecursiveIteratorIterator::CHILD_FIRST);
-    $dirs = array(
-      '__IMAGES',
-      '.png',
-      'src',
-      'ref',
-      'comp',
-    );
+    $dirs = array();
 
     $dirs = $this->appendBrowserList($dirs);
 

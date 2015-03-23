@@ -84,11 +84,43 @@ class Run implements ControllerProviderInterface {
     return $result;
   }
 
+  protected function parseIncludes($fileArr) {
+    for($i = 0; $i < count($fileArr); $i++) {
+      if (strpos($fileArr[$i], '!include') >= 0 || strpos($fileArr[$i], '!include') !== FALSE ) {
+        $includeName = str_replace('!include ', '', $fileArr[$i]);
+        var_dump($includeName);
+
+        $includeName = str_replace(' ', '', $includeName);
+        $file = \phpSelenium\Config::getInstance()->wikiPath. "/" . str_replace('.', '/', $includeName);
+        var_dump($file);
+        $content = file_get_contents($file);
+        $fileArr[$i] = $content;
+      }
+    }
+
+    return implode('\n',$fileArr);
+  }
+
+  protected function invokePages($contentPath) {
+    $tmp = array();
+    if(file_exists($contentPath)) {
+      $lines = file($contentPath);
+      $content = $this->parseIncludes($lines);
+      var_dump($content);
+      $filename = $contentPath.'_includes';
+      file_put_contents($filename, $content);
+      return $filename;
+    }
+    return $contentPath;
+  }
+
   protected function run($path) {
 
-    $content = $path . '/content';
-    $testCollect[] = $content;
+    $contentPath = $path . '/content';
+    $contentPath = $this->invokePages($contentPath);
+    $testCollect[] = $contentPath;
 
+    var_dump($testCollect); die;
     return $this->_run($testCollect);
   }
 

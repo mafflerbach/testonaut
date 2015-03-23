@@ -21,9 +21,7 @@ class Page implements ControllerProviderInterface {
 
       $images = $page->getImages();
 
-
       $root = \phpSelenium\Config::getInstance()->Path;
-
 
       $app['request'] = array(
         'content'   => $content,

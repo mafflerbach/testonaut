@@ -1,7 +1,6 @@
 ###TODO###
 
 * baseurl aus der config berücksichtigen
-* Buildergebnisse mit compare bildern und 
 * Browsermatrix
 * Template für seiteninhalte implementieren
 * SetUp und TearDowsn seiten 
