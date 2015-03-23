@@ -45,6 +45,10 @@ class Page {
     return \phpSelenium\Config::getInstance()->imageRoot. "/" . $this->relativePath();
   }
 
+  public function getResultPath() {
+    return \phpSelenium\Config::getInstance()->result . "/" . $this->relativePath();
+  }
+
   public function getImages() {
     $imageDir = $this->getImagePath();
     $return = array();

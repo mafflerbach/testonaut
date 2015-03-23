@@ -40,6 +40,8 @@ class Run implements ControllerProviderInterface {
         $result = $this->run($this->page->transCodePath());
       }
 
+      $this->writeResultFile($result);
+
       $app['request'] = array(
         'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
@@ -52,6 +54,21 @@ class Run implements ControllerProviderInterface {
       return $app['twig']->render('run.twig');
     });
     return $edit;
+  }
+
+  protected function writeResultFile($content) {
+    $path = $this->page->getResultPath();
+    if (!file_exists($path)) {
+      mkdir($path, 0775, true);
+    }
+
+    $tmp = '';
+    for($i = 0; $i < count($content[0]); $i++) {
+      $tmp .=  $content[0][$i];
+    }
+
+    $fileName = 'result_'.$this->browser.'_'.date('Y-m-d_H-i-s');
+    file_put_contents($path.'/'.$fileName, $tmp);
   }
 
   protected function runSuite($path) {
@@ -103,7 +120,6 @@ class Run implements ControllerProviderInterface {
       if($this->screenshotSettings() == 1) {
         $runner->screenshotsAfterTest();
       }
-
 
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);

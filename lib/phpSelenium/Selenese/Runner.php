@@ -56,7 +56,7 @@ class Runner {
 
     $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
 
-    $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
+    $res[] = $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
 
     if ($this->screenshotsAfterTest) {
@@ -69,7 +69,7 @@ class Runner {
       // todo: verbosity option
 
       $commandStr = str_replace('phpSelenium\Selenese\Command\\', '', get_class($command));
-      $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
+      $res[] = $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
       $this->addToPoll($result);
 
       if ($commandStr == 'captureEntirePageScreenshot') {
@@ -88,9 +88,9 @@ class Runner {
       }
 
       if ($commandResult->success) {
-        $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
       } else {
-        $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
       }
 
       $this->addToPoll($result);
@@ -106,7 +106,7 @@ class Runner {
     }
 
     $webDriver->close();
-    return $result;
+    return $res;
   }
 
   /**
