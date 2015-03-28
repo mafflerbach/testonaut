@@ -520,3 +520,25 @@ tr.failed td {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#febbbb', endColorstr='#ff5c5c',GradientType=0 ); /* IE6-9 */
   text-shadow: none;
 }
+
+.box {
+  border:1px solid #999;
+}
+
+.box div {
+  padding: 10px;
+}
+
+.box h3 {
+  background-color: #b8b8b8;
+  border-bottom:1px solid #999;
+  padding: 0;
+  margin: 0;
+  background: #ededed;
+  background-image: -webkit-linear-gradient(top, #ededed, #d1d1d1);
+  background-image: -moz-linear-gradient(top, #ededed, #d1d1d1);
+  background-image: -ms-linear-gradient(top, #ededed, #d1d1d1);
+  background-image: -o-linear-gradient(top, #ededed, #d1d1d1);
+  background-image: linear-gradient(to bottom, #ededed, #d1d1d1);
+
+}

@@ -132,4 +132,7 @@ class Page {
     return $this->path;
   }
 
+  public function getEditPath(){
+    return '/edit/'.$this->path;
+  }
 } 

@@ -43,7 +43,6 @@ class Test {
       if ($dom->getElementsByTagName('link')->length > 0) {
         $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
         $this->baseUrl = rtrim($this->baseUrl, '/');
-
       }
     }
 
@@ -51,10 +50,16 @@ class Test {
     if($dom->getElementsByTagName('tbody')->length == 0) {
       $this->commands = '';
       return;
-
     }
-    $rows = $dom->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr');
 
+    $tables = $dom->getElementsByTagName('tbody');
+    foreach($tables as $table) {
+      $rows = $table->getElementsByTagName('tr');
+      $this->parseTable($rows);
+    }
+  }
+
+  protected function parseTable($rows) {
     // extract the commands
     foreach ($rows as $row) {
       /** @var \DOMElement $row */
@@ -79,7 +84,6 @@ class Test {
         $this->commands[] = $unknowncmd;
       }
     }
-
   }
 
 }
