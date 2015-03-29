@@ -12,7 +12,10 @@ class Compiler {
 
   public function compile($variables) {
     $path = $this->page->transCodePath();
-    $contentPath = $path . '/content';
+    $contentPath = $path . '/content_includes';
+    if (!file_exists($contentPath)) {
+      $contentPath = $path . '/content';
+    }
     $content = $this->invokePages($contentPath);
     $content = $this->compileTwigTags($content, $variables);
     return $content;
@@ -51,7 +54,7 @@ class Compiler {
       if (!empty($result[0])) {
         for ($k = 0; $k < count($result); $k++) {
           $page = new Page($result[$k][1]);
-          $content = '<div class="box hide"><h3>Include '.$result[$k][1].'<a href="{{ app.request.baseUrl }}/edit/'.$result[$k][1].'">Edit</a></h3><div>'.$page->content().'</div></div>';
+          $content = '<div class="box hide"><h3>Include '.$result[$k][1].'<a class="btn small" href="{{ app.request.baseUrl }}/edit/'.$result[$k][1].'">Edit</a></h3><div>'.$page->getCompiledPage().'</div></div>';
           $content = str_replace($result[$k][0], $content, $fileArr[$i]);
           $fileArr[$i] = $content;
         }

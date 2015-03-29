@@ -525,7 +525,7 @@ tr.failed td {
   border:1px solid #999;
 }
 
-.box div {
+.box > div {
   padding: 10px;
 }
 
@@ -540,5 +540,8 @@ tr.failed td {
   background-image: -ms-linear-gradient(top, #ededed, #d1d1d1);
   background-image: -o-linear-gradient(top, #ededed, #d1d1d1);
   background-image: linear-gradient(to bottom, #ededed, #d1d1d1);
+}
 
+.box h3 a {
+float: right;
 }

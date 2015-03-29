@@ -14,7 +14,12 @@ class Page {
     $this->root = Config::getInstance()->wikiPath;
   }
 
-  public function content($content = NULL, $save = NULL) {
+  public function getCompiledPage () {
+    return $this->_content(NULL, NULL, TRUE);
+  }
+
+
+  private function _content($content = NULL, $save = NULL, $compiled = FALSE) {
 
     if ($this->path == '') {
       $file = $this->root . '/content';
@@ -22,13 +27,16 @@ class Page {
     } else {
       $file = $this->transCodePath() . '/content';
       $path = $this->transCodePath();
+      if($compiled && file_exists($file.'_compiled')) {
+        $file = $this->transCodePath() . '/content_compiled';
+      }
     }
 
     if (!file_exists($file) && $save === NULL) {
       return '';
     }
     if ($content == NULL && $save === NULL) {
-        $pageContent = file_get_contents($file);
+      $pageContent = file_get_contents($file);
       return $pageContent;
     } else {
       $filename = $path . '/content';
@@ -39,6 +47,11 @@ class Page {
       }
       file_put_contents($filename, $content);
     }
+
+  }
+
+  public function content($content = NULL, $save = NULL) {
+    return $this->_content($content, $save);
   }
 
   public function getImagePath() {
