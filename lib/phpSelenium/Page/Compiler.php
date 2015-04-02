@@ -17,10 +17,12 @@ class Compiler {
       $contentPath = $path . '/content';
     }
 
+    $conf = $this->page->config();
+
     $content = $this->invokePages($contentPath);
     $content = '<div class="pageContent">'.$content.'</div>';
-    $content = $this->includeSpecialHeadPages($content);
-    $content = $this->includeSpecialFooterPages($content);
+    $content = $this->includeSpecialHeadPages($content, $conf['type']);
+    $content = $this->includeSpecialFooterPages($content, $conf['type']);
     $content = $this->compileTwigTags($content, $variables);
 
     return $content;
@@ -72,16 +74,38 @@ class Compiler {
     return implode("\n", $fileArr);
   }
 
-  protected function includeSpecialHeadPages($content) {
-    $pages = array(
-      'setUp',
-      'suiteSetUp'
-    );
-    $content = $this->patchPage($content, $pages, TRUE);
+
+  protected function includeSpecialFooterPages($content, $type) {
+    if ($type == 'suite' ) {
+      $pages[] = 'suiteTearDown';
+    }
+
+    if ($type == 'test' ) {
+      $pages[] = 'tearDown';
+    }
+
+    $pages[] = 'pageFooter';
+
+    $content = $this->patchPage($content, $pages);
 
     return $content;
   }
 
+  protected function includeSpecialHeadPages($content,$type) {
+    if ($type == 'suite' ) {
+      $pages[] = 'suiteSetUp';
+    }
+
+    if ($type == 'test' ) {
+      $pages[] = 'setUp';
+    }
+
+    $pages[] = 'pageHead';
+
+    $content = $this->patchPage($content, $pages, TRUE);
+
+    return $content;
+  }
   protected function patchPage($content, $pages, $prepend = FALSE) {
     $path = $this->page->path;
 
@@ -94,6 +118,7 @@ class Compiler {
         $path = implode('.', $tmp) . '.' . $pages[$k];
         $page = new Page($path);
         $c = $page->content();
+
         if ($c != '') {
           $container = $this->generateIncludeBox($c, $path);
           if ($prepend) {
@@ -104,16 +129,6 @@ class Compiler {
         }
       }
     }
-    return $content;
-  }
-
-  protected function includeSpecialFooterPages($content) {
-    $pages = array(
-      'tearDown',
-      'suiteTearDown'
-    );
-    $content = $this->patchPage($content, $pages);
-
     return $content;
   }
 
