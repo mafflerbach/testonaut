@@ -2,7 +2,6 @@
 
 namespace phpSelenium;
 
-use phpSelenium\Parser\Config\Browser;
 use phpSelenium\Selenium\Api;
 
 class Page {
@@ -17,7 +16,6 @@ class Page {
   public function getCompiledPage () {
     return $this->_content(NULL, NULL, TRUE);
   }
-
 
   private function _content($content = NULL, $save = NULL, $compiled = FALSE) {
 

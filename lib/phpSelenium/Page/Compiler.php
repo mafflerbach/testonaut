@@ -17,8 +17,8 @@ class Compiler {
       $contentPath = $path . '/content';
     }
 
-
     $content = $this->invokePages($contentPath);
+    $content = '<div class="pageContent">'.$content.'</div>';
     $content = $this->includeSpecialHeadPages($content);
     $content = $this->includeSpecialFooterPages($content);
     $content = $this->compileTwigTags($content, $variables);
@@ -48,7 +48,12 @@ class Compiler {
       file_put_contents($filename, $content);
       return $content;
     }
-    return file_get_contents($contentPath);
+
+    if (file_exists($contentPath)) {
+      return file_get_contents($contentPath);
+    }
+
+    return '';
   }
 
   protected function parseIncludes($fileArr) {
@@ -58,7 +63,7 @@ class Compiler {
       if (!empty($result[0])) {
         for ($k = 0; $k < count($result); $k++) {
           $page = new Page($result[$k][1]);
-          $content = '<div class="box hide"><h3>Include '.$result[$k][1].'<a class="btn small" href="{{ app.request.baseUrl }}/edit/'.$result[$k][1].'">Edit</a></h3><div>'.$page->getCompiledPage().'</div></div>';
+          $content = $this->generateIncludeBox($result[$k][1], $page->getCompiledPage());
           $content = str_replace($result[$k][0], $content, $fileArr[$i]);
           $fileArr[$i] = $content;
         }
@@ -68,34 +73,52 @@ class Compiler {
   }
 
   protected function includeSpecialHeadPages($content) {
-    $pages = array('setUp', 'suiteSetUp');
+    $pages = array(
+      'setUp',
+      'suiteSetUp'
+    );
+    $content = $this->patchPage($content, $pages, TRUE);
+
+    return $content;
+  }
+
+  protected function patchPage($content, $pages, $prepend = FALSE) {
     $path = $this->page->path;
 
     $pathArr = explode('.', $path);
-    var_dump($pathArr);
 
-
-    for($k = 0; $k < count($pages); $k++) {
-    $tmp = array();
-      for($i = 0; $i < count($pathArr); $i++) {
+    for ($k = 0; $k < count($pages); $k++) {
+      $tmp = array();
+      for ($i = 0; $i < count($pathArr); $i++) {
         $tmp[] = $pathArr[$i];
-        $path = implode('.', $tmp).'.'.$pages[$k];
+        $path = implode('.', $tmp) . '.' . $pages[$k];
         $page = new Page($path);
         $c = $page->content();
         if ($c != '') {
-          $container = '<div class="box hide"><h3>Include '.$path.'<a class="btn small" href="{{ app.request.baseUrl }}/edit/'.$path.'">Edit</a></h3><div>'.$c.'</div></div>';
-          $content = $container. $content;
+          $container = $this->generateIncludeBox($c, $path);
+          if ($prepend) {
+            $content = $container . $content;
+          } else {
+            $content = $content . $container;
+          }
         }
       }
     }
-
-    var_dump($content);
     return $content;
   }
 
   protected function includeSpecialFooterPages($content) {
-    array('tearDown', 'suiteTearDown');
+    $pages = array(
+      'tearDown',
+      'suiteTearDown'
+    );
+    $content = $this->patchPage($content, $pages);
+
     return $content;
+  }
+
+  protected function generateIncludeBox($content, $path) {
+    return '<div class="box hide"><h5>Include ' . $path . '<a class="btn small" href="{{ app.request.baseUrl }}/edit/' . $path . '">Edit</a></h5><div>' . $content . '</div></div>';
   }
 
 }

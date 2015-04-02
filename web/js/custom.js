@@ -3,6 +3,16 @@ $(document).ready(function () {
         initDoc();
     }
 
+    $('div.box.hide h5').click(function() {
+        $(this).parent('div').toggleClass('hide');
+        $(this).parent('div').toggleClass('show');
+    })
+
+    $('div.box.show h5').click(function() {
+        $(this).parent('div').toggleClass('hide');
+        $(this).parent('div').toggleClass('show');
+    })
+
     $("form[name='compForm']").submit(function (e) {
         var content;
         if (!$('#switchBox').prop('checked')) {
@@ -12,8 +22,6 @@ $(document).ready(function () {
         }
         $("input[name='content']").attr('value', content);
     });
-
-    $('')
 
     $('.run-test').click(function (e) {
         e.preventDefault();

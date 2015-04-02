@@ -521,18 +521,31 @@ tr.failed td {
   text-shadow: none;
 }
 
+
 .box {
   border:1px solid #999;
+  margin:10px 0px;
 }
 
 .box > div {
   padding: 10px;
 }
 
-.box h3 {
+.box.hide div {
+  display: none;
+}
+
+.pageContent {
+  margin: 2em 0em;
+  padding:0.5em;
+  border:1px solid #555;
+  background-color:#fff;
+}
+
+.box h5 {
   background-color: #b8b8b8;
   border-bottom:1px solid #999;
-  padding: 0;
+  padding: 0.6em;
   margin: 0;
   background: #ededed;
   background-image: -webkit-linear-gradient(top, #ededed, #d1d1d1);
@@ -540,8 +553,11 @@ tr.failed td {
   background-image: -ms-linear-gradient(top, #ededed, #d1d1d1);
   background-image: -o-linear-gradient(top, #ededed, #d1d1d1);
   background-image: linear-gradient(to bottom, #ededed, #d1d1d1);
+  position: relative;
 }
 
-.box h3 a {
-float: right;
+.box h5 a {
+  position: absolute;
+  right: 5px;
+  top:3px;
 }
