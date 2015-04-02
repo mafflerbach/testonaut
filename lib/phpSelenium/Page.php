@@ -6,7 +6,7 @@ use phpSelenium\Parser\Config\Browser;
 use phpSelenium\Selenium\Api;
 
 class Page {
-  protected $path;
+  public $path;
   protected $root;
 
   public function __construct($path) {

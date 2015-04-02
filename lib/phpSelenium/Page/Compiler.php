@@ -16,11 +16,15 @@ class Compiler {
     if (!file_exists($contentPath)) {
       $contentPath = $path . '/content';
     }
+
+
     $content = $this->invokePages($contentPath);
+    $content = $this->includeSpecialHeadPages($content);
+    $content = $this->includeSpecialFooterPages($content);
     $content = $this->compileTwigTags($content, $variables);
+
     return $content;
   }
-
 
   protected function compileTwigTags($content, array $variables) {
 
@@ -40,7 +44,7 @@ class Compiler {
     if (file_exists($contentPath)) {
       $lines = file($contentPath);
       $content = $this->parseIncludes($lines);
-      $filename = $contentPath . '_includes';
+      $filename = $contentPath;
       file_put_contents($filename, $content);
       return $content;
     }
@@ -62,4 +66,36 @@ class Compiler {
     }
     return implode("\n", $fileArr);
   }
+
+  protected function includeSpecialHeadPages($content) {
+    $pages = array('setUp', 'suiteSetUp');
+    $path = $this->page->path;
+
+    $pathArr = explode('.', $path);
+    var_dump($pathArr);
+
+
+    for($k = 0; $k < count($pages); $k++) {
+    $tmp = array();
+      for($i = 0; $i < count($pathArr); $i++) {
+        $tmp[] = $pathArr[$i];
+        $path = implode('.', $tmp).'.'.$pages[$k];
+        $page = new Page($path);
+        $c = $page->content();
+        if ($c != '') {
+          $container = '<div class="box hide"><h3>Include '.$path.'<a class="btn small" href="{{ app.request.baseUrl }}/edit/'.$path.'">Edit</a></h3><div>'.$c.'</div></div>';
+          $content = $container. $content;
+        }
+      }
+    }
+
+    var_dump($content);
+    return $content;
+  }
+
+  protected function includeSpecialFooterPages($content) {
+    array('tearDown', 'suiteTearDown');
+    return $content;
+  }
+
 }

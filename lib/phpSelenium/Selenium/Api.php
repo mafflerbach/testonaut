@@ -15,11 +15,13 @@ class Api {
   private function getNodeInformations() {
     $pars = new Browser();
 
-    $cacheFile = Config::getInstance()->Path.'/hubCache';
+    $cacheFile = Config::getInstance()->Path . '/hubCache';
 
-    if (!file_exists($cacheFile) ||  filemtime($cacheFile) >= time()+60*15 ) {
+    if (!file_exists($cacheFile) || filemtime($cacheFile) >= time() + 60 * 15) {
       $hub = @\file_get_contents(Config::getInstance()->seleniumConsole);
-      file_put_contents($cacheFile, $hub);
+      if (Config::getInstance()->Cache) {
+        file_put_contents($cacheFile, $hub);
+      }
     } else {
       $hub = @\file_get_contents($cacheFile);
     }
