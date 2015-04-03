@@ -23,6 +23,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->mount('/', new phpSelenium\Page\Provider\Start());
 $app->mount('/edit/', new phpSelenium\Page\Provider\Start(true));
+$app->mount('/globalconfig/', new phpSelenium\Page\Provider\Globalconfig());
 $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/config/{path}', new phpSelenium\Page\Provider\Config());
 $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
