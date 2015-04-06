@@ -7,45 +7,48 @@
       {% for browser  in app.browser %}
         <label>Baseurl for {{ browser.browserName }}</label>
         {% if browser.url is defined %}
-          <input type="text"
-                 value="{{ browser.url }}"
-                 name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+          {% set url = browser.url %}
         {% else %}
-          <input type=" text"
-                 value=""
-                 name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+          {% set url = '' %}
         {% endif %}
+        <input type="text"
+               value="{{ url }}"
+               name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
         <br/>
         {% if browser.active is defined and browser.active == true %}
-          <input type="checkbox"
-                 value="{{ browser.browserName }}"
-                 name="active[]{{ browser.browserName }}"
-                 checked="checked" id="{{ browser.browserName }}"/>
+          {% set checked = 'checked="checked"' %}
         {% else %}
-          <input type="checkbox"
-                 value="{{ browser.browserName }}"
-                 name="active[]{{ browser.browserName }}" id="{{ browser.browserName }}"/>
+          {% set checked = '' %}
         {% endif %}
-        <label class="checkbox" for="{{ browser.browserName }}">{{ browser.browserName }}</label>
+        <input type="checkbox"
+               value="{{ browser.browserName }}"
+               name="active[]{{ browser.browserName }}"
+                {{ checked }}
+               id="{{ browser.browserName }}"/>
 
+        <label class="checkbox"
+               for="{{ browser.browserName }}">{{ browser.browserName }}</label>
         <br/>
       {% endfor %}
     {% endif %}
     <br/>
+
     <h2>Pagetype</h2>
     {% if app.type is defined %}
       {% for type, key  in app.type %}
-        {% if  key == true %}
-          <input type="radio"
-                 value="{{ type }}"
-                 name="type"
-                 checked="checked" id="pagetype_{{ type }}"/>
+        {% if key == true %}
+          {% set checked = 'checked="checked"' %}
         {% else %}
-          <input type="radio"
-                 value="{{ type }}"
-                 name="type" id="pagetype_{{ type }}"/>
+          {% set checked = '' %}
         {% endif %}
-        <label class="radio" for="pagetype_{{ type }}">{{ type }}</label>
+        <input type="radio"
+               value="{{ type }}"
+               name="type"
+                {{ checked }}
+               id="pagetype_{{ type }}"/>
+
+        <label class="radio"
+               for="pagetype_{{ type }}">{{ type }}</label>
       {% endfor %}
     {% endif %}
     <br/>
@@ -53,17 +56,20 @@
     <h2>Screenshot Settings </h2>
     {% if app.screenshots is defined %}
       {% for screen, key  in app.screenshots %}
-        {% if  key == true %}
-          <input type="radio"
-                 value="{{ screen }}"
-                 name="screenshot"
-                 checked="checked" id="screenshot_{{ screen }}"/>
+        {% if key == true %}
+          {% set checked = 'checked="checked"' %}
         {% else %}
-          <input type="radio"
-                 value="{{ screen }}"
-                 name="screenshot" id="screenshot_{{ screen }}"/>
+          {% set checked = '' %}
         {% endif %}
-        <label class="radio" for="screenshot_{{ screen }}">{{ screen }}</label>
+
+        <input type="radio"
+               value="{{ screen }}"
+               name="screenshot"
+                {{ checked }}
+               id="screenshot_{{ screen }}"/>
+
+        <label class="radio"
+               for="screenshot_{{ screen }}">{{ screen }}</label>
       {% endfor %}
     {% endif %}
 

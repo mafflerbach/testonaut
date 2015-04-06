@@ -25,6 +25,7 @@ class Config extends Base implements ControllerProviderInterface {
       $app['crumb'] = $crumb->getBreadcrumb();
 
       $app['type'] = $this->pageSettings();
+
       if ($app['type']['project']) {
         $app['browser'] = $this->browserSettings();
       }

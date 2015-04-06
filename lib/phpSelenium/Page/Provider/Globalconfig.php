@@ -32,9 +32,9 @@ class Globalconfig implements ControllerProviderInterface {
 
       var_dump($conf);
       $app['request'] = array(
-
         'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'edit'
+        'mode'    => 'edit',
+        'settings' => $conf
       );
 
       return $app['twig']->render('globalconfig.twig');

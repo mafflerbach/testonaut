@@ -1,8 +1,41 @@
 {% include 'head.twig' %}
 
+<div class="content">
 
+<label>Path: </label>
+<input type="text"
+       value="{{ app.request.settings.Path}}"
+       name="path"/>
+<br/>
+<label>Selenium Hub: </label>
+<input type="text"
+       value="{{ app.request.settings.seleniumAddress}}"
+       name="hub"/>
 
+<br/>
+<br/>
+{% if app.request.settings.Cache == true %}
+  {% set checked = 'checked="checked"' %}
+{% else %}
+  {% set checked = '' %}
+{% endif %}
+
+  <input type="checkbox"
+         value="cache"
+         name="cache"
+         id="cache"/>
+
+  <label class="checkbox"
+         for="cache">Cache</label>
+
+<br/>
+<br/>
 <a href="{{ app.request.baseUrl }}"
    class="backLink btn">Zurück</a>
+
+
+</div>
+
+
 
 {% include 'footer.twig' %}

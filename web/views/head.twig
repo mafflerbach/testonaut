@@ -15,32 +15,28 @@
   <ul class="fancyNav">
     {% if app.request.mode == 'show' %}
       {% if app.request.content %}
+        {% if app.request.type is defined and (app.request.type != 'static' or app.request.type != 'none' or app.request.type != '') %}
         <li>
           {% if app.request.type is defined and (app.request.type == 'suite' or app.request.type == 'project') %}
-            <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?suite=true"
-               data-action="run"
-               data-path="{{ app.request.path }}">Run Suite</a>
-            {% if app.request.browsers is defined %}
-              <ul>
-                {% for browser in app.request.browsers %}
-                  <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?suite=true&browser={{ browser.browserName }}"
-                       data-path="{{ app.request.path }}"
-                       data-browser="{{ browser.browserName }}"
-                       class="run-test">{{ browser.browserName }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+            {% set parameter = 'suite=true' %}
+            {% set lable = 'Run Suite' %}
           {% else %}
-            <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}"
+            {% set parameter = '' %}
+            {% set lable = 'Run Test' %}
+          {% endif %}
+          <a href=""
                data-action="run"
-               data-path="{{ app.request.path }}">Run Test</a>
+               data-path="{{ app.request.path }}">Run</a>
             {% if app.request.browsers is defined %}
               <ul>
+                <li>
+                  <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?{{ parameter }}"
+                     data-action="run"
+                     data-path="{{ app.request.path }}">{{ lable }}</a>
+                </li>
                 {% for browser in app.request.browsers %}
                   <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}"
+                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&{{ parameter }}"
                        data-path="{{ app.request.path }}"
                        data-browser="{{ browser.browserName }}"
                        class="run-test">{{ browser.browserName }}</a>
@@ -48,9 +44,8 @@
                 {% endfor %}
               </ul>
             {% endif %}
-          {% endif %}
-
         </li>
+        {% endif %}
         <li>
           <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
              data-action="add"
@@ -78,8 +73,6 @@
     {% endif %}
   </ul>
 </div>
-
-
 
 {% if app.crumb is defined %}
 <div id="crumbs">
