@@ -29,9 +29,11 @@ class Api {
     $nodes = $pars->getNodes($hub);
 
     $browsers = array();
+
     for ($i = 0; $i < count($nodes); $i++) {
       $endpoint = 'grid/api/proxy?id=' . $nodes[$i];
       $data = $this->getData($endpoint);
+
       if (count($data['request']['capabilities']) > 1) {
         for ($k = 0; $k < count($data['request']['capabilities']); $k++) {
           $browsers[] = $data['request']['capabilities'][$k];

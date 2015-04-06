@@ -8,10 +8,11 @@
 * Filter für die screenshots implementieren
 * Editor verbessern oder austauschen
 * entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
-* 
+
 
 * ~~SetUp und TearDowsn seiten ~~
 * ~~includes implementieren ~~
+* ~~ globale Config page implementieren ~~
 * ~~Buildergebnisse jeweils gelaufenen test~~
 * ~~Screenshot einstellungen für configs (Nach jedem test, nach jedem Befehl)~~
 * ~~Screenshoteintellung implementieren~~

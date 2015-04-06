@@ -30,7 +30,6 @@ class Globalconfig implements ControllerProviderInterface {
     $edit->get('/', function (Request $request) use ($app) {
       $conf = $this->getConfig();
 
-      var_dump($conf);
       $app['request'] = array(
         'baseUrl' => $request->getBaseUrl(),
         'mode'    => 'edit',
@@ -41,17 +40,35 @@ class Globalconfig implements ControllerProviderInterface {
 
     });
 
-    $edit->post('/', function (Request $request, $path) use ($app) {
-      $content = $request->request->get('content');
+    $edit->post('/', function (Request $request) use ($app) {
+      $address = $request->request->get('seleniumAddress');
 
-      $page = new \phpSelenium\Page($path);
-      $content = $page->content($content, TRUE);
-      return $app->redirect($request->getBaseUrl() . '/' . $path);
+      $cache = $request->request->get('cache');
+
+      if ($cache != null) {
+        $cache = true;
+      } else {
+        $cache = false;
+      }
+
+      $configuration = array(
+        'appPath'         => '',
+        'cache'           => $cache,
+        'seleniumAddress' => $address);
+
+      $this->saveConfig($configuration);
+
+      return $app->redirect($request->getBaseUrl() . '/globalconfig');
     });
     return $edit;
   }
 
-  protected function getConfig() {
+  protected function saveConfig($array) {
+    $config = \phpSelenium\Config::getInstance()->Path . '/config';
+    file_put_contents($config, json_encode($array));
+  }
+
+  public function getConfig() {
 
     $config = \phpSelenium\Config::getInstance()->Path . '/config';
     if (file_exists($config)) {
@@ -59,9 +76,8 @@ class Globalconfig implements ControllerProviderInterface {
     } else {
 
       $configuration = array(
-        'Path'            => '',
         'appPath'         => '',
-        'Cache'           => '',
+        'cache'           => '',
         'seleniumAddress' => '');
       file_put_contents($config, json_encode($configuration));
 

@@ -2,40 +2,52 @@
 
 <div class="content">
 
-<label>Path: </label>
-<input type="text"
-       value="{{ app.request.settings.Path}}"
-       name="path"/>
-<br/>
-<label>Selenium Hub: </label>
-<input type="text"
-       value="{{ app.request.settings.seleniumAddress}}"
-       name="hub"/>
+  <form action=""
+        method="POST">
 
-<br/>
-<br/>
-{% if app.request.settings.Cache == true %}
-  {% set checked = 'checked="checked"' %}
-{% else %}
-  {% set checked = '' %}
-{% endif %}
+  <label>App Path</label>
+  <br/>
+  <input type="text"
+         value="{{ app.request.settings.appPath }}"
+         name="appPath"/>
+
+  <br/>
+  <br/>
+
+    <label>Selenium Hub: </label>
+  <br/>
+  <input type="text"
+         value="{{ app.request.settings.seleniumAddress }}"
+         name="seleniumAddress"/>
+
+  <br/>
+  <br/>
+  {% if app.request.settings.cache == true %}
+    {% set checked = 'checked="checked"' %}
+  {% else %}
+    {% set checked = '' %}
+  {% endif %}
 
   <input type="checkbox"
          value="cache"
          name="cache"
+         {{ checked }}
          id="cache"/>
 
   <label class="checkbox"
          for="cache">Cache</label>
 
-<br/>
-<br/>
-<a href="{{ app.request.baseUrl }}"
-   class="backLink btn">Zurück</a>
+  <br/>
+  <br/>
+  <a href="{{ app.request.baseUrl }}"
+     class="backLink btn">Zurück</a>
 
-
+  <input type="submit"
+         name="action"
+         value="save"
+         class="btn"/>
+  </form>
 </div>
-
 
 
 {% include 'footer.twig' %}
