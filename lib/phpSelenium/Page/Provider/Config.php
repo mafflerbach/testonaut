@@ -26,7 +26,7 @@ class Config extends Base implements ControllerProviderInterface {
 
       $app['type'] = $this->pageSettings();
 
-      if ($app['type']['project']) {
+      if ($app['type']['project'] || $app['type']['suite']) {
         $app['browser'] = $this->browserSettings();
       }
 
@@ -53,7 +53,7 @@ class Config extends Base implements ControllerProviderInterface {
 
       $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser));
 
-      if ($type == 'project') {
+      if ($type == 'project' || $type == 'suite') {
         if ($this->browserSettings($browserSettings)) {
           $message = 'Saved';
         } else {
@@ -94,13 +94,11 @@ class Config extends Base implements ControllerProviderInterface {
 
   protected function browserSettings($settings = NULL) {
     $pathArray = explode('.', $this->path);
-    if (count($pathArray) == 1) {
-      $bSettings = new Browser($this->path);
-      if ($settings != NULL) {
-        return $bSettings->setSettings($settings);
-      } else {
-        return $bSettings->getSettings();
-      }
+    $bSettings = new Browser($this->path);
+    if ($settings != NULL) {
+      return $bSettings->setSettings($settings);
+    } else {
+      return $bSettings->getSettings();
     }
   }
 

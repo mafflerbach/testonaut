@@ -46,7 +46,11 @@ class Compiler {
     if (file_exists($contentPath)) {
       $lines = file($contentPath);
       $content = $this->parseIncludes($lines);
-      $filename = $contentPath;
+      if (strpos($contentPath, '_includes') === FALSE) {
+        $filename = $contentPath . '_includes';
+      } else {
+        $filename = $contentPath;
+      }
       file_put_contents($filename, $content);
       return $content;
     }
@@ -65,7 +69,8 @@ class Compiler {
       if (!empty($result[0])) {
         for ($k = 0; $k < count($result); $k++) {
           $page = new Page($result[$k][1]);
-          $content = $this->generateIncludeBox($result[$k][1], $page->getCompiledPage());
+          $c = $page->getCompiledPage();
+          $content = $this->generateIncludeBox($c, $result[$k][1]);
           $content = str_replace($result[$k][0], $content, $fileArr[$i]);
           $fileArr[$i] = $content;
         }
@@ -116,24 +121,28 @@ class Compiler {
       for ($i = 0; $i < count($pathArr); $i++) {
         $tmp[] = $pathArr[$i];
         $path = implode('.', $tmp) . '.' . $pages[$k];
+
         $page = new Page($path);
         $c = $page->content();
-
         if ($c != '') {
           $container = $this->generateIncludeBox($c, $path);
           if ($prepend) {
-            $content = $container . $content;
+            $content = $container . '<div>'.$content.'</div>';
           } else {
-            $content = $content . $container;
+            $content = '<div>'.$content.'</div>' . $container;
           }
         }
       }
     }
+
     return $content;
   }
 
   protected function generateIncludeBox($content, $path) {
-    return '<div class="box hide"><h5>Include ' . $path . '<a class="btn small" href="{{ app.request.baseUrl }}/edit/' . $path . '">Edit</a></h5><div>' . $content . '</div></div>';
+    $return = '<div class="box hide">
+<h5>Include ' . $path . '<a class="btn small" href="{{ app.request.baseUrl }}/edit/' . $path . '">Edit</a></h5>
+<div class="pageContent">' . $content . '</div></div>';
+    return $return;
   }
 
 }

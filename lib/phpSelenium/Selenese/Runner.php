@@ -14,6 +14,7 @@ class Runner {
   public $hubUrl;
   public $pageUrl;
   public $imagePath;
+  private $baseUrl;
 
   private $result = array();
   private $screenshotsAfterEveryStep = FALSE;
@@ -38,8 +39,16 @@ class Runner {
     return $this->result;
   }
 
+  public function setBaseUrl($baseUrl){
+    $this->baseUrl = $baseUrl;
+  }
+  public function getBaseUrl(){
+    return $this->baseUrl;
+  }
+
   protected function _run($content, \DesiredCapabilities $capabilities) {
     $test = new Test();
+    $test->setBaseUrl($this->baseUrl);
     $test->loadFromSeleneseHtml($content);
 
     if ($test->commands == '') {

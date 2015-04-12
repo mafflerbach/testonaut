@@ -115,16 +115,31 @@ class Run implements ControllerProviderInterface {
     }
   }
 
+  protected function baseUrlSettings($capabilities) {
+    $conf = $this->page->config();
+
+    if (in_array($capabilities->getBrowserName(), $conf['browser']['active'])) {
+      return $conf['browser']['urls'][$capabilities->getBrowserName()];
+    }
+  }
+
+
   private function _run(array $tests) {
     try {
       $capabilities = $this->getCapabilities();
       $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath, $this->imagePath);
+
+      $browserUrl = $this->baseUrlSettings($capabilities);
+      $runner->setBaseUrl($browserUrl);
+die;
       if($this->screenshotSettings() == 2) {
         $runner->screenshotsAfterEveryStep();
       }
       if($this->screenshotSettings() == 1) {
         $runner->screenshotsAfterTest();
       }
+
+
 
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);

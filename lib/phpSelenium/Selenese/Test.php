@@ -15,7 +15,7 @@ class Test {
   /**
    * @var string
    */
-  public $baseUrl = '';
+  private  $baseUrl = '';
 
   /**
    * @param string $file
@@ -39,7 +39,6 @@ class Test {
 
     // get the base url
     if ($this->baseUrl == '') {
-
       if ($dom->getElementsByTagName('link')->length > 0) {
         $this->baseUrl = $dom->getElementsByTagName('link')->item(0)->getAttribute('href');
         $this->baseUrl = rtrim($this->baseUrl, '/');
@@ -85,5 +84,7 @@ class Test {
       }
     }
   }
-
+  public function setBaseUrl($baseUrl) {
+    $this->baseUrl = $baseUrl;
+  }
 }
