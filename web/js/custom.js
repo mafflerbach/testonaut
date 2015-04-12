@@ -3,12 +3,12 @@ $(document).ready(function () {
         initDoc();
     }
 
-    $('div.box.hide h5').click(function() {
+    $('div.box.hide h5').click(function () {
         $(this).parent('div').toggleClass('hide');
         $(this).parent('div').toggleClass('show');
     })
 
-    $('div.box.show h5').click(function() {
+    $('div.box.show h5').click(function () {
         $(this).parent('div').toggleClass('hide');
         $(this).parent('div').toggleClass('show');
     })
@@ -30,15 +30,34 @@ $(document).ready(function () {
         var run = $(this).attr('href');
         var browser = $(this).data('browser');
 
+
         $.ajax({
             method: "GET",
             url: run
+        }).always(function() {
+            $('.pulsarbox .pulsar.' + browser).remove();
+            $('table.' + browser).remove();
         });
 
+        invokePulsar(browser);
         getContent(0, url, browser);
+
+        $('.pulsar').on('mouseenter', function () {
+            $('.result').css('display', 'block');
+        });
+        $('.pulsar').on('mouseleave', function () {
+            $('.result').css('display', 'none');
+        });
+
     });
 
 })
+
+
+function invokePulsar(browser) {
+    var content = '<div class="pulsar ' + browser + '"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>';
+    $('.pulsarbox').append(content);
+}
 
 function getContent(timestamp, url, browser) {
 
@@ -47,18 +66,16 @@ function getContent(timestamp, url, browser) {
         $('.result').append('<table class="' + browser + '"/>');
     }
 
-    var server = 'http://' + location.host + ''  + '/server.php';
+    var server = 'http://' + location.host + '' + '/server.php';
 
     $.ajax({
         url: server,
-        data : queryString
-    }).done(function(data) {
-        console.log('poll');
+        data: queryString
+    }).done(function (data) {
         var obj = jQuery.parseJSON(data);
         $('table.' + browser).html(obj.data_from_file);
         getContent(obj.timestamp, url, browser);
-    });
-
+    })
 }
 
 

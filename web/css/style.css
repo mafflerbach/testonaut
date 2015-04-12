@@ -488,10 +488,11 @@ input[type=text]{
 
 .result {
   position: absolute;
-  top:0;
+  top:45px;
   right: 0;
   z-index: 2;
   box-shadow: 0px 0px 30px -5px black;
+  display: none;
 }
 .result table{
   float: left;
@@ -560,4 +561,82 @@ tr.failed td {
   position: absolute;
   right: 5px;
   top:3px;
+}
+
+
+
+@keyframes pulsar {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes pulsar {
+  0% {
+    -webkit-transform: scale(0);
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
+}
+.pulsarbox {
+  position: absolute;
+  top: 0;
+  right:0;
+}
+
+.pulsar {
+  width: 40px;
+  height: 40px;
+  margin: 0px auto;
+  position: relative;
+}
+
+.pulsar .ring {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color:rgba(0, 80, 0, 0.5);
+  box-shadow: inset 0 0 10px 0 rgba(0, 180, 0, 0.5);
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  margin-top: -50%;
+  margin-left: -50%;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.pulsar .ring:nth-child(1) {
+  -webkit-animation: pulsar 2s 0s linear infinite;
+  animation: pulsar 2s 0s linear infinite;
+}
+
+.pulsar .ring:nth-child(2) {
+  -webkit-animation: pulsar 2s .5s linear infinite;
+  animation: pulsar 2s .5s linear infinite;
+}
+
+.pulsar .ring:nth-child(3) {
+  -webkit-animation: pulsar 2s 1s linear infinite;
+  animation: pulsar 2s 1s linear infinite;
+}
+
+.pulsar .ring:nth-child(4) {
+  -webkit-animation: pulsar 2s 1.5s linear infinite;
+  animation: pulsar 2s 1.5s linear infinite;
 }

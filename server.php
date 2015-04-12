@@ -16,7 +16,7 @@
 set_time_limit(0);
 
 // where does the data come from ? In real world this would be a SQL query or something
-$data_source_file = 'root/' . str_replace('.', '/', $_GET['url']) . '/poll-'.$_GET['browser'];
+$data_source_file = 'root/' . str_replace('.', '/', $_GET['url']) . '/poll-' . $_GET['browser'];
 
 // main loop
 while (TRUE) {

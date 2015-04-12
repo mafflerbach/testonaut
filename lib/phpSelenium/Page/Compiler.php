@@ -76,7 +76,7 @@ class Compiler {
         }
       }
     }
-    return implode("\n", $fileArr);
+    return implode("", $fileArr);
   }
 
 

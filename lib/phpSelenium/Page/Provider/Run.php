@@ -117,9 +117,12 @@ class Run implements ControllerProviderInterface {
 
   protected function baseUrlSettings($capabilities) {
     $conf = $this->page->config();
-
-    if (in_array($capabilities->getBrowserName(), $conf['browser']['active'])) {
-      return $conf['browser']['urls'][$capabilities->getBrowserName()];
+    if(isset($conf['browser']['active'])) {
+      if (in_array($capabilities->getBrowserName(), $conf['browser']['active'])) {
+        return $conf['browser']['urls'][$capabilities->getBrowserName()];
+      }
+    } else {
+      return '';
     }
   }
 
@@ -131,7 +134,7 @@ class Run implements ControllerProviderInterface {
 
       $browserUrl = $this->baseUrlSettings($capabilities);
       $runner->setBaseUrl($browserUrl);
-die;
+
       if($this->screenshotSettings() == 2) {
         $runner->screenshotsAfterEveryStep();
       }
