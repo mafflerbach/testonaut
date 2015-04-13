@@ -1,13 +1,16 @@
 ###TODO###
 
+Milestone für 1.0 
 * Browsermatrix
+* entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
+
+
 * Template für seiteninhalte implementieren
 * variablen implementieren
 * Allegemeine screenshor übersicht seite
 * Filter für die screenshots implementieren
 * Editor verbessern oder austauschen
-* entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
-
+* performance überprüfen
 
 
 * ~~baseurl aus der config berücksichtigen~~
@@ -23,6 +26,9 @@
 ---
 Module
 Login bzw schmale userverwaltung
+
 Pagecrawler zum genereiren des seiten baumes
+
 testgenerator für Äquivalenzklassenanalyse
+
 checkliste für Bitv (inkl Prioritäten)
