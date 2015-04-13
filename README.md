@@ -1,9 +1,11 @@
 ###TODO###
 
 Milestone für 1.0 
+
 * Browsermatrix
 * entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
 
+Milestone für 1.5
 
 * Template für seiteninhalte implementieren
 * variablen implementieren
