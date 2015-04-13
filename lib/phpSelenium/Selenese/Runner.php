@@ -113,8 +113,11 @@ class Runner {
     if (file_exists($this->polling)) {
       unlink($this->polling);
     }
-
-    $webDriver->close();
+    try {
+      $webDriver->close();
+    } catch (\Exception $e) {
+      //nothing todo cause session is close
+    }
     return $res;
   }
 

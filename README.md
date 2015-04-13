@@ -1,6 +1,5 @@
 ###TODO###
 
-* baseurl aus der config berücksichtigen
 * Browsermatrix
 * Template für seiteninhalte implementieren
 * variablen implementieren
@@ -10,6 +9,8 @@
 * entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
 
 
+
+* ~~baseurl aus der config berücksichtigen~~
 * ~~SetUp und TearDowsn seiten ~~
 * ~~includes implementieren ~~
 * ~~ globale Config page implementieren ~~
@@ -19,7 +20,9 @@
 * ~~aktuelles bild als referenz übernehmen~~
 * ~~Bilder löschen~~
 
-
 ---
 Module
-Login bzw schmale userverwaltung    
+Login bzw schmale userverwaltung
+Pagecrawler zum genereiren des seiten baumes
+testgenerator für Äquivalenzklassenanalyse
+checkliste für Bitv (inkl Prioritäten)
