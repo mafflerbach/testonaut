@@ -5,6 +5,10 @@ Milestone für 1.0
 * Browsermatrix
 * entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
 
+Milestone 1.0 - 1.5
+
+* implementieren weiterer commands
+
 Milestone für 1.5
 
 * Template für seiteninhalte implementieren
@@ -13,6 +17,7 @@ Milestone für 1.5
 * Filter für die screenshots implementieren
 * Editor verbessern oder austauschen
 * performance überprüfen
+
 
 
 * ~~baseurl aus der config berücksichtigen~~
