@@ -1,110 +1,116 @@
 $(document).ready(function () {
-    if ($('#textBox').length > 0) {
-        initDoc();
+  if ($('#textBox').length > 0) {
+    initDoc();
+  }
+
+  $('div.box.hide h5').click(function () {
+    $(this).parent('div').toggleClass('hide');
+    $(this).parent('div').toggleClass('show');
+  })
+
+  $('div.box.show h5').click(function () {
+    $(this).parent('div').toggleClass('hide');
+    $(this).parent('div').toggleClass('show');
+  })
+
+  $("form[name='compForm']").submit(function (e) {
+    var content;
+    if (!$('#switchBox').prop('checked')) {
+      content = $('#textBox').html();
+    } else {
+      content = $('#sourceText').text();
     }
+    $("input[name='content']").attr('value', content);
+  });
 
-    $('div.box.hide h5').click(function () {
-        $(this).parent('div').toggleClass('hide');
-        $(this).parent('div').toggleClass('show');
-    })
+  $('.run-test').click(function (e) {
+    e.preventDefault();
 
-    $('div.box.show h5').click(function () {
-        $(this).parent('div').toggleClass('hide');
-        $(this).parent('div').toggleClass('show');
-    })
+    var url = $(this).data('path');
+    var run = $(this).attr('href');
+    var browser = $(this).data('browser');
 
-    $("form[name='compForm']").submit(function (e) {
-        var content;
-        if (!$('#switchBox').prop('checked')) {
-            content = $('#textBox').html();
-        } else {
-            content = $('#sourceText').text();
-        }
-        $("input[name='content']").attr('value', content);
+    $.ajax({
+      method: "GET",
+      url: run
+    }).always(function () {
+      $('.pulsarbox .pulsar.' + browser).remove();
+      $('table.' + browser).remove();
     });
 
-    $('.run-test').click(function (e) {
-        e.preventDefault();
+    invokePulsar(browser);
+    getContent(0, url, browser);
 
-        var url = $(this).data('path');
-        var run = $(this).attr('href');
-        var browser = $(this).data('browser');
-
-
-        $.ajax({
-            method: "GET",
-            url: run
-        }).always(function() {
-            $('.pulsarbox .pulsar.' + browser).remove();
-            $('table.' + browser).remove();
-        });
-
-        invokePulsar(browser);
-        getContent(0, url, browser);
-
-        $('.pulsar').on('mouseenter', function () {
-            $('.result').css('display', 'block');
-        });
-        $('.pulsar').on('mouseleave', function () {
-            $('.result').css('display', 'none');
-        });
-
+    $('.pulsar').on('mouseenter', function () {
+      $('.result').css('display', 'block');
     });
+    $('.pulsar').on('mouseleave', function () {
+      $('.result').css('display', 'none');
+    });
+  });
+
+
+  $("a[data-action='run']").click(function(e) {
+    e.preventDefault();
+    $(this).toggleClass('active')
+    $('.nodes').toggleClass('hide');
+    $('.nodes').toggleClass('show');
+  });
 
 })
 
 
 function invokePulsar(browser) {
-    var content = '<div class="pulsar ' + browser + '"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>';
-    $('.pulsarbox').append(content);
+  var content = '<div class="pulsar ' + browser + '"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>';
+  $('.pulsarbox').append(content);
 }
 
 function getContent(timestamp, url, browser) {
 
-    var queryString = {timestamp: timestamp, url: url, browser: browser};
-    if ($('table.' + browser).length <= 0) {
-        $('.result').append('<table class="' + browser + '"/>');
-    }
+  var queryString = {timestamp: timestamp, url: url, browser: browser};
+  if ($('table.' + browser).length <= 0) {
+    $('.result').append('<table class="' + browser + '"/>');
+  }
 
-    var server = 'http://' + location.host + '' + '/server.php';
+  var server = 'http://' + location.host + '' + '/server.php';
 
-    $.ajax({
-        url: server,
-        data: queryString
-    }).done(function (data) {
-        var obj = jQuery.parseJSON(data);
-        $('table.' + browser).html(obj.data_from_file);
-        getContent(obj.timestamp, url, browser);
-    })
+  $.ajax({
+    url: server,
+    data: queryString
+  }).done(function (data) {
+    var obj = jQuery.parseJSON(data);
+    $('table.' + browser).html(obj.data_from_file);
+    getContent(obj.timestamp, url, browser);
+  })
 }
 
 
 function initDoc() {
-    oDoc = document.getElementById("textBox"), sDefTxt = oDoc.innerHTML, document.compForm.switchMode.checked && setDocMode(!0)
+  oDoc = document.getElementById("textBox"), sDefTxt = oDoc.innerHTML, document.compForm.switchMode.checked && setDocMode(!0)
 }
 function formatDoc(o, e) {
-    validateMode() && (document.execCommand(o, !1, e), oDoc.focus())
+  validateMode() && (document.execCommand(o, !1, e), oDoc.focus())
 }
 function SaveTextArea() {
-    window.location = "data:application/octet-stream," + escape(textBox.innerHTML)
+  window.location = "data:application/octet-stream," + escape(textBox.innerHTML)
 }
 function validateMode() {
-    return document.compForm.switchMode.checked ? (alert('Uncheck "Show HTML".'), oDoc.focus(), !1) : !0
+  return document.compForm.switchMode.checked ? (alert('Uncheck "Show HTML".'), oDoc.focus(), !1) : !0
 }
 function setDocMode(o) {
-    var e;
-    if (o) {
-        e = document.createTextNode(oDoc.innerHTML), oDoc.innerHTML = "";
-        var t = document.createElement("pre");
-        oDoc.contentEditable = !1, t.id = "sourceText", t.contentEditable = !0, t.appendChild(e), oDoc.appendChild(t)
-    } else document.all ? oDoc.innerHTML = oDoc.innerText : (e = document.createRange(), e.selectNodeContents(oDoc.firstChild), oDoc.innerHTML = e.toString()), oDoc.contentEditable = !0;
-    oDoc.focus()
+  var e;
+  if (o) {
+    e = document.createTextNode(oDoc.innerHTML), oDoc.innerHTML = "";
+    var t = document.createElement("pre");
+    oDoc.contentEditable = !1, t.id = "sourceText", t.contentEditable = !0, t.appendChild(e), oDoc.appendChild(t)
+  } else document.all ? oDoc.innerHTML = oDoc.innerText : (e = document.createRange(), e.selectNodeContents(oDoc.firstChild), oDoc.innerHTML = e.toString()), oDoc.contentEditable = !0;
+  oDoc.focus()
 }
 function printDoc() {
-    if (validateMode()) {
-        var o = window.open("", "_blank", "width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
-        o.document.open(), o.document.write('<!doctype html><html><head><title>Print</title></head><body onload="print();">' + oDoc.innerHTML + "</body></html>"), o.document.close()
-    }
+  if (validateMode()) {
+    var o = window.open("", "_blank", "width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
+    o.document.open(), o.document.write('<!doctype html><html><head><title>Print</title></head><body onload="print();">' + oDoc.innerHTML + "</body></html>"), o.document.close()
+  }
 }
 var oDoc, sDefTxt;
 

@@ -11,6 +11,20 @@
 </head>
 <body>
 
+{% if app.crumb is defined %}
+    <div id="crumbs">
+        <ul class="crumb">
+            <li>
+                <a href="{{ app.request.baseUrl }}/">root</a>
+            </li>
+            {% for crumbie, key in app.crumb %}
+                <li>
+                    <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 <div class="fancyNavBox">
   <ul class="fancyNav">
     {% if app.request.mode == 'show' %}
@@ -28,21 +42,23 @@
                data-action="run"
                data-path="{{ app.request.path }}">Run</a>
             {% if app.request.browsers is defined %}
-              <ul>
-                <li>
-                  <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?{{ parameter }}"
-                     data-action="run"
-                     data-path="{{ app.request.path }}">{{ lable }}</a>
-                </li>
-                {% for browser in app.request.browsers %}
-                  <li>
-                    <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&{{ parameter }}"
-                       data-path="{{ app.request.path }}"
-                       data-browser="{{ browser.browserName }}"
-                       class="run-test">{{ browser.browserName }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
+                <div class="nodes hide">
+                    <ul>
+                        <li>
+                            <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?{{ parameter }}"
+                               data-action="run"
+                               data-path="{{ app.request.path }}">{{ lable }}</a>
+                        </li>
+                        {% for browser in app.request.browsers %}
+                            <li>
+                                <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&{{ parameter }}"
+                                   data-path="{{ app.request.path }}"
+                                   data-browser="{{ browser.browserName }}"
+                                   class="run-test">{{ browser.browserName }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             {% endif %}
         </li>
         {% endif %}
@@ -74,17 +90,5 @@
   </ul>
 </div>
 
-{% if app.crumb is defined %}
-<div id="crumbs">
-  <ul class="crumb">
-    <li>
-      <a href="{{ app.request.baseUrl }}/">root</a>
-    </li>
-    {% for crumbie, key in app.crumb %}
-      <li>
-        <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
-{% endif %}
+
+
