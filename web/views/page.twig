@@ -7,47 +7,59 @@
   </div>
   <div class="screens">
     {% if app.request.images is defined %}
-      <table class="images">
-        {% for key, val  in app.request.images %}
-          <tr>
-            <th class="headline"
-                colspan="3">{{ key }}</th>
-          </tr>
-          {% for image in val.src %}
-            <tr>
-              <th class="subline"
-                  colspan="3">{{ image }}</th>
-            </tr>
-            <tr>
-              <th class="subline">actual
-                <a href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}"
-                   data-copy="{{ image }}"
-                   class="btn small">delete</a>
-                <a href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}"
-                   data-copy="{{ image }}"
-                   class="btn small">copy to ref</a>
-              </th>
-              <th class="subline">ref
-                <a href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}"
-                   data-copy="{{ image }}"
-                   class="btn small">delete</a>
-              </th>
-              <th class="subline">compare
-                <a href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}"
-                   data-copy="{{ image }}"
-                   class="btn small">delete</a>
-              </th>
-            </tr>
-            <tr>
-              <td><img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/></td>
-              <td><img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></td>
-              <td><img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></td>
-            </tr>
-          {% endfor %}
+      {% for key, val  in app.request.images %}
+        {% for image in val.src %}
+          <div class="compare">
+            <h4>{{ key }}</h4>
+
+            <div class="image">
+              <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
+                <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
+              </a>
+
+              <span class="ops">
+                <span class="desc">
+                  {{ image }}
+                </span>
+                <span class="copy fa fa-check-circle"
+                     data-link="{{ app.request.baseUrl }}/image/copy/src/{{ key }}/{{ image }}/{{ app.request.path }}"></span>
+                <span class="delete fa fa-times-circle"
+                      data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                </span>
+              </span>
+            </div>
+
+            <div class="image">
+              <a href="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}">
+                <img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></a>
+              <span class="ops">
+                <span class="desc">
+                    {{ image }}
+                </span>
+                <span class="delete fa fa-times-circle"
+                      data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                </span>
+              </span>
+            </div>
+
+            <div class="image">
+              <a href="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}">
+                <img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></a>
+              <span class="ops">
+                <span class="desc">
+                  {{ image }}
+                </span>
+                <span class="delete fa fa-times-circle"
+                      data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                </span>
+              </span>
+            </div>
+          </div>
         {% endfor %}
-      </table>
+      {% endfor %}
     {% endif %}
   </div>
+
   <div class="pulsarbox">
   </div>
   <div class="result">

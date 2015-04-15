@@ -1,9 +1,8 @@
 <html>
 <head>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js"></script>
-  <link rel="stylesheet"
-        type="text/css"
-        href="{{ app.request.baseUrl }}/css/style.css"/>
+  <link rel='stylesheet' href='path/to/typicons.min.css' />
+  <link rel="stylesheet/less" type="text/css" href="{{ app.request.baseUrl }}/css/style.less" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js"></script>
   <script type="text/javascript">
     var baseUrl = '{{ app.request.baseUrl }}';
   </script>
@@ -34,10 +33,10 @@
             <li>
               {% if app.request.type is defined and (app.request.type == 'suite' or app.request.type == 'project') %}
                 {% set parameter = 'suite=true' %}
-                {% set lable = 'Run Suite' %}
+                {% set lable = 'All Browser' %}
               {% else %}
                 {% set parameter = '' %}
-                {% set lable = 'Run Test' %}
+                {% set lable = 'All Browser' %}
               {% endif %}
               <a href=""
                  data-action="run"
