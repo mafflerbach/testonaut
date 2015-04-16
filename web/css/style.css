@@ -257,8 +257,8 @@ ul.crumb li:last-child a:after {
   -moz-box-shadow: 0px 1px 4px #666666;
   box-shadow: 0px 1px 4px #666666;
   border: transparent;
-  font-size: 14px;
-  padding: 1em 1.5em;
+  font-size: 1em;
+  padding: 0.5em 1.5em;
   text-decoration: none;
 }
 .btn.small {
