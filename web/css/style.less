@@ -1,5 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto);
-@import "themes/indego.less";
+@import "themes/dark.less";
+@import "themes/lightBlue.less";
 @import "font/font-awesome.css";
 
 @font-face {
@@ -57,12 +58,14 @@ body {
   font-size: 1em;
   -webkit-font-smoothing: antialiased;
   line-height: 1em;
-  background-color: #fff;
+  background-color: @background;
+  color:@color;
 }
 
 .contentBox {
   position: relative;
   top: 8em;
+  margin:0px 2em;
 }
 
 .intLink {
@@ -109,7 +112,7 @@ blockquote {
 #textBox {
   white-space: pre;
   unicode-bidi: embed;
-  background-color: #fff;
+  background-color: @background;
 }
 
 body {
@@ -135,8 +138,8 @@ body {
   margin: 5px;
   float: left;
   overflow: hidden;
-  border: 1px rgb(218, 218, 218) solid;
-  box-shadow: 0px 0px 4px -2px #000;
+  border: 1px #ADADAD solid;
+  box-shadow: 0px 1px 4px -2px #000000;
   position: relative;
   margin-top: 0;
 }
@@ -170,7 +173,7 @@ span.ops {
 
 .compare span.copy {
   right: 0.2em;
-  bottom: 0em;
+  bottom: 0.2em;
 }
 
 .compare span.delete {
@@ -186,7 +189,7 @@ span.desc {
 }
 
 .screens {
-  background-color: #fff;
+  background-color: @background;
 }
 
 #crumbs {
@@ -218,7 +221,7 @@ ul.crumb li a {
   margin: 0 1px 0 0;
   font-size: 1.5em;
   text-decoration: none;
-  color: #fff;
+  color: @color;
   padding: 1em 0.7em;
 }
 
@@ -246,7 +249,7 @@ ul.crumb li:first-child a:before {
 
 ul.crumb li:last-child a {
   padding-right: 15px;
-  color: #fff;
+  color: @color;
 }
 
 ul.crumb li:last-child a:after {
@@ -309,28 +312,27 @@ ul.crumb li a:hover:after {
 }
 
 .fancyNav li a {
-  color: #5d5d5d;
+  color: @color;
   display: inline-block;
   padding: 1em;
   position: relative;
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
   z-index: 2;
   text-decoration: none !important;
   white-space: nowrap;
 }
 
 .fancyNav li a.active {
-  background-color: #eaeaea;
+  background-color: darken(@background, 5%);
 }
 
 .fancyNavBox {
-  background-color: #fff;
+  background-color: @background;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);
 }
 
 .btn {
   background: @base;
-  color: #fff;
+  color: @color;
   -webkit-box-shadow: 0px 1px 4px #666666;
   -moz-box-shadow: 0px 1px 4px #666666;
   box-shadow: 0px 1px 4px #666666;
@@ -372,8 +374,8 @@ label[class=radio]:before, label[class=checkbox]:before {
   position: relative;
   left: 0;
   bottom: 1px;
-  background-color: #fff;
-  border: 2px solid #555;
+  background-color: @background;
+  border: 2px solid @color;
   vertical-align: middle;
 }
 
@@ -383,7 +385,7 @@ label.radio:before {
 
 input[type=radio]:checked + label:before {
   content: "\25CF";
-  color: #555;
+  color: @color;
   text-align: center;
 }
 
@@ -397,28 +399,31 @@ label.checkbox:before {
 
 input[type=checkbox]:checked + label:before {
   content: "\2713";
-  color: #555;
+  color: @color;
   text-align: center;
 }
 
 span.collored {
-  color:#555;
+  color: @color;
 }
 
 input[type=text]:focus {
-  border:0;
+  border: 0;
   outline: 0;
-
-  border-bottom:2px solid lighten(@base, 5%);
+  border-bottom: 2px solid lighten(@base, 5%);
 }
+
 input[type=text] {
   font-size: 1em;
-  background-color: #fff;
-  border:0;
-  border-bottom:1px solid silver;
+  background-color: @background;
+  border: 0;
+  border-bottom: 1px solid @color;
+  padding:0.5em;
+  width: 20em;
 }
+
 input.lighten {
-  color:silver;
+  color: @color;
 }
 
 .images img {
@@ -474,10 +479,11 @@ tr.failed td {
 
 }
 
+
 .box .pageContent {
-  box-shadow: 0px 0px 7px -3px #555 inset, 0px 0px 7px 0px #eee inset;
-  color: rgba(0, 0, 0, 0.55);
-  background-color: #efefef;
+  box-shadow: 0px 1px 4px -1px #000;
+  color: lighten(@color, 10%);
+  background-color: @background2;
 }
 
 .box h5 {
@@ -490,9 +496,9 @@ tr.failed td {
 }
 
 .box h5 a {
-  position: absolute;
-  right: 5px;
-  top: 6px;
+  color:@color;
+  top: 2px;
+  position: relative;
 }
 
 @keyframes pulsar {
@@ -596,7 +602,7 @@ tr.failed td {
   display: block;
   clear: both;
   width: 100%;
-  background-color: #fff;
+  background-color: @background;
 }
 
 .nodes li a {
@@ -606,5 +612,26 @@ tr.failed td {
 
 .nodes ul {
   padding: 0;
-  background-color: #fff;
+  background-color: @background;
+}
+
+table {
+  border: 0;
+  border-collapse: collapse;
+  box-shadow: 0px 1px 4px -1px #000;
+  margin: 1em 0em;
+}
+
+thead tr {
+  color:#666;
+}
+
+tr {
+  border: 0;
+}
+
+td {
+  border:0;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5em;
 }

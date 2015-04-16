@@ -37,14 +37,3 @@ $app->mount('/image', new phpSelenium\Page\Provider\Image());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());
 
 $app->run();
-
-/*
-$conf = array(
-  'type' => 'static',
-  'browser' => array(
-    'chrome' => true,
-  )
-);
-
-print(json_encode($conf));
-*/

@@ -18,27 +18,27 @@ h6 {
 }
 h1 {
   font-size: 3em;
-  color: #3f51b5;
+  color: #03a9f4;
 }
 h2 {
   font-size: 2em;
-  color: #4d5ec1;
+  color: #14b4fc;
 }
 h3 {
   font-size: 1em;
-  color: #606fc7;
+  color: #2ebcfc;
 }
 h4 {
   font-size: 1em;
-  color: #8591d5;
+  color: #60ccfd;
 }
 h5 {
   font-size: 0.8em;
-  color: #8591d5;
+  color: #60ccfd;
 }
 h6 {
   font-size: 0.8em;
-  color: #8591d5;
+  color: #60ccfd;
 }
 body {
   margin: 0;
@@ -47,11 +47,13 @@ body {
   font-size: 1em;
   -webkit-font-smoothing: antialiased;
   line-height: 1em;
-  background-color: #fff;
+  background-color: #555555;
+  color: #ffffff;
 }
 .contentBox {
   position: relative;
   top: 8em;
+  margin: 0px 2em;
 }
 .intLink {
   cursor: pointer;
@@ -89,7 +91,7 @@ blockquote {
 #textBox {
   white-space: pre;
   unicode-bidi: embed;
-  background-color: #fff;
+  background-color: #555555;
 }
 #content {
   width: 300px;
@@ -106,8 +108,8 @@ blockquote {
   margin: 5px;
   float: left;
   overflow: hidden;
-  border: 1px #dadada solid;
-  box-shadow: 0px 0px 4px -2px #000000;
+  border: 1px #ADADAD solid;
+  box-shadow: 0px 1px 4px -2px #000000;
   position: relative;
   margin-top: 0;
 }
@@ -133,7 +135,7 @@ span.ops {
 }
 .compare span.copy {
   right: 0.2em;
-  bottom: 0em;
+  bottom: 0.2em;
 }
 .compare span.delete {
   top: 0.3em;
@@ -146,10 +148,10 @@ span.desc {
   left: 0.5em;
 }
 .screens {
-  background-color: #fff;
+  background-color: #555555;
 }
 #crumbs {
-  background-color: #3f51b5;
+  background-color: #03a9f4;
   position: fixed;
   right: 0;
   left: 0;
@@ -167,13 +169,13 @@ ul.crumb li {
 ul.crumb li a {
   display: block;
   float: left;
-  background-color: #3f51b5;
+  background-color: #03a9f4;
   text-align: center;
   position: relative;
   margin: 0 1px 0 0;
   font-size: 1.5em;
   text-decoration: none;
-  color: #fff;
+  color: #ffffff;
   padding: 1em 0.7em;
 }
 ul.crumb li a:after {
@@ -194,7 +196,7 @@ ul.crumb li:first-child a:before {
 }
 ul.crumb li:last-child a {
   padding-right: 15px;
-  color: #fff;
+  color: #ffffff;
 }
 ul.crumb li:last-child a:after {
   display: none;
@@ -234,25 +236,24 @@ ul.crumb li:last-child a:after {
   opacity: 1 !important;
 }
 .fancyNav li a {
-  color: #5d5d5d;
+  color: #ffffff;
   display: inline-block;
   padding: 1em;
   position: relative;
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
   z-index: 2;
   text-decoration: none !important;
   white-space: nowrap;
 }
 .fancyNav li a.active {
-  background-color: #eaeaea;
+  background-color: #484848;
 }
 .fancyNavBox {
-  background-color: #fff;
+  background-color: #555555;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);
 }
 .btn {
-  background: #3f51b5;
-  color: #fff;
+  background: #03a9f4;
+  color: #ffffff;
   -webkit-box-shadow: 0px 1px 4px #666666;
   -moz-box-shadow: 0px 1px 4px #666666;
   box-shadow: 0px 1px 4px #666666;
@@ -266,7 +267,7 @@ ul.crumb li:last-child a:after {
   padding: 0.5em 1.2em;
 }
 .btn:hover {
-  background-color: #606fc7;
+  background-color: #2ebcfc;
   text-decoration: none;
 }
 input[type=radio] {
@@ -290,8 +291,8 @@ label[class=checkbox]:before {
   position: relative;
   left: 0;
   bottom: 1px;
-  background-color: #fff;
-  border: 2px solid #555;
+  background-color: #555555;
+  border: 2px solid #ffffff;
   vertical-align: middle;
 }
 label.radio:before {
@@ -299,7 +300,7 @@ label.radio:before {
 }
 input[type=radio]:checked + label:before {
   content: "\25CF";
-  color: #555;
+  color: #ffffff;
   text-align: center;
 }
 input[type=checkbox] {
@@ -310,25 +311,27 @@ label.checkbox:before {
 }
 input[type=checkbox]:checked + label:before {
   content: "\2713";
-  color: #555;
+  color: #ffffff;
   text-align: center;
 }
 span.collored {
-  color: #555;
+  color: #ffffff;
 }
 input[type=text]:focus {
   border: 0;
   outline: 0;
-  border-bottom: 2px solid #4d5ec1;
+  border-bottom: 2px solid #14b4fc;
 }
 input[type=text] {
   font-size: 1em;
-  background-color: #fff;
+  background-color: #555555;
   border: 0;
-  border-bottom: 1px solid silver;
+  border-bottom: 1px solid #ffffff;
+  padding: 0.5em;
+  width: 20em;
 }
 input.lighten {
-  color: silver;
+  color: #ffffff;
 }
 .images img {
   width: 100%;
@@ -370,9 +373,9 @@ tr.failed td {
   padding: 0.5em 0.8em;
 }
 .box .pageContent {
-  box-shadow: 0px 0px 7px -3px #555555 inset, 0px 0px 7px 0px #eeeeee inset;
-  color: rgba(0, 0, 0, 0.55);
-  background-color: #efefef;
+  box-shadow: 0px 1px 4px -1px #000000;
+  color: #ffffff;
+  background-color: #6f6f6f;
 }
 .box h5 {
   padding: 1em;
@@ -380,12 +383,12 @@ tr.failed td {
   position: relative;
   font-weight: normal;
   font-size: 0.8em;
-  color: #4053b9;
+  color: #03acf9;
 }
 .box h5 a {
-  position: absolute;
-  right: 5px;
-  top: 6px;
+  color: #ffffff;
+  top: 2px;
+  position: relative;
 }
 @keyframes pulsar {
   0% {
@@ -474,7 +477,7 @@ tr.failed td {
   display: block;
   clear: both;
   width: 100%;
-  background-color: #fff;
+  background-color: #555555;
 }
 .nodes li a {
   font-size: 0.9em;
@@ -482,5 +485,22 @@ tr.failed td {
 }
 .nodes ul {
   padding: 0;
-  background-color: #fff;
+  background-color: #555555;
+}
+table {
+  border: 0;
+  border-collapse: collapse;
+  box-shadow: 0px 1px 4px -1px #000000;
+  margin: 1em 0em;
+}
+thead tr {
+  color: #666;
+}
+tr {
+  border: 0;
+}
+td {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5em;
 }

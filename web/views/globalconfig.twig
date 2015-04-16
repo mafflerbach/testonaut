@@ -5,18 +5,16 @@
   <form action=""
         method="POST">
 
-  <label>App Path</label>
   <br/>
   <input type="text"
+         placeholder="App Path"
          value="{{ app.request.settings.appPath }}"
          name="appPath"/>
 
   <br/>
   <br/>
-
-    <label>Selenium Hub: </label>
-  <br/>
   <input type="text"
+         placeholder="Selenium Hub:"
          value="{{ app.request.settings.seleniumAddress }}"
          name="seleniumAddress"/>
 
