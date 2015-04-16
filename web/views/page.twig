@@ -21,12 +21,18 @@
                 <span class="desc">
                   {{ image }}
                 </span>
-                <span class="copy fa fa-check-circle"
-                     data-link="{{ app.request.baseUrl }}/image/copy/src/{{ key }}/{{ image }}/{{ app.request.path }}"></span>
-                <span class="delete fa fa-times-circle"
-                      data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
-                </span>
+                  <a href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="copy fa fa-check-circle"
+                     data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                <a href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <span class="delete fa fa-times-circle"
+                        data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  </span>
+                </a>
               </span>
+
             </div>
 
             <div class="image">
@@ -36,9 +42,11 @@
                 <span class="desc">
                     {{ image }}
                 </span>
-                <span class="delete fa fa-times-circle"
-                      data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
-                </span>
+                <a href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <span class="delete fa fa-times-circle"
+                        data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  </span>
+                </a>
               </span>
             </div>
 
@@ -49,9 +57,11 @@
                 <span class="desc">
                   {{ image }}
                 </span>
-                <span class="delete fa fa-times-circle"
-                      data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
-                </span>
+                <a href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <span class="delete fa fa-times-circle"
+                        data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  </span>
+                </a>
               </span>
             </div>
           </div>
