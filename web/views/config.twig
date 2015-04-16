@@ -6,16 +6,20 @@
         method="POST">
     {% if app.browser is defined %}
       {% for browser  in app.browser %}
-        <label>Baseurl for {{ browser.browserName }}</label>
-        {% if browser.url is defined %}
+        {% if browser.url is defined and browser.url != '' %}
           {% set url = browser.url %}
+          {% set lighten = '' %}
         {% else %}
           {% set url = '' %}
+          {% set lighten = 'class=lighten' %}
+
         {% endif %}
+        <span class="fa fa-link collored"></span>
         <input type="text"
                value="{{ url }}"
+               placeholder="Baseurl"
                name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
-        <br/>
+
         {% if browser.active is defined and browser.active == true %}
           {% set checked = 'checked="checked"' %}
         {% else %}
@@ -29,7 +33,8 @@
 
         <label class="checkbox"
                for="{{ browser.browserName }}">{{ browser.browserName }}</label>
-        <br/>
+<br/>
+
       {% endfor %}
     {% endif %}
     <br/>
