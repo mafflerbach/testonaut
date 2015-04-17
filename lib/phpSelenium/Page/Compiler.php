@@ -140,7 +140,7 @@ class Compiler {
 
   protected function generateIncludeBox($content, $path) {
     $return = '<div class="box hide">
-<h5><a href="{{ app.request.baseUrl }}/edit/' . $path . '"><span class="fa fa-edit"></span></a> Include ' . $path . '</h5>
+<h5><a href="{{ app.request.baseUrl }}/edit/' . $path . '"><span class="fa fa-pencil"></span></a> Include ' . $path . '</h5>
 <div class="pageContent">' . $content . '</div></div>';
     return $return;
   }
