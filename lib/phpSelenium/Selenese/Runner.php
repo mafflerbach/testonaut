@@ -47,6 +47,7 @@ class Runner {
   }
 
   protected function _run($content, \DesiredCapabilities $capabilities) {
+    $browserResult = true;
     $test = new Test();
     $test->setBaseUrl($this->baseUrl);
     $test->loadFromSeleneseHtml($content);
@@ -100,6 +101,7 @@ class Runner {
         $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
       } else {
         $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $browserResult = false;
       }
 
       $this->addToPoll($result);
@@ -118,7 +120,7 @@ class Runner {
     } catch (\Exception $e) {
       //nothing todo cause session is close
     }
-    return $res;
+    return array('run' => $res, 'browserResult' => $browserResult);
   }
 
   /**
@@ -128,10 +130,10 @@ class Runner {
    */
   public function run($capabilities) {
     $return = array();
-
     if (is_array($this->test)) {
       for ($i = 0; $i < count($this->test); $i++) {
         $return[] = $this->_run($this->test[$i], $capabilities);
+        var_dump($this->test[$i]);
       }
     } else {
       $return[] = $this->_run(array($this->test), $capabilities);

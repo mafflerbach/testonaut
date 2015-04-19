@@ -62,19 +62,20 @@ class Run implements ControllerProviderInterface {
       mkdir($path, 0775, true);
     }
 
-    $tmp = '';
-    for($i = 0; $i < count($content[0]); $i++) {
-      $tmp .=  $content[0][$i];
-    }
-
     $fileName = 'result_'.$this->browser.'_'.date('Y-m-d_H-i-s');
-    file_put_contents($path.'/'.$fileName, $tmp);
+    file_put_contents($path.'/'.$fileName, json_encode($content));
   }
 
   protected function runSuite($path) {
     $this->collect($path);
 
     $testCollect = array();
+
+    $content = file_get_contents($path. '/content');
+    if (strpos($content, '<table') !== FALSE) {
+      $this->dirArray[] = $path. '/content';
+    }
+
     for ($i = 0; $i < count($this->dirArray); $i++) {
       $testCollect[] = $this->dirArray[$i] . '/content';
     }
@@ -128,6 +129,7 @@ class Run implements ControllerProviderInterface {
 
 
   private function _run(array $tests) {
+
     try {
       $capabilities = $this->getCapabilities();
       $runner = new Runner($tests, \phpSelenium\Config::getInstance()->seleniumHub, $this->basePath, $this->imagePath);
@@ -141,8 +143,6 @@ class Run implements ControllerProviderInterface {
       if($this->screenshotSettings() == 1) {
         $runner->screenshotsAfterTest();
       }
-
-
 
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);
