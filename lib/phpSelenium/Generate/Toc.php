@@ -7,6 +7,7 @@ use phpSelenium\Selenium\Api;
 
 class Toc {
 
+  private $page = '';
   private $basePath = 'root';
   private $dirArray = array();
 
@@ -14,7 +15,10 @@ class Toc {
     if ($basePath != 'root') {
       $this->basePath = $basePath;
     }
+  }
 
+  public function page($page) {
+    $this->page = $page;
   }
 
   /**
@@ -26,8 +30,6 @@ class Toc {
     }
     $ritit = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath), \RecursiveIteratorIterator::CHILD_FIRST);
     $dirs = array();
-
-    $dirs = $this->appendBrowserList($dirs);
 
     $r = array();
     foreach ($ritit as $splFileInfo) {
@@ -72,8 +74,11 @@ class Toc {
         } else {
           $_path = $key;
         }
-
-        $link = '<a href="' . $_path . '">' . $key . '</a>';
+        $prefix = '';
+        if ($this->page != '') {
+          $prefix = $this->page.'.';
+        }
+        $link = '<a href="/web/'.$prefix . $_path . '">' . $key . '</a>';
         $tree .= '<li>' . $link;
         $tree .= $this->makeList($value, $_path);
         $tree .= '</li>';
@@ -90,17 +95,6 @@ class Toc {
     }
 
     return $tree;
-  }
-
-  private function appendBrowserList($dirs) {
-    $api = new Api();
-    $list = $api->getBrowserList();
-
-    for ($i = 0; $i < count($list); $i++) {
-      $dirs[] = str_replace(' ', '_', $list[$i]['browserName']);
-    }
-
-    return $dirs;
   }
 
 }

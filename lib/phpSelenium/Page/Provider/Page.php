@@ -66,6 +66,7 @@ class Page implements ControllerProviderInterface {
 
   protected function getToc($path) {
     $toc = new Toc($path);
+    $toc->page($this->path);
     $toc->runDir();
     return $toc->generateMenu();
   }
