@@ -2,6 +2,7 @@
 namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Generate\Toc;
+use phpSelenium\Matrix;
 use phpSelenium\Page\Breadcrumb;
 use phpSelenium\Page\Compiler;
 use phpSelenium\Settings\Browser;
@@ -26,6 +27,9 @@ class Page implements ControllerProviderInterface {
       $browserSettings = new Browser($path);
       $browsers = $browserSettings->getSettings();
 
+      $matrix = new Matrix($page, $browsers);
+      $lastRun = $matrix->read();
+
       $images = $page->getImages();
 
       $root = \phpSelenium\Config::getInstance()->Path;
@@ -38,7 +42,8 @@ class Page implements ControllerProviderInterface {
         'browsers'  => $browsers,
         'images'    => $images,
         'imagePath' => str_replace($root, '', $page->getImagePath()),
-        'type'      => $settings->getType()
+        'type'      => $settings->getType(),
+        'lastResult'      => $lastRun
       );
       $toc = $this->getToc($page->transCodePath());
       $app['menu'] = $toc;

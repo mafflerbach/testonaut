@@ -54,7 +54,7 @@ class Toc {
    * @return string
    */
   public function generateMenu() {
-    return $this->makeList($this->dirArray);
+    return '<div class="contentList"><h5>Contentlist</h5>'.$this->makeList($this->dirArray).'</div>';
   }
 
   /**
@@ -65,8 +65,8 @@ class Toc {
    *
    * @return string
    */
-  protected function makeList($array, $path = '', $tree = '') {
-
+  protected function makeList($array, $path = '', $tree = '',  $level=0) {
+    $level++;
     foreach ($array as $key => $value) {
       if (is_array($value)) {
         if ($path != '') {
@@ -79,8 +79,8 @@ class Toc {
           $prefix = $this->page.'.';
         }
         $link = '<a href="/web/'.$prefix . $_path . '">' . $key . '</a>';
-        $tree .= '<li>' . $link;
-        $tree .= $this->makeList($value, $_path);
+        $tree .= '<li> <span class="level'.$level.'"></span>' . $link;
+        $tree .= ''.$this->makeList($value, $_path, '', $level);
         $tree .= '</li>';
 
       } else {
@@ -88,6 +88,7 @@ class Toc {
           continue;
         }
       }
+
     }
 
     if ($tree != '') {

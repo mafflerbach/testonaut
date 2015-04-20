@@ -120,8 +120,9 @@ class Runner {
     } catch (\Exception $e) {
       //nothing todo cause session is close
     }
-    return array('run'           => $res,
-                 'browserResult' => $browserResult
+    return array(
+      'run'           => $res,
+      'browserResult' => $browserResult
     );
   }
 
@@ -158,7 +159,7 @@ class Runner {
   }
 
   protected function addToPoll($content) {
-    file_put_contents($this->polling, $content, FILE_APPEND);
+    $this->writeToFile($this->polling, $content, FILE_APPEND);
   }
 
   protected function invokeCommand($image, $webDriver) {
@@ -180,10 +181,10 @@ class Runner {
     $command->arg1 = $path . $tmp . '.png';
     if ($this->compare($browserName, $tmp . '.png')) {
       $result = "<tr><td colspan='3'>Compare: " . $command->arg1 . " </td></tr>";
-      file_put_contents($this->polling, $result, FILE_APPEND);
+      $this->writeToFile($this->polling, $result, FILE_APPEND);
     } else {
       $result = "<tr><td colspan='3'>Cant Compare: " . $command->arg1 . " </td></tr>";
-      file_put_contents($this->polling, $result, FILE_APPEND);
+      $this->writeToFile($this->polling, $result, FILE_APPEND);
     }
   }
 
@@ -197,13 +198,15 @@ class Runner {
       if (file_exists($comp)) {
         unlink($comp);
       }
-
       $compare = new Image();
       return $compare->compare($path, $pathref, $comp);
     } else {
       return FALSE;
     }
+  }
 
+  protected function writeToFile($path, $content, $option = 0) {
+    file_put_contents($path, $content, $option);
   }
 
 }

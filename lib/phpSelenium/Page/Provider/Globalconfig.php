@@ -65,7 +65,7 @@ class Globalconfig implements ControllerProviderInterface {
 
   protected function saveConfig($array) {
     $config = \phpSelenium\Config::getInstance()->Path . '/config';
-    file_put_contents($config, json_encode($array));
+    $this->writeToFile($config, json_encode($array));
   }
 
   public function getConfig() {
@@ -79,11 +79,14 @@ class Globalconfig implements ControllerProviderInterface {
         'appPath'         => '',
         'cache'           => '',
         'seleniumAddress' => '');
-      file_put_contents($config, json_encode($configuration));
+      $this->writeToFile($config, json_encode($configuration));
 
     };
-
     return $configuration;
+  }
+
+  protected function writeToFile($path, $content) {
+    file_put_contents($path, $content);
   }
 
 }

@@ -1,17 +1,19 @@
 {% include 'head.twig' %}
+
+  {% include 'headNavi.twig' %}
 <div class="contentBox">
+
   <div class="content">
     {{ app.menu|raw }}
-
     {{ app.request.content|raw }}
   </div>
   <div class="screens">
     {% if app.request.images is defined %}
       {% for key, val  in app.request.images %}
+
+        <h4 id="{{ key }}">{{ key }}</h4>
         {% for image in val.src %}
           <div class="compare">
-            <h4>{{ key }}</h4>
-
             <div class="image">
               <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
                 <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
@@ -23,7 +25,7 @@
                 </span>
                   <a href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="copy fa fa-check-circle"
-                     data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                          data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
                   </a>
                 <a href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
