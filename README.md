@@ -1,6 +1,7 @@
 ###TODO###
 
 Milestone 1.0 - 1.5
+    
 * build history page
 * Editor verbessern oder austauschen
 * implementieren weiterer commands
