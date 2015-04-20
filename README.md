@@ -1,27 +1,14 @@
 ###TODO###
 
-* ImagePath fixen bei suiterun
-
-
-
-Milestone für 1.0 
-
-* Browsermatrix
-* entschlacken der head, auslagern mancher inhalte in die einzelnen page templates
-
 Milestone 1.0 - 1.5
-
-* implementieren weiterer commands
-
-Milestone für 1.5
-
-* Template für seiteninhalte implementieren
-* variablen implementieren
-* Allegemeine screenshor übersicht seite
-* Filter für die screenshots implementieren
+* build history page
 * Editor verbessern oder austauschen
+* implementieren weiterer commands
+* variablen implementieren
+* Allegemeine screenshoot übersichtsseite
+* Filter für die screenshots implementieren
+* Template für seiteninhalte implementieren
 * performance überprüfen
-
 
 
 * ~~baseurl aus der config berücksichtigen~~
@@ -33,6 +20,9 @@ Milestone für 1.5
 * ~~Screenshoteintellung implementieren~~
 * ~~aktuelles bild als referenz übernehmen~~
 * ~~Bilder löschen~~
+* ~~ImagePath fixen bei suiterun~~
+* ~~Browsermatrix~~
+* ~~entschlacken der head, auslagern mancher inhalte in die einzelnen page templates~~
 
 ---
 Module

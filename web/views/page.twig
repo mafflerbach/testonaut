@@ -2,6 +2,19 @@
 
   {% include 'headNavi.twig' %}
 <div class="contentBox">
+  {% if app.request.lastResult is defined %}
+    <div class="lastResult">
+      {% for key, val  in app.request.lastResult %}
+        {% if val == 'true' %}
+          {% set class = 'success' %}
+        {% else %}
+          {% set class = 'fail' %}
+        {% endif %}
+        <span class="{{ class }}"><a href="#{{ key }}"> {{ key }}</a></span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
 
   <div class="content">
     {{ app.menu|raw }}
