@@ -3,6 +3,7 @@
 namespace phpSelenium\Selenese;
 
 use phpSelenium\Image;
+use phpSelenium\Page;
 use phpSelenium\Selenese\Command\captureEntirePageScreenshot;
 
 class Runner {
@@ -39,28 +40,27 @@ class Runner {
     return $this->result;
   }
 
-  public function setBaseUrl($baseUrl){
+  public function setBaseUrl($baseUrl) {
     $this->baseUrl = $baseUrl;
   }
-  public function getBaseUrl(){
+
+  public function getBaseUrl() {
     return $this->baseUrl;
   }
 
-  protected function _run($content, \DesiredCapabilities $capabilities) {
-    $browserResult = true;
+  protected function _run(Page $content, \DesiredCapabilities $capabilities) {
+    $browserResult = TRUE;
     $test = new Test();
     $test->setBaseUrl($this->baseUrl);
     $test->loadFromSeleneseHtml($content);
 
     if ($test->commands == '') {
-      throw new \Exception('Test not found');
       return NULL;
     }
 
     $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
 
-    $imageDir = $this->imagePath;
-    $path = $imageDir . '/' . $browserName . "/src/";
+    $path = $content->getImagePath() . '/' . $browserName . "/src/";
     $this->polling .= '-' . $browserName;
     $k = 1;
 
@@ -101,7 +101,7 @@ class Runner {
         $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
       } else {
         $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
-        $browserResult = false;
+        $browserResult = FALSE;
       }
 
       $this->addToPoll($result);
@@ -120,7 +120,9 @@ class Runner {
     } catch (\Exception $e) {
       //nothing todo cause session is close
     }
-    return array('run' => $res, 'browserResult' => $browserResult);
+    return array('run'           => $res,
+                 'browserResult' => $browserResult
+    );
   }
 
   /**
@@ -132,22 +134,28 @@ class Runner {
     $return = array();
     if (is_array($this->test)) {
       for ($i = 0; $i < count($this->test); $i++) {
-        $return[] = $this->_run($this->test[$i], $capabilities);
-        var_dump($this->test[$i]);
+        $result = $this->_run($this->test[$i], $capabilities);
+        if ($result != NULL) {
+          $return[] = $result;
+        }
       }
     } else {
-      $return[] = $this->_run(array($this->test), $capabilities);
+      $result = $this->_run(array($this->test), $capabilities);
+      if ($result != NULL) {
+        $return[] = $result;
+      }
     }
+
     return $return;
   }
 
   public function screenshotsAfterEveryStep() {
     $this->screenshotsAfterEveryStep = TRUE;
   }
+
   public function screenshotsAfterTest() {
     $this->screenshotsAfterTest = TRUE;
   }
-
 
   protected function addToPoll($content) {
     file_put_contents($this->polling, $content, FILE_APPEND);

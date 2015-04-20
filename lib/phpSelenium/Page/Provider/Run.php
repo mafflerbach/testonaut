@@ -2,6 +2,7 @@
 namespace phpSelenium\Page\Provider;
 
 use phpSelenium\Capabilities;
+use phpSelenium\Page;
 use phpSelenium\Page\Breadcrumb;
 use phpSelenium\Selenium\Api;
 use Silex\Api\ControllerProviderInterface;
@@ -35,9 +36,9 @@ class Run implements ControllerProviderInterface {
       }
 
       if ($request->query->get('suite') == 'true') {
-        $result = $this->runSuite($this->page->transCodePath());
+        $result = $this->runSuite($this->page);
       } else {
-        $result = $this->run($this->page->transCodePath());
+        $result = $this->run($this->page);
       }
 
       $this->writeResultFile($result);
@@ -67,17 +68,17 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function runSuite($path) {
-    $this->collect($path);
+    $this->collect($path->transCodePath());
 
     $testCollect = array();
 
-    $content = file_get_contents($path. '/content');
+    $content = file_get_contents($path->transCodePath(). '/content');
     if (strpos($content, '<table') !== FALSE) {
-      $this->dirArray[] = $path. '/content';
+      $this->dirArray[] = $path;
     }
 
     for ($i = 0; $i < count($this->dirArray); $i++) {
-      $testCollect[] = $this->dirArray[$i] . '/content';
+      $testCollect[] = $this->dirArray[$i];
     }
 
     $result = $this->_run($testCollect);
@@ -86,14 +87,7 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function run($path) {
-
-    $contentPath = $path . '/content_includes';
-    if (file_exists($contentPath)) {
-      $testCollect[] = $contentPath;
-    } else {
-      $contentPath = $path . '/content';
-      $testCollect[] = $contentPath;
-    }
+    $testCollect[] = $path;
 
     return $this->_run($testCollect);
   }
@@ -169,8 +163,14 @@ class Run implements ControllerProviderInterface {
       if (is_dir($outerDir . "/" . $d)) {
         if (file_exists($outerDir . "/" . $d . '/content')) {
           $content = file_get_contents($outerDir . "/" . $d . '/content');
+
           if (strpos($content, '<table') !== FALSE) {
-            $this->dirArray[] = $outerDir . "/" . $d;
+            $wikipath = \phpSelenium\Config::getInstance()->wikiPath.'/';
+            $path = str_replace($wikipath, '', $outerDir . "/" . $d);
+            $path = str_replace('/', '.', $path);
+
+            $page = new Page($path);
+            $this->dirArray[] = $page;
           }
         }
         $dir_array[$d] = $this->collect($outerDir . "/" . $d);

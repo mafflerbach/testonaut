@@ -2,6 +2,7 @@
 
 namespace phpSelenium\Selenese;
 
+use phpSelenium\Page;
 use phpSelenium\Selenese\Command\Command;
 use phpSelenium\Selenese\Command\Stub;
 
@@ -23,19 +24,18 @@ class Test {
    * @throws \InvalidArgumentException
    * @throws \Exception
    */
-  public function loadFromSeleneseHtml($file) {
-
-    if (!file_exists($file)) {
+  public function loadFromSeleneseHtml(Page $file) {
+    if (!file_exists($file->transCodePath())) {
       throw new \InvalidArgumentException("$file does not exist");
     }
 
-    if (!is_readable($file)) {
+    if (!is_readable($file->transCodePath())) {
       throw new \InvalidArgumentException("$file is not readable");
     }
 
     libxml_use_internal_errors(true);
     $dom = new \DOMDocument;
-    $dom->loadHTMLFile($file);
+    $dom->loadHTML($file->getCompiledPage());
 
     // get the base url
     if ($this->baseUrl == '') {

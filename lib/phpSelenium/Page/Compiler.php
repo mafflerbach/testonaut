@@ -12,15 +12,12 @@ class Compiler {
 
   public function compile($variables) {
     $path = $this->page->transCodePath();
-    $contentPath = $path . '/content_includes';
-    if (!file_exists($contentPath)) {
-      $contentPath = $path . '/content';
-    }
+    $contentPath = $path . '/content';
 
     $conf = $this->page->config();
 
     $content = $this->invokePages($contentPath);
-    $content = '<div class="pageContent">'.$content.'</div>';
+    $content = '<div class="pageContent">' . $content . '</div>';
     $content = $this->includeSpecialHeadPages($content, $conf['type']);
     $content = $this->includeSpecialFooterPages($content, $conf['type']);
     $content = $this->compileTwigTags($content, $variables);
@@ -46,18 +43,9 @@ class Compiler {
     if (file_exists($contentPath)) {
       $lines = file($contentPath);
       $content = $this->parseIncludes($lines);
-      if (strpos($contentPath, '_includes') === FALSE) {
-        $filename = $contentPath . '_includes';
-      } else {
-        $filename = $contentPath;
-      }
-      file_put_contents($filename, $content);
       return $content;
     }
 
-    if (file_exists($contentPath)) {
-      return file_get_contents($contentPath);
-    }
 
     return '';
   }
@@ -79,13 +67,12 @@ class Compiler {
     return implode("", $fileArr);
   }
 
-
   protected function includeSpecialFooterPages($content, $type) {
-    if ($type == 'suite' ) {
+    if ($type == 'suite') {
       $pages[] = 'suiteTearDown';
     }
 
-    if ($type == 'test' ) {
+    if ($type == 'test') {
       $pages[] = 'tearDown';
     }
 
@@ -96,12 +83,12 @@ class Compiler {
     return $content;
   }
 
-  protected function includeSpecialHeadPages($content,$type) {
-    if ($type == 'suite' ) {
+  protected function includeSpecialHeadPages($content, $type) {
+    if ($type == 'suite') {
       $pages[] = 'suiteSetUp';
     }
 
-    if ($type == 'test' ) {
+    if ($type == 'test') {
       $pages[] = 'setUp';
     }
 
@@ -111,6 +98,7 @@ class Compiler {
 
     return $content;
   }
+
   protected function patchPage($content, $pages, $prepend = FALSE) {
     $path = $this->page->path;
 
@@ -127,9 +115,9 @@ class Compiler {
         if ($c != '') {
           $container = $this->generateIncludeBox($c, $path);
           if ($prepend) {
-            $content = $container . '<div>'.$content.'</div>';
+            $content = $container . '<div>' . $content . '</div>';
           } else {
-            $content = '<div>'.$content.'</div>' . $container;
+            $content = '<div>' . $content . '</div>' . $container;
           }
         }
       }
