@@ -1,4 +1,27 @@
 {% include 'head.twig' %}
+{% include 'headNavi.twig' %}
+{% block content %}
+  <div class="fancyNavBox">
+    <ul class="fancyNav">
+      {% if app.request.mode == 'show' %}
+        {% if app.request.content %}
+
+          <li>
+            <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+               data-action="add"
+               data-path="{{ app.request.path }}">Edit</a>
+          </li>
+
+          <li>
+            <a href="{{ app.request.baseUrl }}/globalconfig"
+               data-action="config"
+               data-path="{{ app.request.path }}">Config</a>
+          </li>
+        {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+{% endblock %}
 <div class="contentBox">
 <div class="content">
   {{ app.menu|raw }}

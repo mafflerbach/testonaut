@@ -1,3 +1,4 @@
+{% block crumbs %}
 <div id="crumbs">
   {% if app.crumb is defined %}
     <ul class="crumb">
@@ -10,13 +11,21 @@
         </li>
       {% endfor %}
     </ul>
-  {% endif %}
+    {% else %}
+      <ul class="crumb">
+        <li>
+          <a href="{{ app.request.baseUrl }}/">root</a>
+        </li>
+      </ul>
+  {% endif %}</div>
+{% endblock %}
 
+{% block fancyNavBox %}
   <div class="fancyNavBox">
     <ul class="fancyNav">
       {% if app.request.mode == 'show' %}
         {% if app.request.content %}
-          {% if app.request.type is defined and (app.request.type != 'static' or app.request.type != 'none' or app.request.type != '') %}
+          {% if app.request.type is defined and (app.request.type != 'static' and app.request.type != 'none' and app.request.type != '')%}
             <li>
               {% if app.request.type is defined and (app.request.type == 'suite' or app.request.type == 'project') %}
                 {% set parameter = 'suite=true' %}
@@ -65,7 +74,7 @@
                data-path="{{ app.request.path }}">Config</a>
           </li>
         {% else %}
-          {% if app.request.type is null %}
+          {% if app.request.type is not defined or app.request.type is null %}
             <li>
               <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
                  data-action="add"
@@ -76,5 +85,6 @@
       {% endif %}
     </ul>
   </div>
-</div>
+{% endblock %}
+
 

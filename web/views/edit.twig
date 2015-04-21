@@ -1,4 +1,5 @@
 {% include 'head.twig' %}
+{% include 'headNavi.twig' %}
 <div class="contentBox">
 <div class="content">
   <form name="compForm"
@@ -57,7 +58,7 @@
       <input type="checkbox"
              name="switchMode"
              id="switchBox"
-             onchange="setDocMode(this.checked)">
+             onchange="setDocMode(this.checked)" checked="checked">
       <label  class="checkbox"  for="switchBox">Show HTML</label>
     </div>
     <div id="textBox"
