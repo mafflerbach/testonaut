@@ -25,6 +25,9 @@ $app['debug'] = true;
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
   'twig.path' => __DIR__ . '/views',
 ));
+$app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
+  'http_cache.cache_dir' => __DIR__.'/cache/',
+));
 
 $app->mount('/', new phpSelenium\Page\Provider\Start());
 $app->mount('/edit/', new phpSelenium\Page\Provider\Start(true));

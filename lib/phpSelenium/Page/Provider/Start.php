@@ -6,6 +6,7 @@ use phpSelenium\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Start implements ControllerProviderInterface {
   private $edit = FALSE;
@@ -50,7 +51,10 @@ class Start implements ControllerProviderInterface {
           'mode'    => 'show',
           'type' => 'start'
         );
-        return $app['twig']->render('index.twig');
+        $foo =  $app['twig']->render('index.twig');
+        return new Response($foo , 200, array(
+          'Cache-Control' => 'maxage=300',
+        ));
       }
 
     });

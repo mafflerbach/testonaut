@@ -9,6 +9,7 @@ use phpSelenium\Settings\Browser;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Page implements ControllerProviderInterface {
   private $request;
@@ -52,7 +53,10 @@ class Page implements ControllerProviderInterface {
       $app['crumb'] = $crumb->getBreadcrumb();
 
       $foo = $app['twig']->render('page.twig');
-      return $foo;
+      return new Response($foo , 200, array(
+        'Cache-Control' => 's-maxage=5',
+      ));
+
     });
 
     return $page;

@@ -1,90 +1,115 @@
 {% block crumbs %}
-<div id="crumbs">
-  {% if app.crumb is defined %}
-    <ul class="crumb">
-      <li>
-        <a href="{{ app.request.baseUrl }}/">root</a>
-      </li>
-      {% for crumbie, key in app.crumb %}
+  <div id="crumbs">
+    {% if app.crumb is defined %}
+      <ul class="crumb">
         <li>
-          <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
+          <a href="{{ app.request.baseUrl }}/">root</a>
         </li>
-      {% endfor %}
-    </ul>
+        {% for crumbie, key in app.crumb %}
+          <li>
+            <a href="{{ app.request.baseUrl }}/{{ key }}">{{ crumbie }}</a>
+          </li>
+        {% endfor %}
+      </ul>
     {% else %}
       <ul class="crumb">
         <li>
           <a href="{{ app.request.baseUrl }}/">root</a>
         </li>
       </ul>
-  {% endif %}</div>
+    {% endif %}</div>
 {% endblock %}
 
 {% block fancyNavBox %}
-  <div class="fancyNavBox">
-    <ul class="fancyNav">
-      {% if app.request.mode == 'show' %}
-        {% if app.request.content %}
-          {% if app.request.type is defined and (app.request.type != 'static' and app.request.type != 'none' and app.request.type != '')%}
-            <li>
-              {% if app.request.type is defined and (app.request.type == 'suite' or app.request.type == 'project') %}
-                {% set parameter = 'suite=true' %}
-                {% set lable = 'All Browser' %}
-              {% else %}
-                {% set parameter = '' %}
-                {% set lable = 'All Browser' %}
-              {% endif %}
-              <a href=""
-                 data-action="run"
-                 data-path="{{ app.request.path }}">Run</a>
-              {% if app.request.browsers is defined %}
-                <div class="nodes hide">
-                  <ul>
-                    <li>
-                      <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?{{ parameter }}"
-                         data-action="run"
-                         data-path="{{ app.request.path }}">{{ lable }}</a>
-                    </li>
-                    {% for browser in app.request.browsers %}
-                      <li>
-                        <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&{{ parameter }}"
-                           data-path="{{ app.request.path }}"
-                           data-browser="{{ browser.browserName }}"
-                           class="run-test">{{ browser.browserName }}</a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              {% endif %}
-            </li>
-          {% endif %}
-          <li>
-            <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
-               data-action="add"
-               data-path="{{ app.request.path }}">Edit</a>
-          </li>
-          <li>
-            <a href="{{ app.request.baseUrl }}/delete/{{ app.request.path }}"
-               data-action="delete"
-               data-path="{{ app.request.path }}">Delete</a>
-          </li>
-          <li>
-            <a href="{{ app.request.baseUrl }}/config/{{ app.request.path }}"
-               data-action="config"
-               data-path="{{ app.request.path }}">Config</a>
-          </li>
-        {% else %}
-          {% if app.request.type is not defined or app.request.type is null %}
+  {% if app.request.baseUrl == '' or  app.request.baseUrl == '/web' %}
+    <div class="fancyNavBox">
+      <ul class="fancyNav">
+        {% if app.request.mode == 'show' %}
+          {% if app.request.content %}
             <li>
               <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
                  data-action="add"
-                 data-path="{{ app.request.path }}">Add Page</a>
+                 data-path="{{ app.request.path }}">Edit</a>
+            </li>
+
+            <li>
+              <a href="{{ app.request.baseUrl }}/globalconfig"
+                 data-action="config"
+                 data-path="{{ app.request.path }}">Config</a>
             </li>
           {% endif %}
         {% endif %}
-      {% endif %}
-    </ul>
-  </div>
+      </ul>
+    </div>
+  {% else %}
+
+
+    <div class="fancyNavBox">
+      <ul class="fancyNav">
+        {% if app.request.mode == 'show' %}
+          {% if app.request.content %}
+            {% if app.request.type is defined and (app.request.type != 'static' and app.request.type != 'none' and app.request.type != '') %}
+              <li>
+                {% if app.request.type is defined and (app.request.type == 'suite' or app.request.type == 'project') %}
+                  {% set parameter = 'suite=true' %}
+                  {% set lable = 'All Browser' %}
+                {% else %}
+                  {% set parameter = '' %}
+                  {% set lable = 'All Browser' %}
+                {% endif %}
+                <a href=""
+                   data-action="run"
+                   data-path="{{ app.request.path }}">Run</a>
+                {% if app.request.browsers is defined %}
+                  <div class="nodes hide">
+                    <ul>
+                      <li>
+                        <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?{{ parameter }}"
+                           data-action="run"
+                           data-path="{{ app.request.path }}">{{ lable }}</a>
+                      </li>
+                      {% for browser in app.request.browsers %}
+                        <li>
+                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&{{ parameter }}"
+                             data-path="{{ app.request.path }}"
+                             data-browser="{{ browser.browserName }}"
+                             class="run-test">{{ browser.browserName }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </li>
+            {% endif %}
+            <li>
+              <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+                 data-action="add"
+                 data-path="{{ app.request.path }}">Edit</a>
+            </li>
+            <li>
+              <a href="{{ app.request.baseUrl }}/delete/{{ app.request.path }}"
+                 data-action="delete"
+                 data-path="{{ app.request.path }}">Delete</a>
+            </li>
+            <li>
+              <a href="{{ app.request.baseUrl }}/config/{{ app.request.path }}"
+                 data-action="config"
+                 data-path="{{ app.request.path }}">Config</a>
+            </li>
+          {% else %}
+            {% if app.request.type is not defined or app.request.type is null %}
+              <li>
+                <a href="{{ app.request.baseUrl }}/edit/{{ app.request.path }}"
+                   data-action="add"
+                   data-path="{{ app.request.path }}">Add Page</a>
+              </li>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      </ul>
+    </div>
+
+  {% endif %}
 {% endblock %}
 
 
