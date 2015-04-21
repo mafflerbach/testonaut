@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block fancyNavBox %}
-  {% if app.request.baseUrl == '' or  app.request.baseUrl == '/web' %}
+  {% if app.request.path == '' %}
     <div class="fancyNavBox">
       <ul class="fancyNav">
         {% if app.request.mode == 'show' %}
