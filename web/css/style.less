@@ -653,8 +653,12 @@ table {
 }
 
 //body > div.contentBox > div > div > ul > li:nth-child(1) > ul > li:nth-child(4) > ul > li:nth-child(5) > span
+.start .contentList > ul > li {
+  padding: 0.5em 0em;
+}
 .contentList {
   margin-bottom: 1em;
+
   ul {
     margin: 0;
     padding: 0;
@@ -666,52 +670,52 @@ table {
         content: '├';
       }
       li span.level2:after {
-        content: '├─';
+        content: '├';
       }
       li:last-child span.level2:after {
-        content: '└─';
+        content: '└';
       }
       li span.level3:after {
-        content: '\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0├';
       }
       li:last-child > span.level3:after {
-        content: '\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0└';
       }
       li span.level4:after {
-        content: '\a0\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0\a0├';
       }
       li:last-child > span.level4:after {
-        content: '\a0\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0\a0└';
       }
       li span.level5:after {
-        content: '\a0\a0\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0\a0\a0├';
       }
       li:last-child > span.level5:after {
-        content: '\a0\a0\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0\a0\a0└';
       }
       li span.level6:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0\a0\a0\a0├';
       }
       li:last-child > span.level5:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0\a0\a0\a0└';
       }
       li span.level7:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0\a0\a0\a0├';
       }
       li:last-child > span.level7:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0\a0\a0\a0└';
       }
       li span.level8:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0\a0\a0\a0\a0├';
       }
       li:last-child > span.level8:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0\a0\a0\a0\a0└';
       }
       li span.level9:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0\a0\a0├─';
+        content: '\a0\a0\a0\a0\a0\a0\a0\a0\a0├';
       }
       li:last-child > span.level7:after {
-        content: '\a0\a0\a0\a0\a0\a0\a0\a0\a0└─';
+        content: '\a0\a0\a0\a0\a0\a0\a0\a0\a0└';
       }
     }
     a {
