@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block fancyNavBox %}
-  {% if app.request.path == '' %}
+  {% if app.request.path is not defined or app.request.path == '' %}
     <div class="fancyNavBox">
       <ul class="fancyNav">
         {% if app.request.mode == 'show' %}
