@@ -38,5 +38,6 @@ $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
 $app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
 $app->mount('/image', new phpSelenium\Page\Provider\Image());
 $app->mount('/{path}', new phpSelenium\Page\Provider\Page());
+$app->mount('/file', new phpSelenium\Page\Provider\File());
 
 $app->run();
