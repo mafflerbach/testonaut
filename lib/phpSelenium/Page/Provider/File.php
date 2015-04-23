@@ -6,16 +6,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use phpSelenium\Page\Breadcrumb;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
 
-class File extends Base implements ControllerProviderInterface {
-
-  private $path;
-
+class File implements ControllerProviderInterface {
   public function connect(Application $app) {
+    $file = $app['controllers_factory'];
 
-    $config = $app['controllers_factory'];
-
-    $app->match('/upload/{path}', function (Request $request) use ($app){
+    $app->match('/', function (Request $request, $path) use ($app){
+      var_dump($path);
       $form = $app['form.factory']
         ->createBuilder('form')
         ->add('FileUpload', 'file')
@@ -46,7 +46,9 @@ class File extends Base implements ControllerProviderInterface {
       return $response;
 
     }, 'GET|POST');
-
+    return $file;
   }
+
+
 
 }

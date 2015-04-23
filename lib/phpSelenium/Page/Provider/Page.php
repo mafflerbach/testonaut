@@ -54,13 +54,14 @@ class Page implements ControllerProviderInterface {
 
       $foo = $app['twig']->render('page.twig');
       return new Response($foo , 200, array(
-        'Cache-Control' => 's-maxage=5',
+        'Cache-Control' => 'maxage=0',
       ));
 
     });
 
     return $page;
   }
+
 
 
   protected function getContent(\phpSelenium\Page $page) {

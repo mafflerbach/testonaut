@@ -31,13 +31,13 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
 
 $app->mount('/', new phpSelenium\Page\Provider\Start());
 $app->mount('/edit/', new phpSelenium\Page\Provider\Start(true));
+$app->mount('/files/', new phpSelenium\Page\Provider\File());
 $app->mount('/globalconfig/', new phpSelenium\Page\Provider\Globalconfig());
 $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
 $app->mount('/config/{path}', new phpSelenium\Page\Provider\Config());
 $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
 $app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
-$app->mount('/image', new phpSelenium\Page\Provider\Image());
-$app->mount('/{path}', new phpSelenium\Page\Provider\Page());
-$app->mount('/file', new phpSelenium\Page\Provider\File());
+$app->mount('/{path}/', new phpSelenium\Page\Provider\Page());
+$app->mount('/files/{path}', new phpSelenium\Page\Provider\File());
 
 $app->run();
