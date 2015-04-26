@@ -7,10 +7,48 @@
   <form name="compForm"
         method="post"
         action="">
+    <div id="toolbar" style="display: none;">
+      <a data-wysihtml5-command="bold" title="CTRL+B"><span class="fa fa-bold"></span></a> |
+      <a data-wysihtml5-command="italic" title="CTRL+I"><span class="fa fa-italic"></span></a> |
+      <a data-wysihtml5-command="createLink"><span class="fa fa-chain"></span></a> |
+      <a data-wysihtml5-command="insertImage"><span class="fa fa-image"></span></a> |
+      <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1"><span class="fa fa-header">1</span></a> |
+      <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2"><span class="fa fa-header">2</span></a> |
+      <a data-wysihtml5-command="insertUnorderedList"><span class="fa fa-list-ul"></span></a> |
+      <a data-wysihtml5-command="insertOrderedList"><span class="fa fa-list-ol"></span></a> |
+      <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a> |
+      <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a> |
+      <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a> |
+      <a data-wysihtml5-action="change_view"><span class="fa fa-code"></span></a>
 
+      <div data-wysihtml5-dialog="createLink" style="display: none;">
+        <label>
+          Link:
+          <input data-wysihtml5-dialog-field="href" value="http://">
+        </label>
+        <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+      </div>
 
+      <div data-wysihtml5-dialog="insertImage" style="display: none;">
+        <label>
+          Image:
+          <input data-wysihtml5-dialog-field="src" value="http://">
+        </label>
+        <label>
+          Align:
+          <select data-wysihtml5-dialog-field="className">
+            <option value="">default</option>
+            <option value="wysiwyg-float-left">left</option>
+            <option value="wysiwyg-float-right">right</option>
+          </select>
+        </label>
+        <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+      </div>
 
-    <textarea name="content" data-provide="markdown" data-iconlibrary="fa" rows="40" id="editor">
+    </div>
+    <br/>
+    <textarea id="textarea" placeholder="Enter text ...">
+      {{ app.request.content|raw }}
     </textarea>
 
     <input type="hidden"
@@ -27,11 +65,14 @@
            value=""/>
   </form>
 </div>
-  <script type="text/javascript">
-    var foo =`{{ app.request.content|raw }}`;
-    $(document).ready(function () {
-      $('#editor').text(foo);
-    })
+  <script>
+    var editor = new wysihtml5.Editor("textarea", {
+      toolbar:      "toolbar",
+      parserRules:  wysihtml5ParserRules,
+      stylesheets: ["{{ app.request.baseUrl }}/css/style.css"]
+    });
+
+    console.log(editor.getValue())
   </script>
 
 </div>

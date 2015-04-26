@@ -5,21 +5,11 @@
   <script type="text/javascript">
     var baseUrl = '{{ app.request.baseUrl }}';
   </script>
-  <link rel="stylesheet" type="text/css" href="{{ app.request.baseUrl }}/css/bootstrap-markdown.min.css" />
-
   <script src="{{ app.request.baseUrl }}/js/jquery-2.1.3.js"></script>
-
-  <script type="text/javascript" src="{{ app.request.baseUrl }}/js/markdown.js"></script>
-  <script type="text/javascript" src="{{ app.request.baseUrl }}/js/to-markdown.js"></script>
-  <script type="text/javascript" src="{{ app.request.baseUrl }}/js/hammerdown.js"></script>
-  <script type="text/javascript" src="{{ app.request.baseUrl }}/js/bootstrap-markdown.js"></script>
-
-  <script language="javascript">
-    $(document).ready(function()	{
-      $("#some-textarea").markdown({autofocus:false});
-    });
-  </script>
+  <script src="{{ app.request.baseUrl }}/js/advanced.js"></script>
+  <script src="{{ app.request.baseUrl }}/js/wysihtml5-0.3.0.js"></script>
   <script src="{{ app.request.baseUrl }}/js/custom.js"></script>
+
 </head>
 <body>
 
