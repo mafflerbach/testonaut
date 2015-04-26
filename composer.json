@@ -14,6 +14,7 @@
         "silex/silex": "2.0.x-dev",
         "twig/twig": ">=1.10,<2.0-dev",
         "symfony/twig-bridge": "<3.0-dev",
-        "facebook/webdriver": "dev-master"
+        "facebook/webdriver": "dev-master",
+        "symfony/translation": "3.0.*"
     }
 }

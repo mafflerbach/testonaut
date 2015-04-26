@@ -2,20 +2,22 @@
 namespace phpSelenium\Page\Provider;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use phpSelenium\Page\Breadcrumb;
+use Silex\Provider\FormServiceProvider;
+
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 
 class File implements ControllerProviderInterface {
   public function connect(Application $app) {
+    $app->register(new FormServiceProvider());
+    $app->register(new Silex\Provider\TranslationServiceProvider(), array(
+      'locale_fallbacks' => array('en'),
+    ));
+
+
     $file = $app['controllers_factory'];
 
-    $app->match('/', function (Request $request, $path) use ($app){
-      var_dump($path);
+    $file->get('/', function (Request $request) use ($app){
       $form = $app['form.factory']
         ->createBuilder('form')
         ->add('FileUpload', 'file')
@@ -29,14 +31,14 @@ class File implements ControllerProviderInterface {
         if ($form->isValid()) {
           $files = $request->files->get($form->getName());
           /* Make sure that Upload Directory is properly configured and writable */
-          $path = __DIR__.'/../web/files/';
+          $path = __DIR__.'/../web/upload/';
           $filename = $files['FileUpload']->getClientOriginalName();
           $files['FileUpload']->move($path,$filename);
           $message = 'File was successfully uploaded!';
         }
       }
       $response =  $app['twig']->render(
-        'upload.twig',
+        'index.html.twig',
         array(
           'message' => $message,
           'form' => $form->createView()
@@ -45,7 +47,7 @@ class File implements ControllerProviderInterface {
 
       return $response;
 
-    }, 'GET|POST');
+    });
     return $file;
   }
 

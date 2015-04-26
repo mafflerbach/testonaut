@@ -1,14 +1,11 @@
-{% include 'head.twig' %}
-{% include 'headNavi.twig' %}
 
-<b>{{message}}</b>
-<form action="" method="post" {{ form_enctype(form) }}>
+<form action="" method="post">
   <fieldset>
     <legend>File Upload</legend>
-    {{ form_widget(form) }}
+    <input name="Datei" type="file" accept="text/*">
+
   </fieldset>
   <input type="submit" name="Upload File" />
 </form>
 
-{% include 'footer.twig' %}
 
