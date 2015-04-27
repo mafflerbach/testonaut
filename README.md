@@ -3,15 +3,17 @@
 Milestone 1.0 - 1.5
     
 * build history page
-* Editor verbessern oder austauschen
 * implementieren weiterer commands
 * variablen implementieren
 * Allegemeine screenshoot übersichtsseite
+* Fileüberisicht
 * Filter für die screenshots implementieren
 * Template für seiteninhalte implementieren
 * performance überprüfen
 
 
+* ~~ File upload ~~
+* ~~Editor verbessern oder austauschen~~
 * ~~baseurl aus der config berücksichtigen~~
 * ~~SetUp und TearDowsn seiten ~~
 * ~~includes implementieren ~~
