@@ -5,7 +5,7 @@
     "license": "proprietary",
     "authors": [
         {
-            "name": "author's name",
+            "name": "Maren Afflerbach",
             "email": "email@example.com"
         }
     ],
@@ -15,6 +15,9 @@
         "twig/twig": ">=1.10,<2.0-dev",
         "symfony/twig-bridge": "<3.0-dev",
         "facebook/webdriver": "dev-master",
-        "symfony/translation": "3.0.*"
+        "symfony/translation": "~2.6",
+        "symfony/locale": "~2.6",
+        "symfony/form": "~2.6",
+        "symfony/security-csrf": "~2.6"
     }
 }

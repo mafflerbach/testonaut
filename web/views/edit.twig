@@ -12,6 +12,9 @@
       <a data-wysihtml5-command="italic" title="CTRL+I"><span class="fa fa-italic"></span></a> |
       <a data-wysihtml5-command="createLink"><span class="fa fa-chain"></span></a> |
       <a data-wysihtml5-command="insertImage"><span class="fa fa-image"></span></a> |
+      <a data-wysihtml5-command="uploadFile">
+        <span class="fa-upload fa"></span>
+      </a> |
       <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1"><span class="fa fa-header">1</span></a> |
       <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2"><span class="fa fa-header">2</span></a> |
       <a data-wysihtml5-command="insertUnorderedList"><span class="fa fa-list-ul"></span></a> |
@@ -45,6 +48,9 @@
         <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
       </div>
 
+      <div id="upload">
+        <iframe scrolling="no" src="{{ app.request.baseUrl }}/files/{{ app.request.path }}"></iframe>
+      </div>
     </div>
     <br/>
     <textarea id="textarea" placeholder="Enter text ...">
@@ -72,8 +78,13 @@
       stylesheets: ["{{ app.request.baseUrl }}/css/style.css"]
     });
 
-    console.log(editor.getValue())
+    $(document).ready(function () {
+      $("a[data-wysihtml5-command='uploadFile']").click(function () {
+        $('#upload').toggleClass('visible');
+      });
+    });
   </script>
+
 
 </div>
 
