@@ -656,6 +656,7 @@ table {
 .start .contentList > ul > li {
   padding: 0.5em 0em;
 }
+
 .contentList {
   margin-bottom: 1em;
 
@@ -724,18 +725,35 @@ table {
   }
 }
 
+.content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  position: relative;
+  right: 0;
+  float: right;
+}
+
+.content.edit {
+  float: none;
+}
+
+.toc {
+  float:left;
+}
+
 .btn-group{
   float:left;
 }
 
 #toolbar {
   a {
-    color:@base-font;
+    color:@color;
   }
 }
 
 #textarea {
-  width:50%;
+  width:100%;
   height:50%;
   display: block;
 }
@@ -764,9 +782,18 @@ iframe {
   border: 0;
   width: 100%;
   overflow: hidden;
+  box-shadow: 0px 1px 4px -1px #000000;
 }
 
 .linkSection {
   overflow: auto;
   padding:0.5em 0em ;
+}
+
+.editorBox {
+  color: @color;
+  background-color: #e6e6e6;
+  padding: 1.5em 0.5em;
+  box-shadow: 0px 1px 4px -1px #000000;
+  margin:0.5em 0em;
 }

@@ -98,6 +98,7 @@ var wysihtml5ParserRules = {
      *                            - url:      checks whether the given string is an url, deletes the attribute if not
      *                            - alt:      strips unwanted characters. if the attribute is not set, then it gets set (to ensure valid and compatible HTML)
      *                            - numbers:  ensures that the attribute only contains numeric characters
+     *                            - string: get all
      */
     "tags": {
         "tr": {
@@ -188,8 +189,7 @@ var wysihtml5ParserRules = {
         "img": {
             "check_attributes": {
                 "width": "numbers",
-                "alt": "alt",
-                "src": "url",
+                "src": "string",
                 "height": "numbers"
             },
             "add_class": {
@@ -503,10 +503,9 @@ var wysihtml5ParserRules = {
         "cite": {},
         "link": {
             "check_attributes": {
-                "rel": "alt",
-                "href": "url"
+                "rel": "string",
+                "href": "string"
             },
-            "rename_tag": 'link'
         },
         "script": {
             "remove": 1

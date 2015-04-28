@@ -1,4 +1,5 @@
 {% include 'head.twig' %}
+<div class="editorBox">
 <b>{{ message }}</b>
 <form action="{{ baseUrl }}/files/{{ path }}/"
       method="post" {{ form_enctype(form) }}>
@@ -28,5 +29,6 @@
     <span>http://{{ app.request.image }}</span>
   </div>
 {% endif %}
-
+</div>
 {% include 'footer.twig' %}
+

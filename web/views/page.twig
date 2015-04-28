@@ -1,6 +1,7 @@
 {% include 'head.twig' %}
-
   {% include 'headNavi.twig' %}
+
+
 <div class="contentBox">
   {% if app.request.lastResult is defined %}
     <div class="lastResult">
@@ -14,10 +15,11 @@
       {% endfor %}
     </div>
   {% endif %}
-
+  <div class="toc">
+    {{ app.menu|raw }}
+  </div>
 
   <div class="content">
-    {{ app.menu|raw }}
     {{ app.request.content|raw }}
   </div>
   <div class="screens">
