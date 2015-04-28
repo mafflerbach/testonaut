@@ -13,6 +13,7 @@ $config->define('Cache', $configuration['cache']);
 $config->define('appPath', $configuration['appPath']);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
 $config->define('imageRoot', dirname(dirname(__FILE__)) . '/images');
+$config->define('fileRoot', dirname(dirname(__FILE__)) . '/web/files');
 $config->define('result', dirname(dirname(__FILE__)) . '/result');
 $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
@@ -31,6 +32,7 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
 
 $app->mount('/', new phpSelenium\Page\Provider\Start());
 $app->mount('/edit/', new phpSelenium\Page\Provider\Start(true));
+$app->mount('/image/', new phpSelenium\Page\Provider\Image());
 $app->mount('/files/{path}', new phpSelenium\Page\Provider\File());
 $app->mount('/globalconfig/', new phpSelenium\Page\Provider\Globalconfig());
 $app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());

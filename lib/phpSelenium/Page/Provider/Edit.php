@@ -12,11 +12,14 @@ class Edit implements ControllerProviderInterface {
     $edit->get('/', function (Request $request, $path) use ($app) {
       $page = new \phpSelenium\Page($path);
       $content = $page->content();
+      $uploadedFiles = $page->getLinkedFiles();
 
       $app['request'] = array(
         'content' => $content,
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
+        'linkedFiles' => $uploadedFiles['documents'],
+        'linkedImages' => $uploadedFiles['images'],
         'mode' => 'edit'
       );
 

@@ -13,7 +13,7 @@ class Page {
     $this->root = Config::getInstance()->wikiPath;
   }
 
-  public function getCompiledPage () {
+  public function getCompiledPage() {
     return $this->_content(NULL, NULL, TRUE);
   }
 
@@ -25,7 +25,7 @@ class Page {
     } else {
       $file = $this->transCodePath() . '/content';
       $path = $this->transCodePath();
-      if($compiled && file_exists($file.'_compiled')) {
+      if ($compiled && file_exists($file . '_compiled')) {
         $file = $this->transCodePath() . '/content_compiled';
       }
     }
@@ -53,11 +53,50 @@ class Page {
   }
 
   public function getImagePath() {
-    return \phpSelenium\Config::getInstance()->imageRoot. "/" . $this->relativePath();
+    return \phpSelenium\Config::getInstance()->imageRoot . "/" . $this->relativePath();
+  }
+
+  public function getFilePath() {
+    return \phpSelenium\Config::getInstance()->fileRoot . "/" . $this->relativePath();
   }
 
   public function getResultPath() {
     return \phpSelenium\Config::getInstance()->result . "/" . $this->relativePath();
+  }
+
+  public function getLinkedFiles() {
+    $files = array(
+      'images' =>array(),
+      'documents' =>array()
+    );
+    $linkDir = $this->getFilePath();
+    /**
+     * @var $fileInfo
+     */
+
+    if (file_exists($linkDir)) {
+
+      foreach (new \DirectoryIterator($linkDir) as $fileInfo) {
+        if ($fileInfo->isDot()) {
+          continue;
+        }
+        if ($fileInfo->isDir()) {
+          continue;
+        }
+
+        $filenameLink = $this->relativePath() . '/' . $fileInfo->getFilename();
+        $filename = $linkDir . '/' . $fileInfo->getFilename();
+
+        $file_info = new \finfo(FILEINFO_MIME);
+        $mime_type = $file_info->buffer(file_get_contents($filename));
+        if (strpos($mime_type, 'image') !== FALSE) {
+          $files['images'][] = $filenameLink;
+        } else {
+          $files['documents'][] = $fileInfo->getFilename();
+        }
+      }
+    }
+    return $files;
   }
 
   public function getImages() {
@@ -97,7 +136,6 @@ class Page {
   public function transCodePath() {
     return str_replace('.', '/', $this->root . '/' . $this->path);
   }
-
 
   public function relativePath() {
     return str_replace('.', '/', $this->path);
@@ -143,7 +181,7 @@ class Page {
     return $this->path;
   }
 
-  public function getEditPath(){
-    return '/edit/'.$this->path;
+  public function getEditPath() {
+    return '/edit/' . $this->path;
   }
 } 

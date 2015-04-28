@@ -36,3 +36,9 @@ Pagecrawler zum genereiren des seiten baumes
 testgenerator für Äquivalenzklassenanalyse
 
 checkliste für Bitv (inkl Prioritäten)
+
+
+req:
+extension
+php_fileinfo
+imagemagick
