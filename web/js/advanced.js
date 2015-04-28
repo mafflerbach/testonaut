@@ -505,7 +505,7 @@ var wysihtml5ParserRules = {
             "check_attributes": {
                 "rel": "string",
                 "href": "string"
-            },
+            }
         },
         "script": {
             "remove": 1
