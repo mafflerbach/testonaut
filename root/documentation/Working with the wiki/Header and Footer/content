@@ -1,1 +1,3 @@
-Header and Footers
+                <div><div>there are three types of header and footers.</div><div>page header and footer, test header and footer and the last one, suite header and footer. pages with titles "pageHeader" and "pageFooter" are include automaticaly in actual page context.</div><div>setUp and tearDown pages are only includes in pages from type "test"</div><div>suite SetUp and suit TearDown are only includes in pages from type "Suite"</div><div>if the included pages have selenium testcases so they will run as a normal test.</div><div>at this point you must look out at the "close command" in included files, otherwise all upcomming tests where failing.</div></div>
+      
+      

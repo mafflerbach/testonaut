@@ -23,11 +23,12 @@ $config->define('domain', $_SERVER['HTTP_HOST']);
 $app = new Silex\Application();
 $app['debug'] = true;
 
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-  'twig.path' => __DIR__ . '/views',
-));
 $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
   'http_cache.cache_dir' => __DIR__.'/cache/',
+));
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+  'twig.path' => __DIR__ . '/views',
+  'twig.options'    => array('cache' => __DIR__ . '/cache')
 ));
 
 $app->mount('/', new phpSelenium\Page\Provider\Start());
@@ -41,5 +42,9 @@ $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
 $app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
 $app->mount('/{path}/', new phpSelenium\Page\Provider\Page());
 
-$app->run();
-
+if ($app['debug']) {
+  $app->run();
+}
+else{
+  $app['http_cache']->run();
+}

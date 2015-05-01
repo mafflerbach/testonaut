@@ -92,7 +92,7 @@ class Compiler {
       $pages[] = 'setUp';
     }
 
-    $pages[] = 'pageHead';
+    $pages[] = 'pageHeader';
 
     $content = $this->patchPage($content, $pages, TRUE);
 

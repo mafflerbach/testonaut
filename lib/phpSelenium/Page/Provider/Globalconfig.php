@@ -44,6 +44,7 @@ class Globalconfig implements ControllerProviderInterface {
       $address = $request->request->get('seleniumAddress');
 
       $cache = $request->request->get('cache');
+      $appPath = $request->request->get('appPath');
 
       if ($cache != null) {
         $cache = true;
@@ -52,19 +53,21 @@ class Globalconfig implements ControllerProviderInterface {
       }
 
       $configuration = array(
-        'appPath'         => '',
+        'appPath'         => $appPath,
         'cache'           => $cache,
         'seleniumAddress' => $address);
 
       $this->saveConfig($configuration);
 
-      return $app->redirect($request->getBaseUrl() . '/globalconfig');
+      return $app->redirect($request->getBaseUrl() . '/globalconfig/');
     });
     return $edit;
   }
 
   protected function saveConfig($array) {
+
     $config = \phpSelenium\Config::getInstance()->Path . '/config';
+    var_dump($array);
     $this->writeToFile($config, json_encode($array));
   }
 

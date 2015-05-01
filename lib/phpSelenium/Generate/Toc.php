@@ -2,6 +2,7 @@
 
 namespace phpSelenium\Generate;
 
+use phpSelenium\Config;
 use phpSelenium\Parser\Config\Browser;
 use phpSelenium\Selenium\Api;
 
@@ -78,7 +79,7 @@ class Toc {
         if ($this->page != '') {
           $prefix = $this->page.'.';
         }
-        $link = '<a href="/web/'.$prefix . $_path . '">' . $key . '</a>';
+        $link = '<a href="/'.Config::getInstance()->appPath.'/web/'.$prefix . $_path . '">' . $key . '</a>';
         $tree .= '<li> <span class="level'.$level.'"></span>' . $link;
         $tree .= ''.$this->makeList($value, $_path, '', $level);
         $tree .= '</li>';
