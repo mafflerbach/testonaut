@@ -1,6 +1,7 @@
 <?php
 namespace phpSelenium\Page\Provider;
 
+use phpSelenium\Config;
 use phpSelenium\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
@@ -37,6 +38,7 @@ class Edit implements ControllerProviderInterface {
       $content = $page->content($content, TRUE);
       return $app->redirect($request->getBaseUrl() . '/' . $path);
     });
+
     return $edit;
   }
 }

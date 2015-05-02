@@ -2,6 +2,7 @@
 
 Milestone 1.0 - 1.5
     
+* implementieren rename page
 * build history page
 * implementieren weiterer commands
 * variablen implementieren
@@ -39,6 +40,6 @@ checkliste für Bitv (inkl Prioritäten)
 
 
 req:
-extension
+extensions:
 php_fileinfo
 imagemagick

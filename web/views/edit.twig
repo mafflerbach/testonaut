@@ -85,7 +85,7 @@
                          value=""
                          placeholder="search for file"/>
 
-          <div>
+          <div id="fileListing">
             <ul>
               {% for files in app.request.linkedFiles %}
                 <li><a href="{{ app.request.baseUrl }}/files/{{ app.request.path }}/{{ files }}">{{ files }}</a></li>
@@ -105,20 +105,17 @@
              class="editorBox"
              style="display: none;">
           Search: <input type="text"
-                         name="search"
+                         name="searchImage"
                          value=""
                          placeholder="search for file"/>
 
-          <div>
-
-
+          <div id="imageListing">
             {% for image in app.request.linkedImages %}
               <div class="link">
                 <a href="{{ app.request.baseUrl }}/files/{{ image }}"><img src="{{ app.request.baseUrl }}/files/{{ image }}"></a>
               </div>
             {% endfor %}
           </div>
-
         </div>
       </div>
       <br/>
@@ -158,6 +155,15 @@
 
       $("a[data-wysihtml5-dialog-action='search']").click(function () {
         $("div[data-wysihtml5-dialog='search']").slideToggle();
+        searchFileEvent();
+      });
+      $("a[data-wysihtml5-dialog-action='searchImage']").click(function () {
+        $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
+
+          searchImageEvent();
+      });
+
+      function searchFileEvent() {
 
         $("div[data-wysihtml5-dialog='search'] a").click(function (e) {
           e.preventDefault();
@@ -165,19 +171,61 @@
           $("input[data-wysihtml5-dialog-field='href']").val(link);
           $("div[data-wysihtml5-dialog='search']").slideToggle();
         })
-      });
-      $("a[data-wysihtml5-dialog-action='searchImage']").click(function () {
-        $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
+      }
 
+      function searchImageEvent() {
         $("div[data-wysihtml5-dialog='searchImage'] a").click(function (e) {
           e.preventDefault();
           var link = $(this).attr('href');
           $("input[data-wysihtml5-dialog-field='src']").val(link);
           $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
         })
+      }
+
+//type: image filename: tum*
+      $("input[name='search']").keyup(function () {
+        if ($(this).val().length >= 3) {
+          var server = location.href.replace('/web/edit/', '/web/files/')+'search/'+$(this).val();
+          $.ajax({
+            url: server
+          }).done(function (data) {
+
+            $('#fileListing').empty();
+
+            for(var i = 0; i < data.length; i++) {
+              var filename = data[i].filename;
+              var path = data[i].path.replace('web/', '');
+              var link ='{{ app.request.baseUrl }}'+path+'/'+filename;
+              var content = '<a href="'+link+'">'+filename+'</a><br/>'
+              $('#fileListing').append(content);
+            }
+            searchFileEvent();
+          })
+        }
       });
 
+      $("input[name='searchImage']").keyup(function () {
+        if ($(this).val().length >= 3) {
+          var term = 'type:image filename: ' +$(this).val();
 
+          var server = location.href.replace('/web/edit/', '/web/files/')+'search/'+term;
+          $.ajax({
+            url: server
+          }).done(function (data) {
+
+            $('#imageListing').empty();
+
+            for(var i = 0; i < data.length; i++) {
+              var filename = data[i].filename;
+              var path = data[i].path.replace('web/', '');
+              var link ='{{ app.request.baseUrl }}'+path+'/'+filename;
+              var content = '<a href="'+link+'">'+filename+'</a><br/>'
+              $('#imageListing').append(content);
+            }
+            searchImageEvent();
+          })
+        }
+      });
     });
   </script>
 

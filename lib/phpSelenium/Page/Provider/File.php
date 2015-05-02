@@ -29,7 +29,7 @@ class File implements ControllerProviderInterface {
       } else {
 
       }
-      $image  = '';
+      $image = '';
       $message = 'Upload a file';
       if ($request->isMethod('POST')) {
         $form->bind($request);
@@ -45,28 +45,34 @@ class File implements ControllerProviderInterface {
           $files['FileUpload']->move($path, $filename);
           $message = 'File was successfully uploaded!';
 
-          $image = $domain.$request->getBaseUrl().'/files/' . $page->relativePath().'/'.$filename;
+          $image = $domain . $request->getBaseUrl() . '/files/' . $page->relativePath() . '/' . $filename;
 
         } else {
         }
       }
 
       $app['request'] = array(
-        'path' => $path,
+        'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'image' => $image,
+        'image'   => $image,
       );
 
       $response = $app['twig']->render('upload.twig', array(
-          'message' => $message,
-          'form'    => $form->createView(),
-          'path'    => $path,
-          'baseUrl' => $request->getBaseUrl(),
-        ));
+        'message' => $message,
+        'form'    => $form->createView(),
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+      ));
 
       return $response;
 
     }, 'GET|POST');
+
+    $file->get('/search/{term}', function (Request $request, $term) use ($app) {
+      $search = new \phpSelenium\search\File(\phpSelenium\Config::getInstance()->Path . '/index.db', \phpSelenium\Config::getInstance()->fileRoot);
+      return $app->json($search->search($term), 201);
+    });
+
     return $file;
   }
 

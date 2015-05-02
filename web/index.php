@@ -19,7 +19,6 @@ $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
 $config->define('seleniumAddress', $seleniumAddress);
 $config->define('domain', $_SERVER['HTTP_HOST']);
-
 $app = new Silex\Application();
 $app['debug'] = true;
 
@@ -42,9 +41,11 @@ $app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
 $app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
 $app->mount('/{path}/', new phpSelenium\Page\Provider\Page());
 
+
 if ($app['debug']) {
   $app->run();
 }
 else{
   $app['http_cache']->run();
 }
+
