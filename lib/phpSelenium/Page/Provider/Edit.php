@@ -31,6 +31,22 @@ class Edit implements ControllerProviderInterface {
 
     });
 
+    $edit->get('/rename', function (Request $request, $path) use ($app) {
+      $page = new \phpSelenium\Page($path);
+
+      return $app['twig']->render('rename.twig');
+
+    });    $edit->post('/rename', function (Request $request, $path) use ($app) {
+      $page = new \phpSelenium\Page($path);
+
+      //redirekt zur neuen page
+      return $app->redirect($request->getBaseUrl() . '/' . $path);
+
+
+    });
+
+
+
     $edit->post('/', function (Request $request, $path) use ($app) {
       $content = $request->request->get('content');
 

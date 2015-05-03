@@ -7,26 +7,26 @@ Milestone 1.0 - 1.5
 * implementieren weiterer commands
 * variablen implementieren
 * Allegemeine screenshoot übersichtsseite
-* Fileüberisicht
 * Filter für die screenshots implementieren
 * Template für seiteninhalte implementieren
-* performance überprüfen
 
 
+* ~~ performance überprüfen~~
+* ~~ Fileüberisicht~~
 * ~~ File upload ~~
-* ~~Editor verbessern oder austauschen~~
-* ~~baseurl aus der config berücksichtigen~~
-* ~~SetUp und TearDowsn seiten ~~
-* ~~includes implementieren ~~
+* ~~ Editor verbessern oder austauschen~~
+* ~~ baseurl aus der config berücksichtigen~~
+* ~~ SetUp und TearDowsn seiten ~~
+* ~~ includes implementieren ~~
 * ~~ globale Config page implementieren ~~
-* ~~Buildergebnisse jeweils gelaufenen test~~
-* ~~Screenshot einstellungen für configs (Nach jedem test, nach jedem Befehl)~~
-* ~~Screenshoteintellung implementieren~~
-* ~~aktuelles bild als referenz übernehmen~~
-* ~~Bilder löschen~~
-* ~~ImagePath fixen bei suiterun~~
-* ~~Browsermatrix~~
-* ~~entschlacken der head, auslagern mancher inhalte in die einzelnen page templates~~
+* ~~ Buildergebnisse jeweils gelaufenen test~~
+* ~~ Screenshot einstellungen für configs (Nach jedem test, nach jedem Befehl)~~
+* ~~ Screenshoteintellung implementieren~~
+* ~~ aktuelles bild als referenz übernehmen~~
+* ~~ Bilder löschen~~
+* ~~ ImagePath fixen bei suiterun~~
+* ~~ Browsermatrix~~
+* ~~ entschlacken der head, auslagern mancher inhalte in die einzelnen page templates~~
 
 ---
 Module

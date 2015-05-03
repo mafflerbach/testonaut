@@ -97,6 +97,11 @@
                  data-action="config"
                  data-path="{{ app.request.path }}">Config</a>
             </li>
+            <li>
+              <a href="{{ app.request.baseUrl }}/edit/rename/{{ app.request.path }}"
+                 data-action="rename"
+                 data-path="{{ app.request.path }}">Rename</a>
+            </li>
           {% else %}
             {% if app.request.type is not defined or app.request.type is null %}
               <li>
