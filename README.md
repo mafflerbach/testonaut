@@ -2,7 +2,6 @@
 
 Milestone 1.0 - 1.5
     
-* implementieren rename page
 * build history page
 * implementieren weiterer commands
 * variablen implementieren
@@ -11,6 +10,7 @@ Milestone 1.0 - 1.5
 * Template für seiteninhalte implementieren
 
 
+*~~ implementieren rename page~~
 * ~~ performance überprüfen~~
 * ~~ Fileüberisicht~~
 * ~~ File upload ~~
