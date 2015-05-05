@@ -14,7 +14,6 @@ class Delete implements ControllerProviderInterface {
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
         'mode' => 'delete',
-
       );
 
       $crumb = new Breadcrumb($path);

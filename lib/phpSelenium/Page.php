@@ -66,8 +66,8 @@ class Page {
 
   public function getLinkedFiles() {
     $files = array(
-      'images' =>array(),
-      'documents' =>array()
+      'images'    => array(),
+      'documents' => array()
     );
     $linkDir = $this->getFilePath();
     /**
@@ -179,6 +179,19 @@ class Page {
 
   public function getPath() {
     return $this->path;
+  }
+
+  public function rename($path, $newPath) {
+    $path = str_replace('.', '/', $path);
+    $newPath = str_replace('.', '/', $newPath);
+
+    $path = Config::getInstance()->wikiPath . '/' . $path;
+    $newPath = Config::getInstance()->wikiPath . '/' . $newPath;
+
+    if (!file_exists($newPath)) {
+      return @rename($path, $newPath);
+    }
+    return FALSE;
   }
 
   public function getEditPath() {

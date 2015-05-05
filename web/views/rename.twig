@@ -1,0 +1,31 @@
+{% include 'head.twig' %}
+{% include 'headNavi.twig' %}
+
+<div class="contentBox">
+  <div class="content">
+
+<form action=""
+      method="POST">
+
+  <label for="rename">Umbennen zu:</label>
+  <input type="text" name="newPath"
+         value="{{ app.request.path }}"/>
+
+  <br/><br/>
+  <input id="rename" type="submit"
+         name="action"
+         value="rename"
+         class="btn"/>
+
+  <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+     class="backLink btn">Zurück</a>
+
+  {% if app.request.message is defined %}
+    <p>{{ app.request.message }}</p>
+  {% endif %}
+
+</form>
+    </div></div>
+
+
+{% include 'footer.twig' %}

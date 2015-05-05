@@ -16,12 +16,12 @@ class Edit implements ControllerProviderInterface {
       $uploadedFiles = $page->getLinkedFiles();
 
       $app['request'] = array(
-        'content' => $content,
-        'path' => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'linkedFiles' => $uploadedFiles['documents'],
+        'content'      => $content,
+        'path'         => $path,
+        'baseUrl'      => $request->getBaseUrl(),
+        'linkedFiles'  => $uploadedFiles['documents'],
         'linkedImages' => $uploadedFiles['images'],
-        'mode' => 'edit'
+        'mode'         => 'edit'
       );
 
       $crumb = new Breadcrumb($path);
@@ -31,21 +31,43 @@ class Edit implements ControllerProviderInterface {
 
     });
 
-    $edit->get('/rename', function (Request $request, $path) use ($app) {
+    $edit->get('/rename/', function (Request $request, $path) use ($app) {
       $page = new \phpSelenium\Page($path);
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'mode'    => 'edit'
+      );
+      return $app['twig']->render('rename.twig');
+
+    });
+    $edit->post('/rename/', function (Request $request, $path) use ($app) {
+      $page = new \phpSelenium\Page($path);
+      $newPath = $request->request->get('newPath');
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'mode'    => 'edit'
+      );
+      if ($page->rename($path, $newPath)) {
+        $message = "rename Page";
+        return $app->redirect($request->getBaseUrl() . '/' . $newPath);
+
+      } else {
+
+        $message = "can't rename Page";
+      }
+
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'mode'    => 'edit',
+        'message' => $message
+      );
 
       return $app['twig']->render('rename.twig');
 
-    });    $edit->post('/rename', function (Request $request, $path) use ($app) {
-      $page = new \phpSelenium\Page($path);
-
-      //redirekt zur neuen page
-      return $app->redirect($request->getBaseUrl() . '/' . $path);
-
-
     });
-
-
 
     $edit->post('/', function (Request $request, $path) use ($app) {
       $content = $request->request->get('content');
