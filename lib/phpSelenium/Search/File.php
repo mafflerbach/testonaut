@@ -6,7 +6,7 @@
  * Time: 21:57
  */
 
-namespace phpSelenium\search;
+namespace phpSelenium\Search;
 
 use phpSelenium\Config;
 
@@ -34,6 +34,7 @@ class File {
         "type" TEXT,
         "path" TEXT);';
       $this->dbInstance->query($schema);
+      $this->initializeIndex();
     }
   }
 
@@ -81,9 +82,11 @@ class File {
   }
 
   private function clearIndex() {
-    $sql = 'delete from files';
-    $stm = $this->dbInstance->prepare($sql);
-    $stm->execute();
+    if ($this->exitsTable($this->tableName)) {
+      $sql = 'delete from '.$this->tableName;
+      $stm = $this->dbInstance->prepare($sql);
+      $stm->execute();
+    }
   }
 
   private function clearVirtualTable() {
@@ -124,7 +127,7 @@ class File {
 
   public function search($term) {
 
-    $sql = "SELECT * FROM FileSearch WHERE " . $this->tableName . "Search.filename MATCH :term";
+    $sql = "SELECT * FROM " . $this->tableName . "Search WHERE " . $this->tableName . "Search.filename MATCH :term";
     $stm = $this->dbInstance->prepare($sql);
     $stm->bindParam(':term', $term);
     $result = $stm->execute();

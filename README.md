@@ -10,7 +10,7 @@ Milestone 1.0 - 1.5
 * Template für seiteninhalte implementieren
 
 
-*~~ implementieren rename page~~
+* ~~ implementieren rename page~~
 * ~~ performance überprüfen~~
 * ~~ Fileüberisicht~~
 * ~~ File upload ~~
@@ -39,7 +39,7 @@ testgenerator für Äquivalenzklassenanalyse
 checkliste für Bitv (inkl Prioritäten)
 
 
-req:
+requirements:
 extensions:
 php_fileinfo
 imagemagick

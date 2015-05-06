@@ -69,7 +69,7 @@ class File implements ControllerProviderInterface {
     }, 'GET|POST');
 
     $file->get('/search/{term}', function (Request $request, $term) use ($app) {
-      $search = new \phpSelenium\search\File(\phpSelenium\Config::getInstance()->Path . '/index.db', \phpSelenium\Config::getInstance()->fileRoot);
+      $search = new \phpSelenium\Search\File(\phpSelenium\Config::getInstance()->Path . '/index.db', 'files',\phpSelenium\Config::getInstance()->fileRoot);
       return $app->json($search->search($term), 201);
     });
 
