@@ -4,7 +4,9 @@
 <a href="{{ app.request.baseUrl }}/">root</a>
 {% for results in app.result %}
   {% for result in results %}
-    <p>{{ result|raw }}</p>
+    {% for resultEntry in result %}
+      <p>{{ resultEntry|raw }}</p>
+    {% endfor %}
   {% endfor %}
 {% endfor %}
 
