@@ -60,11 +60,11 @@ class Run implements ControllerProviderInterface {
   protected function writeResultFile($content) {
     $path = $this->page->getResultPath();
     if (!file_exists($path)) {
-      mkdir($path, 0775, true);
+      mkdir($path, 0775, TRUE);
     }
 
-    $fileName = 'result_'.$this->browser.'_'.date('Y-m-d_H-i-s');
-    file_put_contents($path.'/'.$fileName, json_encode($content));
+    $fileName = 'result_' . $this->browser . '_' . date('Y-m-d_H-i-s');
+    file_put_contents($path . '/' . $fileName, json_encode($content));
   }
 
   protected function runSuite($path) {
@@ -72,7 +72,7 @@ class Run implements ControllerProviderInterface {
 
     $testCollect = array();
 
-    $content = file_get_contents($path->transCodePath(). '/content');
+    $content = file_get_contents($path->transCodePath() . '/content');
     if (strpos($content, '<table') !== FALSE) {
       $this->dirArray[] = $path;
     }
@@ -112,7 +112,7 @@ class Run implements ControllerProviderInterface {
 
   protected function baseUrlSettings($capabilities) {
     $conf = $this->page->config();
-    if(isset($conf['browser']['active'])) {
+    if (isset($conf['browser']['active']) && ($conf['type'] == 'suite' || $conf['type'] == 'project')) {
       if (in_array($capabilities->getBrowserName(), $conf['browser']['active'])) {
         return $conf['browser']['urls'][$capabilities->getBrowserName()];
       }
@@ -120,7 +120,6 @@ class Run implements ControllerProviderInterface {
       return '';
     }
   }
-
 
   private function _run(array $tests) {
 
@@ -131,10 +130,10 @@ class Run implements ControllerProviderInterface {
       $browserUrl = $this->baseUrlSettings($capabilities);
       $runner->setBaseUrl($browserUrl);
 
-      if($this->screenshotSettings() == 2) {
+      if ($this->screenshotSettings() == 2) {
         $runner->screenshotsAfterEveryStep();
       }
-      if($this->screenshotSettings() == 1) {
+      if ($this->screenshotSettings() == 1) {
         $runner->screenshotsAfterTest();
       }
 
@@ -165,7 +164,7 @@ class Run implements ControllerProviderInterface {
           $content = file_get_contents($outerDir . "/" . $d . '/content');
 
           if (strpos($content, '<table') !== FALSE) {
-            $wikipath = \phpSelenium\Config::getInstance()->wikiPath.'/';
+            $wikipath = \phpSelenium\Config::getInstance()->wikiPath . '/';
             $path = str_replace($wikipath, '', $outerDir . "/" . $d);
             $path = str_replace('/', '.', $path);
 

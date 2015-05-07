@@ -82,9 +82,7 @@ class Runner {
       $res[] = $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
       $this->addToPoll($result);
 
-      if ($commandStr == 'captureEntirePageScreenshot') {
-        $this->captureAndCompare($command, $browserName);
-      }
+
 
       try {
         // todo: screenshots after each command option settings
@@ -102,6 +100,17 @@ class Runner {
       } else {
         $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
         $browserResult = FALSE;
+      }
+
+      if ($commandStr == 'captureEntirePageScreenshot') {
+
+        $compareResult = $this->captureAndCompare($command, $browserName);
+        if ($compareResult['result']) {
+          $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        } else {
+          $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+          $browserResult = FALSE;
+        }
       }
 
       $this->addToPoll($result);
@@ -179,13 +188,15 @@ class Runner {
     }
     $tmp = $command->arg1;
     $command->arg1 = $path . $tmp . '.png';
-    if ($this->compare($browserName, $tmp . '.png')) {
-      $result = "<tr><td colspan='3'>Compare: " . $command->arg1 . " </td></tr>";
+    if ($comp = $this->compare($browserName, $tmp . '.png')) {
+      $result = "Compare: " . $command->arg1;
       $this->writeToFile($this->polling, $result, FILE_APPEND);
     } else {
-      $result = "<tr><td colspan='3'>Cant Compare: " . $command->arg1 . " </td></tr>";
+      $result = "Cant Compare: " . $command->arg1;
       $this->writeToFile($this->polling, $result, FILE_APPEND);
     }
+
+    return array('result'=>$comp, 'message' => $result);
   }
 
   protected function compare($browserName, $imgName) {
@@ -198,8 +209,12 @@ class Runner {
       if (file_exists($comp)) {
         unlink($comp);
       }
-      $compare = new Image();
-      return $compare->compare($path, $pathref, $comp);
+      if(class_exists('\\Imagick')) {
+        $compare = new Image();
+        return $compare->compare($path, $pathref, $comp);
+      } else {
+        return FALSE;
+      }
     } else {
       return FALSE;
     }
