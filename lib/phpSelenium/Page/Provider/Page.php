@@ -43,7 +43,7 @@ class Page implements ControllerProviderInterface {
         'mode'      => 'show',
         'browsers'  => $browsers,
         'images'    => $images,
-        'imagePath' => str_replace($root, '', $page->getImagePath()),
+        'imagePath' => '/'.\phpSelenium\Config::getInstance()->appPath.str_replace($root, '', $page->getImagePath()),
         'type'      => $settings->getType(),
         'lastResult'      => $lastRun
       );

@@ -7,7 +7,7 @@ class Config {
   private $register = array();
   private $readOnly = array();
 
-//  public $path, $wikiPath, $seleniumHub, $seleniumConsole, $appPath, $seleniumAddress;
+
 
   private function __construct() {
   }

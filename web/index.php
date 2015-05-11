@@ -5,6 +5,8 @@ $loader->add('phpSelenium', __DIR__ . '/../lib/');
 $config = \phpSelenium\Config::getInstance();
 $config->define('Path', dirname(dirname(__FILE__)));
 
+require_once('../lib/phpSelenium/Page/Provider/Gobalconfig.php');
+
 $globalConf = new \phpSelenium\Page\Provider\Globalconfig();
 $configuration = $globalConf->getConfig();
 

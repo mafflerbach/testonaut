@@ -82,8 +82,6 @@ class Runner {
       $res[] = $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
       $this->addToPoll($result);
 
-
-
       try {
         // todo: screenshots after each command option settings
         $commandResult = $command->runWebDriver($webDriver);
@@ -196,7 +194,10 @@ class Runner {
       $this->writeToFile($this->polling, $result, FILE_APPEND);
     }
 
-    return array('result'=>$comp, 'message' => $result);
+    return array(
+      'result'  => $comp,
+      'message' => $result
+    );
   }
 
   protected function compare($browserName, $imgName) {
@@ -209,7 +210,7 @@ class Runner {
       if (file_exists($comp)) {
         unlink($comp);
       }
-      if(class_exists('\\Imagick')) {
+      if (class_exists('\\Imagick')) {
         $compare = new Image();
         return $compare->compare($path, $pathref, $comp);
       } else {
