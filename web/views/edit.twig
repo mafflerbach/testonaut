@@ -3,88 +3,95 @@
 
 
 <div class="contentBox">
-  <div class="content edit">
-    <form name="compForm"
-          method="post"
-          action="">
-      <div id="toolbar"
+<div class="content edit">
+  <form name="compForm"
+        method="post"
+        action="">
+    <div id="toolbar"
+         style="display: none;">
+      <a data-wysihtml5-command="bold"
+         title="CTRL+B"><span class="fa fa-bold"></span></a> |
+      <a data-wysihtml5-command="italic"
+         title="CTRL+I"><span class="fa fa-italic"></span></a> |
+      <a data-wysihtml5-command="underline"
+         title="CTRL+U"><span class="fa fa-underline"></span></a> |
+      <a data-wysihtml5-command="createLink"><span class="fa fa-chain"></span></a> |
+      <a data-wysihtml5-command="insertImage"><span class="fa fa-image"></span></a> |
+      <a data-wysihtml5-command="uploadFile">
+        <span class="fa-upload fa"></span>
+      </a> |
+      <a data-wysihtml5-command="formatBlock"
+         data-wysihtml5-command-value="h1"><span class="fa fa-header">1</span></a> |
+      <a data-wysihtml5-command="formatBlock"
+         data-wysihtml5-command-value="h2"><span class="fa fa-header">2</span></a> |
+      <a data-wysihtml5-command="formatBlock"
+          data-wysihtml5-command-value="h3"><span class="fa fa-header">3</span></a> |
+      <a data-wysihtml5-command="formatBlock"
+          data-wysihtml5-command-value="h4"><span class="fa fa-header">4</span></a> |
+      <a data-wysihtml5-command="insertUnorderedList"><span class="fa fa-list-ul"></span></a> |
+      <a data-wysihtml5-command="insertOrderedList"><span class="fa fa-list-ol"></span></a> |
+      <a data-wysihtml5-command="foreColor"
+         data-wysihtml5-command-value="red">red</a> |
+      <a data-wysihtml5-command="foreColor"
+         data-wysihtml5-command-value="green">green</a> |
+      <a data-wysihtml5-command="foreColor"
+         data-wysihtml5-command-value="blue">blue</a> |
+      <a data-wysihtml5-action="change_view"><span class="fa fa-code"></span></a>
+
+      <div data-wysihtml5-dialog="createLink"
+           class="editorBox"
            style="display: none;">
-        <a data-wysihtml5-command="bold"
-           title="CTRL+B"><span class="fa fa-bold"></span></a> |
-        <a data-wysihtml5-command="italic"
-           title="CTRL+I"><span class="fa fa-italic"></span></a> |
-        <a data-wysihtml5-command="underline"
-           title="CTRL+U"><span class="fa fa-underline"></span></a> |
-        <a data-wysihtml5-command="createLink"><span class="fa fa-chain"></span></a> |
-        <a data-wysihtml5-command="insertImage"><span class="fa fa-image"></span></a> |
-        <a data-wysihtml5-command="uploadFile">
-          <span class="fa-upload fa"></span>
-        </a> |
-        <a data-wysihtml5-command="formatBlock"
-           data-wysihtml5-command-value="h1"><span class="fa fa-header">1</span></a> |
-        <a data-wysihtml5-command="formatBlock"
-           data-wysihtml5-command-value="h2"><span class="fa fa-header">2</span></a> |
-        <a data-wysihtml5-command="insertUnorderedList"><span class="fa fa-list-ul"></span></a> |
-        <a data-wysihtml5-command="insertOrderedList"><span class="fa fa-list-ol"></span></a> |
-        <a data-wysihtml5-command="foreColor"
-           data-wysihtml5-command-value="red">red</a> |
-        <a data-wysihtml5-command="foreColor"
-           data-wysihtml5-command-value="green">green</a> |
-        <a data-wysihtml5-command="foreColor"
-           data-wysihtml5-command-value="blue">blue</a> |
-        <a data-wysihtml5-action="change_view"><span class="fa fa-code"></span></a>
+        <label>
+          Link:
+          <input data-wysihtml5-dialog-field="href"
+                 value="http://"
+                 type="text">
+        </label>
+        <a data-wysihtml5-dialog-action="save"
+           class="btn">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
+                                      class="btn">Cancel</a>
+        &nbsp;<a data-wysihtml5-dialog-action="search"
+                 class="btn">Search</a>
+      </div>
 
-        <div data-wysihtml5-dialog="createLink"
-             class="editorBox"
-             style="display: none;">
-          <label>
-            Link:
-            <input data-wysihtml5-dialog-field="href"
-                   value="http://" type="text">
-          </label>
-          <a data-wysihtml5-dialog-action="save"
-             class="btn">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
-                                        class="btn">Cancel</a>
-          &nbsp;<a data-wysihtml5-dialog-action="search"
-                   class="btn">Search</a>
-        </div>
+      <div data-wysihtml5-dialog="insertImage"
+           class="editorBox"
+           style="display: none;">
+        <label>
+          Image:
+          <input data-wysihtml5-dialog-field="src"
+                 value="http://"
+                 type="text">
+        </label>
+        <label>
+          Align:
+          <select data-wysihtml5-dialog-field="className">
+            <option value="">default</option>
+            <option value="wysiwyg-float-left">left</option>
+            <option value="wysiwyg-float-right">right</option>
+          </select>
+        </label>
+        <a data-wysihtml5-dialog-action="save"
+           class="btn">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
+                                      class="btn">Cancel</a>
+        &nbsp;<a data-wysihtml5-dialog-action="searchImage"
+                 class="btn">Search</a>
+      </div>
 
-        <div data-wysihtml5-dialog="insertImage"
-             class="editorBox"
-             style="display: none;">
-          <label>
-            Image:
-            <input data-wysihtml5-dialog-field="src"
-                   value="http://" type="text">
-          </label>
-          <label>
-            Align:
-            <select data-wysihtml5-dialog-field="className">
-              <option value="">default</option>
-              <option value="wysiwyg-float-left">left</option>
-              <option value="wysiwyg-float-right">right</option>
-            </select>
-          </label>
-          <a data-wysihtml5-dialog-action="save"
-             class="btn">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
-                                        class="btn">Cancel</a>
-          &nbsp;<a data-wysihtml5-dialog-action="searchImage"
-                   class="btn">Search</a>
-        </div>
+      <div id="upload">
+        <iframe scrolling="no"
+                src="{{ app.request.baseUrl }}/files/{{ app.request.path }}"></iframe>
+      </div>
 
-        <div id="upload">
-          <iframe scrolling="no"
-                  src="{{ app.request.baseUrl }}/files/{{ app.request.path }}"></iframe>
-        </div>
+      <div data-wysihtml5-dialog="search"
+           class="editorBox"
+           style="display: none;">
+        Search: <input type="text"
+                       name="search"
+                       value=""
+                       placeholder="search for file"/>
 
-        <div data-wysihtml5-dialog="search"
-             class="editorBox"
-             style="display: none;">
-          Search: <input type="text"
-                         name="search"
-                         value=""
-                         placeholder="search for file"/>
-
+        {% if app.request.linkedFiles is defined %}
           <div id="fileListing">
             <ul>
               {% for files in app.request.linkedFiles %}
@@ -98,17 +105,19 @@
               </div>
             {% endfor %}
           </div>
+        {% endif %}
 
-        </div>
+      </div>
 
-        <div data-wysihtml5-dialog="searchImage"
-             class="editorBox"
-             style="display: none;">
-          Search: <input type="text"
-                         name="searchImage"
-                         value=""
-                         placeholder="search for file"/>
+      <div data-wysihtml5-dialog="searchImage"
+           class="editorBox"
+           style="display: none;">
+        Search: <input type="text"
+                       name="searchImage"
+                       value=""
+                       placeholder="search for file"/>
 
+        {% if app.request.linkedImages is defined %}
           <div id="imageListing">
             {% for image in app.request.linkedImages %}
               <div class="link">
@@ -116,118 +125,119 @@
               </div>
             {% endfor %}
           </div>
-        </div>
+        {% endif %}
       </div>
-      <br/>
-      <textarea id="textarea"
-                placeholder="Enter text ...">
-        {{ app.request.content|raw }}
-      </textarea>
+    </div>
+    <br/>
+    <textarea id="textarea"
+              placeholder="Enter text ...">
+      {{ app.request.content|raw }}
+    </textarea>
 
-      <input type="hidden"
-             name="path"
-             value="{{ app.request.baseUrl }}"/>
-      <input type="submit"
-             name="action"
-             value="save"
-             class="btn"/>
-      <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
-         class="backLink btn">Zurück</a>
-      <input type="hidden"
-             name="content"
-             value=""/>
-    </form>
-  </div>
-  <script>
-    var editor = new wysihtml5.Editor("textarea", {
-      toolbar: "toolbar",
-      parserRules: wysihtml5ParserRules,
-      stylesheets: ["{{ app.request.baseUrl }}/css/style.css"]
+    <input type="hidden"
+           name="path"
+           value="{{ app.request.baseUrl }}"/>
+    <input type="submit"
+           name="action"
+           value="save"
+           class="btn"/>
+    <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+       class="backLink btn">Zurück</a>
+    <input type="hidden"
+           name="content"
+           value=""/>
+  </form>
+</div>
+<script>
+  var editor = new wysihtml5.Editor("textarea", {
+    toolbar: "toolbar",
+    parserRules: wysihtml5ParserRules,
+    stylesheets: ["{{ app.request.baseUrl }}/css/style.css"]
+  });
+
+  $(document).ready(function () {
+    $("a[data-wysihtml5-command='uploadFile']").click(function () {
+      $('#upload').slideToggle();
+    });
+    $("a[data-wysihtml5-command='createLink']").click(function () {
+      $("div[data-wysihtml5-dialog='createLink']").slideToggle();
     });
 
-    $(document).ready(function () {
-      $("a[data-wysihtml5-command='uploadFile']").click(function () {
-        $('#upload').slideToggle();
-      });
-      $("a[data-wysihtml5-command='createLink']").click(function () {
-        $("div[data-wysihtml5-dialog='createLink']").slideToggle();
-      });
+    $("a[data-wysihtml5-dialog-action='search']").click(function () {
+      $("div[data-wysihtml5-dialog='search']").slideToggle();
+      searchFileEvent();
+    });
+    $("a[data-wysihtml5-dialog-action='searchImage']").click(function () {
+      $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
 
-      $("a[data-wysihtml5-dialog-action='search']").click(function () {
+      searchImageEvent();
+    });
+
+    function searchFileEvent() {
+
+      $("div[data-wysihtml5-dialog='search'] a").click(function (e) {
+        e.preventDefault();
+        var link = $(this).attr('href');
+        $("input[data-wysihtml5-dialog-field='href']").val(link);
         $("div[data-wysihtml5-dialog='search']").slideToggle();
-        searchFileEvent();
-      });
-      $("a[data-wysihtml5-dialog-action='searchImage']").click(function () {
+      })
+    }
+
+    function searchImageEvent() {
+      $("div[data-wysihtml5-dialog='searchImage'] a").click(function (e) {
+        e.preventDefault();
+        var link = $(this).attr('href');
+        $("input[data-wysihtml5-dialog-field='src']").val(link);
         $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
-
-          searchImageEvent();
-      });
-
-      function searchFileEvent() {
-
-        $("div[data-wysihtml5-dialog='search'] a").click(function (e) {
-          e.preventDefault();
-          var link = $(this).attr('href');
-          $("input[data-wysihtml5-dialog-field='href']").val(link);
-          $("div[data-wysihtml5-dialog='search']").slideToggle();
-        })
-      }
-
-      function searchImageEvent() {
-        $("div[data-wysihtml5-dialog='searchImage'] a").click(function (e) {
-          e.preventDefault();
-          var link = $(this).attr('href');
-          $("input[data-wysihtml5-dialog-field='src']").val(link);
-          $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
-        })
-      }
+      })
+    }
 
 //type: image filename: tum*
-      $("input[name='search']").keyup(function () {
-        if ($(this).val().length >= 3) {
-          var server = location.href.replace('/web/edit/', '/web/files/')+'search/'+$(this).val();
-          $.ajax({
-            url: server
-          }).done(function (data) {
+    $("input[name='search']").keyup(function () {
+      if ($(this).val().length >= 3) {
+        var server = location.href.replace('/web/edit/', '/web/files/') + 'search/' + $(this).val();
+        $.ajax({
+          url: server
+        }).done(function (data) {
 
-            $('#fileListing').empty();
+          $('#fileListing').empty();
 
-            for(var i = 0; i < data.length; i++) {
-              var filename = data[i].filename;
-              var path = data[i].path.replace('web/', '');
-              var link ='{{ app.request.baseUrl }}'+path+'/'+filename;
-              var content = '<a href="'+link+'">'+filename+'</a><br/>'
-              $('#fileListing').append(content);
-            }
-            searchFileEvent();
-          })
-        }
-      });
-
-      $("input[name='searchImage']").keyup(function () {
-        if ($(this).val().length >= 3) {
-          var term = 'type:image filename: ' +$(this).val();
-
-          var server = location.href.replace('/web/edit/', '/web/files/')+'search/'+term;
-          $.ajax({
-            url: server
-          }).done(function (data) {
-
-            $('#imageListing').empty();
-
-            for(var i = 0; i < data.length; i++) {
-              var filename = data[i].filename;
-              var path = data[i].path.replace('web/', '');
-              var link ='{{ app.request.baseUrl }}'+path+'/'+filename;
-              var content = '<a href="'+link+'">'+filename+'</a><br/>'
-              $('#imageListing').append(content);
-            }
-            searchImageEvent();
-          })
-        }
-      });
+          for (var i = 0; i < data.length; i++) {
+            var filename = data[i].filename;
+            var path = data[i].path.replace('web/', '');
+            var link = '{{ app.request.baseUrl }}' + path + '/' + filename;
+            var content = '<a href="' + link + '">' + filename + '</a><br/>'
+            $('#fileListing').append(content);
+          }
+          searchFileEvent();
+        })
+      }
     });
-  </script>
+
+    $("input[name='searchImage']").keyup(function () {
+      if ($(this).val().length >= 3) {
+        var term = 'type:image filename: ' + $(this).val();
+
+        var server = location.href.replace('/web/edit/', '/web/files/') + 'search/' + term;
+        $.ajax({
+          url: server
+        }).done(function (data) {
+
+          $('#imageListing').empty();
+
+          for (var i = 0; i < data.length; i++) {
+            var filename = data[i].filename;
+            var path = data[i].path.replace('web/', '');
+            var link = '{{ app.request.baseUrl }}' + path + '/' + filename;
+            var content = '<a href="' + link + '">' + filename + '</a><br/>'
+            $('#imageListing').append(content);
+          }
+          searchImageEvent();
+        })
+      }
+    });
+  });
+</script>
 
 
 </div>

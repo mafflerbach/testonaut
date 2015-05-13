@@ -1,0 +1,10 @@
+      <h2>Installation</h2>Testonaut is still in beta phases, so there is no absolute brain afk installation. There is also some requirements for the runtime.<br><br>you need git and an&nbsp;apache installation with php X &gt; 5.3 with additional modules&nbsp;fileinfo and&nbsp;imagemagick. For dependencies installation you need a composer too.&nbsp;<pre>git clone https://mafflerbach@bitbucket.org/mafflerbach/testonaut.git
+composer install
+</pre>Under <a href="http://youre.installation/*/globalconfig/">http://youre.installation/*/globalconfig/</a>
+You can set your domain to your selenium hub.
+
+The definition of &nbsp;"app path" defining your subpath on your apache DOCUMENT_ROOT, if you don't like to use subdomains.
+
+
+
+    
