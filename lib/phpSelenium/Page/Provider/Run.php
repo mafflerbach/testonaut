@@ -35,6 +35,13 @@ class Run implements ControllerProviderInterface {
         $this->browser = 'all';
       }
 
+      $this->version = $request->query->get('version');
+      if ($this->version == '') {
+        $this->version = '';
+      }
+
+
+
       if ($request->query->get('suite') == 'true') {
         $result = $this->runSuite($this->page);
       } else {
@@ -184,6 +191,7 @@ class Run implements ControllerProviderInterface {
   private function getCapabilities() {
 
     $DesiredCapabilities = new \DesiredCapabilities();
+    $DesiredCapabilities->setVersion($this->version);
 
     if ($this->browser == 'all') {
       $api = new Api();
@@ -202,6 +210,7 @@ class Run implements ControllerProviderInterface {
         $capabilities = \DesiredCapabilities::$browserName();
       }
     }
+
     return $capabilities;
   }
 

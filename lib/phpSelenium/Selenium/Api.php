@@ -35,10 +35,17 @@ class Api {
       $data = $this->getData($endpoint);
 
       if (count($data['request']['capabilities']) > 1) {
+
         for ($k = 0; $k < count($data['request']['capabilities']); $k++) {
+          if (!isset($data['request']['capabilities'][$k]['version'])) {
+            $data['request']['capabilities'][$k]['version'] = '';
+          }
           $browsers[] = $data['request']['capabilities'][$k];
         }
       } else {
+        if (!isset($data['request']['capabilities'][0]['version'])) {
+          $data['request']['capabilities'][0]['version'] = '';
+        }
         $browsers[] = $data['request']['capabilities'][0];
       }
     }

@@ -58,10 +58,12 @@
                   {% set parameter = '' %}
                   {% set lable = 'All Browser' %}
                 {% endif %}
+
                 <a href=""
                    data-action="run"
                    data-path="{{ app.request.path }}">Run</a>
                 {% if app.request.browsers is defined %}
+
                   <div class="nodes hide">
                     <ul>
                       <li>
@@ -71,7 +73,7 @@
                       </li>
                       {% for browser in app.request.browsers %}
                         <li>
-                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&{{ parameter }}"
+                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&version={{ browser.version }}&{{ parameter }}"
                              data-path="{{ app.request.path }}"
                              data-browser="{{ browser.browserName }}"
                              class="run-test">{{ browser.browserName }}</a>
@@ -115,7 +117,6 @@
       </ul>
     </div>
 
+
   {% endif %}
 {% endblock %}
-
-

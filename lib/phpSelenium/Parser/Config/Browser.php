@@ -33,6 +33,7 @@ class Browser {
     foreach ($nodeList as $node) {
       $browserCab = str_replace('browser:', '', $node->nodeValue);
       $arrBrowserCab = explode(',', $browserCab);
+
       for ($i = 0; $i < count($arrBrowserCab); $i++) {
         $tmp = explode('=', $arrBrowserCab[$i]);
         $browserList[$tmp[0]] = $tmp[1];
