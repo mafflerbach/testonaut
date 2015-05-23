@@ -9,12 +9,12 @@ java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role 
 
 rem %1 name of the IE version
 
-mkdir C:\tmp
-cd C:\tmp\
-bitsadmin.exe /transfer "Download Selenium" http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar c:\tmp\selenium-server.jar
-bitsadmin.exe /transfer "Download IEDriver" http://selenium-hub.dim/downloads/IEDriverServer.exe c:\tmp\IEDriverServer.exe
-bitsadmin.exe /transfer "Download Java" http://selenium-hub.dim/downloads/jdk-8u25-windows-i586.exe c:\tmp\jdk.exe
-bitsadmin.exe /transfer "Download selenium bat" http://selenium-hub.dim/seleniumWinInstall/selenium.bat c:\tmp\selenium.bat
+mkdir e:\tmp
+cd e:\tmp\
+bitsadmin.exe /transfer "Download Selenium" http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar e:\tmp\selenium-server.jar
+bitsadmin.exe /transfer "Download IEDriver" http://selenium-hub.dim/downloads/IEDriverServer.exe e:\tmp\IEDriverServer.exe
+bitsadmin.exe /transfer "Download Java" http://selenium-hub.dim/downloads/jdk-8u25-windows-i586.exe e:\tmp\jdk.exe
+bitsadmin.exe /transfer "Download selenium bat" http://selenium-hub.dim/seleniumWinInstall/selenium.bat e:\tmp\selenium.bat
 
 c:\tmp\jdk.exe /s
 c:\tmp\selenium.bat
@@ -31,4 +31,9 @@ bitsadmin.exe /transfer "Download preinstall bat" http://selenium-hub.dim/seleni
 
 cd "C:\Program Files\Java\jdk1.8.0_25\bin"
 java -jar c:\tmp\selenium-server.jar -role node -hub http://192.168.50.136:4444/grid/register -Dwebdriver.ie.driver="c:\tmp\IEDriverServer.exe" -browser browserName="iexplore",version=10,platform="WINDOWS",maxInstances=5java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.ie.driver="E:\xampp\htdocs\phpSelenium\vendor\driver\IEDriverServer.exe" -Die.forceCreateProcessApi=true -browser browserName=iexplore ,maxInstances=5,platform=WINDOWS -port 5557
-java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.chrome.driver="E:\xampp\htdocs\phpSelenium\vendor\driver\chromedriver.exe" -Dwebdriver.ie.driver="E:\xampp\htdocs\phpSelenium\vendor\driver\IEDriverServer.exe" -Die.forceCreateProcessApi=true -nodeConfig E:\xampp\htdocs\phpSelenium\capabilities.json
+
+
+
+java -jar e:\tmp\selenium-server.jar -role hub
+
+java -jar e:\tmp\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.chrome.driver="e:\tmp\chromedriver.exe" -Dwebdriver.ie.driver="e:\tmp\IEDriverServer.exe" -Die.forceCreateProcessApi=true -nodeConfig E:\xampp\htdocs\testonaut\capabilities.json

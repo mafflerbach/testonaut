@@ -14,7 +14,20 @@
             {
                 "browserName": "internet explorer",
                 "maxInstances": 5,
-                "seleniumProtocol": "WebDriver"
+                "seleniumProtocol": "WebDriver",
+                "version" : 10
+            },
+            {
+                "browserName": "internet explorer",
+                "maxInstances": 5,
+                "seleniumProtocol": "WebDriver",
+                "version" : 9
+            },
+            {
+                "browserName": "internet explorer",
+                "maxInstances": 5,
+                "seleniumProtocol": "WebDriver",
+                "version" : 11
             }
         ],
     "configuration":
