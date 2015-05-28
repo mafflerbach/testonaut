@@ -20,7 +20,10 @@ c:\tmp\jdk.exe /s
 c:\tmp\selenium.bat
 ----
 
-Set-Location HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\system\
+
+REG ADD HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1
+
+Set-Location HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\system\LocalAccountTokenFilterPolicy /v
 New-ItemProperty -Name LocalAccountTokenFilterPolicy -PropertyType dword -path . -Value 1
 Set-ItemProperty -Name EnableLUA -path . -Value 0
 shutdown -t 0 -r -f

@@ -14,7 +14,7 @@ class Capabilities extends \DesiredCapabilities {
   /**
    * @return DesiredCapabilities
    */
-  public static function ieExplorer() {
+  public static function iexplore() {
     return new \DesiredCapabilities(array(
       \WebDriverCapabilityType::BROWSER_NAME => \WebDriverBrowserType::IEXPLORE,
       \WebDriverCapabilityType::PLATFORM => \WebDriverPlatform::WINDOWS,

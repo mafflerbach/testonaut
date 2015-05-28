@@ -66,6 +66,7 @@ class Run implements ControllerProviderInterface {
 
   protected function writeResultFile($content) {
     $path = $this->page->getResultPath();
+    
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
     }
@@ -190,8 +191,9 @@ class Run implements ControllerProviderInterface {
 
   private function getCapabilities() {
 
-    $DesiredCapabilities = new \DesiredCapabilities();
+    $DesiredCapabilities = new Capabilities();
     $DesiredCapabilities->setVersion($this->version);
+
 
     if ($this->browser == 'all') {
       $api = new Api();
@@ -201,13 +203,14 @@ class Run implements ControllerProviderInterface {
       for ($i = 0; $i < count($list); $i++) {
         $browserName = $this->normalizeBrowserName($list[$i]['browserName']);
         if (method_exists($DesiredCapabilities, $browserName)) {
-          $capabilities[] = \DesiredCapabilities::$browserName();
+          $capabilities[] = $DesiredCapabilities::$browserName();
         }
       }
     } else {
+
       $browserName = $this->normalizeBrowserName($this->browser);
       if (method_exists($DesiredCapabilities, $browserName)) {
-        $capabilities = \DesiredCapabilities::$browserName();
+        $capabilities = $DesiredCapabilities::$browserName();
       }
     }
 
@@ -215,6 +218,9 @@ class Run implements ControllerProviderInterface {
   }
 
   private function normalizeBrowserName($browserString) {
+
+    $browserString = str_replace('*', '', $browserString);
+
     if (strpos($browserString, ' ') > 0) {
       $expl = explode(' ', $browserString);
       $browserName = $expl[0] . ucfirst($expl[1]);
@@ -226,4 +232,5 @@ class Run implements ControllerProviderInterface {
     }
     return $browserName;
   }
+
 }

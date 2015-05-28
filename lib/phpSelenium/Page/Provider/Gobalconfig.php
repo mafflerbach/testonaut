@@ -92,4 +92,10 @@ class Globalconfig implements ControllerProviderInterface {
     file_put_contents($path, $content);
   }
 
+  protected function getColorSchemes() {
+
+
+
+  }
+
 }
