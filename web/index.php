@@ -1,13 +1,13 @@
 <?php
 $loader = require __DIR__ . '/../vendor/autoload.php';
-$loader->add('phpSelenium', __DIR__ . '/../lib/');
+$loader->add('testonaut', __DIR__ . '/../lib/');
 
-$config = \phpSelenium\Config::getInstance();
+$config = \testonaut\Config::getInstance();
 $config->define('Path', dirname(dirname(__FILE__)));
 
-require_once('../lib/phpSelenium/Page/Provider/Gobalconfig.php');
+require_once('../lib/testonaut/Page/Provider/Gobalconfig.php');
 
-$globalConf = new \phpSelenium\Page\Provider\Globalconfig();
+$globalConf = new \testonaut\Page\Provider\Globalconfig();
 $configuration = $globalConf->getConfig();
 
 $seleniumAddress = $configuration['seleniumAddress'];
@@ -32,16 +32,16 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
   'twig.options'    => array('cache' => __DIR__ . '/cache')
 ));
 
-$app->mount('/', new phpSelenium\Page\Provider\Start());
-$app->mount('/edit/', new phpSelenium\Page\Provider\Start(true));
-$app->mount('/image/', new phpSelenium\Page\Provider\Image());
-$app->mount('/files/{path}', new phpSelenium\Page\Provider\File());
-$app->mount('/globalconfig/', new phpSelenium\Page\Provider\Globalconfig());
-$app->mount('/edit/{path}', new phpSelenium\Page\Provider\Edit());
-$app->mount('/config/{path}', new phpSelenium\Page\Provider\Config());
-$app->mount('/delete/{path}', new phpSelenium\Page\Provider\Delete());
-$app->mount('/run/{path}', new phpSelenium\Page\Provider\Run());
-$app->mount('/{path}/', new phpSelenium\Page\Provider\Page());
+$app->mount('/', new testonaut\Page\Provider\Start());
+$app->mount('/edit/', new testonaut\Page\Provider\Start(true));
+$app->mount('/image/', new testonaut\Page\Provider\Image());
+$app->mount('/files/{path}', new testonaut\Page\Provider\File());
+$app->mount('/globalconfig/', new testonaut\Page\Provider\Globalconfig());
+$app->mount('/edit/{path}', new testonaut\Page\Provider\Edit());
+$app->mount('/config/{path}', new testonaut\Page\Provider\Config());
+$app->mount('/delete/{path}', new testonaut\Page\Provider\Delete());
+$app->mount('/run/{path}', new testonaut\Page\Provider\Run());
+$app->mount('/{path}/', new testonaut\Page\Provider\Page());
 
 
 if ($app['debug']) {

@@ -1,9 +1,9 @@
-java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role hub
-java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -browser browserName=firefox,maxInstances=5,platform=WINDOWS -port 5555
-java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.chrome.driver="E:\xampp\htdocs\phpSelenium\vendor\driver\chromedriver.exe" -browser browserName=chrome,maxInstances=5,platform=WINDOWS -port 5556
+java -jar E:\xampp\htdocs\testonaut\vendor\selenium\selenium-server.jar -role hub
+java -jar E:\xampp\htdocs\testonaut\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -browser browserName=firefox,maxInstances=5,platform=WINDOWS -port 5555
+java -jar E:\xampp\htdocs\testonaut\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.chrome.driver="E:\xampp\htdocs\testonaut\vendor\driver\chromedriver.exe" -browser browserName=chrome,maxInstances=5,platform=WINDOWS -port 5556
 
 
-java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.ie.driver="E:\xampp\htdocs\phpSelenium\vendor\driver\IEDriverServer.exe" -Die.forceCreateProcessApi=true -browser browserName=iexplore,maxInstances=5,platform=WINDOWS -port 5557
+java -jar E:\xampp\htdocs\testonaut\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.ie.driver="E:\xampp\htdocs\testonaut\vendor\driver\IEDriverServer.exe" -Die.forceCreateProcessApi=true -browser browserName=iexplore,maxInstances=5,platform=WINDOWS -port 5557
 
 
 
@@ -33,7 +33,7 @@ bitsadmin.exe /transfer "Download preinstall bat" http://selenium-hub.dim/seleni
 
 
 cd "C:\Program Files\Java\jdk1.8.0_25\bin"
-java -jar c:\tmp\selenium-server.jar -role node -hub http://192.168.50.136:4444/grid/register -Dwebdriver.ie.driver="c:\tmp\IEDriverServer.exe" -browser browserName="iexplore",version=10,platform="WINDOWS",maxInstances=5java -jar E:\xampp\htdocs\phpSelenium\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.ie.driver="E:\xampp\htdocs\phpSelenium\vendor\driver\IEDriverServer.exe" -Die.forceCreateProcessApi=true -browser browserName=iexplore ,maxInstances=5,platform=WINDOWS -port 5557
+java -jar c:\tmp\selenium-server.jar -role node -hub http://192.168.50.136:4444/grid/register -Dwebdriver.ie.driver="c:\tmp\IEDriverServer.exe" -browser browserName="iexplore",version=10,platform="WINDOWS",maxInstances=5java -jar E:\xampp\htdocs\testonaut\vendor\selenium\selenium-server.jar -role node  -hub http://localhost:4444/grid/register -Dwebdriver.ie.driver="E:\xampp\htdocs\testonaut\vendor\driver\IEDriverServer.exe" -Die.forceCreateProcessApi=true -browser browserName=iexplore ,maxInstances=5,platform=WINDOWS -port 5557
 
 
 
