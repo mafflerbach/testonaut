@@ -39,11 +39,13 @@ class File implements ControllerProviderInterface {
           $fileDir = \testonaut\Config::getInstance()->Path;
           $domain = \testonaut\Config::getInstance()->domain;
 
-          $path = $fileDir . '/web/files/' . $page->relativePath();
+          $locationTo = $fileDir . '/web/files/' . $page->relativePath();
 
           $filename = $files['FileUpload']->getClientOriginalName();
-          $files['FileUpload']->move($path, $filename);
+          $files['FileUpload']->move($locationTo, $filename);
           $message = 'File was successfully uploaded!';
+$search = new \testonaut\Search\File(\testonaut\Config::getInstance()->Path . '/index.db', 'files',\testonaut\Config::getInstance()->fileRoot);
+          $search->updateIndex();
 
           $image = $domain . $request->getBaseUrl() . '/files/' . $page->relativePath() . '/' . $filename;
 

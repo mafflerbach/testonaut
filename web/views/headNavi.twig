@@ -47,7 +47,7 @@
 
     <div class="fancyNavBox">
       <ul class="fancyNav">
-        {% if app.request.mode == 'show' %}
+        {% if app.request.mode is defined and app.request.mode == 'show' %}
           {% if app.request.content %}
             {% if app.request.type is defined and (app.request.type != 'static' and app.request.type != 'none' and app.request.type != '') %}
               <li>

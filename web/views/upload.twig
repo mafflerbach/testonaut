@@ -16,19 +16,30 @@
          name="Upload File"
          class="btn uploadbtn"/>
 </form>
-<script type="text/javascript">
-  document.getElementById("uploadBtn").onchange = function () {
-    document.getElementById("uploadFile").value = this.value;
-  };
-</script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      function copyToClipboard(text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+      }
+
+      $('span[data-copy="clipboard"]').click(function () {
+        copyToClipboard($(this).data('url'));
+      });
+    })
+  </script>
 
 
 {% if app.request.image != '' %}
   <div class="linkSection">
     <span>Path to image</span>
     <span>http://{{ app.request.image }}</span>
+      <span class="fa fa-copy"
+            data-copy="clipboard"
+            data-url="http://{{ app.request.image }}"></span>
+
   </div>
 {% endif %}
 </div>
 {% include 'footer.twig' %}
+
 

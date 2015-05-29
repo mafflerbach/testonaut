@@ -33,7 +33,6 @@ class Api {
     for ($i = 0; $i < count($nodes); $i++) {
       $endpoint = 'grid/api/proxy?id=' . $nodes[$i];
       $data = $this->getData($endpoint);
-
       if (count($data['request']['capabilities']) > 1) {
 
         for ($k = 0; $k < count($data['request']['capabilities']); $k++) {
@@ -59,6 +58,7 @@ class Api {
 
   private function getData($endpoints) {
     $apiString = $this->seleniumAddress . "/" . $endpoints;
+
     $content = file_get_contents($apiString);
     return json_decode($content, TRUE);
   }
