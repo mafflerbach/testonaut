@@ -67,7 +67,10 @@ class Start implements ControllerProviderInterface {
     return $toc->generateMenu();
   }
 
-  protected function editpage() {
+  protected function checkVersion() {
+    $versionIni = \testonaut\Config::getInstance()->Path;
+    $iniContent= parse_ini_file($versionIni);;
+    $version = $iniContent['version'];
 
   }
 
