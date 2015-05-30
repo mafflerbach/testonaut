@@ -4,7 +4,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <title>NoConsoleComposer for Testonaut</title>
+        <title>Installer for Testonaut</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="../web/css/style.less" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js"></script>
