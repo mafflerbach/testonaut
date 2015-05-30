@@ -31,7 +31,7 @@ you need git and an apache installation with php greater then 5.3 with additiona
     composer install
 
 
-Under <a href="http://youre.installation/*/globalconfig/">http://youre.installation/*/globalconfig/</a>
+Under http://youre.installation/*/globalconfig/
 You can set your domain to your selenium hub.
 
 The definition of "app path" defining your subpath on your apache DOCUMENT_ROOT, if you don't like to use subdomains.
