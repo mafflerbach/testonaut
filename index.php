@@ -1,6 +1,9 @@
 <?php
-
-if (file_exists('composer.lock')) {
+$install = false;
+if (file_exists('composer.lock') && file_exists('installer')) {
+    $install = true;
+}
+if (file_exists('composer.lock') && !file_exists('installer') ) {
     header('Location: web');
 }
 
@@ -19,7 +22,12 @@ if (file_exists('composer.lock')) {
 <div class="contentBox">
 <?php
 
+if(!$install) {
+
     print('<h2>Welcome to testonaut</h2><p>Click <a href="installer" class="btn btn-primary">here</a> for installation.</p>');
+} else {
+    print('<h2>Welcome to testonaut</h2><p style="color:darkred"><span class="fa fa-warning"></span>Please delete the install dir in testonaut root! </p>');
+}
 
 
 ?>
