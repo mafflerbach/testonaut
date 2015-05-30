@@ -153,7 +153,7 @@ you should customize the version number and Hub ip ;)
 
 ##modules
 
-* Login bzw schmale usermanagment 
+* Login bzw tiny usermanagment 
 * Pagecrawler for generating a testing tree
 * testgenerator for Equivalence classes analysis
 * checklist for Accessibility (Bitv) (inkl Prio)
