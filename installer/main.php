@@ -63,6 +63,14 @@ function getWorkingDir()
     return str_replace('/installer', '', $dir);
 }
 
+function gitPull() {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $command = 'git pull';
+
+    exec($command);
+}
 function command()
 {
     command:

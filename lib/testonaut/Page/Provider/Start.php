@@ -49,7 +49,8 @@ class Start implements ControllerProviderInterface {
           'path'    => '',
           'baseUrl' => $request->getBaseUrl(),
           'mode'    => 'show',
-          'type' => 'start'
+          'type' => 'start',
+          'update' => $this->checkVersion()
         );
         $foo =  $app['twig']->render('index.twig');
         return new Response($foo , 200, array(
@@ -71,7 +72,14 @@ class Start implements ControllerProviderInterface {
     $versionIni = \testonaut\Config::getInstance()->Path;
     $iniContent= parse_ini_file($versionIni);;
     $version = $iniContent['version'];
+      $gitUri = 'github/foo/baa/meee/muuu/version.ini';
+      $rv = parse_ini_string(file_get_contents($gitUri));
+    $remoteVersion =  $rv['version'];
 
+     if($remoteVersion > $version) {
+         return true;
+     }
+    return false;
   }
 
 }
