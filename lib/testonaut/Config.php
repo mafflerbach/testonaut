@@ -1,21 +1,18 @@
 <?php
 namespace testonaut;
-
-
 class Config {
-  private static $instance = null;
+  private static $instance = NULL;
   private $register = array();
   private $readOnly = array();
-
-
 
   private function __construct() {
   }
 
   public static function getInstance() {
-    if (self::$instance === null) {
+    if (self::$instance === NULL) {
       self::$instance = new self();
     }
+
     return self::$instance;
   }
 
@@ -25,9 +22,9 @@ class Config {
   public function define($key, $value) {
     if (!$this->exists($key)) {
       $this->register[$key] = $value;
-      $this->readOnly[$key] = true;
+      $this->readOnly[$key] = TRUE;
     } else {
-      //die('<h1>Error: Constant \'<em>' . $key . '</em>\' is already created ' . 'in Registry!</h1>');
+    //  die('<h1>Error: Constant \'<em>' . $key . '</em>\' is already created ' . 'in Registry!</h1>');
     }
   }
 
@@ -48,15 +45,7 @@ class Config {
   }
 
   public function isConstant($key) {
-    return array_key_exists($key, $this->readOnly) && $this->readOnly[$key] === true ? true : false;
-  }
-
-  public function __call($key, $args) {
-    if ($this->exists($key) && is_callable($this->register[$key])) {
-      return call_user_func_array($this->register[$key], $args);
-    }
-
-    trigger_error($key . ' is not callable.', E_USER_ERROR);
+    return array_key_exists($key, $this->readOnly) && $this->readOnly[$key] === TRUE ? TRUE : FALSE;
   }
 
   public function remove($key) {
@@ -64,10 +53,18 @@ class Config {
       die('<h1>Error: Cannot remove Constant \'<em>' . $key . '</em>\' in Registry!</h1>');
     } elseif ($this->exists($key)) {
       unset($this->register[$key]);
-      return true;
+
+      return TRUE;
     }
 
-    return false;
+    return FALSE;
+  }
+
+  public function __call($key, $args) {
+    if ($this->exists($key) && is_callable($this->register[$key])) {
+      return call_user_func_array($this->register[$key], $args);
+    }
+    trigger_error($key . ' is not callable.', E_USER_ERROR);
   }
 
   public function __clone() {
