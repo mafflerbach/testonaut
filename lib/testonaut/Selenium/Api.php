@@ -5,14 +5,17 @@ use testonaut\Config;
 use testonaut\Parser\Config\Browser;
 
 class Api {
+
   private $seleniumAddress;
 
   public function __construct() {
+
     $hub = Config::getInstance();
     $this->seleniumAddress = $hub->seleniumAddress;
   }
 
   private function getNodeInformations() {
+
     $pars = new Browser();
 
     $cacheFile = Config::getInstance()->Path . '/hubCache';
@@ -48,18 +51,23 @@ class Api {
         $browsers[] = $data['request']['capabilities'][0];
       }
     }
+
     return $browsers;
   }
 
   public function getBrowserList() {
+
     $data = $this->getNodeInformations();
+
     return $data;
   }
 
   private function getData($endpoints) {
+
     $apiString = $this->seleniumAddress . "/" . $endpoints;
 
     $content = file_get_contents($apiString);
+
     return json_decode($content, TRUE);
   }
 }

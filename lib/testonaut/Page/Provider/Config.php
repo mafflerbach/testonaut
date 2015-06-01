@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package testonaut\Page\Provider
  */
-class Config extends Base implements ControllerProviderInterface {
+class Config implements ControllerProviderInterface {
   /**
    * @private
    */

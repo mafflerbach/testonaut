@@ -1,12 +1,11 @@
 <?php
 namespace testonaut\Page\Provider;
 
-use testonaut\Page\Base;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class Image extends Base implements ControllerProviderInterface {
+class Image implements ControllerProviderInterface {
 
   private $path;
 
@@ -15,6 +14,7 @@ class Image extends Base implements ControllerProviderInterface {
     $image = $app['controllers_factory'];
 
     $image->get('/copy/{browser}/{image}/{path}', function (Request $request, $browser, $image, $path) use ($app) {
+
       $this->path = $path;
 
       $app['request'] = array(
@@ -50,6 +50,7 @@ class Image extends Base implements ControllerProviderInterface {
     });
 
     $image->get('/delete/{type}/{browser}/{image}/{path}', function (Request $request, $type, $browser, $image, $path) use ($app) {
+
       $this->path = $path;
 
       $app['request'] = array(
@@ -62,6 +63,7 @@ class Image extends Base implements ControllerProviderInterface {
     });
 
     $image->post('/delete/{type}/{browser}/{image}/{path}', function (Request $request, $type, $browser, $image, $path) use ($app) {
+
       $this->path = $path;
       $src = $this->getImagePath() . '/' . $browser . '/' . $type . '/' . $image;
 
@@ -87,10 +89,12 @@ class Image extends Base implements ControllerProviderInterface {
   }
 
   public function getImagePath() {
+
     return \testonaut\Config::getInstance()->imageRoot . "/" . $this->relativePath();
   }
 
   public function relativePath() {
+
     return str_replace('.', '/', $this->path);
   }
 }

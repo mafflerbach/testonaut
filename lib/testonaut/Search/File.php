@@ -39,6 +39,7 @@ class File {
   }
 
   public function doIndexing($path = '') {
+
     if ($path == '') {
       $path = $this->path;
     }
@@ -82,14 +83,16 @@ class File {
   }
 
   private function clearIndex() {
+
     if ($this->exitsTable($this->tableName)) {
-      $sql = 'delete from '.$this->tableName;
+      $sql = 'delete from ' . $this->tableName;
       $stm = $this->dbInstance->prepare($sql);
       $stm->execute();
     }
   }
 
   private function clearVirtualTable() {
+
     if ($this->exitsTable(".$this->tableName." . 'Search')) {
       $sql = 'DROP TABLE ' . ".$this->tableName." . 'Search';
       $stm = $this->dbInstance->prepare($sql);
@@ -98,6 +101,7 @@ class File {
   }
 
   public function updateIndex() {
+
     $this->clearIndex();
     $this->clearVirtualTable();
 
@@ -106,6 +110,7 @@ class File {
   }
 
   public function initializeIndex() {
+
     $this->clearIndex();
     $this->clearVirtualTable();
 
@@ -114,9 +119,12 @@ class File {
   }
 
   private function exitsTable($name) {
+
     $sql = "SELECT count(name) as count FROM sqlite_master WHERE type='table' AND name='" . $name . "'";
     $stm = $this->dbInstance->prepare($sql);
-    $result = $stm->execute()->fetchArray();
+    $result = $stm->execute()
+      ->fetchArray()
+    ;
 
     if ($result['count'] == 0) {
       return FALSE;

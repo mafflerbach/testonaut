@@ -10,6 +10,7 @@ use testonaut\Selenium\Api;
  * @package testonaut
  */
 class Page {
+
   /**
    * @public
    */
@@ -23,6 +24,7 @@ class Page {
    * @param $path
    */
   public function __construct($path) {
+
     $this->path = $path;
     $this->root = Config::getInstance()->wikiPath;
   }
@@ -31,6 +33,7 @@ class Page {
    * @throws \Exception
    */
   public function getCompiledPage() {
+
     return $this->_content(NULL, NULL, TRUE);
   }
 
@@ -41,6 +44,7 @@ class Page {
    * @throws \Exception
    */
   private function _content($content = NULL, $save = NULL, $compiled = FALSE) {
+
     if ($this->path == '') {
       $file = $this->root . '/content';
       $path = $this->root;
@@ -75,6 +79,7 @@ class Page {
    * @throws \Exception
    */
   public function content($content = NULL, $save = NULL) {
+
     return $this->_content($content, $save);
   }
 
@@ -82,6 +87,7 @@ class Page {
    * @return string
    */
   public function getImagePath() {
+
     return \testonaut\Config::getInstance()->imageRoot . "/" . $this->relativePath();
   }
 
@@ -89,6 +95,7 @@ class Page {
    * @return string
    */
   public function getFilePath() {
+
     return \testonaut\Config::getInstance()->fileRoot . "/" . $this->relativePath();
   }
 
@@ -96,6 +103,7 @@ class Page {
    * @return string
    */
   public function getResultPath() {
+
     return \testonaut\Config::getInstance()->result . "/" . $this->relativePath();
   }
 
@@ -103,6 +111,7 @@ class Page {
    * @return array
    */
   public function getLinkedFiles() {
+
     $files = array(
       'images'    => array(),
       'documents' => array()
@@ -138,6 +147,7 @@ class Page {
    * @return array
    */
   public function getImages() {
+
     $imageDir = $this->getImagePath();
     $return = array();
     $api = new Api();
@@ -174,6 +184,7 @@ class Page {
    * @return mixed
    */
   public function transCodePath() {
+
     return str_replace('.', '/', $this->root . '/' . $this->path);
   }
 
@@ -181,6 +192,7 @@ class Page {
    * @return mixed
    */
   public function relativePath() {
+
     return str_replace('.', '/', $this->path);
   }
 
@@ -189,6 +201,7 @@ class Page {
    * @return bool
    */
   public function config($config = array()) {
+
     $file = $this->transCodePath() . '/config';
     if (empty($config)) {
       if (!file_exists($file) && is_dir($this->transCodePath())) {
@@ -207,6 +220,7 @@ class Page {
           return FALSE;
         };
       }
+
       return TRUE;
     }
   }
@@ -215,6 +229,7 @@ class Page {
    *
    */
   public function delete() {
+
     $this->_delete($this->transCodePath());
   }
 
@@ -223,6 +238,7 @@ class Page {
    * @return bool
    */
   protected function _delete($dir) {
+
     $files = array_diff(scandir($dir), array(
       '.',
       '..'
@@ -238,6 +254,7 @@ class Page {
    * @return mixed
    */
   public function getPath() {
+
     return $this->path;
   }
 
@@ -247,10 +264,13 @@ class Page {
    * @return bool
    */
   public function rename($path, $newPath) {
+
     $path = str_replace('.', '/', $path);
     $newPath = str_replace('.', '/', $newPath);
+
     $path = Config::getInstance()->wikiPath . '/' . $path;
     $newPath = Config::getInstance()->wikiPath . '/' . $newPath;
+
     if (!file_exists($newPath)) {
       return @rename($path, $newPath);
     }
@@ -262,6 +282,7 @@ class Page {
    * @return string
    */
   public function getEditPath() {
+
     return '/edit/' . $this->path;
   }
 } 

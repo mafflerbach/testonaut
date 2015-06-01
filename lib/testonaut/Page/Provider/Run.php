@@ -12,6 +12,7 @@ use testonaut\Selenese\Test;
 use testonaut\Selenese\Runner;
 
 class Run implements ControllerProviderInterface {
+
   private $basePath;
   /**
    * @var \testonaut\Page $page
@@ -23,8 +24,10 @@ class Run implements ControllerProviderInterface {
   private $browser = '';
 
   public function connect(Application $app) {
+
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request, $path) use ($app) {
+
       $this->path = $path;
       $this->page = new \testonaut\Page($path);
       $this->basePath = $this->page->transCodePath();
@@ -39,8 +42,6 @@ class Run implements ControllerProviderInterface {
       if ($this->version == '') {
         $this->version = '';
       }
-
-
 
       if ($request->query->get('suite') == 'true') {
         $result = $this->runSuite($this->page);
@@ -60,13 +61,16 @@ class Run implements ControllerProviderInterface {
       $app['result'] = $result;
 
       return $app['twig']->render('run.twig');
-    });
+    })
+    ;
+
     return $edit;
   }
 
   protected function writeResultFile($content) {
+
     $path = $this->page->getResultPath();
-    
+
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
     }
@@ -76,6 +80,7 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function runSuite($path) {
+
     $this->collect($path->transCodePath());
 
     $testCollect = array();
@@ -95,12 +100,14 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function run($path) {
+
     $testCollect[] = $path;
 
     return $this->_run($testCollect);
   }
 
   protected function screenshotSettings() {
+
     $conf = $this->page->config();
     switch ($conf['screenshots']) {
       case 'step';
@@ -119,6 +126,7 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function baseUrlSettings($capabilities) {
+
     $conf = $this->page->config();
     if (isset($conf['browser']['active']) && ($conf['type'] == 'suite' || $conf['type'] == 'project')) {
       if (in_array($capabilities->getBrowserName(), $conf['browser']['active'])) {
@@ -147,11 +155,13 @@ class Run implements ControllerProviderInterface {
 
       if (!is_array($capabilities)) {
         $result = $runner->run($capabilities);
+
         return $result;
       } else {
         for ($i = 0; $i < count($capabilities); $i++) {
           $result[] = $runner->run($capabilities[$i]);
         }
+
         return $result;
       }
     } catch (\Exception $e) {
@@ -160,6 +170,7 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function collect($outerDir, $tests = array()) {
+
     $dirs = array_diff(scandir($outerDir), Array(
       ".",
       ".."
@@ -193,7 +204,6 @@ class Run implements ControllerProviderInterface {
 
     $DesiredCapabilities = new Capabilities();
     $DesiredCapabilities->setVersion($this->version);
-
 
     if ($this->browser == 'all') {
       $api = new Api();
@@ -230,6 +240,7 @@ class Run implements ControllerProviderInterface {
     } else {
       $browserName = $browserString;
     }
+
     return $browserName;
   }
 

@@ -8,6 +8,7 @@ namespace testonaut\Settings;
  * @package testonaut\Settings
  */
 class Page {
+
   /**
    * @private
    */
@@ -38,6 +39,7 @@ class Page {
    * @param $path
    */
   public function __construct($path) {
+
     $this->page = new \testonaut\Page($path);
     $this->settings = $this->page->config();
   }
@@ -46,6 +48,7 @@ class Page {
    * @return string type
    */
   public function getType() {
+
     $settings = $this->page->config();
     for ($i = 0; $i < count($this->types); $i++) {
       if ($settings['type'] == $this->types[$i]) {
@@ -61,6 +64,7 @@ class Page {
    * @return array
    */
   public function getSettings() {
+
     $settings = $this->page->config();
     $return = array();
     if (isset($settings['type'])) {
@@ -90,6 +94,7 @@ class Page {
    * @return array
    */
   public function getScreenshotSettings() {
+
     $settings = $this->page->config();
     $return = array();
     if (isset($settings['screenshots'])) {
@@ -117,6 +122,7 @@ class Page {
    * @throws \Exception
    */
   public function setSettings($type) {
+
     if (in_array($type, $this->types)) {
       $this->setting['type'] = $type;
     } else {
@@ -132,6 +138,7 @@ class Page {
    * @throws \Exception
    */
   public function setScreenshotSettings($settings) {
+
     if (in_array($settings, $this->screenshots)) {
       $this->setting['screenshots'] = $settings;
     } else {

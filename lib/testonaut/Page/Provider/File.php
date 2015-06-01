@@ -2,6 +2,8 @@
 namespace testonaut\Page\Provider;
 
 use testonaut\Page;
+use testonaut\Search;
+use testonaut\Config;
 use Silex\Provider\LocaleServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,44 +17,38 @@ class File implements ControllerProviderInterface {
     $app->register(new LocaleServiceProvider());
     $app->register(new TranslationServiceProvider(), array(
       'locale_fallbacks' => array('en'),
-    ));
-
+    ))
+    ;
     $file = $app['controllers_factory'];
-
     $file->match('/', function (Request $request, $path) use ($app) {
       $page = new Page($path);
-
       $this->request = $request;
-      $form = $app['form.factory']->createBuilder('form')->add('FileUpload', 'file')->getForm();
+      $form = $app['form.factory']->createBuilder('form')
+        ->add('FileUpload', 'file')
+        ->getForm()
+      ;
       if (isset($app['request'])) {
         $request = $app['request'];
       } else {
-
       }
       $image = '';
       $message = 'Upload a file';
       if ($request->isMethod('POST')) {
         $form->bind($request);
-
         if ($form->isValid()) {
           $files = $request->files->get($form->getName());
-          $fileDir = \testonaut\Config::getInstance()->Path;
-          $domain = \testonaut\Config::getInstance()->domain;
-
+          $fileDir = Config::getInstance()->Path;
+          $domain = Config::getInstance()->domain;
           $locationTo = $fileDir . '/web/files/' . $page->relativePath();
-
           $filename = $files['FileUpload']->getClientOriginalName();
           $files['FileUpload']->move($locationTo, $filename);
           $message = 'File was successfully uploaded!';
-$search = new \testonaut\Search\File(\testonaut\Config::getInstance()->Path . '/index.db', 'files',\testonaut\Config::getInstance()->fileRoot);
+          $search = new Search\File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
           $search->updateIndex();
-
           $image = $domain . $request->getBaseUrl() . '/files/' . $page->relativePath() . '/' . $filename;
-
         } else {
         }
       }
-
       $app['request'] = array(
         'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
@@ -64,18 +60,17 @@ $search = new \testonaut\Search\File(\testonaut\Config::getInstance()->Path . '/
         'form'    => $form->createView(),
         'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-      ));
+      ))
+      ;
 
       return $response;
-
     }, 'GET|POST');
-
     $file->get('/search/{term}', function (Request $request, $term) use ($app) {
-      $search = new \testonaut\Search\File(\testonaut\Config::getInstance()->Path . '/index.db', 'files',\testonaut\Config::getInstance()->fileRoot);
+      $search = new Search\File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
+
       return $app->json($search->search($term), 201);
     });
 
     return $file;
   }
-
 }

@@ -9,8 +9,10 @@
 namespace testonaut;
 
 class Image {
+
   public function compare($image1, $image2, $resultImg) {
-    if(class_exists('\\Imagick')) {
+
+    if (class_exists('\\Imagick')) {
       $imageSrc = new \Imagick($image1);
       $imageRef = new \Imagick($image2);
 

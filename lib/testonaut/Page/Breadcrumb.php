@@ -2,13 +2,16 @@
 namespace testonaut\Page;
 
 class Breadcrumb {
+
   private $path;
 
   public function __construct($path) {
+
     $this->path = $path;
   }
 
   public function getBreadcrumb() {
+
     $crumbs = explode(".", $this->path);
     $foo = array();
     $b = '';
@@ -20,6 +23,7 @@ class Breadcrumb {
       $foo[$crumb] = $b .= $crumb;
       $i++;
     }
+
     return $foo;
   }
 }

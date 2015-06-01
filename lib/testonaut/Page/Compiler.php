@@ -4,13 +4,16 @@ namespace testonaut\Page;
 use testonaut\Page;
 
 class Compiler {
+
   private $page;
 
   public function __construct(Page $page) {
+
     $this->page = $page;
   }
 
   public function compile($variables) {
+
     $path = $this->page->transCodePath();
     $contentPath = $path . '/content';
 
@@ -35,22 +38,25 @@ class Compiler {
   }
 
   public function getContent() {
+
     return '';
   }
 
   protected function invokePages($contentPath) {
+
     $tmp = array();
     if (file_exists($contentPath)) {
       $lines = file($contentPath);
       $content = $this->parseIncludes($lines);
+
       return $content;
     }
-
 
     return '';
   }
 
   protected function parseIncludes($fileArr) {
+
     for ($i = 0; $i < count($fileArr); $i++) {
       preg_match_all('/!include ([a-zA-Z.]+)/', $fileArr[$i], $result, PREG_SET_ORDER);
       rsort($result);
@@ -64,10 +70,12 @@ class Compiler {
         }
       }
     }
+
     return implode("", $fileArr);
   }
 
   protected function includeSpecialFooterPages($content, $type) {
+
     if ($type == 'suite') {
       $pages[] = 'suiteTearDown';
     }
@@ -84,6 +92,7 @@ class Compiler {
   }
 
   protected function includeSpecialHeadPages($content, $type) {
+
     if ($type == 'suite') {
       $pages[] = 'suiteSetUp';
     }
@@ -100,6 +109,7 @@ class Compiler {
   }
 
   protected function patchPage($content, $pages, $prepend = FALSE) {
+
     $path = $this->page->path;
 
     $pathArr = explode('.', $path);
@@ -127,9 +137,11 @@ class Compiler {
   }
 
   protected function generateIncludeBox($content, $path) {
+
     $return = '<div class="box hide">
 <h5><a href="{{ app.request.baseUrl }}/edit/' . $path . '"><span class="fa fa-pencil"></span></a> Include ' . $path . '</h5>
 <div class="pageContent">' . $content . '</div></div>';
+
     return $return;
   }
 
