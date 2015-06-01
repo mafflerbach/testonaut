@@ -7,11 +7,9 @@ function url() {
 function call(func) {
 
     var dryrun = false;
-    if($('input[type="checkbox"]:checked').length > 0) {
+    if ($('input[type="checkbox"]:checked').length > 0) {
         dryrun = true;
     }
-console.log(dryrun);
-
 
     $("#output").append("\nplease wait...\n");
     $("#output").append("\n===================================================================\n");
