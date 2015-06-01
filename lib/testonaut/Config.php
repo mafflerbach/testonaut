@@ -27,7 +27,7 @@ class Config {
       $this->register[$key] = $value;
       $this->readOnly[$key] = true;
     } else {
-      die('<h1>Error: Constant \'<em>' . $key . '</em>\' is already created ' . 'in Registry!</h1>');
+      //die('<h1>Error: Constant \'<em>' . $key . '</em>\' is already created ' . 'in Registry!</h1>');
     }
   }
 

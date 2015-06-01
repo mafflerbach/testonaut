@@ -2,28 +2,49 @@
 
 namespace testonaut\Settings;
 
-use testonaut\Selenium\Api;
-
+/**
+ * Class Page
+ *
+ * @package testonaut\Settings
+ */
 class Page {
+  /**
+   * @private
+   */
   private $setting;
+  /**
+   * @private \testonaut\Page
+   */
   private $page;
+  /**
+   * @private array
+   */
   private $types = array(
     'static',
     'suite',
     'test',
     'project'
   );
-  private $screenshots= array(
+  /**
+   * @private array
+   */
+  private $screenshots = array(
     'step',
     'test',
     'none'
   );
 
+  /**
+   * @param $path
+   */
   public function __construct($path) {
     $this->page = new \testonaut\Page($path);
     $this->settings = $this->page->config();
   }
 
+  /**
+   * @return string type
+   */
   public function getType() {
     $settings = $this->page->config();
     for ($i = 0; $i < count($this->types); $i++) {
@@ -33,19 +54,12 @@ class Page {
     }
   }
 
-  protected function getProjectPage() {
-    $path = $this->page->getPath();
-  }
-
-  public function getProjectSettings() {
-
-    $path = $this->getProjectPage();
-
-    $page = new \testonaut\Page($path);
-    $settings = $page->config();
-
-  }
-
+  /**
+   * return an array with all existing types.
+   * The valid setting is equals true in the settings array
+   *
+   * @return array
+   */
   public function getSettings() {
     $settings = $this->page->config();
     $return = array();
@@ -65,13 +79,19 @@ class Page {
         'project' => FALSE,
       );
     }
+
     return $return;
   }
 
+  /**
+   * return an array with all existing screenshot settings.
+   * The valid setting is equals true in the settings array
+   *
+   * @return array
+   */
   public function getScreenshotSettings() {
     $settings = $this->page->config();
     $return = array();
-
     if (isset($settings['screenshots'])) {
       for ($i = 0; $i < count($this->screenshots); $i++) {
         if ($settings['screenshots'] == $this->screenshots[$i]) {
@@ -87,25 +107,37 @@ class Page {
         'none' => TRUE
       );
     }
+
     return $return;
   }
 
-  public function setSettings($types) {
-
-    if (in_array($types, $this->types)) {
-      $this->setting['type'] = $types;
+  /**
+   * @param string $types [static|suite|test|project]
+   * @return bool
+   * @throws \Exception
+   */
+  public function setSettings($type) {
+    if (in_array($type, $this->types)) {
+      $this->setting['type'] = $type;
     } else {
       throw new \Exception('Bad Page Type');
     }
+
     return $this->page->config($this->setting);
   }
 
+  /**
+   * @param string $settings [step|test|none]
+   * @return bool
+   * @throws \Exception
+   */
   public function setScreenshotSettings($settings) {
     if (in_array($settings, $this->screenshots)) {
       $this->setting['screenshots'] = $settings;
     } else {
       throw new \Exception('Bad screenshot Settings ');
     }
+
     return $this->page->config($this->setting);
   }
 }

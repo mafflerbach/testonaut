@@ -8,30 +8,34 @@ use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class Config
+ *
+ * @package testonaut\Page\Provider
+ */
 class Config extends Base implements ControllerProviderInterface {
-
+  /**
+   * @private
+   */
   private $path;
 
+  /**
+   * @param Application $app
+   * @return mixed
+   */
   public function connect(Application $app) {
-
     $config = $app['controllers_factory'];
-
     $config->get('/', function (Request $request, $path) use ($app) {
       $this->path = $path;
       $page = new \testonaut\Page($path);
       $content = $page->content();
-
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
-
       $app['type'] = $this->pageSettings();
-
       if ($app['type']['project'] || $app['type']['suite']) {
         $app['browser'] = $this->browserSettings();
       }
-
       $app['screenshots'] = $this->screenshotSettings();
-
       $app['request'] = array(
         'content' => $content,
         'path'    => $path,
@@ -46,13 +50,10 @@ class Config extends Base implements ControllerProviderInterface {
       $this->path = $path;
       $page = new \testonaut\Page($path);
       $content = $page->content();
-
       $browserUrls = $request->request->get('browser');
       $activeBrowser = $request->request->get('active');
       $type = $request->request->get('type');
-
       $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser));
-
       if ($type == 'project' || $type == 'suite') {
         if ($this->browserSettings($browserSettings)) {
           $message = 'Saved';
@@ -60,20 +61,17 @@ class Config extends Base implements ControllerProviderInterface {
           $message = 'Can not save browser config';
         }
       }
-
       $screenshot = $request->request->get('screenshot');
       if ($this->screenshotSettings($screenshot)) {
         $message = 'Saved';
       } else {
         $message = 'Can not save page config';
       }
-
       if ($this->pageSettings($type)) {
         $message = 'Saved';
       } else {
         $message = 'Can not save page config';
       }
-
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
       $app['browser'] = $this->browserSettings();
@@ -88,10 +86,16 @@ class Config extends Base implements ControllerProviderInterface {
       );
 
       return $app['twig']->render('config.twig');
-    });
+    })
+    ;
+
     return $config;
   }
 
+  /**
+   * @param null $settings
+   * @return array|bool
+   */
   protected function browserSettings($settings = NULL) {
     $pathArray = explode('.', $this->path);
     $bSettings = new Browser($this->path);
@@ -102,6 +106,11 @@ class Config extends Base implements ControllerProviderInterface {
     }
   }
 
+  /**
+   * @param null $settings
+   * @return array|bool
+   * @throws \Exception
+   */
   protected function pageSettings($settings = NULL) {
     $pSettings = new \testonaut\Settings\Page($this->path);
     if ($settings != NULL) {
@@ -111,6 +120,11 @@ class Config extends Base implements ControllerProviderInterface {
     }
   }
 
+  /**
+   * @param null $settings
+   * @return array|bool
+   * @throws \Exception
+   */
   protected function screenshotSettings($settings = NULL) {
     $pSettings = new \testonaut\Settings\Page($this->path);
     if ($settings != NULL) {
@@ -119,5 +133,4 @@ class Config extends Base implements ControllerProviderInterface {
       return $pSettings->getScreenshotSettings();
     }
   }
-
 }
