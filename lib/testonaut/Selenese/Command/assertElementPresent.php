@@ -5,8 +5,8 @@ namespace testonaut\Selenese\Command;
 use testonaut\Selenese\Command;
 use testonaut\Selenese\Exception\NoSuchElement;
 
-// assertElementPresent(locator)
-class assertElementPresent extends Command {
+// AssertElementPresent(locator)
+class AssertElementPresent extends Command {
 
   /**
    * @see Command::runWebDriver()
