@@ -82,10 +82,11 @@ class Start implements ControllerProviderInterface {
 
   protected function checkVersion() {
 
-    $versionIni = \testonaut\Config::getInstance()->Path;
-    $iniContent = parse_ini_file($versionIni);;
+    $versionIni = \testonaut\Config::getInstance()->Path.'/version.ini';
+
+    $iniContent = parse_ini_file($versionIni);
     $version = $iniContent['version'];
-    $gitUri = 'github/foo/baa/meee/muuu/version.ini';
+    $gitUri = 'https://raw.githubusercontent.com/mafflerbach/testonaut/master/version.ini';
     $rv = parse_ini_string(file_get_contents($gitUri));
     $remoteVersion = $rv['version'];
 

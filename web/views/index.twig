@@ -4,15 +4,17 @@
   <div class="toc">
     {{ app.menu|raw }}
   </div>
-  {% if app.request.version == true  %}
-  <div>
-    <p>A new Version is published, please update <a href="../installer">here</a> </p>
-  </div>
-  {% endif %}
+
 
   <div class="content">
     {{ app.request.content|raw }}
   </div>
+
 </div>
+{% if app.request.update == true  %}
+    <div class="notification update">
+        A new Version is published, please update <a href="../installer">here</a>
+    </div>
+{% endif %}
 {% include 'footer.twig' %}
 
