@@ -64,7 +64,7 @@ function getWorkingDir() {
 
   $dir = str_replace('\\', '/', __DIR__);
 
-  return str_replace('/installer', '', $dir);
+  return str_replace('installer', '', $dir);
 }
 
 function gitPull() {
@@ -93,11 +93,13 @@ function command() {
       $command = $_POST['command'];
       require_once(__DIR__ . '/extracted/vendor/autoload.php');
       $param = '';
-      if ($_POST['dryrun']) {
+      if ($_POST['dryrun'] == 'true') {
         $param = ' --dry-run';
       }
 
+
       $path = getWorkingDir();
+
       $input = new Symfony\Component\Console\Input\StringInput($command . ' -vvv -d ' . $path . $param);
       $output = new Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
       $app = new Composer\Console\Application();
