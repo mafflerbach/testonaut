@@ -6,9 +6,9 @@
  * Time: 22:11
  */
 
-include_once('../../../../lib/testonaut/Config.php');
-include_once('../../../../lib/testonaut/Page.php');
-include_once('../../../../lib/testonaut/Settings/Page.php');
+
+$loader = require __DIR__.'/../../../../vendor/autoload.php';
+$loader->add('testonaut', __DIR__.'/../../../../lib/');
 
 class PageTest extends PHPUnit_Framework_TestCase {
 

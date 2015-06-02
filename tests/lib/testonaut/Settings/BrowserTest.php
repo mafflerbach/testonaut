@@ -6,9 +6,8 @@
  * Time: 15:33
  */
 
-include_once('../../../../lib/testonaut/Config.php');
-include_once('../../../../lib/testonaut/Page.php');
-include_once('../../../../lib/testonaut/Settings/Browser.php');
+$loader = require __DIR__.'/../../../../vendor/autoload.php';
+$loader->add('testonaut', __DIR__.'/../../../../lib/');
 
 class BrowserTest extends PHPUnit_Framework_TestCase {
 
