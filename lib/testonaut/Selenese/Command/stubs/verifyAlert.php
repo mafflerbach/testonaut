@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyAlert(pattern)
-class verifyAlert extends Stub {
+// VerifyAlert(pattern)
+class VerifyAlert extends Stub {
   public $command = "verifyAlert";
 }

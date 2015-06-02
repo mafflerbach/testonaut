@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyAllWindowTitles(pattern)
-class verifyAllWindowTitles extends Stub {
+// VerifyAllWindowTitles(pattern)
+class VerifyAllWindowTitles extends Stub {
   public $command = "verifyAllWindowTitles";
 }

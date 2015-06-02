@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyElementIndex(locator,pattern)
-class verifyElementIndex extends Stub {
+// VerifyElementIndex(locator,pattern)
+class VerifyElementIndex extends Stub {
   public $command = "verifyElementIndex";
 }

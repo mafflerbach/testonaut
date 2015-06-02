@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// clickAt(locator,coordString)
-class clickAt extends Stub {
+// ClickAt(locator,coordString)
+class ClickAt extends Stub {
   public $command = "clickAt";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotElementWidth(locator,pattern)
-class assertNotElementWidth extends Stub {
-  public $command = "assertNotElementWidth";
+// AssertNotElementWidth(locator,pattern)
+class AssertNotElementWidth extends Stub {
+  public $command = "AssertNotElementWidth";
 }

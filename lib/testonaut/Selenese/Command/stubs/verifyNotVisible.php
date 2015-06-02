@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotVisible(locator)
-class verifyNotVisible extends Stub {
+// VerifyNotVisible(locator)
+class VerifyNotVisible extends Stub {
   public $command = "verifyNotVisible";
 }

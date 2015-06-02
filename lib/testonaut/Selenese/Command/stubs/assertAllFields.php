@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertAllFields(pattern)
-class assertAllFields extends Stub {
-  public $command = "assertAllFields";
+// AssertAllFields(pattern)
+class AssertAllFields extends Stub {
+  public $command = "AssertAllFields";
 }

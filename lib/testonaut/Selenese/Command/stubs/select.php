@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// select(selectLocator,optionLocator)
-class select extends Stub {
+// Select(selectLocator,optionLocator)
+class Select extends Stub {
   public $command = "select";
 }

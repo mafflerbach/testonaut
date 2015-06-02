@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// count()
-class count extends Stub {
+// Count()
+class Count extends Stub {
   public $command = "count";
 }

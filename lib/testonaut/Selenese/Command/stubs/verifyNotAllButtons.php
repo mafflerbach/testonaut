@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotAllButtons(pattern)
-class verifyNotAllButtons extends Stub {
+// VerifyNotAllButtons(pattern)
+class VerifyNotAllButtons extends Stub {
   public $command = "verifyNotAllButtons";
 }

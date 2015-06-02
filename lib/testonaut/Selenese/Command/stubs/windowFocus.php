@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // windowFocus()
-class windowFocus extends Stub {
+class WindowFocus extends Stub {
   public $command = "windowFocus";
 }

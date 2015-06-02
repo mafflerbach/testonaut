@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // useXpathLibrary(libraryName)
-class useXpathLibrary extends Stub {
+class UseXpathLibrary extends Stub {
   public $command = "useXpathLibrary";
 }

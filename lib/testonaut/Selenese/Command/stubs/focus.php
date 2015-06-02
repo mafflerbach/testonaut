@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // focus(locator)
-class focus extends Stub {
+class Focus extends Stub {
   public $command = "focus";
 }

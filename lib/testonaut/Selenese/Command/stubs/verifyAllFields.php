@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyAllFields(pattern)
-class verifyAllFields extends Stub {
+// VerifyAllFields(pattern)
+class VerifyAllFields extends Stub {
   public $command = "verifyAllFields";
 }

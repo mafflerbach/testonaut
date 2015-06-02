@@ -2,5 +2,5 @@
 
 namespace testonaut\Selenese\Command;
 
-abstract class altKeyDown extends Stub {
+abstract class AltKeyDown extends Stub {
 }

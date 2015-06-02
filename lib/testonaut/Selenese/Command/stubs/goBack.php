@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // goBack()
-class goBack extends Stub {
+class GoBack extends Stub {
   public $command = "goBack";
 }

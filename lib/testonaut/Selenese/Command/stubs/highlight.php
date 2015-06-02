@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // highlight(locator)
-class highlight extends Stub {
+class Highlight extends Stub {
   public $command = "highlight";
 }

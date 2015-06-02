@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotSelectedLabel(selectLocator,pattern)
-class assertNotSelectedLabel extends Stub {
-  public $command = "assertNotSelectedLabel";
+// AssertNotSelectedLabel(selectLocator,pattern)
+class AssertNotSelectedLabel extends Stub {
+  public $command = "AssertNotSelectedLabel";
 }

@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // removeSelection(locator,optionLocator)
-class removeSelection extends Stub {
+class RemoveSelection extends Stub {
   public $command = "removeSelection";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertEval(script,pattern)
-class assertEval extends Stub {
-  public $command = "assertEval";
+// AssertEval(script,pattern)
+class AssertEval extends Stub {
+  public $command = "AssertEval";
 }

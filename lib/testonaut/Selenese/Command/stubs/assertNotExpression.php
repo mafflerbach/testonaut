@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotExpression(expression,pattern)
-class assertNotExpression extends Stub {
-  public $command = "assertNotExpression";
+// AssertNotExpression(expression,pattern)
+class AssertNotExpression extends Stub {
+  public $command = "AssertNotExpression";
 }

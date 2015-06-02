@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// mouseUpAt(locator,coordString)
-class mouseUpAt extends Stub {
+// MouseUpAt(locator,coordString)
+class MouseUpAt extends Stub {
   public $command = "mouseUpAt";
 }

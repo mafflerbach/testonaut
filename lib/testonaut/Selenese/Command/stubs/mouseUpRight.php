@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// mouseUpRight(locator)
-class mouseUpRight extends Stub {
+// MouseUpRight(locator)
+class MouseUpRight extends Stub {
   public $command = "mouseUpRight";
 }

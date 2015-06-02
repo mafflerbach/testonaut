@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertElementPositionLeft(locator,pattern)
-class assertElementPositionLeft extends Stub {
-  public $command = "assertElementPositionLeft";
+// AssertElementPositionLeft(locator,pattern)
+class AssertElementPositionLeft extends Stub {
+  public $command = "AssertElementPositionLeft";
 }

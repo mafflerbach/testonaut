@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotChecked(locator)
-class verifyNotChecked extends Stub {
+// VerifyNotChecked(locator)
+class VerifyNotChecked extends Stub {
   public $command = "verifyNotChecked";
 }

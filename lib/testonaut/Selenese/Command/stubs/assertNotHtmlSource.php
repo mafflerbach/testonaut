@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotHtmlSource(pattern)
-class assertNotHtmlSource extends Stub {
-  public $command = "assertNotHtmlSource";
+// AssertNotHtmlSource(pattern)
+class AssertNotHtmlSource extends Stub {
+  public $command = "AssertNotHtmlSource";
 }

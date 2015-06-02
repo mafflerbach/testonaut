@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // runScript(script)
-class runScript extends Stub {
+class RunScript extends Stub {
   public $command = "runScript";
 }

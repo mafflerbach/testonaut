@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotLocation(pattern)
-class assertNotLocation extends Stub {
-  public $command = "assertNotLocation";
+// AssertNotLocation(pattern)
+class AssertNotLocation extends Stub {
+  public $command = "AssertNotLocation";
 }

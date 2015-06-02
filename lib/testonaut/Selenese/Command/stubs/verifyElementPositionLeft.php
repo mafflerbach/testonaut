@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyElementPositionLeft(locator,pattern)
-class verifyElementPositionLeft extends Stub {
+// VerifyElementPositionLeft(locator,pattern)
+class VerifyElementPositionLeft extends Stub {
   public $command = "verifyElementPositionLeft";
 }

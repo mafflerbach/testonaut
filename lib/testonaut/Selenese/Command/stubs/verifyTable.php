@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyTable(tableCellAddress,pattern)
-class verifyTable extends Stub {
+// VerifyTable(tableCellAddress,pattern)
+class VerifyTable extends Stub {
   public $command = "verifyTable";
 }

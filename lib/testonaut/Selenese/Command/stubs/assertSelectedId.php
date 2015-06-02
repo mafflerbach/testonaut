@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertSelectedId(selectLocator,pattern)
-class assertSelectedId extends Stub {
-  public $command = "assertSelectedId";
+// AssertSelectedId(selectLocator,pattern)
+class AssertSelectedId extends Stub {
+  public $command = "AssertSelectedId";
 }

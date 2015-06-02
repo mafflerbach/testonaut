@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotConfirmation(pattern)
-class assertNotConfirmation extends Stub {
-  public $command = "assertNotConfirmation";
+// AssertNotConfirmation(pattern)
+class AssertNotConfirmation extends Stub {
+  public $command = "AssertNotConfirmation";
 }

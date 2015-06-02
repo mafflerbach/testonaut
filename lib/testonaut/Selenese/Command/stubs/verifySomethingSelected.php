@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifySomethingSelected(selectLocator)
-class verifySomethingSelected extends Stub {
+// VerifySomethingSelected(selectLocator)
+class VerifySomethingSelected extends Stub {
   public $command = "verifySomethingSelected";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertCookie(pattern)
-class assertCookie extends Stub {
-  public $command = "assertCookie";
+// AssertCookie(pattern)
+class AssertCookie extends Stub {
+  public $command = "AssertCookie";
 }

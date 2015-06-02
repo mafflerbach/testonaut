@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// controlKeyDown()
-class controlKeyDown extends Stub {
+// ControlKeyDown()
+class ControlKeyDown extends Stub {
   public $command = "controlKeyDown";
 }

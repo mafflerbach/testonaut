@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// mouseOver(locator)
-class mouseOver extends Stub {
+// MouseOver(locator)
+class MouseOver extends Stub {
   public $command = "mouseOver";
 }

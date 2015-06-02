@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyConfirmationNotPresent()
-class verifyConfirmationNotPresent extends Stub {
+// VerifyConfirmationNotPresent()
+class VerifyConfirmationNotPresent extends Stub {
   public $command = "verifyConfirmationNotPresent";
 }

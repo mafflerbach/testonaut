@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotSelected(selectLocator,optionLocator)
-class verifyNotSelected extends Stub {
+// VerifyNotSelected(selectLocator,optionLocator)
+class VerifyNotSelected extends Stub {
   public $command = "verifyNotSelected";
 }

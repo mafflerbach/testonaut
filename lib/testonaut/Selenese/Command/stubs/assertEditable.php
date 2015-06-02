@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertEditable(locator)
-class assertEditable extends Stub {
-  public $command = "assertEditable";
+// AssertEditable(locator)
+class AssertEditable extends Stub {
+  public $command = "AssertEditable";
 }

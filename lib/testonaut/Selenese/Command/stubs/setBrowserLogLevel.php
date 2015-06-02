@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // setBrowserLogLevel(logLevel)
-class setBrowserLogLevel extends Stub {
+class SetBrowserLogLevel extends Stub {
   public $command = "setBrowserLogLevel";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotWhetherThisFrameMatchFrameExpression(currentFrameString,target)
-class verifyNotWhetherThisFrameMatchFrameExpression extends Stub {
+// VerifyNotWhetherThisFrameMatchFrameExpression(currentFrameString,target)
+class VerifyNotWhetherThisFrameMatchFrameExpression extends Stub {
   public $command = "verifyNotWhetherThisFrameMatchFrameExpression";
 }

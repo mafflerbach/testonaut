@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotEval(script,pattern)
-class assertNotEval extends Stub {
-  public $command = "assertNotEval";
+// AssertNotEval(script,pattern)
+class AssertNotEval extends Stub {
+  public $command = "AssertNotEval";
 }

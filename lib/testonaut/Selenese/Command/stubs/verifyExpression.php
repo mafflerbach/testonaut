@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyExpression(expression,pattern)
-class verifyExpression extends Stub {
+// VerifyExpression(expression,pattern)
+class VerifyExpression extends Stub {
   public $command = "verifyExpression";
 }

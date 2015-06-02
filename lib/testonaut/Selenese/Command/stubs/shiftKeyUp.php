@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // shiftKeyUp()
-class shiftKeyUp extends Stub {
+class ShiftKeyUp extends Stub {
   public $command = "shiftKeyUp";
 }

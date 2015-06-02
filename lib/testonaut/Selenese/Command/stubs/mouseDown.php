@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// mouseDown(locator)
-class mouseDown extends Stub {
+// MouseDown(locator)
+class MouseDown extends Stub {
   public $command = "mouseDown";
 }

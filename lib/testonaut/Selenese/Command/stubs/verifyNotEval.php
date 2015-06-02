@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotEval(script,pattern)
-class verifyNotEval extends Stub {
+// VerifyNotEval(script,pattern)
+class VerifyNotEval extends Stub {
   public $command = "verifyNotEval";
 }

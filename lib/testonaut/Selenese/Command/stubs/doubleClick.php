@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// doubleClick(locator)
-class doubleClick extends Stub {
+// DoubleClick(locator)
+class DoubleClick extends Stub {
   public $command = "doubleClick";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotSelectedIndex(selectLocator,pattern)
-class verifyNotSelectedIndex extends Stub {
+// VerifyNotSelectedIndex(selectLocator,pattern)
+class VerifyNotSelectedIndex extends Stub {
   public $command = "verifyNotSelectedIndex";
 }

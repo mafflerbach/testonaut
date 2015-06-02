@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // removeScript(scriptTagId)
-class removeScript extends Stub {
+class RemoveScript extends Stub {
   public $command = "removeScript";
 }

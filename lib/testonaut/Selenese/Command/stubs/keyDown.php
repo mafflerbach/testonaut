@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// keyDown(locator,keySequence)
-class keyDown extends Stub {
+// KeyDown(locator,keySequence)
+class KeyDown extends Stub {
   public $command = "keyDown";
 }

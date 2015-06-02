@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotErrorOnNext(message)
-class assertNotErrorOnNext extends Stub {
-  public $command = "assertNotErrorOnNext";
+// AssertNotErrorOnNext(message)
+class AssertNotErrorOnNext extends Stub {
+  public $command = "AssertNotErrorOnNext";
 }

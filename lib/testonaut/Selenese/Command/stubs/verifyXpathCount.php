@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyXpathCount(xpath,pattern)
-class verifyXpathCount extends Stub {
+// VerifyXpathCount(xpath,pattern)
+class VerifyXpathCount extends Stub {
   public $command = "verifyXpathCount";
 }

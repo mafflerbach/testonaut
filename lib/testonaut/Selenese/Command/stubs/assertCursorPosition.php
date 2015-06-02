@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertCursorPosition(locator,pattern)
-class assertCursorPosition extends Stub {
-  public $command = "assertCursorPosition";
+// AssertCursorPosition(locator,pattern)
+class AssertCursorPosition extends Stub {
+  public $command = "AssertCursorPosition";
 }

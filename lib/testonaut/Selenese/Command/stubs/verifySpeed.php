@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifySpeed(pattern)
-class verifySpeed extends Stub {
+// VerifySpeed(pattern)
+class VerifySpeed extends Stub {
   public $command = "verifySpeed";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// chooseCancelOnNextConfirmation()
-class chooseCancelOnNextConfirmation extends Stub {
+// ChooseCancelOnNextConfirmation()
+class ChooseCancelOnNextConfirmation extends Stub {
   public $command = "chooseCancelOnNextConfirmation";
 }

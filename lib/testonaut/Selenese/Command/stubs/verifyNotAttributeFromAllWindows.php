@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotAttributeFromAllWindows(attributeName,pattern)
-class verifyNotAttributeFromAllWindows extends Stub {
+// VerifyNotAttributeFromAllWindows(attributeName,pattern)
+class VerifyNotAttributeFromAllWindows extends Stub {
   public $command = "verifyNotAttributeFromAllWindows";
 }

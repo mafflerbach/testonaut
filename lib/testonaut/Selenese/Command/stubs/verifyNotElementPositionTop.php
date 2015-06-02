@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotElementPositionTop(locator,pattern)
-class verifyNotElementPositionTop extends Stub {
+// VerifyNotElementPositionTop(locator,pattern)
+class VerifyNotElementPositionTop extends Stub {
   public $command = "verifyNotElementPositionTop";
 }

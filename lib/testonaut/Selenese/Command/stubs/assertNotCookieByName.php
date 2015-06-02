@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotCookieByName(name,pattern)
-class assertNotCookieByName extends Stub {
-  public $command = "assertNotCookieByName";
+// AssertNotCookieByName(name,pattern)
+class AssertNotCookieByName extends Stub {
+  public $command = "AssertNotCookieByName";
 }

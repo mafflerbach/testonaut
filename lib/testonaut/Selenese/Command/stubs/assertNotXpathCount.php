@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotXpathCount(xpath,pattern)
-class assertNotXpathCount extends Stub {
-  public $command = "assertNotXpathCount";
+// AssertNotXpathCount(xpath,pattern)
+class AssertNotXpathCount extends Stub {
+  public $command = "AssertNotXpathCount";
 }

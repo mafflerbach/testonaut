@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // allowNativeXpath(allow)
-class allowNativeXpath extends Stub {
+class AllowNativeXpath extends Stub {
   public $command = "allowNativeXpath";
 }

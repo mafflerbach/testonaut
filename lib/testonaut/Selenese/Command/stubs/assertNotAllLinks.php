@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotAllLinks(pattern)
-class assertNotAllLinks extends Stub {
-  public $command = "assertNotAllLinks";
+// AssertNotAllLinks(pattern)
+class AssertNotAllLinks extends Stub {
+  public $command = "AssertNotAllLinks";
 }

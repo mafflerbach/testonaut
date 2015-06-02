@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // getCurrentWindow()
-class getCurrentWindow extends Stub {
+class GetCurrentWindow extends Stub {
   public $command = "getCurrentWindow";
 }

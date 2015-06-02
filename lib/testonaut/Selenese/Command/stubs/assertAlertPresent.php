@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertAlertPresent()
-class assertAlertPresent extends Stub {
-  public $command = "assertAlertPresent";
+// AssertAlertPresent()
+class AssertAlertPresent extends Stub {
+  public $command = "AssertAlertPresent";
 }

@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // setSpeed(value)
-class setSpeed extends Stub {
+class SetSpeed extends Stub {
   public $command = "setSpeed";
 }

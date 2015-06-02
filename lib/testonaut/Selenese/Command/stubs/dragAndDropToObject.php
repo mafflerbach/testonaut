@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// dragAndDropToObject(locatorOfObjectToBeDragged,locatorOfDragDestinationObject)
-class dragAndDropToObject extends Stub {
+// DragAndDropToObject(locatorOfObjectToBeDragged,locatorOfDragDestinationObject)
+class DragAndDropToObject extends Stub {
   public $command = "dragAndDropToObject";
 }

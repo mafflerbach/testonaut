@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotAllButtons(pattern)
-class assertNotAllButtons extends Stub {
-  public $command = "assertNotAllButtons";
+// AssertNotAllButtons(pattern)
+class AssertNotAllButtons extends Stub {
+  public $command = "AssertNotAllButtons";
 }

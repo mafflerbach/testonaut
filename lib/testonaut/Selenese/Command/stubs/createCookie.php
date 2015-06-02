@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// createCookie(nameValuePair,optionsString)
-class createCookie extends Stub {
+// CreateCookie(nameValuePair,optionsString)
+class CreateCookie extends Stub {
   public $command = "createCookie";
 }

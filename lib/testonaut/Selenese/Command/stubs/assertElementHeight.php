@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertElementHeight(locator,pattern)
-class assertElementHeight extends Stub {
-  public $command = "assertElementHeight";
+// AssertElementHeight(locator,pattern)
+class AssertElementHeight extends Stub {
+  public $command = "AssertElementHeight";
 }

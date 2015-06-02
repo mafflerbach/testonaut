@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// confirm()
-class confirm extends Stub {
+// Confirm()
+class Confirm extends Stub {
   public $command = "confirm";
 }

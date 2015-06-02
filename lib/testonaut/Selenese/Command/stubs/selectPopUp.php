@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// selectPopUp(windowID)
-class selectPopUp extends Stub {
+// SelectPopUp(windowID)
+class SelectPopUp extends Stub {
   public $command = "selectPopUp";
 }

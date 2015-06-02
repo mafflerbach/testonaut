@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyValue(locator,pattern)
-class verifyValue extends Stub {
+// VerifyValue(locator,pattern)
+class VerifyValue extends Stub {
   public $command = "verifyValue";
 }

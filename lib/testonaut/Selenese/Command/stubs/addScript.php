@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // addScript(scriptContent,scriptTagId)
-class addScript extends Stub {
+class AddScript extends Stub {
   public $command = "addScript";
 }

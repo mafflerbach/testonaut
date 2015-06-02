@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertAllWindowNames(pattern)
-class assertAllWindowNames extends Stub {
-  public $command = "assertAllWindowNames";
+// AssertAllWindowNames(pattern)
+class AssertAllWindowNames extends Stub {
+  public $command = "AssertAllWindowNames";
 }

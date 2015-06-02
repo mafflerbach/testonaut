@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // assignId(locator,identifier)
-class assignId extends Stub {
+class AssignId extends Stub {
   public $command = "assignId";
 }

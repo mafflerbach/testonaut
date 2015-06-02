@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // prompt()
-class prompt extends Stub {
+class Prompt extends Stub {
   public $command = "prompt";
 }

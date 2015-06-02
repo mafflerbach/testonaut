@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotChecked(locator)
-class assertNotChecked extends Stub {
-  public $command = "assertNotChecked";
+// AssertNotChecked(locator)
+class AssertNotChecked extends Stub {
+  public $command = "AssertNotChecked";
 }

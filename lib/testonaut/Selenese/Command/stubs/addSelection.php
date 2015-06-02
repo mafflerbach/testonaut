@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // addSelection(locator,optionLocator)
-class addSelection extends Stub {
+class AddSelection extends Stub {
   public $command = "addSelection";
 }

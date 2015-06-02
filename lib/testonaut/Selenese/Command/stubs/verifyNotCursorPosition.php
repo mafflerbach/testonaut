@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotCursorPosition(locator,pattern)
-class verifyNotCursorPosition extends Stub {
+// VerifyNotCursorPosition(locator,pattern)
+class VerifyNotCursorPosition extends Stub {
   public $command = "verifyNotCursorPosition";
 }

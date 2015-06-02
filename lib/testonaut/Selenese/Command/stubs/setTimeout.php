@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // setTimeout(timeout)
-class setTimeout extends Stub {
+class SetTimeout extends Stub {
   public $command = "setTimeout";
 }

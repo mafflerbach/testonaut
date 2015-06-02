@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyCookieNotPresent(name)
-class verifyCookieNotPresent extends Stub {
+// VerifyCookieNotPresent(name)
+class VerifyCookieNotPresent extends Stub {
   public $command = "verifyCookieNotPresent";
 }

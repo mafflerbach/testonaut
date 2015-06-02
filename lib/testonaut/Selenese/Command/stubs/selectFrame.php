@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// selectFrame(locator)
-class selectFrame extends Stub {
+// SelectFrame(locator)
+class SelectFrame extends Stub {
   public $command = "selectFrame";
 }

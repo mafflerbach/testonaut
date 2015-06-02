@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// metaKeyDown()
-class metaKeyDown extends Stub {
+// MetaKeyDown()
+class MetaKeyDown extends Stub {
   public $command = "metaKeyDown";
 }

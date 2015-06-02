@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertTable(tableCellAddress,pattern)
-class assertTable extends Stub {
-  public $command = "assertTable";
+// AssertTable(tableCellAddress,pattern)
+class AssertTable extends Stub {
+  public $command = "AssertTable";
 }

@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // openWindow(url,windowID)
-class openWindow extends Stub {
+class OpenWindow extends Stub {
   public $command = "openWindow";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotWhetherThisWindowMatchWindowExpression(currentWindowString,target)
-class assertNotWhetherThisWindowMatchWindowExpression extends Stub {
-  public $command = "assertNotWhetherThisWindowMatchWindowExpression";
+// AssertNotWhetherThisWindowMatchWindowExpression(currentWindowString,target)
+class AssertNotWhetherThisWindowMatchWindowExpression extends Stub {
+  public $command = "AssertNotWhetherThisWindowMatchWindowExpression";
 }

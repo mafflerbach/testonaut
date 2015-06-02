@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // uncheck(locator)
-class uncheck extends Stub {
+class Uncheck extends Stub {
   public $command = "uncheck";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyHtmlSource(pattern)
-class verifyHtmlSource extends Stub {
+// VerifyHtmlSource(pattern)
+class VerifyHtmlSource extends Stub {
   public $command = "verifyHtmlSource";
 }

@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // sonload()
-class sonload extends Stub {
+class Sonload extends Stub {
   public $command = "sonload";
 }

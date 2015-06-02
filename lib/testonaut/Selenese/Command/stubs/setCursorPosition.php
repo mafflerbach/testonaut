@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // setCursorPosition(locator,position)
-class setCursorPosition extends Stub {
+class SetCursorPosition extends Stub {
   public $command = "setCursorPosition";
 }

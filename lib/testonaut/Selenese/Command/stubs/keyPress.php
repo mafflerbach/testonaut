@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// keyPress(locator,keySequence)
-class keyPress extends Stub {
+// KeyPress(locator,keySequence)
+class KeyPress extends Stub {
   public $command = "keyPress";
 }

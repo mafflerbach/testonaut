@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // windowMaximize()
-class windowMaximize extends Stub {
+class WindowMaximize extends Stub {
   public $command = "windowMaximize";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertConfirmationPresent()
-class assertConfirmationPresent extends Stub {
-  public $command = "assertConfirmationPresent";
+// AssertConfirmationPresent()
+class AssertConfirmationPresent extends Stub {
+  public $command = "AssertConfirmationPresent";
 }

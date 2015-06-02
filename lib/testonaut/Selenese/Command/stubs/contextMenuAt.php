@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// contextMenuAt(locator,coordString)
-class contextMenuAt extends Stub {
+// ContextMenuAt(locator,coordString)
+class ContextMenuAt extends Stub {
   public $command = "contextMenuAt";
 }

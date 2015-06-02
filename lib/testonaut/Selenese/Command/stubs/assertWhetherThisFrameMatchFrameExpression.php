@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertWhetherThisFrameMatchFrameExpression(currentFrameString,target)
-class assertWhetherThisFrameMatchFrameExpression extends Stub {
-  public $command = "assertWhetherThisFrameMatchFrameExpression";
+// AssertWhetherThisFrameMatchFrameExpression(currentFrameString,target)
+class AssertWhetherThisFrameMatchFrameExpression extends Stub {
+  public $command = "AssertWhetherThisFrameMatchFrameExpression";
 }

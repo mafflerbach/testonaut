@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// deleteCookie(name,optionsString)
-class deleteCookie extends Stub {
+// DeleteCookie(name,optionsString)
+class DeleteCookie extends Stub {
   public $command = "deleteCookie";
 }

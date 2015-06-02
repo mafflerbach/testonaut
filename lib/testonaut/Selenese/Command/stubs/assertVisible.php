@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertVisible(locator)
-class assertVisible extends Stub {
-  public $command = "assertVisible";
+// AssertVisible(locator)
+class AssertVisible extends Stub {
+  public $command = "AssertVisible";
 }

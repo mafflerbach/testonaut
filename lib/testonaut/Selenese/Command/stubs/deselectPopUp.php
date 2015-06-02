@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// deselectPopUp()
-class deselectPopUp extends Stub {
+// DeselectPopUp()
+class DeselectPopUp extends Stub {
   public $command = "deselectPopUp";
 }

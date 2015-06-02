@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // altKeyUp()
-class altKeyUp extends Stub {
+class AltKeyUp extends Stub {
   public $command = "altKeyUp";
 }

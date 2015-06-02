@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyFailureOnNext(message)
-class verifyFailureOnNext extends Stub {
+// VerifyFailureOnNext(message)
+class VerifyFailureOnNext extends Stub {
   public $command = "verifyFailureOnNext";
 }

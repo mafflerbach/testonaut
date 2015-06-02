@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // rollup(rollupName,kwargs)
-class rollup extends Stub {
+class Rollup extends Stub {
   public $command = "rollup";
 }

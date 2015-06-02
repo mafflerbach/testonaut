@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertNotSpeed(pattern)
-class assertNotSpeed extends Stub {
-  public $command = "assertNotSpeed";
+// AssertNotSpeed(pattern)
+class AssertNotSpeed extends Stub {
+  public $command = "AssertNotSpeed";
 }

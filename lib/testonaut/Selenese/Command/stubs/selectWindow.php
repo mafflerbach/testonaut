@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// selectWindow(windowID)
-class selectWindow extends Stub {
+// SelectWindow(windowID)
+class SelectWindow extends Stub {
   public $command = "selectWindow";
 }

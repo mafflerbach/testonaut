@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertPrompt(pattern)
-class assertPrompt extends Stub {
-  public $command = "assertPrompt";
+// AssertPrompt(pattern)
+class AssertPrompt extends Stub {
+  public $command = "AssertPrompt";
 }

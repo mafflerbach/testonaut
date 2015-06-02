@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyEditable(locator)
-class verifyEditable extends Stub {
+// VerifyEditable(locator)
+class VerifyEditable extends Stub {
   public $command = "verifyEditable";
 }

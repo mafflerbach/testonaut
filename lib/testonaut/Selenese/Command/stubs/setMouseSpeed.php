@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // setMouseSpeed(pixels)
-class setMouseSpeed extends Stub {
+class SetMouseSpeed extends Stub {
   public $command = "setMouseSpeed";
 }

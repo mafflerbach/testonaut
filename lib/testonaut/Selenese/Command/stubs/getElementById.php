@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // getElementById(locator)
-class getElementById extends Stub {
+class GetElementById extends Stub {
   public $command = "getElementById";
 }

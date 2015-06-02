@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotElementHeight(locator,pattern)
-class verifyNotElementHeight extends Stub {
+// VerifyNotElementHeight(locator,pattern)
+class VerifyNotElementHeight extends Stub {
   public $command = "verifyNotElementHeight";
 }

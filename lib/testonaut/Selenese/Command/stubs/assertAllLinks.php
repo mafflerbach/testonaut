@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// assertAllLinks(pattern)
-class assertAllLinks extends Stub {
-  public $command = "assertAllLinks";
+// AssertAllLinks(pattern)
+class AssertAllLinks extends Stub {
+  public $command = "AssertAllLinks";
 }

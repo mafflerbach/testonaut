@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyNotAttribute(attributeLocator,pattern)
-class verifyNotAttribute extends Stub {
+// VerifyNotAttribute(attributeLocator,pattern)
+class VerifyNotAttribute extends Stub {
   public $command = "verifyNotAttribute";
 }

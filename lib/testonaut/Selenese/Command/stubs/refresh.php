@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // refresh()
-class refresh extends Stub {
+class Refresh extends Stub {
   public $command = "refresh";
 }

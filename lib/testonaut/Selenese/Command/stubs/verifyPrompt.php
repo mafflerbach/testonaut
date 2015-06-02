@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyPrompt(pattern)
-class verifyPrompt extends Stub {
+// VerifyPrompt(pattern)
+class VerifyPrompt extends Stub {
   public $command = "verifyPrompt";
 }

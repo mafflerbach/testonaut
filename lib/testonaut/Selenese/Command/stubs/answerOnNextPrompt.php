@@ -3,6 +3,6 @@
 namespace testonaut\Selenese\Command;
 
 // answerOnNextPrompt(answer)
-class answerOnNextPrompt extends Stub {
+class AnswerOnNextPrompt extends Stub {
   public $command = "answerOnNextPrompt";
 }

@@ -2,7 +2,7 @@
 
 namespace testonaut\Selenese\Command;
 
-// verifyElementWidth(locator,pattern)
-class verifyElementWidth extends Stub {
+// VerifyElementWidth(locator,pattern)
+class VerifyElementWidth extends Stub {
   public $command = "verifyElementWidth";
 }
