@@ -2,7 +2,7 @@
     "name": "afflerbach/testonaut",
     "description": "Testonaut is a simple wiki, which you can running selenium test on every selenium node in your infrastructure.",
     "minimum-stability": "stable",
-    "license": "proprietary",
+    "license": "GPL",
     "authors": [
         {
             "name": "Maren Afflerbach",
