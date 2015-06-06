@@ -54,7 +54,7 @@ class ImportTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @covers testonaut\File\Import::doImport
-   * @expectedException \testonaut\File\Import\Exception
+   * @expectedException \UnexpectedValueException
    */
   public function testDoFailedImport() {
     $page = new \testonaut\Page('File.importTest');

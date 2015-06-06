@@ -125,6 +125,7 @@ class Import {
       mkdir($newPagePath, 0777, TRUE);
     }
     $unzipFile = $object->getPath() . DIRECTORY_SEPARATOR . $object->getFilename();
+    file_put_contents($dirname . '/config', '{"type":"test","browser":{"urls":null,"active":null},"screenshots":"none"}');
     return copy($unzipFile, $dirname . '/content');
   }
 

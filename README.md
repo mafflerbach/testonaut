@@ -86,7 +86,7 @@ After this settings change, you can use the run button on yout wikipage and sele
 ---------------------------------------
 ## Import your Tests
 
-You can import your existing (html) selenium zip via zip File
+You can import your existing (html) selenium zip via zip File. Set Your Page as type 'Project'
 
 You order your Files e.g
 
