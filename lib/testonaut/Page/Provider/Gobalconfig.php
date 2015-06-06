@@ -65,9 +65,7 @@ class Globalconfig implements ControllerProviderInterface {
   }
 
   protected function saveConfig($array) {
-
     $config = \testonaut\Config::getInstance()->Path . '/config';
-    var_dump($array);
     $this->writeToFile($config, json_encode($array));
   }
 

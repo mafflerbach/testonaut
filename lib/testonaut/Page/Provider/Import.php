@@ -11,8 +11,10 @@ use Silex\Provider\FormServiceProvider;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 
-class File implements ControllerProviderInterface {
+class Import implements ControllerProviderInterface {
+
   public function connect(Application $app) {
+
     $app->register(new FormServiceProvider());
     $app->register(new LocaleServiceProvider());
     $app->register(new TranslationServiceProvider(), array(
@@ -21,56 +23,74 @@ class File implements ControllerProviderInterface {
     ;
     $file = $app['controllers_factory'];
     $file->match('/', function (Request $request, $path) use ($app) {
+
       $page = new Page($path);
       $this->request = $request;
       $form = $app['form.factory']->createBuilder('form')
         ->add('FileUpload', 'file')
         ->getForm()
       ;
-      $image = '';
+
       $message = 'Upload a file';
       if (isset($app['request'])) {
         $request = $app['request'];
       } else {
       }
       if ($request->isMethod('POST')) {
-        $form->bind($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
+
           $files = $request->files->get($form->getName());
-          $fileDir = Config::getInstance()->Path;
-          $domain = Config::getInstance()->domain;
-          $locationTo = $fileDir . '/web/files/' . $page->relativePath();
-          $filename = $files['FileUpload']->getClientOriginalName();
-          $files['FileUpload']->move($locationTo, $filename);
-          $message = 'File was successfully uploaded!';
-          $search = new Search\File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
-          $search->updateIndex();
-          $image = $domain . $request->getBaseUrl() . '/files/' . $page->relativePath() . '/' . $filename;
-        } else {
+          $fileMimeType = $files['FileUpload']->getMimeType();
+          if ($fileMimeType == 'application/zip') {
+            $message = $this->importFile($files, $page);
+          } else {
+            $message = "File wasn't uploaded! It was not a Zip file ";
+          }
         }
       }
+      $crumb = new Page\Breadcrumb($path);
+      $app['crumb'] = $crumb->getBreadcrumb();
+
       $app['request'] = array(
+        'content' => '',
         'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'image'   => $image,
       );
 
-      $response = $app['twig']->render('upload.twig', array(
+      $response = $app['twig']->render('import.twig', array(
         'message' => $message,
         'form'    => $form->createView(),
         'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
-      ))
-      ;
+      ));
 
       return $response;
     }, 'GET|POST');
-    $file->get('/search/{term}', function (Request $request, $term) use ($app) {
-      $search = new Search\File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
-
-      return $app->json($search->search($term), 201);
-    });
 
     return $file;
   }
+
+  protected function importFile($files, $page) {
+    $fileDir = Config::getInstance()->Path;
+    $filename = $files['FileUpload']->getClientOriginalName();
+    $tmppath = md5($filename);
+    $locationTo = $fileDir . '/tmp/' . $tmppath;
+
+    $files['FileUpload']->move($locationTo . '/zip', $filename);
+    $message = 'File was successfully uploaded!';
+    $import = new \testonaut\File\Import($locationTo, $filename, $page);
+    try {
+      $import->doImport();
+    } catch(\Exception $e) {
+      $message = $e->getMessage();
+    }
+
+    return $message;
+  }
+
+  protected function buildRespponse() {
+
+  }
+
 }

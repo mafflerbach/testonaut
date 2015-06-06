@@ -19,7 +19,6 @@ class Browser {
   public function getSettings() {
 
     $settings = $this->page->config();
-    var_dump($settings);
     $list = $this->getBrowserList();
     for ($i = 0; $i < count($list); $i++) {
       $browserName = $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);

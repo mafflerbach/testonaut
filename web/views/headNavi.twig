@@ -104,6 +104,15 @@
                  data-action="rename"
                  data-path="{{ app.request.path }}">Rename</a>
             </li>
+
+            {% if app.request.type is defined and (app.request.type == 'suite' or app.request.type == 'project') %}
+              <li>
+                <a href="{{ app.request.baseUrl }}/import/{{ app.request.path }}"
+                   data-action="import"
+                   data-path="{{ app.request.path }}">Import</a>
+              </li>
+            {% endif %}
+
           {% else %}
             {% if app.request.type is not defined or app.request.type is null %}
               <li>

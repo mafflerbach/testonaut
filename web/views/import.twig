@@ -1,0 +1,38 @@
+{% include 'head.twig' %}
+  {% include 'headNavi.twig' %}
+
+
+
+    <div class="contentBox">
+<b>{{ message }}</b>
+<form action="{{ baseUrl }}/import/{{ path }}/"
+      method="post" {{ form_enctype(form) }}>
+
+  <input id="uploadFile"
+         placeholder="Choose File"
+         disabled="disabled"/>
+  <br/><br/>
+
+  <div class="fileUpload btn btn-primary">
+    {{ form_widget(form) }}
+  </div>
+  <input type="submit"
+         name="Upload File"
+         class="btn uploadbtn"/>
+</form>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      function copyToClipboard(text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+      }
+
+      $('span[data-copy="clipboard"]').click(function () {
+        copyToClipboard($(this).data('url'));
+      });
+    })
+  </script>
+
+</div>
+{% include 'footer.twig' %}
+
+

@@ -84,8 +84,25 @@ If you have set your configuration right the single wiki page must be configurat
 After this settings change, you can use the run button on yout wikipage and select your browser flavour.
 
 ---------------------------------------
+## Import your Tests
 
+You can import your existing (html) selenium zip via zip File
 
+You order your Files e.g
+
+    importTest
+      ├ foo.html
+      └ baa
+        └ fobaa.html
+
+And you get in your wiki:
+
+    importTest
+      ├ foo
+      └ baa
+        └ fobaa
+
+---------------------------------------
 ## Screenshot 
 comparisons are quite easy to implement, they are done almost automatically.
 In selenium there is the command *captureEntirePageScreenshot*. The second parameter specifies the imagefilename. 
@@ -110,8 +127,6 @@ On your maschine download: <a rel="nofollow" target="_blank" href="http://seleni
 This is our hub. If you have downloaded start the hub with 
     
     java -jar c:\tmp\selenium-server.jar -role hub 
-    
-
 
 In the running virtualbox image open a cmd and execute the script and wait a while (downloads all needed components)
 
