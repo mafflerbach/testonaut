@@ -4,3 +4,10 @@ result/*
 .idea/
 .idea/*
 ignoreFiles
+/nbproject/private/
+/vendor/
+/web/cache/
+/installer/composer.phar
+/installer/extracted/
+/installer/installer.php
+/composer.lock
