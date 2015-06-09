@@ -1,4 +1,6 @@
 <?php
+require '../lib/testonaut/Utils/Git.php';
+
 
 if (!isset($_POST['function'])) {
   die("You must specify a function");
@@ -61,10 +63,13 @@ function extractComposer() {
 }
 
 function getWorkingDir() {
-
   $dir = str_replace('\\', '/', __DIR__);
-
   return str_replace('installer', '', $dir);
+}
+
+function getBashDir() {
+  $dir = str_replace('\\', '/', __DIR__);
+  return str_replace('installer', 'bash', $dir);
 }
 
 function gitPull() {
@@ -78,7 +83,7 @@ function gitPull() {
 }
 
 function command() {
-
+  $outputHandler = fopen('php://output', 'w');
   command:
   set_time_limit(-1);
   putenv('COMPOSER_HOME=' . __DIR__ . '/extracted/bin/composer');
@@ -96,12 +101,18 @@ function command() {
       if ($_POST['dryrun'] == 'true') {
         $param = ' --dry-run';
       }
-
-
+      $outputRes = '';
+      if ($command == 'update') {
+          $git = new testonaut\Utils\Git(getWorkingDir(), getBashDir());
+          $outputRes = $git->pull();
+      }
+         fwrite($outputHandler, $outputRes);
+      
+      
       $path = getWorkingDir();
-
+      
       $input = new Symfony\Component\Console\Input\StringInput($command . ' -vvv -d ' . $path . $param);
-      $output = new Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
+      $output = new Symfony\Component\Console\Output\StreamOutput($outputHandler);
       $app = new Composer\Console\Application();
       $app->run($input, $output);
     } else {
