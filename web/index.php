@@ -14,7 +14,7 @@ $seleniumAddress = $configuration['seleniumAddress'];
 $config->define('Cache', $configuration['cache']);
 $config->define('appPath', $configuration['appPath']);
 $config->define('wikiPath', dirname(dirname(__FILE__)) . '/root');
-$config->define('imageRoot', dirname(dirname(__FILE__)) . '/images');
+$config->define('imageRoot', dirname(dirname(__FILE__)) . '/web/images');
 $config->define('fileRoot', dirname(dirname(__FILE__)) . '/web/files');
 $config->define('result', dirname(dirname(__FILE__)) . '/result');
 $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
@@ -23,13 +23,13 @@ $config->define('seleniumAddress', $seleniumAddress);
 $config->define('domain', $_SERVER['HTTP_HOST']);
 $app = new Silex\Application();
 $app['debug'] = true;
-
+/*
 $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
   'http_cache.cache_dir' => __DIR__.'/cache/',
-));
+)); */
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
   'twig.path' => __DIR__ . '/views',
-  'twig.options'    => array('cache' => __DIR__ . '/cache')
+  //'twig.options'    => array('cache' => __DIR__ . '/cache')
 ));
 
 $app->mount('/', new testonaut\Page\Provider\Start());

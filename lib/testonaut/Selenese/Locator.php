@@ -48,9 +48,9 @@ class Locator {
       case 'xpath':
         $this->by = \WebDriverBy::xpath($this->argument);
         break;
-
       default:
-        throw new \Exception("Cant currently handle tests with '" . $this->type . "' locators, change to another method.");
+          $this->by = \WebDriverBy::xpath($locator);
+        break;
     }
   }
 

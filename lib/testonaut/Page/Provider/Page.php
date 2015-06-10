@@ -45,7 +45,7 @@ class Page implements ControllerProviderInterface {
         'mode'       => 'show',
         'browsers'   => $browsers,
         'images'     => $images,
-        'imagePath'  => '/' . \testonaut\Config::getInstance()->appPath . str_replace($root, '', $page->getImagePath()),
+        'imagePath'  => \testonaut\Config::getInstance()->appPath . str_replace($root, '', $page->getImagePath()),
         'type'       => $settings->getType(),
         'lastResult' => $lastRun
       );

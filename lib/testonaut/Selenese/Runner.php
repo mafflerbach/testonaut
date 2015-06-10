@@ -70,9 +70,9 @@ class Runner {
     $this->addToPoll($result);
 
     if ($this->screenshotsAfterTest) {
-      $screenCommand = new captureEntirePageScreenshot();
-      $screenCommand->arg1 = 'afterTest';
-      $test->commands[] = $screenCommand;
+      $image = $path .'afterTest.png';
+      $this->setupImageDir($browserName);
+      $this->invokeCommand($image, $webDriver);
     }
 
     foreach ($test->commands as $command) {
@@ -100,9 +100,8 @@ class Runner {
         $browserResult = FALSE;
       }
 
-      if ($commandStr == 'captureEntirePageScreenshot') {
-
-        $compareResult = $this->captureAndCompare($command, $browserName);
+      if ($commandStr == 'CaptureEntirePageScreenshot') {
+        $compareResult = $this->captureAndCompare($command, $browserName, $webDriver);
         if ($compareResult['result']) {
           $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
         } else {
@@ -171,21 +170,33 @@ class Runner {
 
   protected function invokeCommand($image, $webDriver) {
     $screenCommand = new captureEntirePageScreenshot();
+    
     $screenCommand->arg1 = $image;
     $screenCommand->runWebDriver($webDriver);
   }
-
-  protected function captureAndCompare($command, $browserName) {
+  
+  private function setupImageDir($browserName) {
     $imageDir = $this->imagePath;
     $path = $imageDir . '/' . $browserName . "/src/";
-
+    
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
       mkdir($imageDir . '/' . $browserName . "/comp/", 0775, TRUE);
       mkdir($imageDir . '/' . $browserName . "/ref/", 0775, TRUE);
-    }
+    }  
+  }
+  
+
+  protected function captureAndCompare($command, $browserName, $webDriver) {
+    $this->setupImageDir($browserName);
+    
+    $imageDir = $this->imagePath;
+    $path = $imageDir . '/' . $browserName . "/src/";
+    
     $tmp = $command->arg1;
-    $command->arg1 = $path . $tmp . '.png';
+    $command->arg1 = $path . $tmp;
+    $this->invokeCommand($command->arg1, $webDriver);
+    
     if ($comp = $this->compare($browserName, $tmp . '.png')) {
       $result = "Compare: " . $command->arg1;
       $this->writeToFile($this->polling, $result, FILE_APPEND);
