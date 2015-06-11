@@ -43,7 +43,8 @@ class Pattern {
             '.*',
             '.'
           ),   // regexp chars
-          preg_quote($this->value));
+          preg_quote($this->value, '/'));
+  
         return (bool)preg_match('/' . $regex . '/U', $content);
         break;
       case 'regexpi':

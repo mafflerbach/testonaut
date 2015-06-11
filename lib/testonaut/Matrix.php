@@ -60,7 +60,7 @@ class Matrix {
         }
       }
       foreach ($fileByBrowser as $browser => $file) {
-        $foo = $path . '/' . $file[count($file) - 1];
+        $foo = $path . '/' . $file[0];
         $result = json_decode(file_get_contents($foo), TRUE);
 
         for ($i = 0; $i < count($result); $i++) {

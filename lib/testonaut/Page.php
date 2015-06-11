@@ -32,9 +32,9 @@ class Page {
   /**
    * @throws \Exception
    */
-  public function getCompiledPage() {
-
-    return $this->_content(NULL, NULL, TRUE);
+  public function getCompiledPage(){
+      $compiler = new Page\Compiler($this);
+      return $compiler->getContent();
   }
 
   /**

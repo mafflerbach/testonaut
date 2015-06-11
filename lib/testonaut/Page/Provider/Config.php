@@ -73,9 +73,12 @@ class Config implements ControllerProviderInterface {
         $message = 'Can not save page config';
       }
       $crumb = new Breadcrumb($path);
+      
       $app['crumb'] = $crumb->getBreadcrumb();
-      $app['browser'] = $this->browserSettings();
       $app['type'] = $this->pageSettings();
+      if ($app['type']['project'] || $app['type']['suite']) {
+        $app['browser'] = $this->browserSettings();
+      }
       $app['screenshots'] = $this->screenshotSettings();
       $app['request'] = array(
         'content' => $content,

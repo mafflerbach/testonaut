@@ -41,25 +41,25 @@ abstract class Command {
   protected function assert($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult($matched, $matched, $matched ? 'Matched' : 'Did not match');
+    return new CommandResult($matched, $matched, $matched ? 'Matched' : 'Did not match '.$matched);
   }
 
   protected function assertNot($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult(!$matched, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match');
+    return new CommandResult(!$matched, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match '.$matched);
   }
 
   protected function verify($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult(true, $matched, $matched ? 'Matched' : 'Did not match');
+    return new CommandResult(true, $matched, $matched ? 'Matched' : 'Did not match: '.$matched);
   }
 
   protected function verifyNot($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult(true, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match');
+    return new CommandResult(true, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match '.$matched);
   }
 
   /**

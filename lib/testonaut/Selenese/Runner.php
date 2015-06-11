@@ -72,11 +72,7 @@ class Runner {
     $res[] = $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
 
-    if ($this->screenshotsAfterTest) {
-      $image = $path . 'afterTest.png';
-      $this->setupImageDir($browserName);
-      $this->invokeCommand($image, $webDriver);
-    }
+
 
     foreach ($test->commands as $command) {
       // todo: verbosity option
@@ -119,6 +115,23 @@ class Runner {
         break;
       }
       $k++;
+    }
+    
+    if ($this->screenshotsAfterTest) {
+      $image = $path . 'afterTest.png';
+      $this->setupImageDir($browserName);
+      
+        $screenCommand = new captureEntirePageScreenshot();
+        $screenCommand->arg1 = $image;
+      
+        $compareResult = $this->captureAndCompare($screenCommand, $browserName, $webDriver);
+        if ($compareResult['result']) {
+          $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        } else {
+          $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+          $browserResult = FALSE;
+        }
+        $this->addToPoll($result);
     }
 
     if (file_exists($this->polling)) {
@@ -177,11 +190,17 @@ class Runner {
   }
 
   protected function invokeCommand($image, $webDriver) {
-
+    $pause = new Command\Pause();
+    $pause->arg1 = 1500;
+    $pause->runWebDriver($webDriver);
+    
     $screenCommand = new captureEntirePageScreenshot();
-
     $screenCommand->arg1 = $image;
     $screenCommand->runWebDriver($webDriver);
+    
+    $pause = new Command\Pause();
+    $pause->arg1 = 1500;
+    $pause->runWebDriver($webDriver);
   }
 
   private function setupImageDir($browserName) {
