@@ -9,6 +9,8 @@ require_once('../lib/testonaut/Page/Provider/Gobalconfig.php');
 
 $globalConf = new \testonaut\Page\Provider\Globalconfig();
 $configuration = $globalConf->getConfig();
+$db = new testonaut\Utils\Db('../index.db');
+
 
 $seleniumAddress = $configuration['seleniumAddress'];
 $config->define('Cache', $configuration['cache']);
@@ -21,6 +23,7 @@ $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
 $config->define('seleniumAddress', $seleniumAddress);
 $config->define('domain', $_SERVER['HTTP_HOST']);
+$config->define('db', $db);
 $app = new Silex\Application();
 $app['debug'] = true;
 /*
@@ -39,6 +42,7 @@ $app->mount('/files/{path}', new testonaut\Page\Provider\File());
 $app->mount('/import/{path}', new testonaut\Page\Provider\Import());
 $app->mount('/globalconfig/', new testonaut\Page\Provider\Globalconfig());
 $app->mount('/edit/{path}', new testonaut\Page\Provider\Edit());
+$app->mount('/history/{path}', new testonaut\Page\Provider\History());
 $app->mount('/config/{path}', new testonaut\Page\Provider\Config());
 $app->mount('/delete/{path}', new testonaut\Page\Provider\Delete());
 $app->mount('/run/{path}', new testonaut\Page\Provider\Run());

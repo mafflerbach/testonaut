@@ -123,6 +123,13 @@
             {% endif %}
           {% endif %}
         {% endif %}
+          {% if app.request.lastResult is defined %}
+          <li>
+            <a href="{{ app.request.baseUrl }}/history/{{ app.request.path }}"
+                   data-action="add"
+                   data-path="{{ app.request.path }}">history</a>
+          </li>
+        {% endif %}
       </ul>
     </div>
 
