@@ -1,0 +1,48 @@
+{% include 'head.twig' %}
+{% include 'headNavi.twig' %}
+
+<div class="contentBox">
+
+  <div>
+
+    {% for browser, resultList in app.request.history %}
+      <div class="history">
+        <h4>{{ browser }}</h4>
+        {% for date, hourResult in resultList %}
+          <div>
+            <div class="date">{{ date }}</div>
+            {% for hour, realResult in hourResult %}
+              {% if realResult.result == '1' %}
+                {% set class = 'success' %}
+              {% else %}
+                {% set class = 'fail' %}
+              {% endif %}
+              <div class="hour {{ class }}">{{ hour }}</div>
+              <table>
+                {{ realResult.run|raw }}
+              </table>
+            {% endfor %}  
+          </div>
+        {% endfor %}  
+
+      </div>
+
+    {% endfor %}  
+  </div>
+</div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.history table').hide();
+      $('.hour').click(function() {
+        console.log();
+        if($(this).next().is(':visible')) { 
+          $(this).next().slideUp('slow');
+        } else {
+          $(this).next().slideDown('slow');
+        }
+      })
+    });
+  </script>
+    
+{% include 'footer.twig' %}

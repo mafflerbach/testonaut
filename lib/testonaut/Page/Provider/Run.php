@@ -1,4 +1,5 @@
 <?php
+
 namespace testonaut\Page\Provider;
 
 use testonaut\Capabilities;
@@ -14,6 +15,7 @@ use testonaut\Selenese\Runner;
 class Run implements ControllerProviderInterface {
 
   private $basePath;
+
   /**
    * @var \testonaut\Page $page
    */
@@ -52,9 +54,9 @@ class Run implements ControllerProviderInterface {
       $this->writeResultFile($result);
 
       $app['request'] = array(
-        'path'    => $path,
+        'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'edit'
+        'mode' => 'edit'
       );
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
@@ -68,15 +70,32 @@ class Run implements ControllerProviderInterface {
   }
 
   protected function writeResultFile($content) {
-
+    
+    $db = \testonaut\Config::getInstance()->db;
+    $dbInst = $db->getInstance();
+    $sql = 'insert into history (browser, date, run, path, filename, result) '
+      . 'values (:browser, :date, :run, :path, :filename, :result)';
+    
     $path = $this->page->getResultPath();
 
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
     }
 
-    $fileName = 'result_' . $this->browser . '_' . date('Y-m-d_H-i-s');
+    $date = new \DateTime();
+    $fileName = 'result_' . $this->browser . '_' . $date->format('Y-m-d_H-i-s');
     file_put_contents($path . '/' . $fileName, json_encode($content));
+      
+    $stm = $dbInst->prepare($sql);
+    $stm->bindParam(':browser', $this->browser);
+    $stm->bindParam(':date', $date->format(\DateTime::ISO8601));
+    $stm->bindParam(':run',implode('',$content[0]['run']));
+    $stm->bindParam(':path', $this->path);
+    $stm->bindParam(':filename',$fileName);
+    $stm->bindParam(':result',$content[0]['browserResult']);
+    $stm->execute();
+    $path = $this->page->getResultPath();
+
   }
 
   protected function runSuite($path) {
