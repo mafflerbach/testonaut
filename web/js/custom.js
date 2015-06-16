@@ -34,12 +34,7 @@ $(document).ready(function () {
     invokePulsar(browser);
     getContent(0, url, browser);
 
-    $('.pulsar').on('mouseenter', function () {
-      $('.result').css('display', 'block');
-    });
-    $('.pulsar').on('mouseleave', function () {
-      $('.result').css('display', 'none');
-    });
+
   });
 
 

@@ -628,20 +628,19 @@ table {
 
 .lastResult {
   box-shadow: 0px 1px 5px -1px #333333;
-  max-width: 5em;
   position: fixed;
   top: 8em;
   z-index: 3;
   right: 3em;
 
-  span {
+  span.fail {
     display: block;
     padding: 0.5em;
-  }
-  .fail {
     background: rgb(254, 187, 187)
   }
-  .success {
+  span.success {
+    display: block;
+    padding: 0.5em;
     background: rgb(201, 222, 150);
   }
 
@@ -833,3 +832,10 @@ iframe {
   bottom: 0;
 }
 
+.lastResultRun {
+    display: none;
+    background-color: #fff;
+  height: 600px;
+  width: 500px;
+  overflow: auto;
+}

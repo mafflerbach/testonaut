@@ -64,11 +64,11 @@ class Matrix {
         $result = json_decode(file_get_contents($foo), TRUE);
 
         for ($i = 0; $i < count($result); $i++) {
-          $summery[$browser] = $result[$i]['browserResult'];
+          $summery[$browser]['result'] = $result[$i]['browserResult'];
+          $summery[$browser]['run'] = $result[$i]['run'];
         }
-
       }
-
+      
       return $summery;
     }
   }

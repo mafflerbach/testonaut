@@ -1,17 +1,28 @@
 {% include 'head.twig' %}
   {% include 'headNavi.twig' %}
 
+  
 
 <div class="contentBox">
   {% if app.request.lastResult is defined %}
     <div class="lastResult">
       {% for key, val  in app.request.lastResult %}
-        {% if val == 'true' %}
+
+          {% if val.result == 'true' %}
           {% set class = 'success' %}
         {% else %}
           {% set class = 'fail' %}
         {% endif %}
-        <span class="{{ class }}"><a href="#{{ key }}"> {{ key }}</a></span>
+        <div>
+          <span class="{{ class }} resultBtn"><a href="#{{ key }}"> {{ key }}</a></span>
+          <div class="lastResultRun {{ class }}">
+              <table>
+            {% for line in val.run %}
+                {{line|raw}}
+            {% endfor %}
+            </table>
+          </div> 
+        </div>
       {% endfor %}
     </div>
   {% endif %}
@@ -92,5 +103,25 @@
   <div class="result">
   </div>
 </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function () {
+    $('resultBtn a').click(function (e) {
+        e.preventDefault();
+    });
+        
+    $('.resultBtn').on('click', function () {
+      if($('.lastResultRun:visible').length == 0) {
+        $('.lastResultRun').show('slow');
+      } else {
+        $('.lastResultRun').hide('slow');
+          
+      }
+        
+    });
+        
+    }); 
+      
+  </script>
 
 {% include 'footer.twig' %}
