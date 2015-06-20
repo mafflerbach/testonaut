@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: maren
  * Date: 19.04.2015
  * Time: 21:25
  */
+
 namespace testonaut;
 
 /**
@@ -18,6 +20,7 @@ class Matrix {
    * @public Page
    */
   private $page;
+
   /**
    * @public
    */
@@ -38,44 +41,26 @@ class Matrix {
    */
   public function read() {
 
+    $db = \testonaut\Config::getInstance()->db;
+
+    $dbInst = $db->getInstance();
+    $sql = 'select * from history group by browser order by date DESC';
     $summery = array();
-    $dir = $this->page->getResultPath();
-    $path = $this->page->getResultPath();
-    $fileByBrowser = array();
-    if (file_exists($dir)) {
-
-      $dir = new \DirectoryIterator($dir);
-      foreach ($dir as $fileinfo) {
-        if (!$fileinfo->isDot()) {
-
-          $filename = $fileinfo->getFilename();
-
-          for ($i = 0; $i < count($this->browsers); $i++) {
-
-            $bName = $this->browsers[$i]['browserName'];
-            if (strpos($filename, $bName) !== FALSE) {
-              $fileByBrowser[$bName][] = $filename;
-            }
-          }
-        }
-      }
-      foreach ($fileByBrowser as $browser => $file) {
-        $foo = $path . '/' . $file[0];
-        $result = json_decode(file_get_contents($foo), TRUE);
-
-        for ($i = 0; $i < count($result); $i++) {
-          $summery[$browser]['result'] = $result[$i]['browserResult'];
-          $summery[$browser]['run'] = $result[$i]['run'];
-        }
-      }
-      
-      return $summery;
+    $stm = $dbInst->prepare($sql);
+    $result = $stm->execute();
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+      $summery[$row['browser']]['result'] = $row['result'];
+      $summery[$row['browser']]['run'] = $row['run'];
     }
+
+    return $summery;
   }
 
   /**
    * @param $result
    */
   public function write($result) {
+    
   }
+
 }

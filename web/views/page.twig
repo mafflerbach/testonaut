@@ -7,19 +7,17 @@
   {% if app.request.lastResult is defined %}
     <div class="lastResult">
       {% for key, val  in app.request.lastResult %}
-
-          {% if val.result == 'true' %}
+        
+          {% if val.result == 1 %}
           {% set class = 'success' %}
         {% else %}
           {% set class = 'fail' %}
         {% endif %}
-        <div>
+        <div class="browserResult">
           <span class="{{ class }} resultBtn"><a href="#{{ key }}"> {{ key }}</a></span>
           <div class="lastResultRun {{ class }}">
-              <table>
-            {% for line in val.run %}
-                {{line|raw}}
-            {% endfor %}
+            <table>
+              {{val.run|raw}}
             </table>
           </div> 
         </div>
@@ -111,13 +109,13 @@
     });
         
     $('.resultBtn').on('click', function () {
+      
       if($('.lastResultRun:visible').length == 0) {
-        $('.lastResultRun').show('slow');
+        console.log($(this).next())
+        $(this).next().show('slow');
       } else {
-        $('.lastResultRun').hide('slow');
-          
+        $(this).next().hide('slow');
       }
-        
     });
         
     }); 
