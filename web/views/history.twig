@@ -4,10 +4,15 @@
 <div class="contentBox">
 
   <div>
-
     {% for browser, resultList in app.request.history %}
+      <a class="btn btn-primary" href="?delete=true&all=true">Delete history</a>
       <div class="history">
         <h4>{{ browser }}</h4>
+        <div>
+          <a class="btn btn-primary" href="?delete=true&browser={{ browser }}">Delete browser history</a>
+          <a class="btn btn-primary" href="?delete=true&count=10&browser={{ browser }}">Delete browser first 10 results</a>
+        </div>
+
         {% for date, hourResult in resultList %}
           <div>
             <div class="date">{{ date }}</div>
@@ -24,25 +29,23 @@
             {% endfor %}  
           </div>
         {% endfor %}  
-
       </div>
-
     {% endfor %}  
   </div>
 </div>
 
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('.history table').hide();
-      $('.hour').click(function() {
-        console.log();
-        if($(this).next().is(':visible')) { 
-          $(this).next().slideUp('slow');
-        } else {
-          $(this).next().slideDown('slow');
-        }
-      })
-    });
-  </script>
-    
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.history table').hide();
+    $('.hour').click(function () {
+      console.log();
+      if ($(this).next().is(':visible')) {
+        $(this).next().slideUp('slow');
+      } else {
+        $(this).next().slideDown('slow');
+      }
+    })
+  });
+</script>
+
 {% include 'footer.twig' %}
