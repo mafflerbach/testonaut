@@ -71,6 +71,7 @@ class Test {
       $command = str_replace('andWait', '', $command);
 
       $commandClass = 'testonaut\\Selenese\\Command\\' . $command;
+      $command = str_replace(' ', '', $command);
       if (class_exists($commandClass)) {
         /** @var Command $command */
         $commandObj = new $commandClass();
