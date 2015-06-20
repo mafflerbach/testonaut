@@ -9,10 +9,14 @@ use testonaut\Selenese\Command;
 class assertNotAttribute extends Command {
    public function runWebDriver(\WebDriver $session) {
     $index = strrpos($this->arg1, '/@');
-    $leng = strlen($this->arg1);
+    $pattern = '/@';
+    if ($index !== FALSE) {
+      $index = strrpos($this->arg1, '@');
+      $pattern = '@';
+    }
     $attribute = substr($this->arg1, $index);
     $element = str_replace($attribute, '', $this->arg1);
-    $elementText = $this->getElement($session, $element)->getAttribute(str_replace('/@', '', $attribute));
+    $elementText = $this->getElement($session, $element)->getAttribute(str_replace('/@', '', $pattern));
     return $this->assertNot($elementText, $this->arg2);
   }
 }
