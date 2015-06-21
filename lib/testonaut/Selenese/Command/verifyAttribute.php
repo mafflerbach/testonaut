@@ -9,7 +9,7 @@ class verifyAttribute extends Command {
   public function runWebDriver(\WebDriver $session) {
     $index = strrpos($this->arg1, '/@');
     $pattern = '/@';
-    if ($index !== FALSE) {
+    if ($index === FALSE) {
       $index = strrpos($this->arg1, '@');
       $pattern = '@';
     }
