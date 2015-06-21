@@ -28,14 +28,15 @@
           {% else %}
             {% set checked = '' %}
           {% endif %}
+          
+          <label class="checkbox"
+                 for="{{ browser.browserName }}">{{ browser.browserName }}</label>
           <input type="checkbox"
                  value="{{ browser.browserName }}"
                  name="active[]{{ browser.browserName }}"
                   {{ checked }}
                  id="{{ browser.browserName }}"/>
 
-          <label class="checkbox"
-                 for="{{ browser.browserName }}">{{ browser.browserName }}</label>
           <br/>
 
         {% endfor %}
@@ -50,14 +51,15 @@
           {% else %}
             {% set checked = '' %}
           {% endif %}
+                    <label class="radio"
+                 for="pagetype_{{ type }}">{{ type }}</label>
           <input type="radio"
                  value="{{ type }}"
                  name="type"
                   {{ checked }}
                  id="pagetype_{{ type }}"/>
 
-          <label class="radio"
-                 for="pagetype_{{ type }}">{{ type }}</label>
+
         {% endfor %}
       {% endif %}
       <br/>
@@ -70,15 +72,15 @@
           {% else %}
             {% set checked = '' %}
           {% endif %}
-
+          <label class="radio"
+                 for="screenshot_{{ screen }}">{{ screen }}</label>
           <input type="radio"
                  value="{{ screen }}"
                  name="screenshot"
                   {{ checked }}
                  id="screenshot_{{ screen }}"/>
 
-          <label class="radio"
-                 for="screenshot_{{ screen }}">{{ screen }}</label>
+
         {% endfor %}
       {% endif %}
 
@@ -89,7 +91,7 @@
       <input type="submit"
              name="action"
              value="save"
-             class="btn"/>
+             class="btn btn-primary"/>
 
       <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
          class="backLink btn">Zurück</a>

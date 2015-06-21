@@ -48,10 +48,10 @@
                  type="text">
         </label>
         <a data-wysihtml5-dialog-action="save"
-           class="btn">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
-                                      class="btn">Cancel</a>
+           class="btn  btn-primary">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
+                                      class="btn btn-link">Cancel</a>
         &nbsp;<a data-wysihtml5-dialog-action="search"
-                 class="btn">Search</a>
+                 class="btn  btn-primary ">Search</a>
       </div>
 
       <div data-wysihtml5-dialog="insertImage"
@@ -72,10 +72,10 @@
           </select>
         </label>
         <a data-wysihtml5-dialog-action="save"
-           class="btn">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
-                                      class="btn">Cancel</a>
+           class="btn btn-primary">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel"
+                                      class="btn btn-link">Cancel</a>
         &nbsp;<a data-wysihtml5-dialog-action="searchImage"
-                 class="btn">Search</a>
+                 class="btn btn-primary">Search</a>
       </div>
 
       <div id="upload">
@@ -140,9 +140,9 @@
     <input type="submit"
            name="action"
            value="save"
-           class="btn"/>
+           class="btn  btn-primary"/>
     <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
-       class="backLink btn">Zurück</a>
+       class="backLink btn  btn-link">Zurück</a>
     <input type="hidden"
            name="content"
            value=""/>

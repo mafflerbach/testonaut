@@ -1,53 +1,63 @@
 {% include 'head.twig' %}
 {% include 'headNavi.twig' %}
 <div class="contentBox">
-<div class="content">
+  <div class="content">
 
-  <form action=""
-        method="POST">
+    <form action=""
+          method="POST">
 
-  <br/>
-  <input type="text"
-         placeholder="App Path"
-         value="{{ app.request.settings.appPath }}"
-         name="appPath"/>
+      <div class="input-group">
+        <label class=""
+               for="appPath">Cache</label>
+        <input type="text" 
+               class="form-control" 
+               placeholder="App Path" 
+               aria-describedby="basic-addon2"
+               value="{{ app.request.settings.appPath }}"
+               name="appPath"
+               aria-label="FOOOO"
+               id="appPath"
+               >
+        <br/>
+        <label class=""
+               for="selAddr">Selenium Hub <sub>Example: http://xxx.xxx.xxx.xxx:4444</sub></label>
+        <input type="text" 
+               class="form-control" 
+               placeholder="Selenium Hub:" 
+               aria-describedby="basic-addon2"
+               value="{{ app.request.settings.seleniumAddress }}"
+               name="seleniumAddress"
+               id="selAddr"
+               >
+        <br/>
+        {% if app.request.settings.cache == true %}
+        {% set checked = 'checked="checked"' %}
+        {% else %}
+          {% set checked = '' %}
+          {% endif %}
 
-  <br/>
-  <br/>
-  <input type="text"
-         placeholder="Selenium Hub:"
-         value="{{ app.request.settings.seleniumAddress }}"
-         name="seleniumAddress"/>
+            <label class="checkbox"
+                   for="cache">Cache</label>
+            <input type="checkbox"
+                   value="cache"
+                   name="cache"
+                   {{ checked }}
+                   id="cache"/>
 
-  <br/>
-  <br/>
-  {% if app.request.settings.cache == true %}
-    {% set checked = 'checked="checked"' %}
-  {% else %}
-    {% set checked = '' %}
-  {% endif %}
+            <br/>
 
-  <input type="checkbox"
-         value="cache"
-         name="cache"
-         {{ checked }}
-         id="cache"/>
+            <a href="{{ app.request.baseUrl }}"
+               class="backLink btn">Zurück</a>
 
-  <label class="checkbox"
-         for="cache">Cache</label>
+            <input type="submit"
+                   name="action"
+                   value="save"
+                   class="btn btn-primary"/>
+          </div>
 
-  <br/>
-  <br/>
-  <a href="{{ app.request.baseUrl }}"
-     class="backLink btn">Zurück</a>
-
-  <input type="submit"
-         name="action"
-         value="save"
-         class="btn"/>
-  </form>
-</div>
-</div>
+        </form>
+      </div>
+    </div>
 
 
-{% include 'footer.twig' %}
+    {% include 'footer.twig' %}

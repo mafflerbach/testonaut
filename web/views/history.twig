@@ -13,20 +13,28 @@
           <a class="btn btn-primary" href="?delete=true&count=10&browser={{ browser }}">Delete browser first 10 results</a>
         </div>
 
+
+        
         {% for date, hourResult in resultList %}
-          <div>
-            <div class="date">{{ date }}</div>
+                  <div class="panel panel-default">
+ 
+
+             <div class="panel-heading">{{ date }}</div>      
+            <div class="panel-body">
             {% for hour, realResult in hourResult %}
               {% if realResult.result == '1' %}
                 {% set class = 'success' %}
               {% else %}
                 {% set class = 'fail' %}
               {% endif %}
+                
               <div class="hour {{ class }}">{{ hour }}</div>
               <table>
                 {{ realResult.run|raw }}
               </table>
-            {% endfor %}  
+
+
+            {% endfor %}    </div>
           </div>
         {% endfor %}  
       </div>

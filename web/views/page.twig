@@ -1,125 +1,128 @@
 {% include 'head.twig' %}
-  {% include 'headNavi.twig' %}
+{% include 'headNavi.twig' %}
 
-  
-
-<div class="contentBox">
-  {% if app.request.lastResult is defined %}
-    <div class="lastResult">
-      {% for key, val  in app.request.lastResult %}
-        
-          {% if val.result == 1 %}
-          {% set class = 'success' %}
-        {% else %}
-          {% set class = 'fail' %}
-        {% endif %}
-        <div class="browserResult">
-          <span class="{{ class }} resultBtn"><a href="#{{ key }}"> {{ key }}</a></span>
-          <div class="lastResultRun {{ class }}">
-            <table>
-              {{val.run|raw}}
-            </table>
-          </div> 
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-  <div class="toc">
+<div class="row">
+  <div class="col-xs-6 col-md-4">
     {{ app.menu|raw }}
   </div>
+  <div class="col-xs-12 col-md-8">
+    <div class="contentBox">
+      {% if app.request.lastResult is defined %}
+        <div class="lastResult">
+          {% for key, val  in app.request.lastResult %}
 
-  <div class="content">
-    {{ app.request.content|raw }}
-  </div>
-  <div class="screens">
-    {% if app.request.images is defined %}
-      {% for key, val  in app.request.images %}
+            {% if val.result == 1 %}
+              {% set class = 'success' %}
+            {% else %}
+              {% set class = 'fail' %}
+            {% endif %}
+            <div class="browserResult">
+              <span class="{{ class }} resultBtn"><a href="#{{ key }}"> {{ key }}</a></span>
+              <div class="lastResultRun {{ class }}">
+                <table class="table">
+                  {{val.run|raw}}
+                </table>
+              </div> 
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="content">
+      {{ app.request.content|raw }}
+    </div>
+    <div class="screens">
+      {% if app.request.images is defined %}
+        {% for key, val  in app.request.images %}
 
-        <h4 id="{{ key }}">{{ key }}</h4>
-        {% for image in val.src %}
-          <div class="compare">
-            <div class="image">
-              <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
-                <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
-              </a>
+          <h4 id="{{ key }}">{{ key }}</h4>
+          {% for image in val.src %}
+            <div class="compare">
+              <div class="image">
+                <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
+                  <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
+                </a>
 
-              <span class="ops">
-                <span class="desc">
-                  {{ image }}
-                </span>
+                <span class="ops">
+                  <span class="desc">
+                    {{ image }}
+                  </span>
                   <a href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
-                    <span class="copy fa fa-check-circle"
+                    <span class="copy glyphicon glyphicon-ok-sign"
                           data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
                   </a>
-                <a href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
-                  <span class="delete fa fa-times-circle"
-                        data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
-                  </span>
-                </a>
-              </span>
+                  <a href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="delete glyphicon glyphicon-remove-sign"
+                          data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                </span>
 
-            </div>
+              </div>
 
-            <div class="image">
-              <a href="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}">
-                <img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></a>
-              <span class="ops">
-                <span class="desc">
+              <div class="image">
+                <a href="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}">
+                  <img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></a>
+                <span class="ops">
+                  <span class="desc">
                     {{ image }}
-                </span>
-                <a href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
-                  <span class="delete fa fa-times-circle"
-                        data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
                   </span>
-                </a>
-              </span>
-            </div>
+                  <a href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="delete glyphicon glyphicon-remove-sign"
+                          data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                </span>
+              </div>
 
-            <div class="image">
-              <a href="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}">
-                <img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></a>
-              <span class="ops">
-                <span class="desc">
-                  {{ image }}
-                </span>
-                <a href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
-                  <span class="delete fa fa-times-circle"
-                        data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+              <div class="image">
+                <a href="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}">
+                  <img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></a>
+                <span class="ops">
+                  <span class="desc">
+                    {{ image }}
                   </span>
-                </a>
-              </span>
+                  <a href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="delete glyphicon glyphicon-remove-sign"
+                          data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                </span>
+              </div>
             </div>
-          </div>
+          {% endfor %}
         {% endfor %}
-      {% endfor %}
-    {% endif %}
-  </div>
+      {% endif %}
+    </div>
 
-  <div class="pulsarbox">
-  </div>
-  <div class="result">
+    <div class="pulsarbox">
+    </div>
+    <div class="result">
+    </div>
   </div>
 </div>
-  
-  <script type="text/javascript">
-    $(document).ready(function () {
+
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
     $('resultBtn a').click(function (e) {
-        e.preventDefault();
+      e.preventDefault();
     });
-        
+
     $('.resultBtn').on('click', function () {
-      
-      if($('.lastResultRun:visible').length == 0) {
+
+      if ($('.lastResultRun:visible').length == 0) {
         console.log($(this).next())
         $(this).next().show('slow');
       } else {
         $(this).next().hide('slow');
       }
     });
-        
-    }); 
-      
-  </script>
+
+  });
+
+</script>
 
 {% include 'footer.twig' %}
