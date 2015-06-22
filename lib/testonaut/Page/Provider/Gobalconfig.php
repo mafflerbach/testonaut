@@ -1,4 +1,5 @@
 <?php
+
 namespace testonaut\Page\Provider;
 
 use testonaut\Page\Breadcrumb;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  */
 class Globalconfig implements ControllerProviderInterface {
+
   public function connect(Application $app) {
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request) use ($app) {
@@ -32,20 +34,23 @@ class Globalconfig implements ControllerProviderInterface {
 
       $app['request'] = array(
         'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'edit',
-        'settings' => $conf
+        'mode' => 'edit',
+        'settings' => $conf,
+        'themes' => $this->getThemes()
       );
 
+      
+      
       return $app['twig']->render('globalconfig.twig');
-
     });
 
     $edit->post('/', function (Request $request) use ($app) {
       $address = $request->request->get('seleniumAddress');
-
       $cache = $request->request->get('cache');
       $appPath = $request->request->get('appPath');
-
+      $theme = $request->request->get('theme');
+      
+      
       if ($cache != null) {
         $cache = true;
       } else {
@@ -53,8 +58,9 @@ class Globalconfig implements ControllerProviderInterface {
       }
 
       $configuration = array(
-        'appPath'         => $appPath,
-        'cache'           => $cache,
+        'appPath' => $appPath,
+        'cache' => $cache,
+        'theme' => $theme,
         'seleniumAddress' => $address);
 
       $this->saveConfig($configuration);
@@ -77,11 +83,11 @@ class Globalconfig implements ControllerProviderInterface {
     } else {
 
       $configuration = array(
-        'appPath'         => '',
-        'cache'           => '',
+        'appPath' => '',
+        'cache' => '',
+        'theme' => 'bootstrap',
         'seleniumAddress' => '');
       $this->writeToFile($config, json_encode($configuration));
-
     };
     return $configuration;
   }
@@ -90,10 +96,16 @@ class Globalconfig implements ControllerProviderInterface {
     file_put_contents($path, $content);
   }
 
-  protected function getColorSchemes() {
-
-
-
+  protected function getThemes() {
+    $themePath = \testonaut\Config::getInstance()->Path .'/web/css/themes';
+    $themes = array();
+    foreach (new \DirectoryIterator($themePath) as $fileInfo) {
+      if ($fileInfo->isDot()) {
+        continue;
+      }
+      $themes[] = str_replace('.css', '', $fileInfo->getFilename());
+    }
+    return $themes;
   }
 
 }

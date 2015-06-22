@@ -31,10 +31,10 @@
                >
         <br/>
         {% if app.request.settings.cache == true %}
-        {% set checked = 'checked="checked"' %}
+          {% set checked = 'checked="checked"' %}
         {% else %}
           {% set checked = '' %}
-          {% endif %}
+        {% endif %}
 
             <label class="checkbox"
                    for="cache">Cache</label>
@@ -43,10 +43,21 @@
                    name="cache"
                    {{ checked }}
                    id="cache"/>
-
             <br/>
 
-            <a href="{{ app.request.baseUrl }}"
+   
+
+            <select class="form-control" name="theme">
+              {% for theme in app.request.themes %}
+                {% if app.request.settings.theme is defined and app.request.settings.theme == theme %}
+                  {% set selected = 'selected="selected"' %}
+                {% else %}
+                  {% set selected = '' %}
+                {% endif %}
+                <option value="{{theme}}" {{ selected }}>{{theme}}</option>
+              {% endfor %}
+            </select>
+         <a href="{{ app.request.baseUrl }}"
                class="backLink btn">Zurück</a>
 
             <input type="submit"
@@ -54,7 +65,6 @@
                    value="save"
                    class="btn btn-primary"/>
           </div>
-
         </form>
       </div>
     </div>

@@ -24,8 +24,12 @@ $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
 $config->define('seleniumAddress', $seleniumAddress);
 $config->define('domain', $_SERVER['HTTP_HOST']);
 $config->define('db', $db);
+$config->define('theme', $configuration['theme']);
+
 $app = new Silex\Application();
 $app['debug'] = true;
+$app['theme'] = $configuration['theme'];
+
 /*
 $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
   'http_cache.cache_dir' => __DIR__.'/cache/',
