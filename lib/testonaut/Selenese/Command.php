@@ -41,25 +41,25 @@ abstract class Command {
   protected function assert($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult($matched, $matched, $matched ? 'Matched' : 'Did not match '.$matched);
+    return new CommandResult($matched, $matched, $matched ? 'Matched' : 'Did not match ' . $matched);
   }
 
   protected function assertNot($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult(!$matched, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match '.$matched);
+    return new CommandResult(!$matched, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match ' . $matched);
   }
 
   protected function verify($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult(true, $matched, $matched ? 'Matched' : 'Did not match: '.$matched);
+    return new CommandResult(true, $matched, $matched ? 'Matched' : 'Did not match: ' . $matched);
   }
 
   protected function verifyNot($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
     $matched = $patternobj->match($valueis);
-    return new CommandResult(true, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match '.$matched);
+    return new CommandResult(true, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match ' . $matched);
   }
 
   /**
@@ -67,6 +67,28 @@ abstract class Command {
    */
   protected function commandResult($continue, $success, $message) {
     return new CommandResult($continue, $success, $message);
+  }
+
+  public function arraySearchKey($needle, array $array) {
+    for ($i = 0; $i < count($array); $i++) {
+      foreach ($array[$i] as $key => $val) {
+        if ($val == $needle) {
+          return $array[$i]['value'];
+        }
+      }
+    }
+    return false;
+  }
+
+  public function arrayKeyExist($needle, array $array) {
+    for ($i = 0; $i < count($array); $i++) {
+      foreach ($array[$i] as $key => $val) {
+        if ($array[$i]['name'] == $needle) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }
