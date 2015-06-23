@@ -6,8 +6,7 @@
   <head>
     <title>Installer for Testonaut</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link href="../web/css/style.less" rel="stylesheet/less">
-    <script src="../web/js/vendor/less.min.js"></script>
+    <link href="../web/css/themes/bootstrap.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../web/js/vendor/jquery-2.1.3.js"></script>
     <script type="text/javascript" src="script.js"></script>
     <style>
