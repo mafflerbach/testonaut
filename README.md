@@ -159,7 +159,6 @@ you should customize the version number and Hub ip ;)
 #planned features....
 ##Milestone 1.1 - 1.5
 
-* build history page
 * moooaar commands
 * implementing variables
 * Overview about the project screenshot comparison

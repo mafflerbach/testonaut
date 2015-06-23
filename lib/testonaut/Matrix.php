@@ -40,13 +40,13 @@ class Matrix {
    * @return array
    */
   public function read() {
-
     $db = \testonaut\Config::getInstance()->db;
 
     $dbInst = $db->getInstance();
-    $sql = 'select * from history group by browser order by date DESC';
+    $sql = 'select * from history where path=:path group by browser order by date DESC';
     $summery = array();
     $stm = $dbInst->prepare($sql);
+    $stm->bindValue(':path', $this->page->getPath());
     $result = $stm->execute();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $summery[$row['browser']]['result'] = $row['result'];

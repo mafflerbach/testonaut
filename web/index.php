@@ -24,11 +24,19 @@ $config->define('seleniumConsole', $seleniumAddress.'/grid/console');
 $config->define('seleniumAddress', $seleniumAddress);
 $config->define('domain', $_SERVER['HTTP_HOST']);
 $config->define('db', $db);
-$config->define('theme', $configuration['theme']);
 
 $app = new Silex\Application();
 $app['debug'] = true;
+if(isset($configuration['theme'])) {
 $app['theme'] = $configuration['theme'];
+$config->define('theme', $configuration['theme']);
+
+
+} else {
+    $app['theme'] = 'bootstrap';
+$config->define('theme', 'bootstrap');
+}
+
 
 /*
 $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
@@ -36,7 +44,7 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
 )); */
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
   'twig.path' => __DIR__ . '/views',
-  //'twig.options'    => array('cache' => __DIR__ . '/cache')
+  'twig.options'    => array('cache' => __DIR__ . '/cache')
 ));
 
 $app->mount('/', new testonaut\Page\Provider\Start());

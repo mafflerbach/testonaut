@@ -1,12 +1,14 @@
 <html>
   <head>
     <link href="{{ app.request.baseUrl }}/css/bootstrap.css" rel="stylesheet">
-    <link href="{{ app.request.baseUrl }}/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="{{ app.request.baseUrl }}/css/themes/{{app.theme}}.css" rel="stylesheet">
     <link rel="stylesheet/less" type="text/css" href="{{ app.request.baseUrl }}/css/style.less" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js"></script>
     <script type="text/javascript">
       var baseUrl = '{{ app.request.baseUrl }}';
     </script>
+    
+    
     <style type="text/css">
 
       body { padding-top: 100px; }
@@ -81,4 +83,3 @@
 
   </head>
   <body>
-
