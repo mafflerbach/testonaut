@@ -73,6 +73,7 @@ class History implements ControllerProviderInterface {
         . 'where date in ('
         . 'select date from history where browser=:browser and path=:path order by date '.$limit.''
         . ')';
+      
       $stm = $dbIns->prepare($sql);
       $stm->bindParam(':browser', $browser);
       $stm->bindParam(':path', $this->path);
@@ -84,10 +85,11 @@ class History implements ControllerProviderInterface {
 
     $db = \testonaut\Config::getInstance()->db;
     $dbIns = $db->getInstance();
-    $sql = "select * from history";
+    $sql = "select * from history where path=:path";
     $stm = $dbIns->prepare($sql);
+    $stm->bindParam(':path', $this->path);
     $res = $stm->execute();
-
+    
     $foo = array();
     while ($result = $res->fetchArray(SQLITE3_ASSOC)) {
       $date = new \DateTime($result['date']);
