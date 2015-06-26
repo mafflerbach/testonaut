@@ -156,10 +156,11 @@ class Compiler {
     }
 
     protected function generateIncludeBox($content, $path) {
-$return = '<button class="btn btn-link btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      $id = rand(1, 999);
+$return = '<button class="btn btn-link btn-xs" type="button" data-toggle="collapse" data-target="#collapse_'.$id.'" aria-expanded="false" aria-controls="collapseExample">
   Include ' . $path . '
 </button> <a href="{{ app.request.baseUrl }}/edit/' . $path . '"><span class="fa fa-pencil"></span></a>
-<div class="collapse" id="collapseExample">
+<div class="collapse" id="collapse_'.$id.'">
   <div class="well">
     ' . $content . '
   </div>

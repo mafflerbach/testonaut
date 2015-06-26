@@ -15,7 +15,10 @@ class verifyAttribute extends Command {
     }
     $attribute = substr($this->arg1, $index);
     $element = str_replace($attribute, '', $this->arg1);
-    $elementText = $this->getElement($session, $element)->getAttribute(str_replace('/@', '', $pattern));
+    
+    $attrPattern = str_replace('/@', '', $attribute);
+    $elementText = $this->getElement($session, $element)->getAttribute($attrPattern);
+    
     return $this->verify($elementText, $this->arg2);
   }
 

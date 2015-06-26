@@ -10,6 +10,7 @@ class Runner {
 
   /** @var Test */
   public $test;
+
   /** @var string */
   public $hubUrl;
   public $pageUrl;
@@ -32,7 +33,6 @@ class Runner {
     $this->imagePath = $imagePath;
 
     $this->polling = $this->pagePath . '/poll';
-
   }
 
   public function result() {
@@ -50,7 +50,7 @@ class Runner {
     return $this->baseUrl;
   }
 
-  protected function _run(Page $content, \DesiredCapabilities $capabilities) {
+  protected function _run(Page $content, \DesiredCapabilities $capabilities, $webDriver) {
 
     $browserResult = TRUE;
     $test = new Test();
@@ -67,12 +67,8 @@ class Runner {
     $this->polling .= '-' . $browserName;
     $k = 1;
 
-    $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
-
     $res[] = $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
-
-
 
     foreach ($test->commands as $command) {
       // todo: verbosity option
@@ -116,35 +112,35 @@ class Runner {
       }
       $k++;
     }
-    
+
     if ($this->screenshotsAfterTest) {
       $image = $path . 'afterTest.png';
       $this->setupImageDir($browserName);
-      
-        $screenCommand = new captureEntirePageScreenshot();
-        $screenCommand->arg1 = $image;
-      
-        $compareResult = $this->captureAndCompare($screenCommand, $browserName, $webDriver);
-        if ($compareResult['result']) {
-          $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
-        } else {
-          $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
-          $browserResult = FALSE;
-        }
-        $this->addToPoll($result);
+
+      $screenCommand = new captureEntirePageScreenshot();
+      $screenCommand->arg1 = $image;
+
+      $compareResult = $this->captureAndCompare($screenCommand, $browserName, $webDriver);
+      if ($compareResult['result']) {
+        $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+      } else {
+        $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        $browserResult = FALSE;
+      }
+      $this->addToPoll($result);
     }
 
     if (file_exists($this->polling)) {
       unlink($this->polling);
     }
     try {
-      $webDriver->close();
+      
     } catch (\Exception $e) {
       //nothing todo cause session is close
     }
 
     return array(
-      'run'           => $res,
+      'run' => $res,
       'browserResult' => $browserResult
     );
   }
@@ -155,22 +151,24 @@ class Runner {
    * @return array An array of arrays containing the command and the commandResult
    */
   public function run($capabilities) {
-
+    $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
+    
     $return = array();
     if (is_array($this->test)) {
       for ($i = 0; $i < count($this->test); $i++) {
-        $result = $this->_run($this->test[$i], $capabilities);
+        $result = $this->_run($this->test[$i], $capabilities, $webDriver);
         if ($result != NULL) {
           $return[] = $result;
         }
       }
     } else {
-      $result = $this->_run(array($this->test), $capabilities);
+      $result = $this->_run(array($this->test), $capabilities, $webDriver);
       if ($result != NULL) {
         $return[] = $result;
       }
     }
-
+    print('close close close your boaz');
+    $webDriver->close();
     return $return;
   }
 
@@ -193,11 +191,11 @@ class Runner {
     $pause = new Command\Pause();
     $pause->arg1 = 1500;
     $pause->runWebDriver($webDriver);
-    
+
     $screenCommand = new captureEntirePageScreenshot();
     $screenCommand->arg1 = $image;
     $screenCommand->runWebDriver($webDriver);
-    
+
     $pause = new Command\Pause();
     $pause->arg1 = 1500;
     $pause->runWebDriver($webDriver);
@@ -235,7 +233,7 @@ class Runner {
     }
 
     return array(
-      'result'  => $comp,
+      'result' => $comp,
       'message' => $result
     );
   }

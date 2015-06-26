@@ -76,12 +76,26 @@ class Run implements ControllerProviderInterface {
     $sql = 'insert into history (browser, date, run, path, filename, result) '
       . 'values (:browser, :date, :run, :path, :filename, :result)';
     
+    $runResult = '';
+    $flag = TRUE;
+    for ($i = 0; $i < count($content); $i++) {
+      $runResult .= implode('', $content[$i]['run']);
+      if ($content[$i]['browserResult'] == false) {
+        $flag = FALSE;
+      }  
+    }
+    
+    $dbContent = array(
+      'run' => $runResult,
+      'browserResult' => FALSE
+    ); 
+    
     $path = $this->page->getResultPath();
 
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
     }
-
+    
     $date = new \DateTime();
     $fileName = 'result_' . $this->browser . '_' . $date->format('Y-m-d_H-i-s');
     file_put_contents($path . '/' . $fileName, json_encode($content));
@@ -89,10 +103,10 @@ class Run implements ControllerProviderInterface {
     $stm = $dbInst->prepare($sql);
     $stm->bindParam(':browser', $this->browser);
     $stm->bindParam(':date', $date->format(\DateTime::ISO8601));
-    $stm->bindParam(':run',implode('',$content[0]['run']));
+    $stm->bindParam(':run',implode('',$dbContent));
     $stm->bindParam(':path', $this->path);
     $stm->bindParam(':filename',$fileName);
-    $stm->bindParam(':result',$content[0]['browserResult']);
+    $stm->bindParam(':result',$dbContent['browserResult']);
     $stm->execute();
     $path = $this->page->getResultPath();
 
@@ -100,14 +114,13 @@ class Run implements ControllerProviderInterface {
 
   protected function runSuite($path) {
 
-    $this->collect($path->transCodePath());
-
     $testCollect = array();
 
     $content = file_get_contents($path->transCodePath() . '/content');
     if (strpos($content, '<table') !== FALSE) {
       $this->dirArray[] = $path;
     }
+    $this->collect($path->transCodePath());
 
     for ($i = 0; $i < count($this->dirArray); $i++) {
       $testCollect[] = $this->dirArray[$i];

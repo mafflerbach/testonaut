@@ -35,8 +35,10 @@ class Test {
 
     libxml_use_internal_errors(true);
     $dom = new \DOMDocument;
-    $dom->loadHTML($file->getCompiledPage());
-
+    $compiledPage = $file->getCompiledPage(); 
+    
+    $dom->loadHTML($compiledPage);
+    
     // get the base url
     if ($this->baseUrl == '') {
       if ($dom->getElementsByTagName('link')->length > 0) {
@@ -52,6 +54,7 @@ class Test {
     }
 
     $tables = $dom->getElementsByTagName('tbody');
+    
     foreach($tables as $table) {
       $rows = $table->getElementsByTagName('tr');
       $this->parseTable($rows);

@@ -71,6 +71,7 @@ class Toc {
         $r = array_merge_recursive($r, $path);
       }
     }
+    ksort($r);
     $this->dirArray = $r;
   }
 
@@ -92,7 +93,7 @@ class Toc {
    * @return string
    */
   protected function makeList($array, $path = '', $tree = '', $level = 0) {
-
+    ksort($array);
     $level++;
     foreach ($array as $key => $value) {
       if (is_array($value)) {
