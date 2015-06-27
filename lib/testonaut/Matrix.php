@@ -47,6 +47,7 @@ class Matrix {
     $summery = array();
     $stm = $dbInst->prepare($sql);
     $stm->bindValue(':path', $this->page->getPath());
+    
     $result = $stm->execute();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $summery[$row['browser']]['result'] = $row['result'];
@@ -55,12 +56,4 @@ class Matrix {
 
     return $summery;
   }
-
-  /**
-   * @param $result
-   */
-  public function write($result) {
-    
-  }
-
 }
