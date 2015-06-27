@@ -7,34 +7,35 @@
     {% for browser, resultList in app.request.history %}
       <a class="btn btn-primary" href="?delete=true&all=true">Delete history</a>
       <div class="history">
-        <h4>{{ browser }}</h4>
-        <div>
-          <a class="btn btn-primary" href="?delete=true&browser={{ browser }}">Delete browser history</a>
-          <a class="btn btn-primary" href="?delete=true&count=10&browser={{ browser }}">Delete browser first 10 results</a>
+        <div class="page-header">
+          <h4>{{ browser }}
+
+            <a class="btn btn-primary btn-sm" href="?delete=true&browser={{ browser }}">Delete browser history</a>
+            <a class="btn btn-primary btn-sm" href="?delete=true&count=10&browser={{ browser }}">Delete browser first 10 results</a>
+          </h4>
         </div>
 
 
-        
         {% for date, hourResult in resultList %}
-                  <div class="panel panel-default">
- 
+          <div class="panel panel-default">
 
-             <div class="panel-heading">{{ date }}</div>      
+
+            <div class="panel-heading">{{ date }}</div>      
             <div class="panel-body">
-            {% for hour, realResult in hourResult %}
-              {% if realResult.result == '1' %}
-                {% set class = 'success' %}
-              {% else %}
-                {% set class = 'fail' %}
-              {% endif %}
-                
-              <div class="hour {{ class }}">{{ hour }}</div>
-              <table>
-                {{ realResult.run|raw }}
-              </table>
+              {% for hour, realResult in hourResult %}
+                {% if realResult.result == '1' %}
+                  {% set class = 'bg-success' %}
+                {% else %}
+                  {% set class = 'bg-danger' %}
+                {% endif %}
+
+                <div class="hour {{ class }}">{{ hour }}</div>
+                <table class="table table-bordered">
+                  {{ realResult.run|raw }}
+                </table>
 
 
-            {% endfor %}    </div>
+              {% endfor %}    </div>
           </div>
         {% endfor %}  
       </div>

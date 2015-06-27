@@ -67,14 +67,14 @@ class Runner {
     $this->imagePath = $path;
     $this->polling .= '-' . $browserName;
     $k = 1;
-    $res[] = $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
+    $res[] = $result = "<tr class='active'><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
 
     foreach ($test->commands as $command) {
       // todo: verbosity option
 
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
-      $res[] = $result = "<tr><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
+      $res[] = $result = "<tr class='active'><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
       $this->addToPoll($result);
 
       try {
@@ -89,18 +89,18 @@ class Runner {
       }
 
       if ($commandResult->success) {
-        $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $res[] = $result = '<tr class="bg-success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
       } else {
-        $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $res[] = $result = '<tr class="bg-danger"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
         $browserResult = FALSE;
       }
 
       if ($commandStr == 'CaptureEntirePageScreenshot') {
         $compareResult = $this->captureAndCompare($command, $browserName, $webDriver);
         if ($compareResult['result']) {
-          $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+          $res[] = $result = '<tr class="bg-success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
         } else {
-          $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+          $res[] = $result = '<tr class="bg-danger"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
           $browserResult = FALSE;
         }
       }
@@ -122,9 +122,9 @@ class Runner {
 
       $compareResult = $this->captureAndCompare($screenCommand, $browserName, $webDriver);
       if ($compareResult['result']) {
-        $res[] = $result = '<tr class="success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        $res[] = $result = '<tr class="bg-success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
       } else {
-        $res[] = $result = '<tr class="failed"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        $res[] = $result = '<tr class="bg-danger"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
         $browserResult = FALSE;
       }
       $this->addToPoll($result);

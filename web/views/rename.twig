@@ -7,10 +7,10 @@
 <form action=""
       method="POST">
 
-  <label for="rename">Umbennen zu:</label>
-  <input type="text" name="newPath"
+  <label for="rename">Umbennen zu:
+  <input type="text" name="newPath" class="form-control input-sm"
          value="{{ app.request.path }}"/>
-
+</label>
   <br/><br/>
   <input id="rename" type="submit"
          name="action"

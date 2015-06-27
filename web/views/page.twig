@@ -19,7 +19,7 @@
             <div class="browserResult">
               <span class="{{ class }} resultBtn"><a href="#{{ key }}"> {{ key }}</a></span>
               <div class="lastResultRun {{ class }}">
-                <table class="table">
+                <table class="table table-bordered">
                   {{val.run|raw}}
                 </table>
               </div> 
@@ -120,6 +120,8 @@
         $(this).next().hide('slow');
       }
     });
+
+    $('table').addClass('table table-bordered');
 
   });
 
