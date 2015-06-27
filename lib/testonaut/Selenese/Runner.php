@@ -56,7 +56,7 @@ class Runner {
     $test = new Test();
     $test->setBaseUrl($this->baseUrl);
     $test->loadFromSeleneseHtml($content);
-
+    
     if ($test->commands == '') {
       return NULL;
     }
@@ -64,9 +64,9 @@ class Runner {
     $browserName = str_replace(' ', '_', $capabilities->getBrowserName());
 
     $path = $content->getImagePath() . '/' . $browserName . "/src/";
+    $this->imagePath = $path;
     $this->polling .= '-' . $browserName;
     $k = 1;
-
     $res[] = $result = "<tr><th colspan='3'>" . $browserName . "</th></tr>";
     $this->addToPoll($result);
 
@@ -167,7 +167,7 @@ class Runner {
         $return[] = $result;
       }
     }
-    print('close close close your boaz');
+    
     $webDriver->close();
     return $return;
   }
@@ -203,13 +203,14 @@ class Runner {
 
   private function setupImageDir($browserName) {
 
-    $imageDir = $this->imagePath;
-    $path = $imageDir . '/' . $browserName . "/src/";
+    $path = $this->imagePath;
+    $imageDirComp = str_replace($browserName . "/src/", $browserName . "/comp/", $path);
+    $imageDirRef = str_replace($browserName . "/src/", $browserName . "/ref/", $path);
 
     if (!file_exists($path)) {
       mkdir($path, 0775, TRUE);
-      mkdir($imageDir . '/' . $browserName . "/comp/", 0775, TRUE);
-      mkdir($imageDir . '/' . $browserName . "/ref/", 0775, TRUE);
+      mkdir($imageDirComp, 0775, TRUE);
+      mkdir($imageDirRef, 0775, TRUE);
     }
   }
 
@@ -217,9 +218,9 @@ class Runner {
 
     $this->setupImageDir($browserName);
 
-    $imageDir = $this->imagePath;
-    $path = $imageDir . '/' . $browserName . "/src/";
-
+    $path = $this->imagePath;
+    
+    
     $tmp = $command->arg1;
     $command->arg1 = $path . $tmp;
     $this->invokeCommand($command->arg1, $webDriver);
@@ -262,7 +263,6 @@ class Runner {
   }
 
   protected function writeToFile($path, $content, $option = 0) {
-
     file_put_contents($path, $content, $option);
   }
 

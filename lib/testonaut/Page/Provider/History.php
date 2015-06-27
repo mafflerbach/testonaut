@@ -84,8 +84,9 @@ class History implements ControllerProviderInterface {
 
     $db = \testonaut\Config::getInstance()->db;
     $dbIns = $db->getInstance();
-    $sql = "select * from history";
+    $sql = "select * from history where path=:path";
     $stm = $dbIns->prepare($sql);
+    $stm->bindParam(':path', $this->path);
     $res = $stm->execute();
 
     $foo = array();
