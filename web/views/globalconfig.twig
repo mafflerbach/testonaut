@@ -7,67 +7,60 @@
           method="POST">
 
       <div class="input-group">
-        <label class=""
-               for="appPath">Cache</label>
-        <input type="text" 
-               class="form-control" 
-               placeholder="App Path" 
-               aria-describedby="basic-addon2"
-               value="{{ app.request.settings.appPath }}"
-               name="appPath"
-               aria-label="FOOOO"
-               id="appPath"
-               >
-        <br/>
-        <label class=""
-               for="selAddr">Selenium Hub <sub>Example: http://xxx.xxx.xxx.xxx:4444</sub></label>
-        <input type="text" 
-               class="form-control" 
-               placeholder="Selenium Hub:" 
-               aria-describedby="basic-addon2"
-               value="{{ app.request.settings.seleniumAddress }}"
-               name="seleniumAddress"
-               id="selAddr"
-               >
-        <br/>
-        {% if app.request.settings.cache == true %}
-          {% set checked = 'checked="checked"' %}
-        {% else %}
-          {% set checked = '' %}
-        {% endif %}
+        <div>
+          <label class=""
+                 for="appPath"> app Path
+            <input type="text" 
+                   class="form-control input-sm" 
+                   placeholder="App Path" 
+                   aria-describedby="basic-addon2"
+                   value="{{ app.request.settings.appPath }}"
+                   name="appPath"
+                   aria-label="FOOOO"
+                   id="appPath"
+                   > 
+          </label>
+        </div>
+        <div>
+          <label class="" 
+                 for="selAddr"> Selenium Hub <sub>Example: http://xxx.xxx.xxx.xxx:4444</sub>
+            <input type="text" 
+                   class="form-control input-sm" 
+                   placeholder="Selenium Hub:" 
+                   aria-describedby="basic-addon2"
+                   value="{{ app.request.settings.seleniumAddress }}"
+                   name="seleniumAddress"
+                   id="selAddr"
+                   >
+          </label>
+        </div>
 
-            <label class="checkbox"
-                   for="cache">Cache</label>
-            <input type="checkbox"
-                   value="cache"
-                   name="cache"
-                   {{ checked }}
-                   id="cache"/>
-            <br/>
 
-   
-
-            <select class="form-control" name="theme">
-              {% for theme in app.request.themes %}
-                {% if app.request.settings.theme is defined and app.request.settings.theme == theme %}
-                  {% set selected = 'selected="selected"' %}
-                {% else %}
-                  {% set selected = '' %}
-                {% endif %}
-                <option value="{{theme}}" {{ selected }}>{{theme}}</option>
+        <select class="form-control input-sm" name="theme">
+          {% for theme in app.request.themes %}
+            {% if app.request.settings.theme is defined and app.request.settings.theme == theme %}
+            {% set selected = 'selected="selected"' %}
+          {% else %}
+            {% set selected = '' %}
+            {% endif %}
+              <option value="{{theme}}" {{ selected }}>{{theme}}</option>
               {% endfor %}
-            </select>
-         <a href="{{ app.request.baseUrl }}"
-               class="backLink btn">Zurück</a>
+              </select>
+              <br/>
+              <br/>
 
-            <input type="submit"
-                   name="action"
-                   value="save"
-                   class="btn btn-primary"/>
-          </div>
-        </form>
+              <input type="submit"
+                     name="action"
+                     value="save"
+                     class="btn btn-primary"/>
+
+              <a href="{{ app.request.baseUrl }}"
+                 class="btn-link btn">Zurück</a>
+
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
 
 
-    {% include 'footer.twig' %}
+      {% include 'footer.twig' %}
