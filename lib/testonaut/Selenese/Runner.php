@@ -56,7 +56,7 @@ class Runner {
     $test = new Test();
     $test->setBaseUrl($this->baseUrl);
     $test->loadFromSeleneseHtml($content);
-    
+
     if ($test->commands == '') {
       return NULL;
     }
@@ -67,18 +67,13 @@ class Runner {
     $this->imagePath = $path;
     $this->polling .= '-' . $browserName;
     $k = 1;
-    $res[] = $result = "<tr class='active'><th colspan='3'>" . $browserName . "</th></tr>";
-    $this->addToPoll($result);
 
     foreach ($test->commands as $command) {
-      // todo: verbosity option
-
+      
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
-      $res[] = $result = "<tr class='active'><td>Running: " . $commandStr . ' </td><td> ' . $command->arg1 . ' </td><td> ' . $command->arg2 . ' </td> ' . "</tr>";
-      $this->addToPoll($result);
 
       try {
-        // todo: screenshots after each command option settings
+        
         $commandResult = $command->runWebDriver($webDriver);
         if ($this->screenshotsAfterEveryStep) {
           $image = $path . 'image' . $k . '.png';
@@ -89,23 +84,21 @@ class Runner {
       }
 
       if ($commandResult->success) {
-        $res[] = $result = '<tr class="bg-success"><td>SUCCESS</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $res[] = array(true, $commandResult->message, $commandStr);
       } else {
-        $res[] = $result = '<tr class="bg-danger"><td>FAILED</td><td colspan="2">' . $commandResult->message . '</td></tr>';
+        $res[] = array(false, $commandResult->message, $commandStr);
         $browserResult = FALSE;
       }
 
       if ($commandStr == 'CaptureEntirePageScreenshot') {
         $compareResult = $this->captureAndCompare($command, $browserName, $webDriver);
         if ($compareResult['result']) {
-          $res[] = $result = '<tr class="bg-success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+          $res[] = array(true, $compareResult['message'], $commandStr);
         } else {
-          $res[] = $result = '<tr class="bg-danger"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+          $res[] = array(false, $compareResult['message'], $commandStr);
           $browserResult = FALSE;
         }
       }
-
-      $this->addToPoll($result);
 
       if ($commandResult->continue === FALSE) {
         break;
@@ -122,16 +115,11 @@ class Runner {
 
       $compareResult = $this->captureAndCompare($screenCommand, $browserName, $webDriver);
       if ($compareResult['result']) {
-        $res[] = $result = '<tr class="bg-success"><td>SUCCESS</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        $res[] = array(true, $compareResult['message'], $commandStr);
       } else {
-        $res[] = $result = '<tr class="bg-danger"><td>FAILED</td><td colspan="2">' . $compareResult['message'] . '</td></tr>';
+        $res[] = array(false, $compareResult['message'], $commandStr);
         $browserResult = FALSE;
       }
-      $this->addToPoll($result);
-    }
-
-    if (file_exists($this->polling)) {
-      unlink($this->polling);
     }
     try {
       
@@ -152,7 +140,7 @@ class Runner {
    */
   public function run($capabilities) {
     $webDriver = \RemoteWebDriver::create($this->hubUrl, $capabilities, 5000);
-    
+
     $return = array();
     if (is_array($this->test)) {
       for ($i = 0; $i < count($this->test); $i++) {
@@ -167,7 +155,7 @@ class Runner {
         $return[] = $result;
       }
     }
-    
+
     $webDriver->close();
     return $return;
   }
@@ -219,8 +207,7 @@ class Runner {
     $this->setupImageDir($browserName);
 
     $path = $this->imagePath;
-    
-    
+
     $tmp = $command->arg1;
     $command->arg1 = $path . $tmp;
     $this->invokeCommand($command->arg1, $webDriver);

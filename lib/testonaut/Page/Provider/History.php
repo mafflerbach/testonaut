@@ -93,7 +93,7 @@ class History implements ControllerProviderInterface {
     $foo = array();
     while ($result = $res->fetchArray(SQLITE3_ASSOC)) {
       $date = new \DateTime($result['date']);
-      $foo[$result['browser']][$date->format('m.d.Y')][$date->format('H:i:s')]['run'] = $result['run'];
+      $foo[$result['browser']][$date->format('m.d.Y')][$date->format('H:i:s')]['run'] = json_decode($result['run'], true);
       $foo[$result['browser']][$date->format('m.d.Y')][$date->format('H:i:s')]['result'] = $result['result'];
     }
     return $foo;

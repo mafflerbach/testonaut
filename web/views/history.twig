@@ -30,12 +30,30 @@
                 {% endif %}
 
                 <div class="hour {{ class }}">{{ hour }}</div>
-                <table class="table table-bordered">
-                  {{ realResult.run|raw }}
-                </table>
+                <div class="historyResult" >
+                  {% for result in realResult.run %}
+                    <table class="table table-bordered">
+                      {% for resultEntry in result %}
+                        {% if resultEntry.0  == true %}
+                          {% set class = 'bg-success' %}
+                        {% else %}
+                          {% set class = 'bg-danger' %}
+                        {% endif %}
+                        <tr class="{{ class }}">
+                          <td>Command</td>
+                          <td>{{  resultEntry.2}}</td>
+                          <td>{{  resultEntry.1}}</td>            
+                        </tr>
+                      {% endfor %}
+                    </table>
+                  {% endfor %}
+
+                </div>
 
 
-              {% endfor %}    </div>
+
+              {% endfor %}    
+            </div>
           </div>
         {% endfor %}  
       </div>
@@ -45,10 +63,10 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
-    $('.history table').hide();
+    $('.history .historyResult').hide();
     $('.hour').click(function () {
-      console.log();
-      if ($(this).next().is(':visible')) {
+      console.log($(this).next('table'));
+      if ($(this).next('.historyResult').is(':visible')) {
         $(this).next().slideUp('slow');
       } else {
         $(this).next().slideDown('slow');

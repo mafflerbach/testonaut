@@ -8,9 +8,9 @@
   <div class="col-xs-12 col-md-9">
     <div class="contentBox">
       {% if app.request.lastResult is defined %}
+    
         <div class="lastResult">
           {% for key, val  in app.request.lastResult %}
-
             {% if val.result == 1 %}
               {% set class = 'success' %}
             {% else %}
@@ -19,9 +19,24 @@
             <div class="browserResult">
               <span class="{{ class }} resultBtn"><a href="#{{ key }}"> {{ key }}</a></span>
               <div class="lastResultRun {{ class }}">
-                <table class="table table-bordered">
-                  {{val.run|raw}}
+
+              {% for result in val.run %}
+                <table class="table-bordered">
+                  {% for resultEntry in result %}
+                    {% if resultEntry.0  == true %}
+                      {% set class = 'bg-success' %}
+                    {% else %}
+                      {% set class = 'bg-danger' %}
+                    {% endif %}
+                    <tr class="{{ class }}">
+                      <td>Command</td>
+                      <td>{{  resultEntry.2}}</td>
+                      <td>{{  resultEntry.1}}</td>            
+                    </tr>
+                  {% endfor %}
                 </table>
+              {% endfor %}
+
               </div> 
             </div>
           {% endfor %}

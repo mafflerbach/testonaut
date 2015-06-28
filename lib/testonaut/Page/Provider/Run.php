@@ -76,18 +76,19 @@ class Run implements ControllerProviderInterface {
     $sql = 'insert into history (browser, date, run, path, filename, result) '
       . 'values (:browser, :date, :run, :path, :filename, :result)';
     
-    $runResult = '';
+    $runResult = array();
     $flag = TRUE;
+    
     for ($i = 0; $i < count($content); $i++) {
-      $runResult .= implode('', $content[$i]['run']);
+      $runResult[] = $content[$i]['run'];
       if ($content[$i]['browserResult'] == false) {
         $flag = FALSE;
       }  
     }
     
     $dbContent = array(
-      'run' => $runResult,
-      'browserResult' => FALSE
+      'run' => json_encode($runResult),
+      'browserResult' => $flag
     ); 
     
     $path = $this->page->getResultPath();
@@ -103,7 +104,7 @@ class Run implements ControllerProviderInterface {
     $stm = $dbInst->prepare($sql);
     $stm->bindParam(':browser', $this->browser);
     $stm->bindParam(':date', $date->format(\DateTime::ISO8601));
-    $stm->bindParam(':run',implode('',$dbContent));
+    $stm->bindParam(':run',$dbContent['run']);
     $stm->bindParam(':path', $this->path);
     $stm->bindParam(':filename',$fileName);
     $stm->bindParam(':result',$dbContent['browserResult']);

@@ -1,17 +1,29 @@
 {% include 'head.twig' %}
 <div class="contentBox">
-<div class="content">
-<a href="{{ app.request.baseUrl }}/">root</a>
-{% for results in app.result %}
-  {% for result in results %}
-    {% for resultEntry in result %}
-      <p>{{ resultEntry|raw }}</p>
-    {% endfor %}
-  {% endfor %}
-{% endfor %}
+  <div class="content">
+    <a href="{{ app.request.baseUrl }}/">root</a>
 
-<a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
-   class="backLink btn">Zurück</a>
-</div>
+    {% for results in app.result %}
+      {% for result in results %}
+        <table class="table-bordered">
+          {% for resultEntry in result %}
+            {% if resultEntry.0  == true %}
+              {% set class = 'bg-success' %}
+            {% else %}
+              {% set class = 'bg-danger' %}
+            {% endif %}
+            <tr class="{{ class }}">
+              <td>Command</td>
+              <td>{{  resultEntry.2}}</td>
+              <td>{{  resultEntry.1}}</td>            
+            </tr>
+          {% endfor %}
+        </table>
+      {% endfor %}
+    {% endfor %}
+
+    <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+       class="backLink btn">Zurück</a>
+  </div>
 </div>
 {% include 'footer.twig' %}

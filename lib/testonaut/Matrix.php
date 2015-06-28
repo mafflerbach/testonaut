@@ -49,9 +49,9 @@ class Matrix {
     $stm->bindValue(':path', $this->page->getPath());
     
     $result = $stm->execute();
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)){
       $summery[$row['browser']]['result'] = $row['result'];
-      $summery[$row['browser']]['run'] = $row['run'];
+      $summery[$row['browser']]['run'] = json_decode($row['run']);
     }
 
     return $summery;
