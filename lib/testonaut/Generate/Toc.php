@@ -117,7 +117,7 @@ class Toc {
       }
     }
     if ($tree != '') {
-      $tree = '<ul>' . $tree . '</ul>';
+      $tree = '<ul class="ascii">' . $tree . '</ul>';
     }
 
     return $tree;

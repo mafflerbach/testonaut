@@ -15,7 +15,7 @@ class VerifyElementPresent extends Command {
     try {
       $this->getElement($session, $this->arg1);
       return $this->commandResult(true, true, 'Found');
-    } catch (NoSuchElement $e) {
+    } catch (\NoSuchElementException $e) {
       return $this->commandResult(true, false, 'Not found');
     }
   }
