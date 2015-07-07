@@ -40,24 +40,42 @@ abstract class Command {
   // these are all mostly simliar
   protected function assert($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
+    
+    if (strpos($pattern, '${') !== FALSE) {
+        $pattern = \testonaut\Utils\Variablestorage::getInstance()->$pattern;
+    }
+    
     $matched = $patternobj->match($valueis);
     return new CommandResult($matched, $matched, $matched ? 'Matched' : 'Did not match ' . $matched);
   }
 
   protected function assertNot($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
+    
+    if (strpos($pattern, '${') !== FALSE) {
+        $pattern = \testonaut\Utils\Variablestorage::getInstance()->$pattern;
+    }
     $matched = $patternobj->match($valueis);
     return new CommandResult(!$matched, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match ' . $matched);
   }
 
   protected function verify($valueis, $pattern) {
+    
+    if (strpos($pattern, '${') !== FALSE) {
+        $pattern = \testonaut\Utils\Variablestorage::getInstance()->$pattern;
+    }
+  
     $patternobj = new Pattern($pattern);
-    $matched = $patternobj->match($valueis);
+    $matched = $patternobj->match($valueis);   
     return new CommandResult(true, $matched, $matched ? 'Matched' : 'Did not match: ' . $matched);
   }
 
   protected function verifyNot($valueis, $pattern) {
     $patternobj = new Pattern($pattern);
+    
+    if (strpos($pattern, '${') !== FALSE) {
+        $pattern = \testonaut\Utils\Variablestorage::getInstance()->$pattern;
+    }
     $matched = $patternobj->match($valueis);
     return new CommandResult(true, !$matched, $matched ? 'Matched and should not have' : 'Correctly did not match ' . $matched);
   }

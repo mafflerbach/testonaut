@@ -1,11 +1,6 @@
 <?php
-namespace testonaut;
-
-
-/**
- * 
- */
-class Config {
+namespace testonaut\Utils;
+class Variablestorage {
   private static $instance = NULL;
   private $register = array();
   private $readOnly = array();
