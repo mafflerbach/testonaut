@@ -5,7 +5,7 @@ namespace testonaut\Selenese\Command;
 use testonaut\Selenese\Command;
 
 // VerifyNotText(locator,pattern)
-class VerifyNotText extends Command {
+class verifyNotText extends Command {
   public function runWebDriver(\WebDriver $session) {
     $elementText = $this->getElement($session, $this->arg1)->getText();
     return $this->verifyNot($elementText, $this->arg2);

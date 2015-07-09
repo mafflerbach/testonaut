@@ -70,7 +70,7 @@ class Runner {
         foreach ($test->commands as $command) {
 
             $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
-
+            $commandStr = str_replace(' ', '', $commandStr);
             try {
 
                 $commandResult = $command->runWebDriver($webDriver);
