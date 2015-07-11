@@ -229,7 +229,8 @@ class Runner {
         $command->arg1 = $path . $tmp;
         $this->invokeCommand($command->arg1, $webDriver);
 
-        $pathref = $path . '/' . $browserName . "/ref/" . $tmp;
+        $pathref = str_replace( $browserName . "/src/",  $browserName . "/ref/", $path);
+        
         if (file_exists($pathref)) {
             if ($comp = $this->compare($browserName, $tmp)) {
                 $result = "Compare: " . $command->arg1;
@@ -248,20 +249,20 @@ class Runner {
     protected function compare($browserName, $imgName) {
 
         $imageDir = $this->imagePath;
-        $path = $imageDir . '/' . $browserName . "/src/" . $imgName;
-        $pathref = $imageDir . '/' . $browserName . "/ref/" . $imgName;
-        $comp = $imageDir . '/' . $browserName . "/comp/" . $imgName;
-
+        $path = $imageDir.'/'.$imgName;
+        
+        $pathref = str_replace( $browserName . "/src/",  $browserName . "/ref", $path);
+        $comp = str_replace( $browserName . "/src/",  $browserName . "/comp", $path) ;
+        
         if (file_exists($pathref)) {
             if (file_exists($comp)) {
                 unlink($comp);
             }
             if (class_exists('\\Imagick')) {
                 $compare = new Image();
-
                 return $compare->compare($path, $pathref, $comp);
             } else {
-                return FALSE;
+              return FALSE;
             }
         } else {
             return FALSE;
