@@ -91,7 +91,7 @@ class Runner {
 
             if ($commandStr == 'CaptureEntirePageScreenshot') {
                 $refImage = $content->getImagePath() . '/' . $browserName . "/ref/" . $command->arg1;
-        
+                
                 if (file_exists($refImage)) {
                     $compareResult = $this->captureAndCompare($command, $browserName, $webDriver);
                     if ($compareResult['result']) {
@@ -121,7 +121,7 @@ class Runner {
             if (file_exists($refImage)) {
                 $screenCommand = new captureEntirePageScreenshot();
                 $screenCommand->arg1 = $image;
-
+                
                 $compareResult = $this->captureAndCompare($screenCommand, $browserName, $webDriver);
                 if ($compareResult['result']) {
                     $res[] = array(true, $compareResult['message'], $commandStr);
@@ -225,14 +225,12 @@ class Runner {
 
         $path = $this->imagePath;
 
-        $tmp = $command->arg1;
-        $command->arg1 = $path . $tmp;
         $this->invokeCommand($command->arg1, $webDriver);
 
         $pathref = str_replace( $browserName . "/src/",  $browserName . "/ref/", $path);
         
         if (file_exists($pathref)) {
-            if ($comp = $this->compare($browserName, $tmp)) {
+            if ($comp = $this->compare($browserName, $command->arg1)) {
                 $result = "Compare: " . $command->arg1;
                 $this->writeToFile($this->polling, $result, FILE_APPEND);
             } else {
