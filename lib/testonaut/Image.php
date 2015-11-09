@@ -11,7 +11,7 @@ namespace testonaut;
 class Image {
 
   public function compare($image1, $image2, $resultImg) {
-      print('asfsd');
+    
     if (class_exists('\\Imagick')) {
       $imageSrc = new \Imagick($image1);
       $imageRef = new \Imagick($image2);
@@ -29,7 +29,6 @@ class Image {
         return FALSE;
       }
     } else {
-        var_dump('meee');
       throw new \Exception('class Imagick does not exist');
     }
 
