@@ -44,6 +44,11 @@ class Run implements ControllerProviderInterface {
       if ($this->version == '') {
         $this->version = '';
       }
+      
+      $this->platform = $request->query->get('platform');
+      if ($this->platform == '') {
+        $this->platform = '';
+      }
 
       if ($request->query->get('suite') == 'true') {
         $result = $this->runSuite($this->page);
@@ -237,6 +242,7 @@ class Run implements ControllerProviderInterface {
 
     $DesiredCapabilities = new Capabilities();
     $DesiredCapabilities->setVersion($this->version);
+    $DesiredCapabilities->setPlatform($this->platform);
 
     if ($this->browser == 'all') {
       $api = new Api();
@@ -252,8 +258,11 @@ class Run implements ControllerProviderInterface {
     } else {
 
       $browserName = $this->normalizeBrowserName($this->browser);
+
       if (method_exists($DesiredCapabilities, $browserName)) {
         $capabilities = $DesiredCapabilities::$browserName();
+        $capabilities->setVersion($this->version);
+        $capabilities->setPlatform($this->platform);
       }
     }
 

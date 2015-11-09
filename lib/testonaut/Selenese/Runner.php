@@ -90,29 +90,32 @@ class Runner {
             }
 
             if ($commandStr == 'CaptureEntirePageScreenshot') {
-                $refImage = $content->getImagePath() . '/' . $browserName . "/ref/" . $command->arg1;
-        
-                if (file_exists($refImage)) {
-                    $compareResult = $this->captureAndCompare($command, $browserName, $webDriver);
-                    if ($compareResult['result']) {
-                        $res[] = array(true, $compareResult['message'], $commandStr);
-                    } else {
-                        $res[] = array(false, $compareResult['message'], $commandStr);
-                        $browserResult = FALSE;
-                    }    
-                }
-            } else {
-                $screenCommand = new captureEntirePageScreenshot();
-                $screenCommand->arg1 = $command->arg1;
+              $refImage = $content->getImagePath() . '/' . $browserName . "/ref/" . $command->arg1;
+              if (file_exists($refImage)) {
+                  $compareResult = $this->captureAndCompare($command, $browserName, $webDriver);
+                  if ($compareResult['result']) {
+                      $res[] = array(true, $compareResult['message'], $commandStr);
+                  } else {
+                      $res[] = array(false, $compareResult['message'], $commandStr);
+                      $browserResult = FALSE;
+                  }
+
+              } else {
+                  $srcImage = $content->getImagePath() . '/' . $browserName . "/src/" . $command->arg1;
+                  $this->setupImageDir($browserName);
+                  $screenCommand = new captureEntirePageScreenshot();
+                  $screenCommand->arg1 = $srcImage;
+                  $screenCommand->runWebDriver($webDriver);
+              }
             }
 
             if ($commandResult->continue === FALSE) {
                 break;
             }
-            $k++;
+          $k++;
         }
 
-       
+
         if ($this->screenshotsAfterTest) {
             $image = $path . 'afterTest.png';
             $this->setupImageDir($browserName);
@@ -128,18 +131,18 @@ class Runner {
                 } else {
                     $res[] = array(false, $compareResult['message'], $commandStr);
                     $browserResult = FALSE;
-                }    
+                }
             } else {
-                
+
                 $afterTest = new captureEntirePageScreenshot();
                 $afterTest->arg1 = $image;
                 $commandResult = $afterTest->runWebDriver($webDriver);
                 $res[] = array(true, $commandResult->message, "Screenshot after Test");
             }
-            
+
         }
         try {
-            
+
         } catch (\Exception $e) {
             //nothing todo cause session is close
         }
@@ -238,7 +241,7 @@ class Runner {
                 $result = "Cant Compare: " . $command->arg1;
                 $this->writeToFile($this->polling, $result, FILE_APPEND);
             }
-        } 
+        }
         return array(
             'result' => $comp,
             'message' => $result

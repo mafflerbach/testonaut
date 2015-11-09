@@ -71,10 +71,10 @@
                         </li>
                         {% for browser in app.request.browsers %}
                           <li>
-                            <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&version={{ browser.version }}&{{ parameter }}"
+                            <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&platform={{ browser.platform }}&version={{ browser.version }}&{{ parameter }}"
                                data-path="{{ app.request.path }}"
                                data-browser="{{ browser.browserName }}"
-                               class="run-test">{{ browser.browserName }}</a>
+                               class="run-test">{{ browser.browserName }} {{ browser.platform }}</a>
                           </li>
                         {% endfor %}
                       </ul>
