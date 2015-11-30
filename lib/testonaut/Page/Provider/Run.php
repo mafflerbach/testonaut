@@ -44,7 +44,7 @@ class Run implements ControllerProviderInterface {
       if ($this->version == '') {
         $this->version = '';
       }
-      
+
       $this->platform = $request->query->get('platform');
       if ($this->platform == '') {
         $this->platform = '';
@@ -243,7 +243,7 @@ class Run implements ControllerProviderInterface {
     $DesiredCapabilities = new Capabilities();
     $DesiredCapabilities->setVersion($this->version);
     $DesiredCapabilities->setPlatform($this->platform);
-
+    
     if ($this->browser == 'all') {
       $api = new Api();
       $list = $api->getBrowserList();
