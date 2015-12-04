@@ -68,8 +68,6 @@ class Run implements ControllerProviderInterface {
         $result = $this->run($this->page);
       }
 
-      var_dump($result );
-
       $this->writeResultFile($result);
 
       $app['request'] = array(
