@@ -1,15 +1,27 @@
 <?php
+/**
+ *
+ * GNU GENERAL PUBLIC LICENSE testonaut Copyright (C) 2015 Afflerbach
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ */
+
 
 namespace testonaut\Page\Provider;
 
 use testonaut\Capabilities;
+use testonaut\Matrix;
 use testonaut\Page;
 use testonaut\Page\Breadcrumb;
 use testonaut\Selenium\Api;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use testonaut\Selenese\Test;
 use testonaut\Selenese\Runner;
 
 class Run implements ControllerProviderInterface {
@@ -56,6 +68,8 @@ class Run implements ControllerProviderInterface {
         $result = $this->run($this->page);
       }
 
+      var_dump($result );
+
       $this->writeResultFile($result);
 
       $app['request'] = array(
@@ -74,50 +88,18 @@ class Run implements ControllerProviderInterface {
     return $edit;
   }
 
+  /**
+   * @param $content
+   */
   protected function writeResultFile($content) {
-    
-    $db = \testonaut\Config::getInstance()->db;
-    $dbInst = $db->getInstance();
-    $sql = 'insert into history (browser, date, run, path, filename, result) '
-      . 'values (:browser, :date, :run, :path, :filename, :result)';
-    
-    $runResult = array();
-    $flag = TRUE;
-    
-    for ($i = 0; $i < count($content); $i++) {
-      $runResult[] = $content[$i]['run'];
-      if ($content[$i]['browserResult'] == false) {
-        $flag = FALSE;
-      }  
-    }
-    
-    $dbContent = array(
-      'run' => json_encode($runResult),
-      'browserResult' => $flag
-    ); 
-    
-    $path = $this->page->getResultPath();
-
-    if (!file_exists($path)) {
-      mkdir($path, 0775, TRUE);
-    }
-    
-    $date = new \DateTime();
-    $fileName = 'result_' . $this->browser . '_' . $date->format('Y-m-d_H-i-s');
-    file_put_contents($path . '/' . $fileName, json_encode($content));
-      
-    $stm = $dbInst->prepare($sql);
-    $stm->bindParam(':browser', $this->browser);
-    $stm->bindParam(':date', $date->format(\DateTime::ISO8601));
-    $stm->bindParam(':run',$dbContent['run']);
-    $stm->bindParam(':path', $this->path);
-    $stm->bindParam(':filename',$fileName);
-    $stm->bindParam(':result',$dbContent['browserResult']);
-    $stm->execute();
-    $path = $this->page->getResultPath();
-
+    $matrix = new Matrix($this->page, $this->browser);
+    $matrix->writeResult($content, $this->browser);
   }
 
+  /**
+   * @param $path
+   * @return array
+   */
   protected function runSuite($path) {
 
     $testCollect = array();
@@ -137,6 +119,10 @@ class Run implements ControllerProviderInterface {
     return $result;
   }
 
+  /**
+   * @param $path
+   * @return array
+   */
   protected function run($path) {
 
     $testCollect[] = $path;
@@ -144,6 +130,9 @@ class Run implements ControllerProviderInterface {
     return $this->_run($testCollect);
   }
 
+  /**
+   * @return int
+   */
   protected function screenshotSettings() {
 
     $conf = $this->page->config();
@@ -163,8 +152,11 @@ class Run implements ControllerProviderInterface {
     }
   }
 
+  /**
+   * @param $capabilities
+   * @return string
+   */
   protected function baseUrlSettings($capabilities) {
-
     $conf = $this->page->config();
     if (isset($conf['browser']['active']) && ($conf['type'] == 'suite' || $conf['type'] == 'project')) {
       if (in_array($capabilities->getBrowserName(), $conf['browser']['active'])) {
@@ -175,8 +167,11 @@ class Run implements ControllerProviderInterface {
     }
   }
 
+  /**
+   * @param array $tests
+   * @return array
+   */
   private function _run(array $tests) {
-
     try {
       $capabilities = $this->getCapabilities();
       $runner = new Runner($tests, \testonaut\Config::getInstance()->seleniumHub, $this->basePath, $this->imagePath);
@@ -203,10 +198,18 @@ class Run implements ControllerProviderInterface {
         return $result;
       }
     } catch (\Exception $e) {
-      echo 'Test failed: ' . $e->getMessage() . "\n";
+      return array(array(
+          'run' => array(array(FALSE, $e->getMessage(), "open connection")),
+          'browserResult' => FALSE
+      ));
     }
   }
 
+  /**
+   * @param $outerDir
+   * @param array $tests
+   * @return array
+   */
   protected function collect($outerDir, $tests = array()) {
 
     $dirs = array_diff(scandir($outerDir), Array(
@@ -238,6 +241,9 @@ class Run implements ControllerProviderInterface {
     return $dir_array;
   }
 
+  /**
+   * @return array
+   */
   private function getCapabilities() {
 
     $DesiredCapabilities = new Capabilities();
@@ -269,6 +275,10 @@ class Run implements ControllerProviderInterface {
     return $capabilities;
   }
 
+  /**
+   * @param $browserString
+   * @return mixed|string
+   */
   private function normalizeBrowserName($browserString) {
 
     $browserString = str_replace('*', '', $browserString);
