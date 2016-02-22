@@ -30,12 +30,12 @@
           {% endif %}
 
           <label class="checkbox"
-                 for="{{ browser.browserName }}">
+                 for="{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}">
             <input type="checkbox"
-                   value="{{ browser.browserName }}"
-                   name="active[]{{ browser.browserName }}"
+                   value="{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}"
+                   name="active[]{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}"
                    {{ checked }}
-                   id="{{ browser.browserName }}"/>{{ browser.browserName }}
+                   id="{{ browser.browserName }}"/>{{ browser.platform }} {{ browser.browserName }} {{ browser.version }}
           </label>
 
           
@@ -46,7 +46,7 @@
                  value="{{ url }}"
                  placeholder="Baseurl"
                  class="form-control input-sm"
-                 name="browser[{{ browser.browserName }}]{{ browser.browserName }}Url"/>
+                 name="browser[{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}]{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}Url"/>
 
           </div>
         {% endfor %}

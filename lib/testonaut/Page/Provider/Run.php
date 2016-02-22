@@ -70,7 +70,6 @@ class Run implements ControllerProviderInterface {
         $result = $this->run($this->page);
       }
 
-
       $capabilities['browser'] = $this->browser;
       $capabilities['version'] = $this->version;
       $capabilities['platform'] = $this->platform;
@@ -87,8 +86,7 @@ class Run implements ControllerProviderInterface {
       $app['result'] = $result;
 
       return $app['twig']->render('run.twig');
-    })
-    ;
+    });
 
     return $edit;
   }
@@ -252,9 +250,7 @@ class Run implements ControllerProviderInterface {
   private function getCapabilities() {
 
     $DesiredCapabilities = new Capabilities();
-    $DesiredCapabilities->setVersion($this->version);
-    $DesiredCapabilities->setPlatform($this->platform);
-    
+
     if ($this->browser == 'all') {
       $api = new Api();
       $list = $api->getBrowserList();
@@ -263,13 +259,18 @@ class Run implements ControllerProviderInterface {
       for ($i = 0; $i < count($list); $i++) {
         $browserName = $this->normalizeBrowserName($list[$i]['browserName']);
         if (method_exists($DesiredCapabilities, $browserName)) {
-          $capabilities[] = $DesiredCapabilities::$browserName();
+          $DesiredCapabilities = new Capabilities();
+          $DesiredCapabilities::$browserName();
+          $DesiredCapabilities->setVersion($list[$i]['version']);
+          $DesiredCapabilities->setPlatform($list[$i]['platform']);
+
+          $capabilities[] = $DesiredCapabilities;
+
         }
       }
-    } else {
 
+    } else {
       $browserName = $this->normalizeBrowserName($this->browser);
-      var_dump($browserName);
       if (method_exists($DesiredCapabilities, $browserName)) {
         $capabilities = $DesiredCapabilities::$browserName();
         $capabilities->setVersion($this->version);

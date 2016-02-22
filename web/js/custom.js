@@ -29,14 +29,14 @@ $(document).ready(function () {
     }).always(function () {
       $('.pulsarbox .pulsar.' + browser).remove();
       $('table.' + browser).remove();
+    }).done(function () {
+      window.location.reload();
     });
 
     invokePulsar(browser);
     getContent(0, url, browser);
 
-
   });
-
 
   $("a[data-action='run']").click(function(e) {
     e.preventDefault();
@@ -45,6 +45,25 @@ $(document).ready(function () {
     $('.nodes').toggleClass('show');
   });
 
+  $("#runAll").click(function (e) {
+    e.preventDefault();
+    var index = 0;
+    invokePulsar('all');
+
+    $.each( $('.run-test'), function() {
+      var href = $(this).attr('href');
+      $.ajax({
+        method: "get",
+        url: href
+        })
+      .done(function( data) {
+        index++;
+        if (index == $('.run-test').length) {
+          window.location.reload();
+        }
+      });
+    });
+  })
 })
 
 

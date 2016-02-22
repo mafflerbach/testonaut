@@ -32,8 +32,12 @@ class Browser {
 
     $settings = $this->page->config();
     $list = $this->getBrowserList();
+
     for ($i = 0; $i < count($list); $i++) {
-      $browserName = $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);
+      $browserName = $list[$i]['platform'];
+      $browserName .= $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);
+      $browserName .= $list[$i]['version'];
+
       if (isset($settings['browser']['active'])) {
         $active = $settings['browser']['active'];
         if (in_array($browserName, $active)) {

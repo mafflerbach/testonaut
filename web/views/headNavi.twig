@@ -65,9 +65,9 @@
                     {% if app.request.browsers is defined %}
                       <ul class="dropdown-menu">
                         <li>
-                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?{{ parameter }}"
+                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ parameter }}"
                              data-action="run"
-                             data-path="{{ app.request.path }}">{{ lable }}</a>
+                             data-path="{{ app.request.path }}" id="runAll">{{ lable }}</a>
                         </li>
                         {% for browser in app.request.browsers %}
                           <li>

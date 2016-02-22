@@ -48,6 +48,7 @@ class Config implements ControllerProviderInterface {
       if ($app['type']['project'] || $app['type']['suite']) {
         $app['browser'] = $this->browserSettings();
       }
+
       $app['screenshots'] = $this->screenshotSettings();
       $app['request'] = array(
         'content' => $content,
@@ -65,8 +66,10 @@ class Config implements ControllerProviderInterface {
       $content = $page->content();
       $browserUrls = $request->request->get('browser');
       $activeBrowser = $request->request->get('active');
+
       $type = $request->request->get('type');
       $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser));
+
       if ($type == 'project' || $type == 'suite') {
         if ($this->browserSettings($browserSettings)) {
           $message = 'Saved';
@@ -92,6 +95,7 @@ class Config implements ControllerProviderInterface {
       if ($app['type']['project'] || $app['type']['suite']) {
         $app['browser'] = $this->browserSettings();
       }
+
       $app['screenshots'] = $this->screenshotSettings();
       $app['request'] = array(
         'content' => $content,
