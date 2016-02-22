@@ -109,6 +109,8 @@ class Page {
 
     $settings = $this->page->config();
     $return = array();
+
+
     if (isset($settings['screenshots'])) {
       for ($i = 0; $i < count($this->screenshots); $i++) {
         if ($settings['screenshots'] == $this->screenshots[$i]) {

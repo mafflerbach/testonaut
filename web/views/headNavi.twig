@@ -74,7 +74,7 @@
                             <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&platform={{ browser.platform }}&version={{ browser.version }}&{{ parameter }}"
                                data-path="{{ app.request.path }}"
                                data-browser="{{ browser.browserName }}"
-                               class="run-test">{{ browser.browserName }} {{ browser.platform }}</a>
+                               class="run-test">{{ browser.browserName }} {{ browser.version }} <span class="label label-default">{{ browser.platform }}</span></a>
                           </li>
                         {% endfor %}
                       </ul>

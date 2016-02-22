@@ -47,6 +47,8 @@ class Run implements ControllerProviderInterface {
       $this->basePath = $this->page->transCodePath();
       $this->imagePath = $this->page->getImagePath();
 
+      $capabilities = array();
+
       $this->browser = $request->query->get('browser');
       if ($this->browser == '') {
         $this->browser = 'all';
@@ -68,7 +70,12 @@ class Run implements ControllerProviderInterface {
         $result = $this->run($this->page);
       }
 
-      $this->writeResultFile($result);
+
+      $capabilities['browser'] = $this->browser;
+      $capabilities['version'] = $this->version;
+      $capabilities['platform'] = $this->platform;
+
+      $this->writeResultFile($result, $capabilities);
 
       $app['request'] = array(
         'path' => $path,
@@ -89,9 +96,9 @@ class Run implements ControllerProviderInterface {
   /**
    * @param $content
    */
-  protected function writeResultFile($content) {
+  protected function writeResultFile($content, $capabilities) {
     $matrix = new Matrix($this->page, $this->browser);
-    $matrix->writeResult($content, $this->browser);
+    $matrix->writeResult($content, $capabilities);
   }
 
   /**
@@ -262,7 +269,7 @@ class Run implements ControllerProviderInterface {
     } else {
 
       $browserName = $this->normalizeBrowserName($this->browser);
-
+      var_dump($browserName);
       if (method_exists($DesiredCapabilities, $browserName)) {
         $capabilities = $DesiredCapabilities::$browserName();
         $capabilities->setVersion($this->version);

@@ -67,7 +67,18 @@ class Matrix {
    * @param $content
    * @param $browser
    */
-  public function writeResult($content, $browser) {
+  public function writeResult($content, $capabilities) {
+    if ($capabilities['platform'] != '') {
+      $browser = $capabilities['platform'] ."_";
+    } else {
+      $browser = "";
+    }
+
+    $browser .= $capabilities['browser'] ;
+
+    if ($capabilities['version'] != '') {
+      $browser .= "_".$capabilities['version'];
+    }
 
     $db = \testonaut\Config::getInstance()->db;
     $dbInst = $db->getInstance();

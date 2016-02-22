@@ -27,4 +27,14 @@ class Capabilities extends \DesiredCapabilities {
     ));
   }
 
+  /**
+   * @return DesiredCapabilities
+   */
+  public static function microsoftEdge() {
+    return new \DesiredCapabilities(array(
+      \WebDriverCapabilityType::BROWSER_NAME => \WebDriverBrowserType::MICROSOFTEDGE,
+      \WebDriverCapabilityType::PLATFORM => \WebDriverPlatform::WINDOWS,
+    ));
+  }
+
 } 

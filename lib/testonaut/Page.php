@@ -55,6 +55,8 @@ class Page {
    * @param null $save
    * @param bool $compiled
    * @throws \Exception
+   *
+   * @return String
    */
   private function _content($content = NULL, $save = NULL, $compiled = FALSE) {
 
@@ -90,6 +92,8 @@ class Page {
    * @param null $content
    * @param null $save
    * @throws \Exception
+   *
+   * @return String
    */
   public function content($content = NULL, $save = NULL) {
 
