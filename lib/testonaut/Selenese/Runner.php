@@ -161,6 +161,7 @@ class Runner {
         }
 
         return array(
+            'path' => $content->getPath(),
             'run' => $res,
             'browserResult' => $browserResult
         );
@@ -184,6 +185,7 @@ class Runner {
             }
         } else {
             $result = $this->_run(array($this->test), $capabilities, $webDriver);
+
             if ($result != NULL) {
                 $return[] = $result;
             }
@@ -236,7 +238,8 @@ class Runner {
     }
 
     protected function captureAndCompare($command, $browserName, $webDriver) {
-
+        $comp = "";
+        $result = "";
         $this->setupImageDir($browserName);
 
         $path = $this->imagePath;

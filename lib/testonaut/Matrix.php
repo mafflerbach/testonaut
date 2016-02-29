@@ -68,6 +68,7 @@ class Matrix {
    * @param $browser
    */
   public function writeResult($content, $capabilities) {
+
     if ($capabilities['platform'] != '') {
       $browser = $capabilities['platform'] ."_";
     } else {
@@ -83,43 +84,48 @@ class Matrix {
     $db = \testonaut\Config::getInstance()->db;
     $dbInst = $db->getInstance();
     $sql = 'insert into history (browser, date, run, path, filename, result) '
-        . 'values (:browser, :date, :run, :path, :filename, :result)';
+           . 'values (:browser, :date, :run, :path, :filename, :result)';
 
     $runResult = array();
     $flag = TRUE;
 
+
+
+
     for ($i = 0; $i < count($content); $i++) {
+
       $runResult[] = $content[$i]['run'];
       if ($content[$i]['browserResult'] == false) {
         $flag = FALSE;
       }
-    }
 
-    $dbContent = array(
+      $dbContent = array(
         'run' => json_encode($runResult),
         'browserResult' => $flag
-    );
+      );
 
-    $pathDir = $this->page->getResultPath();
+      $page = new Page($content[$i]['path']);
+      $pathDir = $page->getResultPath();
 
-    if (!file_exists($pathDir)) {
-      mkdir($pathDir, 0775, TRUE);
+      if (!file_exists($pathDir)) {
+        mkdir($pathDir, 0775, TRUE);
+      }
+
+      $date = new \DateTime();
+      $isoDate = $date->format(\DateTime::ISO8601);
+      $fileName = 'result_' . $browser . '_' . $date->format('Y-m-d_H-i-s');
+      $stm = $dbInst->prepare($sql);
+      $stm->bindParam(':browser', $browser);
+      $stm->bindParam(':date', $isoDate);
+      $stm->bindParam(':run',$dbContent['run']);
+      $stm->bindParam(':path', $content[$i]['path']);
+      $stm->bindParam(':filename',$fileName);
+      $stm->bindParam(':result',$dbContent['browserResult']);
+      $stm->execute();
+
+      file_put_contents($pathDir . '/' . $fileName, json_encode($content[$i]));
     }
-
-    $date = new \DateTime();
-    $isoDate = $date->format(\DateTime::ISO8601);
-    $pagePath = $this->page->getPath();
-    $fileName = 'result_' . $browser . '_' . $date->format('Y-m-d_H-i-s');
-    $stm = $dbInst->prepare($sql);
-    $stm->bindParam(':browser', $browser);
-    $stm->bindParam(':date', $isoDate);
-    $stm->bindParam(':run',$dbContent['run']);
-    $stm->bindParam(':path', $pagePath);
-    $stm->bindParam(':filename',$fileName);
-    $stm->bindParam(':result',$dbContent['browserResult']);
-    $stm->execute();
-
-    file_put_contents($pathDir . '/' . $fileName, json_encode($content));
   }
+
 
 }

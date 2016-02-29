@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<project name="probearbeit" basedir="." default="build">
+    <target name="build" depends="test, phpdoc"/>
+    <target name="cleanbuild" depends="clean, test, phpdoc"/>
+
+
+    <target name="clean">
+        <delete dir="doc"></delete>
+    </target>
+
+    <target name="test">
+        <phpunit haltonfailure="true" printsummary="true">
+            <batchtest>
+                <fileset dir="tests">
+                    <include name="*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <target name="phpdoc" description="API Documentation">
+        <exec command="php C:/xampp/htdocs/phars/phpDocumentor.phar
+        -d .
+        -t ./doc
+        --template responsive-twig" />
+    </target>
+</project>

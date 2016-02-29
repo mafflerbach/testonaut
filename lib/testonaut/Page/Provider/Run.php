@@ -197,13 +197,13 @@ class Run implements ControllerProviderInterface {
         for ($i = 0; $i < count($capabilities); $i++) {
           $result[] = $runner->run($capabilities[$i]);
         }
-
         return $result;
       }
     } catch (\Exception $e) {
       return array(array(
           'run' => array(array(FALSE, $e->getMessage(), "open connection")),
-          'browserResult' => FALSE
+          'browserResult' => FALSE,
+          'path' => $tests[0]->path
       ));
     }
   }

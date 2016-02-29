@@ -1,22 +1,45 @@
 {% set buildResult = true %}
 
+
 {% for results in app.result %}
-    {% for result in results %}
+
+    {% if app.result|length > 1 %}
         <table class="table-bordered">
-            {% for resultEntry in result %}
-                {% if resultEntry.0  != true %}
+            <tr>
+                <td>Path</td>
+                <td>{{ results.path }}</td>
+            </tr>
+            {% for result in results.run %}
+                {% if result.0  != true %}
                     {% set buildResult = false %}
                 {% endif %}
                 <tr>
                     <td>Command</td>
-                    <td>{{  resultEntry.2}}</td>
-                    <td>{{  resultEntry.1}}</td>            
+                    <td>{{ result.2 }}</td>
+                    <td>{{ result.1 }}</td>
                 </tr>
             {% endfor %}
         </table>
-    {% endfor %}
-{% endfor %}
+    {% else %}
 
+        <table class="table-bordered">
+            <tr>
+                <td>Path</td>
+                <td>{{ results.path }}</td>
+            </tr>
+            {% for result in results.run %}
+                {% if result.0  != true %}
+                    {% set buildResult = false %}
+                {% endif %}
+                <tr>
+                    <td>Command</td>
+                    <td>{{ result.2 }}</td>
+                    <td>{{ result.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endfor %}
 
 {% if buildResult == true %}
     <p>Build: Successs</p>
