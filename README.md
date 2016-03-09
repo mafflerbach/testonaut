@@ -147,8 +147,6 @@ After installation from Java and selenium
 you should customize the version number and Hub ip ;) 
 
 
-
-
 ---------------------------------------
 
 #planned features....
