@@ -119,22 +119,18 @@ In the first picture there is also a checkmark. This action allows you to replac
 
 with a bunch of internet explorers on your machine:
 
-Preset: you need a virtualbox  installation.
+Preset you need a virtualbox installation.
+Get your modernIE maschine from www.modern.ie
+On your maschine download: http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
 
-Get your modernIE maschine from <a rel="nofollow" target="_blank" href="https://www.modern.ie/de-de/virtualization-tools#downloads">www.modern.ie</a>  
-On your maschine download: <a rel="nofollow" target="_blank" href="http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar">http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar</a> 
-This is our hub. If you have downloaded start the hub with 
-    
-    java -jar c:\tmp\selenium-server.jar -role hub 
+this is our hub. If you have downloaded start the hub with
+java -jar path/to/jar/selenium-server-standalone-2.44.jar -role hub
 
-In the running virtualbox image open a cmd and execute the script and wait a while (downloads all needed components)
+You must install a java jdk. for the second time you download the selenium server in your VM.
+You must download under http://selenium-release.storage.googleapis.com/index.html?path=2.44/ the IEDriverServer
+after installation from Java and selenium go in your cmd in the jdk install dir e.g. ( cd "C:\Program Files\Java\jdk1.8.0_25\bin")
 
-    mkdir C:\tmp
-    cd C:\tmp\
-    bitsadmin.exe /transfer "Download Selenium" http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar c:\tmp\selenium-server.jar
-    bitsadmin.exe /transfer "Download IEDriver" http://selenium-hub.dim/downloads/IEDriverServer.exe c:\tmp\IEDriverServer.exe
-    bitsadmin.exe /transfer "Download Java" http://download.oracle.com/otn-pub/java/jdk/8u45-b15/jdk-8u45-windows-i586.exe c:\tmp\jdk.exe
-    c:\tmp\jdk.exe /s
+you should customize the version number, path and Hub ip ;)
     
 
 * The IEDriverServer exectuable must be downloaded and placed in your PATH.
@@ -145,8 +141,8 @@ In the running virtualbox image open a cmd and execute the script and wait a whi
 
 After installation from Java and selenium
 
-    cd "C:\Program Files\Java\jdk1.8.0_45\bin" 
-    java -jar c:\tmp\selenium-server.jar -role node -hub {YOUR-HUB-IP}:4444/grid/register -Dwebdriver.ie.driver="c:\tmp\IEDriverServer.exe" -browser browserName="iexplore",version={version},platform="WINDOWS",maxInstances=5
+    cd "path/to/jdk/install/dir/bin"
+    java -jar path/to/selenium-server.jar -role node -hub {YOUR-HUB-IP}:4444/grid/register -Dwebdriver.ie.driver="path/to/IEDriverServer.exe" -browser browserName="iexplore",version={version},platform="WINDOWS",maxInstances=5
 
 you should customize the version number and Hub ip ;) 
 
