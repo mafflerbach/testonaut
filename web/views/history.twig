@@ -4,8 +4,9 @@
 <div class="contentBox">
 
   <div>
+    <a class="btn btn-primary" href="?delete=true&all=true">Delete history</a>
     {% for browser, resultList in app.request.history %}
-      <a class="btn btn-primary" href="?delete=true&all=true">Delete history</a>
+
       <div class="history">
         <div class="page-header">
           <h4>{{ browser }}
