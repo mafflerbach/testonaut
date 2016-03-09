@@ -27,9 +27,8 @@ Testonaut is still in beta phases, so there is no absolute brain afk installatio
 
 you need git and an apache installation with php greater then 5.3 with additional modules fileinfo and imagemagick. For dependencies installation you need a composer too. 
 
-    git clone https://mafflerbach@bitbucket.org/mafflerbach/testonaut.git
-
-follow the Instruction under on the site. Please delete the installer dir.
+    git clone https://github.com/mafflerbach/testonaut.git
+    composer install
 
 Under http://youre.installation/*/globalconfig/
 You can set your domain to your selenium hub.
