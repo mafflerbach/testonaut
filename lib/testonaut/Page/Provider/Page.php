@@ -62,6 +62,8 @@ class Page implements ControllerProviderInterface {
         'type'       => $settings->getType(),
         'lastResult' => $lastRun
       );
+
+
       $toc = $this->getToc($page->transCodePath());
       $app['menu'] = $toc;
 

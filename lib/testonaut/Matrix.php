@@ -46,18 +46,26 @@ class Matrix {
    */
   public function read() {
     $db = \testonaut\Config::getInstance()->db;
-
     $dbInst = $db->getInstance();
-    $sql = 'select * from history where path=:path group by browser order by date DESC';
+
+    if ($this->page->config()['type'] == 'suite') {
+      $sql = 'select * from history WHERE date in (select date from history where path like :path order by date DESC) GROUP BY browser, path';
+      $extendBinding = '.%';
+    } else {
+      $sql = 'select * from history where path=:path group by browser order by date DESC';
+      $extendBinding = '';
+    }
+
     $summery = array();
     $stm = $dbInst->prepare($sql);
-    $stm->bindValue(':path', $this->page->getPath());
+    $stm->bindValue(':path', $this->page->getPath().$extendBinding);
 
     $result = $stm->execute();
 
     while ($row = $result->fetchArray(SQLITE3_ASSOC)){
-      $summery[$row['browser']]['result'] = $row['result'];
-      $summery[$row['browser']]['run'] = json_decode($row['run']);
+      $summery[$row['browser']]['path'][] = $row['path'];
+      $summery[$row['browser']]['result'][] = $row['result'];
+      $summery[$row['browser']]['run'][] = json_decode($row['run']);
     }
 
     return $summery;
@@ -89,18 +97,15 @@ class Matrix {
     $runResult = array();
     $flag = TRUE;
 
-
-
-
     for ($i = 0; $i < count($content); $i++) {
 
-      $runResult[] = $content[$i]['run'];
+//      $runResult[] = $content[$i]['run'];
       if ($content[$i]['browserResult'] == false) {
         $flag = FALSE;
       }
 
       $dbContent = array(
-        'run' => json_encode($runResult),
+        'run' => json_encode($content[$i]['run']),
         'browserResult' => $flag
       );
 

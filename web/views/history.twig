@@ -31,27 +31,22 @@
 
                 <div class="hour {{ class }}">{{ hour }}</div>
                 <div class="historyResult" >
+
+                  <table class="table table-bordered">
                   {% for result in realResult.run %}
-                    <table class="table table-bordered">
-                      {% for resultEntry in result %}
-                        {% if resultEntry.0  == true %}
-                          {% set class = 'bg-success' %}
-                        {% else %}
-                          {% set class = 'bg-danger' %}
-                        {% endif %}
-                        <tr class="{{ class }}">
-                          <td>Command</td>
-                          <td>{{  resultEntry.2}}</td>
-                          <td>{{  resultEntry.1}}</td>            
-                        </tr>
-                      {% endfor %}
-                    </table>
+                    {% if result.0  == true %}
+                      {% set class = 'bg-success' %}
+                    {% else %}
+                      {% set class = 'bg-danger' %}
+                    {% endif %}
+                    <tr class="{{ class }}">
+                      <td>Command</td>
+                      <td>{{  result.2}}</td>
+                      <td>{{  result.1}}</td>
+                    </tr>
                   {% endfor %}
-
+                  </table>
                 </div>
-
-
-
               {% endfor %}    
             </div>
           </div>
