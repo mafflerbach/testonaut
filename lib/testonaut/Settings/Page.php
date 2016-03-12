@@ -13,7 +13,6 @@
 
 
 namespace testonaut\Settings;
-use testonaut\Page\Configuration;
 
 /**
  * Class Page
@@ -54,7 +53,7 @@ class Page {
    * @param $path
    */
   public function __construct($path) {
-    $this->configuration = new Configuration();
+
     $this->page = new \testonaut\Page($path);
     $this->settings = $this->page->config();
   }
