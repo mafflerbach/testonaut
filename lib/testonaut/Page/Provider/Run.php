@@ -79,6 +79,7 @@ class Run implements ControllerProviderInterface {
       $app['request'] = array(
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
+        'host' => $request->getHost(),
         'mode' => 'edit'
       );
       $crumb = new Breadcrumb($path);

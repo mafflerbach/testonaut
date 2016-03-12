@@ -1,48 +1,49 @@
+
 {% set buildResult = true %}
 
+{% set stepk = 0 %}
+{% set k = 0 %}
+  {% set testName = '' %}
+
+
+{{ dump(app.request.host) }}
 
 {% for results in app.result %}
-
-    {% if app.result|length > 1 %}
         <table class="table-bordered">
             <tr>
                 <td>Path</td>
-                <td>{{ results.path }}</td>
+                <td> <a href="{{ app.request.baseUrl }}/{{ results.path }}">{{ results.path }}</a> </td>
             </tr>
+
+            {% set i = 0 %}
+            {% set step = 0 %}
+
             {% for result in results.run %}
                 {% if result.0  != true %}
                     {% set buildResult = false %}
+                    {% set step = i %}
+                    {% set style = '#fcc' %}
+                    {% set testName = results.path %}
+
+                    {% set stepk = i %}
+                    {% set k = i%}
+                {% else %}
+                    {% set style = '#bfb' %}
                 {% endif %}
-                <tr>
+                <tr style="background-color: {{ style }} ">
+                    <td>{{ i+1 }}</td>
                     <td>Command</td>
                     <td>{{ result.2 }}</td>
                     <td>{{ result.1 }}</td>
                 </tr>
+                {% set i=i + 1%}
             {% endfor %}
         </table>
-    {% else %}
-
-        <table class="table-bordered">
-            <tr>
-                <td>Path</td>
-                <td>{{ results.path }}</td>
-            </tr>
-            {% for result in results.run %}
-                {% if result.0  != true %}
-                    {% set buildResult = false %}
-                {% endif %}
-                <tr>
-                    <td>Command</td>
-                    <td>{{ result.2 }}</td>
-                    <td>{{ result.1 }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
+    {% set k = 0 %}
 {% endfor %}
 
-{% if buildResult == true %}
-    <p>Build: Successs</p>
-{%else%}
-   <p>Build: Failed</p>
-{% endif %}
+    {% if buildResult == true %}
+        <p>Build: Successs</p>
+    {%else%}
+        <p>Build: Failed <br/> In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName }}">{{ testName }}</a> Step {{ stepk+1 }}: {{ app.result[k].run[stepk].2 }} {{ app.result[k].run[stepk].1 }} </p>
+    {% endif %}

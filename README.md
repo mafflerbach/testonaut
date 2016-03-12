@@ -146,6 +146,28 @@ After installation from Java and selenium
 
 you should customize the version number and Hub ip ;) 
 
+##Jenkins setup##
+
+You need the HTTP Request Plugin: https://wiki.jenkins-ci.org/display/JENKINS/HTTP+Request+Plugin
+
+and also the HTML Publisher Plugin: https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin
+
+Add a free style Job
+
+Copy the run URL from your Test from testonaut
+
+Add Build step "HTTP Request"
+
+Paste the test URL
+
+set the option "Response content expected" to Build: Successs
+
+set the option "Output response to file" to index.html
+
+Add Post build action "Publish HTML reports"
+
+Set option "Index page[s]" to index.html
+
 
 ---------------------------------------
 
