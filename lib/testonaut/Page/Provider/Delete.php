@@ -37,9 +37,24 @@ class Delete implements ControllerProviderInterface {
     });
 
     $edit->post('/', function (Request $request, $path) use ($app) {
+
       $page = new \testonaut\Page($path);
-      $content = $page->delete();
-      return $app->redirect($request->getBaseUrl() . '/');
+      $deleted= $page->delete();
+
+      if ($deleted) {
+        $message = 'delete';
+      } else {
+        $message = 'can not delete';
+      }
+
+      $app['request'] = array(
+        'path'    => $path,
+        'baseUrl' => $request->getBaseUrl(),
+        'message' => $message,
+        'mode'    => 'edit'
+      );
+
+      return $app['twig']->render('delete.twig');
     });
     return $edit;
   }

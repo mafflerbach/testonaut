@@ -246,8 +246,7 @@ class Page {
    *
    */
   public function delete() {
-
-    $this->_delete($this->transCodePath());
+    return $this->_delete($this->transCodePath());
   }
 
   /**

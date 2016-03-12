@@ -10,16 +10,16 @@
 
     <form action=""
           method="POST">
-      Sind sie sicher das sie kopieren möchten?
+        Are you sure that you want to copy?
+      <br/>
       <br/>
       <input type="submit"
              value="Ja"
              name="copy"
-             class="btn  btn-primary"/>
+             class="btn btn-primary btn-action"/>
       <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
-         class="backLink btn  btn-link">Zurück</a>
+         class="backLink btn  btn-link">Abbrechen</a>
     </form>
-
   {% endif %}
 </div>
 </div>

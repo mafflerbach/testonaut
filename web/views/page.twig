@@ -66,7 +66,7 @@
                   <span class="desc">
                     {{ image }}
                   </span>
-                  <a href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="copyImage" href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="copy glyphicon glyphicon-ok-sign"
                           data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
@@ -87,7 +87,7 @@
                   <span class="desc">
                     {{ image }}
                   </span>
-                  <a href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="deleteImage" href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="delete glyphicon glyphicon-remove-sign"
                           data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
@@ -102,7 +102,7 @@
                   <span class="desc">
                     {{ image }}
                   </span>
-                  <a href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="deleteImage" href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="delete glyphicon glyphicon-remove-sign"
                           data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
@@ -122,11 +122,25 @@
   </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 <script type="text/javascript">
   $(document).ready(function () {
-    $('resultBtn a').click(function (e) {
+    $('.resultBtn a').click(function (e) {
       e.preventDefault();
     });
 
@@ -145,10 +159,56 @@
         $(this).next().slideUp('slow');
       }
     });
-
-
     $('table').addClass('table table-bordered');
+
+    $('.copyImage').click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      modalHandling(href, "Copy Image", '');
+    });
+
+    $('.deleteImage').click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      modalHandling(href, "Delete Image", '');
+    });
+
+
+    $("a[data-action='delete']").click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      modalHandling(href, "Delete Page", "/");
+    });
+
   });
+
+  function modalHandling(href, modalTitle, ending) {
+
+    $.ajax({
+      method: "get",
+      url: href
+    }).done(function( data) {
+      $('.modal-title').empty().append(modalTitle);
+      $('.modal-body').empty().append($(data).find('.content'));
+      $('#myModal').modal('show');
+
+      $('.backLink').click(function(ev) {
+        ev.preventDefault();
+        $('#myModal').modal('hide');
+      });
+
+      $('.btn-action').click(function(ev) {
+        ev.preventDefault();
+
+        $.ajax({
+          method: "post",
+          url: href+ending
+        }).done(function( data) {
+          $('.modal-body').empty().append($(data).find('.content'));
+        });
+      });
+    });
+  }
 
 </script>
 
