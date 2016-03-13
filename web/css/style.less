@@ -61,11 +61,6 @@ tr.failed td {
   display: none;
 }
 
-.pageContent {
-  padding: 0.5em 0.8em;
-
-}
-
 .box .pageContent {
   box-shadow: 0px 1px 4px -1px #000;
   
@@ -77,8 +72,13 @@ tr.failed td {
   position: relative;
   font-weight: normal;
   font-size: 0.8em;
-  
 }
+
+.suiteResult {
+  clear: both;
+  margin: 0 -1em;
+}
+
 .suiteResult .panel-body  {
   display: none;
 }
@@ -376,8 +376,8 @@ iframe {
 }
 
 .content {
-  padding: 0px 2em;
-} 
+  padding: 0px 0.5em;
+}
 .wysiwyg-color-blue {
     color:#0000ff;
 }
@@ -386,4 +386,70 @@ iframe {
 }
 .wysiwyg-color-green {
     color:#00ff00;
+}
+
+body { padding: 100px 15px }
+
+ol.breadcrumb {
+  margin-bottom: 0;
+}
+.compare {
+  clear: both;
+  position: relative;
+}
+
+.compare .image {
+  width: 300px;
+  height: 300px;
+  margin: 5px;
+  float: left;
+  overflow: hidden;
+  border: 1px #ADADAD solid;
+  box-shadow: 0px 1px 4px -2px #000000;
+  position: relative;
+  margin-top: 0;
+
+}
+.image img {
+  max-width: 300px;
+}
+span.ops {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 4em;
+}
+.compare h4 {
+  padding: 1em 1.5em;
+}
+
+.compare span {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.5em;
+}
+
+.compare span.copy {
+  right: 0.2em;
+  top: 0.2em;
+}
+
+.compare span.delete {
+  top: 1.5em;
+  right: 0.2em;
+}
+
+span.desc {
+  color: #fff;
+  font-size: 0.7em;
+  top: 0.8em;
+  left: 0.5em
+}
+.screens h4 {
+  clear:both;
+  padding: 0em 0.3em;
+
 }
