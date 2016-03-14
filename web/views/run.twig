@@ -43,7 +43,7 @@
 {% endfor %}
 
     {% if buildResult == true %}
-        <p>Build: Successs</p>
+        <p>Build: Success</p>
     {%else%}
         <p>Build: Failed <br/> In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName }}">{{ testName }}</a> Step {{ stepk+1 }}: {{ app.result[k].run[stepk].2 }} {{ app.result[k].run[stepk].1 }} </p>
     {% endif %}

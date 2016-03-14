@@ -160,7 +160,7 @@ Add Build step "HTTP Request"
 
 Paste the test URL
 
-set the option "Response content expected" to Build: Successs
+set the option "Response content expected" to "Build: Success"
 
 set the option "Output response to file" to index.html
 
