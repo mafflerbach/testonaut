@@ -60,6 +60,10 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
   'twig.options'    => array('cache' => __DIR__ . '/cache')
 ));
 
+use Silex\Provider\CsrfServiceProvider;
+$app->register(new CsrfServiceProvider());
+
+
 $app->mount('/', new testonaut\Page\Provider\Start());
 $app->mount('/edit/', new testonaut\Page\Provider\Start(true));
 $app->mount('/image/', new testonaut\Page\Provider\Image());
