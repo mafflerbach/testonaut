@@ -192,6 +192,7 @@ class Runner {
         }
 
         $webDriver->close();
+        $webDriver->quit();
         return $return;
     }
 
