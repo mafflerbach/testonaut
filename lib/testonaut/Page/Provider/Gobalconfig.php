@@ -61,8 +61,30 @@ class Globalconfig implements ControllerProviderInterface {
         'devices' => $devices
       );
 
-      var_dump($profileList);
+      return $app['twig']->render('globalconfig.twig');
+    });
 
+    $edit->get('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+
+      $app['request'] = array(
+        'baseUrl' => $request->getBaseUrl(),
+        'mode' => 'edit',
+        'profileName' => $browserProfile
+      );
+
+
+      return $app['twig']->render('globalconfig.twig');
+    });
+
+    $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+      $profile = new Profile();
+      $profile->delete($browserProfile);
+
+      $app['request'] = array(
+        'baseUrl' => $request->getBaseUrl(),
+        'mode' => 'edit',
+        'message' => 'deleted'
+      );
       return $app['twig']->render('globalconfig.twig');
     });
 
@@ -81,14 +103,6 @@ class Globalconfig implements ControllerProviderInterface {
 
   /**
    * @param $request
-   *
-   *
-   *
-   * $browser = $data['browser'];
-   * $name = $data['name'];
-   * $driverOptions = json_encode($data['driverOption']);
-   * $arguments = json_encode($data['arguments']);
-   * $capabilities = json_encode($data['capabilities']);
    */
 
   protected function saveProfile($request) {
@@ -107,7 +121,9 @@ class Globalconfig implements ControllerProviderInterface {
         "--user-data-dir=C:\\Users\\maren\\AppData\\Local\\Temp"
       );
 
-      if ($request->request->get('device') != '' && $request->request->get('width') == '' && $request->request->get('height') != '') {
+      if ($request->request->get('device') != '' &&
+          $request->request->get('width') == '' &&
+          $request->request->get('height') == '') {
         $capabilities['experimental'] = array('mobileEmulation' => array(
           "deviceName" =>$request->request->get('device')
         ));
@@ -115,7 +131,6 @@ class Globalconfig implements ControllerProviderInterface {
     } else {
       $capabilities = '';
     }
-
 
     $arguments = '';
     $data['browser'] = $browser;

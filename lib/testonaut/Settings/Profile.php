@@ -60,7 +60,7 @@ class Profile {
 
   public function delete($name) {
 
-    $sql = "delete * from profile where `name` = :name";
+    $sql = "delete from profile where `name` = :name";
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':name', $name);
 

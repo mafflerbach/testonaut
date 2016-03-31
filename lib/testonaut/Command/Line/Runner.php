@@ -36,7 +36,6 @@ class Runner {
   public function __construct($args, $config) {
     $this->tests = $this->collect($args['d']);
 
-    var_dump($args['i']);
     if (isset($args['i']) != NULL) {
       $this->imageDir = $args['i'];
     }
