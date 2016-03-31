@@ -36,6 +36,7 @@ class Runner {
   public function __construct($args, $config) {
     $this->tests = $this->collect($args['d']);
 
+    var_dump($args['i']);
     if (isset($args['i']) != NULL) {
       $this->imageDir = $args['i'];
     }
@@ -65,6 +66,7 @@ class Runner {
 
 
   public function run() {
+
     for($i = 0; $i < count($this->tests); $i++) {
       /**
        * @var \SplFileInfo $this->tests
@@ -73,18 +75,29 @@ class Runner {
       $test->loadFromSeleneseHtml($this->tests[$i]);
 
       if ($test->commands == '') {
-        return NULL;
+        continue;
       }
-
       $this->_run($test);
     }
   }
 
+  /**
+   * @param \RemoteWebDriver $driver
+   * @return \RemoteWebDriver
+   */
+  private function setDriverOption(\RemoteWebDriver $driver) {
 
+    //$d = new \WebDriverDimension(300, 700);
+    //$driver->manage()->window()->setSize($d);
+
+    return $driver;
+  }
 
   protected function _run(Test $test) {
     $capabilities = $this->getCapabilities();
     $webDriver = \RemoteWebDriver::create("http://localhost:4444/wd/hub", $capabilities, 5000);
+
+
 
     foreach ($test->commands as $command) {
 
@@ -106,13 +119,15 @@ class Runner {
       }
 
       if ($commandStr == 'CaptureEntirePageScreenshot') {
-
         $srcImage = $this->getPath($test) . "/" .$command->arg1;
 
-        $webDriver->executeScript($this->getJs($srcImage), array());
-        $screenCommand = new CaptureEntirePageScreenshot();
-        $screenCommand->arg1 = $srcImage;
-        $screenCommand->runWebDriver($webDriver);
+        if ($this->config['name'] == "internet explorer") {
+          $screenCommand = new CaptureEntirePageScreenshot();
+          $screenCommand->arg1 = $srcImage;
+          $screenCommand->runWebDriver($webDriver);
+        } else {
+          $webDriver->executeScript($this->getJs($srcImage), array());
+        }
       }
 
       if ($commandResult->continue === FALSE) {
@@ -126,7 +141,7 @@ class Runner {
     if ($this->imageDir != NULL) {
       $path = $this->imageDir. '/'. $test->file->getPath();
       if (!file_exists($path)) {
-        mkdir($path, true);
+        mkdir($path, 0777, true);
       }
     } else {
       $path = $test->file->getPath();
@@ -150,8 +165,28 @@ class Runner {
           $options->addArguments(array(
             '--user-data-dir=C:\Users\maren\AppData\Local\Temp',
           ));
-          $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
+
+          $capabilities->setCapability(\WebDriverCapabilityType::ROTATABLE, true);
+
+
+          $mobileEmulation = ["deviceName" => "Google Nexus 4"];
+          $options->setExperimentalOption("mobileEmulation", $mobileEmulation);
+
         }
+
+        if ($this->config['name'] == "MicrosoftEdge") {
+
+        }
+
+        if ($this->config['name'] == 'firefox') {
+
+          $options = new \FirefoxProfile();
+          $options->setPreference('security.fileuri.strict_origin_policy', false);
+          $options->setPreference('network.http.referer.XOriginPolicy', 1);
+
+          $capabilities->setCapability(\FirefoxDriver::PROFILE, $options);
+        }
+
         if (isset($this->config['version'])) {
           $capabilities->setVersion($this->config['version']);
         }
@@ -183,15 +218,13 @@ class Runner {
 
   private function getJs($srcImage) {
 
-
-
-
+    $srcImage = str_replace('\\', '\\\\', $srcImage);
     $js ="
       setTimeout(function () {
           var d = document;
           var script = d.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://localhost/testonautterm/html2canvas.js';
+          script.src = 'https://localhost/testonaut/html2canvas.js';
           d.getElementsByTagName('head')[0].appendChild(script);
       }, 100);
 
@@ -202,22 +235,22 @@ class Runner {
           script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
           d.getElementsByTagName('head')[0].appendChild(script);
       }, 100);
-
-     setTimeout(function () {
+      setTimeout(function () {
         html2canvas(document.html, {
-            onrendered: function(canvas) {
-                $.ajax({
-                    method: 'POST',
-                    url: 'https://localhost/testonaut/server.php',
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    data: { canvas: canvas.toDataURL('image/png'), path:'tests2/test.png'}
-                })
-                .done(function( msg ) {
-                    console.log(msg)
-                });
-            }})}, 250);";
+          onrendered: function(canvas) {
+
+            $.ajax({
+                method: 'POST',
+                url: 'https://localhost/testonaut/server.php',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: { canvas: canvas.toDataURL('image/png'), path:'".$srcImage."'}
+            })
+            .done(function( msg ) {
+
+            });
+          }})}, 500);";
     return $js;
   }
 

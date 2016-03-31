@@ -54,7 +54,8 @@ class Test {
     $dom = new \DOMDocument;
     $compiledPage = file_get_contents($file->getRealPath());
     $dom->loadHTML($compiledPage);
-    
+
+
     // get the base url
     if ($this->baseUrl == '') {
       if ($dom->getElementsByTagName('link')->length > 0) {

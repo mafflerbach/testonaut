@@ -30,6 +30,7 @@ $yaml ='{
       }
     ],
     "config": {
+      "imageDir":"images",
       "testDir": "tests2",
       "hub" : "http://localhost:4444/wd/hub"
     }

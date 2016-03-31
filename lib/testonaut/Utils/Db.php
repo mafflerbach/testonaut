@@ -55,7 +55,15 @@ class Db {
         "filename" TEXT,
         "result" TEXT);';
 
+    $profile = 'CREATE TABLE "profile" (
+        "browser" TEXT,
+        "name" TEXT,
+        "driverOptions" TEXT,
+        "arguments" TEXT,
+        "capabilities" TEXT );';
+
     $this->dbInstance->query($files);
+    $this->dbInstance->query($profile);
     $this->dbInstance->query($history);
   }
   

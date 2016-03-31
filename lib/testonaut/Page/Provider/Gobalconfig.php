@@ -18,6 +18,8 @@ use testonaut\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use testonaut\Settings\Emulator;
+use testonaut\Settings\Profile;
 
 /**
  *
@@ -44,42 +46,64 @@ class Globalconfig implements ControllerProviderInterface {
     $edit->get('/', function (Request $request) use ($app) {
       $conf = $this->getConfig();
 
+      $profile = new Profile();
+      $profileList = $profile->get();
+
+      $emulator = new Emulator();
+      $devices = $emulator->getDevices();
+
       $app['request'] = array(
         'baseUrl' => $request->getBaseUrl(),
         'mode' => 'edit',
         'settings' => $conf,
-        'themes' => $this->getThemes()
+        'themes' => $this->getThemes(),
+        'profiles' => $profileList,
+        'devices' => $devices
       );
 
-      
-      
+
       return $app['twig']->render('globalconfig.twig');
     });
 
     $edit->post('/', function (Request $request) use ($app) {
-      $address = $request->request->get('seleniumAddress');
-      $cache = $request->request->get('cache');
-      $appPath = $request->request->get('appPath');
-      $theme = $request->request->get('theme');
-      
-      
-      if ($cache != null) {
-        $cache = true;
+      var_dump($request->request);
+
+      if ($request->request->get('save') == 'profile') {
+        $this->saveProfile($request);
       } else {
-        $cache = false;
+        $this->saveConfigForm($request);
       }
+      die;
 
-      $configuration = array(
-        'appPath' => $appPath,
-        'cache' => $cache,
-        'theme' => $theme,
-        'seleniumAddress' => $address);
-
-      $this->saveConfig($configuration);
 
       return $app->redirect($request->getBaseUrl() . '/globalconfig/');
     });
     return $edit;
+  }
+
+  protected function saveProfile($request) {
+
+  }
+
+  protected function saveConfigForm($request) {
+    $address = $request->request->get('seleniumAddress');
+    $cache = $request->request->get('cache');
+    $appPath = $request->request->get('appPath');
+    $theme = $request->request->get('theme');
+
+    if ($cache != null) {
+      $cache = true;
+    } else {
+      $cache = false;
+    }
+
+    $configuration = array(
+      'appPath' => $appPath,
+      'cache' => $cache,
+      'theme' => $theme,
+      'seleniumAddress' => $address);
+
+    $this->saveConfig($configuration);
   }
 
   protected function saveConfig($array) {

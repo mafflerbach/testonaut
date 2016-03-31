@@ -10,28 +10,28 @@
         <div>
           <label class=""
                  for="appPath"> app Path
-            <input type="text" 
-                   class="form-control input-sm" 
-                   placeholder="App Path" 
+            <input type="text"
+                   class="form-control input-sm"
+                   placeholder="App Path"
                    aria-describedby="basic-addon2"
                    value="{{ app.request.settings.appPath }}"
                    name="appPath"
                    aria-label="FOOOO"
                    id="appPath"
-                   > 
+              >
           </label>
         </div>
         <div>
-          <label class="" 
+          <label class=""
                  for="selAddr"> Selenium Hub <sub>Example: http://xxx.xxx.xxx.xxx:4444</sub>
-            <input type="text" 
-                   class="form-control input-sm" 
-                   placeholder="Selenium Hub:" 
+            <input type="text"
+                   class="form-control input-sm"
+                   placeholder="Selenium Hub:"
                    aria-describedby="basic-addon2"
                    value="{{ app.request.settings.seleniumAddress }}"
                    name="seleniumAddress"
                    id="selAddr"
-                   >
+              >
           </label>
         </div>
 
@@ -39,28 +39,137 @@
         <select class="form-control input-sm" name="theme">
           {% for theme in app.request.themes %}
             {% if app.request.settings.theme is defined and app.request.settings.theme == theme %}
-            {% set selected = 'selected="selected"' %}
-          {% else %}
-            {% set selected = '' %}
+              {% set selected = 'selected="selected"' %}
+            {% else %}
+              {% set selected = '' %}
             {% endif %}
-              <option value="{{theme}}" {{ selected }}>{{theme}}</option>
-              {% endfor %}
-              </select>
-              <br/>
-              <br/>
+            <option value="{{ theme }}" {{ selected }}>{{ theme }}</option>
+          {% endfor %}
+        </select>
+        <br/>
+        <br/>
 
-              <input type="submit"
-                     name="action"
-                     value="save"
-                     class="btn btn-primary"/>
+        <input type="submit"
+               name="action"
+               value="save"
+               class="btn btn-primary"/>
 
-              <a href="{{ app.request.baseUrl }}"
-                 class="btn-link btn">Zurück</a>
-
-            </div>
-          </form>
-        </div>
+        <a href="{{ app.request.baseUrl }}"
+           class="btn-link btn">Zurück</a>
       </div>
 
+      <input type="hidden"
+             name="save"
+             value="config"/>
 
-      {% include 'footer.twig' %}
+    </form>
+
+    <h3>Profile</h3>
+    <button name="profile">Add Profile</button>
+    <form class="form-inline" action=""
+          method="POST">
+      <div class="form-group">
+        <label for="profileName">Profile Name</label>
+        <input type="profileName" name="profileName" class="form-control" id="profileName" placeholder="profileName">
+
+        <label for="browser">Browser</label>
+        <select name="browsers" class="form-control" id="browsers">
+          <option>&nbsp;</option>
+          {% for profile in app.request.profiles.grid %}
+            <option name="{{ profile.browserName }}">{{ profile.browserName }}</option>
+          {% endfor %}
+        </select>
+
+      </div>
+      <div class="form-group" id="devices">
+        <label for="device">Device</label>
+        <select name="device" class="form-control">
+          <option>&nbsp;</option>
+          {% for key, lable  in app.request.devices %}
+            <option name="{{ key }}">{{ lable }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group" id="dimension">
+        <label for="width">width</label>
+        <input type="width" class="form-control" id="width" name="width" placeholder="width">
+
+        <label for="height">height</label>
+        <input type="height" class="form-control" id="height" name="height" placeholder="height">
+      </div>
+      <input type="submit"
+             name="action"
+             value="save"
+             class="btn btn-primary"/>
+
+      <input type="hidden"
+             name="save"
+             value="profile"/>
+
+    </form>
+
+
+    {% for profile in app.request.profiles.all %}
+
+      <div class="panel panel-default">
+        {% if profile.browserName is defined %}
+          <div class="panel-heading">{{ profile.browserName }}</div>
+        {% else %}
+          <div class="panel-heading">{{ profile.name }} ({{ profile.browser }})</div>
+        {% endif %}
+        <div class="panel-body">
+          <ul>
+            {% if profile.capabilities is defined and profile.capabilities != '' %}
+              <li>{{ profile.capabilities }}</li>
+            {% endif %}
+            {% if profile.arguments is defined and profile.arguments != '' %}
+              <li>{{ profile.arguments }}</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $('#devices').hide();
+  $('#dimension').hide();
+
+  $('#browsers').change(function () {
+    if ($('#browsers').val() == "chrome") {
+      $('#devices').show();
+      $('#dimension').show();
+    } else {
+      $('#dimension').show();
+      $('#devices').hide();
+    }
+  })
+
+  $('#devices select').change(function () {
+    $('#dimension').hide();
+    if ($('#devices select').val() == '') {
+      $('#dimension').show();
+    }
+  })
+
+  $('#width').blur(function () {
+    $('#devices').hide();
+    if ($('#width').val() == '' && $('#height').val() == "") {
+      $('#devices').show();
+    }
+  })
+
+  $('#height').blur(function () {
+    $('#devices').hide();
+    if ($('#width').val() == '' && $('#height').val() == "") {
+      $('#devices').show();
+    }
+  })
+
+</script>
+
+
+{% include 'footer.twig' %}
