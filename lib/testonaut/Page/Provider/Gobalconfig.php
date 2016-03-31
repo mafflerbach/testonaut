@@ -61,27 +61,75 @@ class Globalconfig implements ControllerProviderInterface {
         'devices' => $devices
       );
 
+      var_dump($profileList);
 
       return $app['twig']->render('globalconfig.twig');
     });
 
     $edit->post('/', function (Request $request) use ($app) {
-      var_dump($request->request);
 
       if ($request->request->get('save') == 'profile') {
         $this->saveProfile($request);
       } else {
         $this->saveConfigForm($request);
       }
-      die;
-
 
       return $app->redirect($request->getBaseUrl() . '/globalconfig/');
     });
     return $edit;
   }
 
+  /**
+   * @param $request
+   *
+   *
+   *
+   * $browser = $data['browser'];
+   * $name = $data['name'];
+   * $driverOptions = json_encode($data['driverOption']);
+   * $arguments = json_encode($data['arguments']);
+   * $capabilities = json_encode($data['capabilities']);
+   */
+
   protected function saveProfile($request) {
+    $profile = new Profile();
+    $data = array();
+
+    $browser = $request->request->get('browsers');
+    $name = $request->request->get('profileName');
+    $driverOptions = '';
+    if ($request->request->get('width') != '' && $request->request->get('height') != '') {
+      $driverOptions = json_encode(array('dimensions' => array('width' => $request->request->get('width'), "height" => $request->request->get('height'))));
+    }
+    if ($browser == 'chrome') {
+      $capabilities['arguments'] = array(
+        "--disable-web-security",
+        "--user-data-dir=C:\\Users\\maren\\AppData\\Local\\Temp"
+      );
+
+      if ($request->request->get('device') != '' && $request->request->get('width') == '' && $request->request->get('height') != '') {
+        $capabilities['experimental'] = array('mobileEmulation' => array(
+          "deviceName" =>$request->request->get('device')
+        ));
+      }
+    } else {
+      $capabilities = '';
+    }
+
+
+    $arguments = '';
+    $data['browser'] = $browser;
+    $data['name'] = $name;
+    $data['driverOptions'] = $driverOptions;
+    $data['arguments'] =  '';
+
+    if ($capabilities != '') {
+      $data['capabilities'] = json_encode($capabilities);
+    } else {
+      $data['capabilities'] = '';
+    }
+
+    $profile->write($data);
 
   }
 

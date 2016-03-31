@@ -14,14 +14,18 @@ class Profile {
   }
 
   public function write($data) {
-    $sql = "select * from profile where name = :name";
+    $sql = "select * from profile where `name`=:name";
     $stm = $this->db->prepare($sql);
-    $stm->bindParam(':name', $name);
+
+    $stm->bindParam(':name', $data['name']);
 
     $result = $stm->execute();
-    $result->fetchArray();
+    $foo = array();
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+      $foo [] = $row;
+    }
 
-    if (count($result) > 0) {
+    if (count($foo) > 0) {
       $this->update($data);
     } else {
       $this->insert($data);
@@ -56,7 +60,7 @@ class Profile {
 
   public function delete($name) {
 
-    $sql = "delete * from profile where name = :name";
+    $sql = "delete * from profile where `name` = :name";
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':name', $name);
 
@@ -67,17 +71,18 @@ class Profile {
   protected function update($data) {
     $browser = $data['browser'];
     $name = $data['name'];
-    $driverOptions = json_encode($data['driverOption']);
-    $arguments = json_encode($data['arguments']);
-    $capabilities = json_encode($data['capabilities']);
+    $driverOptions = $data['driverOptions'];
+    $arguments = $data['arguments'];
+    $capabilities = $data['capabilities'];
+
 
     $sql = "update profile set
-        name = :name
-        browser = :browser
-        driverOptions = :driverOptions
-        arguments = :arguments
+        `name` = :name,
+        browser = :browser,
+        driverOptions = :driverOptions,
+        arguments = :arguments,
         capabilities = :capabilities
-        where name = :name
+        where `name` = :name
       ";
     $stm = $this->db->prepare($sql);
 
@@ -93,9 +98,9 @@ class Profile {
   protected function insert($data) {
     $browser = $data['browser'];
     $name = $data['name'];
-    $driverOptions = json_encode($data['driverOption']);
-    $arguments = json_encode($data['arguments']);
-    $capabilities = json_encode($data['capabilities']);
+    $driverOptions = $data['driverOptions'];
+    $arguments = $data['arguments'];
+    $capabilities = $data['capabilities'];
 
     $sql = "insert into profile (browser, name, driverOptions, arguments, capabilities)
             VALUES (:browser, :name, :driverOptions, :arguments, :capabilities)";

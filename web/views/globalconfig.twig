@@ -126,6 +126,9 @@
             {% if profile.arguments is defined and profile.arguments != '' %}
               <li>{{ profile.arguments }}</li>
             {% endif %}
+            {% if profile.driverOptions is defined and profile.driverOptions != '' %}
+              <li>{{ profile.driverOptions }}</li>
+            {% endif %}
           </ul>
         </div>
       </div>
