@@ -41,9 +41,11 @@ class Profile {
     $stm = $this->db->prepare($sql);
     $result = $stm->execute();
 
+    $foo = array();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $foo [] = $row;
     }
+
 
     for ($i = 0; $i < count($foo); $i++){
       $browsers[] = $foo[$i];
@@ -55,6 +57,21 @@ class Profile {
       );
 
     return $browserProfiles;
+
+  }
+  public function getByName($name) {
+
+
+    $sql = "select * from profile where name = :name";
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':name', $name);
+    $result = $stm->execute();
+
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+      $profile[] = $row;
+    }
+
+    return $profile;
 
   }
 

@@ -57,7 +57,7 @@ class Db {
 
     $profile = 'CREATE TABLE "profile" (
         "browser" TEXT,
-        "name" TEXT,
+        "name" TEXT PRIMARY KEY NOT NULL,
         "driverOptions" TEXT,
         "arguments" TEXT,
         "capabilities" TEXT );';

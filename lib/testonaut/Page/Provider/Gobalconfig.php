@@ -72,8 +72,44 @@ class Globalconfig implements ControllerProviderInterface {
         'profileName' => $browserProfile
       );
 
-
       return $app['twig']->render('globalconfig.twig');
+    });
+
+    $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+      $profile = new Profile();
+      $profile->delete($browserProfile);
+
+      $app['request'] = array(
+        'baseUrl' => $request->getBaseUrl(),
+        'mode' => 'edit',
+        'message' => 'deleted'
+      );
+      return $app['twig']->render('globalconfig.twig');
+    });
+
+    $edit->get('/editProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+
+
+      $profile = new Profile();
+      $profileList = $profile->getByName($browserProfile);
+
+      $data = array(
+        'browser' =>$profileList[0]['browser'],
+        'name' =>$profileList[0]['name'],
+        'arguments' => ($profileList[0]['arguments'] == '') ? '' : json_decode($profileList[0]['arguments'], true),
+        'driverOptions' => ($profileList[0]['driverOptions'] == '') ? '' : json_decode($profileList[0]['driverOptions'], true),
+        'capabilities' => ($profileList[0]['capabilities'] == '') ? '': json_decode($profileList[0]['capabilities'], true) ,
+        );
+
+/*
+      $app['request'] = array(
+        'baseUrl' => $request->getBaseUrl(),
+        'mode' => 'edit',
+        'profile' => $data,
+        'profileName' => 'foo'
+      ); */
+
+      return $app->json($data);
     });
 
     $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {

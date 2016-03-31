@@ -6,8 +6,6 @@
 
     {% if app.request.settings is defined %}
 
-
-
       <form action=""
             method="POST">
 
@@ -78,6 +76,8 @@
             <label for="profileName">Profile Name</label>
             <input type="profileName" name="profileName" class="form-control" id="profileName"
                    placeholder="profileName">
+          </div>
+          <div class="form-group">
 
             <label for="browser">Browser</label>
             <select name="browsers" class="form-control" id="browsers">
@@ -90,7 +90,7 @@
           </div>
           <div class="form-group" id="devices" style="display: none;">
             <label for="device">Device</label>
-            <select name="device" class="form-control">
+            <select name="device" id="device" class="form-control">
               <option>&nbsp;</option>
               {% for key, lable  in app.request.devices %}
                 <option name="{{ key }}">{{ lable }}</option>
@@ -132,7 +132,7 @@
               </a>
               <a class="editProfile" data-action="edit"
                  href="{{ app.request.baseUrl }}/globalconfig/editProfile/{{ profile.name|url_encode }}">
-                    <span class="delete glyphicon glyphicon-edit"
+                    <span class="edit glyphicon glyphicon-edit"
                           data-link="{{ app.request.baseUrl }}/globalconfig/editProfile/{{ profile.name|url_encode }}">
                     </span>
               </a>
@@ -178,6 +178,29 @@
 <script type="text/javascript">
   $(document).ready(function () {
 
+    $('#addProfile-form form').submit(function (e) {
+      e.preventDefault();
+
+      if ($('#profileName').val() == '') {
+        $('#profileName').parent().addClass('has-error');
+      } else {
+        $('#profileName').parent().removeClass('has-error');
+      }
+
+      if ($('#browsers').val() == '') {
+        $('#browsers').parent().addClass('has-error');
+      } else {
+        $('#browsers').parent().removeClass('has-error');
+      }
+
+      if ($('#addProfile-form .has-error').length == 0) {
+        console.log('doo')
+        $(this).unbind('submit').submit()
+      }
+
+    })
+
+
     $('#addProfile').click(function() {
       $('#addProfile-form').slideDown();
     })
@@ -219,6 +242,36 @@
       modalHandling(href, "Delete Profile", '');
     });
 
+    $("a[data-action='edit']").click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      $('#addProfile-form').slideDown();
+
+      $.ajax({
+        method: "get",
+        url: href
+      }).done(function (data) {
+        console.log(data);
+        $('#profileName').val(data.name);
+
+        if (data.driverOptions.dimensions != undefined) {
+          $('#dimension').show();
+          $('#devices').hide();
+          $('#width').val(data.driverOptions.dimensions.width);
+          $('#height').val(data.driverOptions.dimensions.height);
+        }
+
+        $('#browsers').val(data.browser);
+
+        console.log(data.capabilities.experimental.mobileEmulation);
+        console.log(data.capabilities.experimental.mobileEmulation.deviceName);
+        if(data.capabilities.experimental != undefined) {
+          $('#dimension').hide();
+          $('#devices').show();
+          $('#device').val(data.capabilities.experimental.mobileEmulation.deviceName);
+        }
+      });
+    });
   })
 
 
