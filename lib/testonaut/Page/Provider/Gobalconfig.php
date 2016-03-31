@@ -101,14 +101,6 @@ class Globalconfig implements ControllerProviderInterface {
         'capabilities' => ($profileList[0]['capabilities'] == '') ? '': json_decode($profileList[0]['capabilities'], true) ,
         );
 
-/*
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'profile' => $data,
-        'profileName' => 'foo'
-      ); */
-
       return $app->json($data);
     });
 
@@ -168,11 +160,18 @@ class Globalconfig implements ControllerProviderInterface {
       $capabilities = '';
     }
 
-    $arguments = '';
+    if($browser == 'firefox') {
+      $arguments = json_encode(array('security.fileuri.strict_origin_policy' => false,
+      'network.http.referer.XOriginPolicy' => 1));
+    } else {
+      $arguments = '';
+    }
+
+
     $data['browser'] = $browser;
     $data['name'] = $name;
     $data['driverOptions'] = $driverOptions;
-    $data['arguments'] =  '';
+    $data['arguments'] =  $arguments;
 
     if ($capabilities != '') {
       $data['capabilities'] = json_encode($capabilities);
