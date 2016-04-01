@@ -1,46 +1,45 @@
-
 {% set buildResult = true %}
 
 {% set stepk = 0 %}
 {% set k = 0 %}
-  {% set testName = '' %}
+{% set testName = '' %}
+{% set testName = app.result.path %}
 
 {% for results in app.result %}
-        <table class="table-bordered">
-            <tr>
-                <td>Path</td>
-                <td> <a href="{{ app.request.baseUrl }}/{{ results.path }}">{{ results.path }}</a> </td>
-            </tr>
 
-            {% set i = 0 %}
-            {% set step = 0 %}
+    {% set i = 0 %}
+    {% set step = 0 %}
+    {% for result in results %}
+      <table class="table-bordered">
+      {% for command in result  %}
+        {% if command.0  != true %}
+          {% set buildResult = false %}
+          {% set step = i %}
+          {% set k = i %}
+          {% set stepk = i %}
 
-            {% for result in results.run %}
-                {% if result.0  != true %}
-                    {% set buildResult = false %}
-                    {% set step = i %}
-                    {% set style = '#fcc' %}
-                    {% set testName = results.path %}
+          {% set style = '#fcc' %}
+        {% else %}
+          {% set style = '#bfb' %}
+        {% endif %}
+        <tr style="background-color: {{ style }} ">
+          <td>{{ i+1 }}</td>
+          <td>Command</td>
+          <td>{{ command.2 }}</td>
+          <td>{{ command.1 }}</td>
+        </tr>
 
-                    {% set stepk = i %}
-                    {% set k = i%}
-                {% else %}
-                    {% set style = '#bfb' %}
-                {% endif %}
-                <tr style="background-color: {{ style }} ">
-                    <td>{{ i+1 }}</td>
-                    <td>Command</td>
-                    <td>{{ result.2 }}</td>
-                    <td>{{ result.1 }}</td>
-                </tr>
-                {% set i=i + 1%}
-            {% endfor %}
-        </table>
-    {% set k = 0 %}
+      {% endfor %}
+      </table>
+      {% set i=i + 1 %}
+      {% set k = 0 %}
+    {% endfor %}
+
 {% endfor %}
 
     {% if buildResult == true %}
-        <p>Build: Success</p>
+      <p>Build: Success</p>
     {%else%}
-        <p>Build: Failed <br/> In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName }}">{{ testName }}</a> Step {{ stepk+1 }}: {{ app.result[k].run[stepk].2 }} {{ app.result[k].run[stepk].1 }} </p>
+      <p>Build: Failed <br/>
+      In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName }}">{{ testName }}</a>
     {% endif %}

@@ -65,16 +65,24 @@
                     {% if app.request.browsers is defined %}
                       <ul class="dropdown-menu">
                         <li>
-                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ parameter }}"
+                          <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser=all"
                              data-action="run"
                              data-path="{{ app.request.path }}" id="runAll">{{ lable }}</a>
                         </li>
                         {% for browser in app.request.browsers %}
                           <li>
+                            {% if browser.browserName is defined %}
                             <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?browser={{ browser.browserName }}&platform={{ browser.platform }}&version={{ browser.version }}&{{ parameter }}"
                                data-path="{{ app.request.path }}"
                                data-browser="{{ browser.browserName }}"
                                class="run-test">{{ browser.browserName }} {{ browser.version }} <span class="label label-default">{{ browser.platform }}</span></a>
+                            {% else %}
+                              <a href="{{ app.request.baseUrl }}/run/{{ app.request.path }}?profile={{ browser.name }}"
+                                 data-path="{{ app.request.path }}"
+                                 data-browser="{{ browser.name }}"
+                                 class="run-test">{{ browser.name }} <span class="label label-default">{{ browser.browser }}</span></a>
+
+                            {% endif %}
                           </li>
                         {% endfor %}
                       </ul>

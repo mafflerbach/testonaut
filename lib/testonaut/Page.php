@@ -16,6 +16,7 @@
 namespace testonaut;
 
 use testonaut\Selenium\Api;
+use testonaut\Settings\Profile;
 
 /**
  * Class Page
@@ -167,10 +168,17 @@ class Page {
 
     $imageDir = $this->getImagePath();
     $return = array();
-    $api = new Api();
-    $browser = $api->getBrowserList();
+    $profile = new Profile();
+    $profile = $profile->get();
+    $browser = $profile['all'];
+
     for ($i = 0; $i < count($browser); $i++) {
-      $name = str_replace(' ', '_', $browser[$i]['browserName']);
+      if (isset($browser[$i]['browserName'])) {
+        $name = str_replace(' ', '_', $browser[$i]['browserName']).'_default';
+      } else {
+        $name = str_replace(' ', '_', $browser[$i]['name']).'_'.$browser[$i]['browser'];
+      }
+
       if (file_exists($imageDir . "/" . $name . "/src/")) {
         $src = array_diff(scandir($imageDir . "/" . $name . "/src/"), array(
           '.',

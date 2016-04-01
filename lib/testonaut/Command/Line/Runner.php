@@ -96,8 +96,6 @@ class Runner {
     $capabilities = $this->getCapabilities();
     $webDriver = \RemoteWebDriver::create("http://localhost:4444/wd/hub", $capabilities, 5000);
 
-
-
     foreach ($test->commands as $command) {
 
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
@@ -165,12 +163,11 @@ class Runner {
             '--user-data-dir=C:\Users\maren\AppData\Local\Temp',
           ));
 
-          $capabilities->setCapability(\WebDriverCapabilityType::ROTATABLE, true);
 
+          $mobileEmulation = ["deviceName" => "Google Nexus 5"];
 
-          $mobileEmulation = ["deviceName" => "Google Nexus 4"];
           $options->setExperimentalOption("mobileEmulation", $mobileEmulation);
-
+          $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
         }
 
         if ($this->config['name'] == "MicrosoftEdge") {

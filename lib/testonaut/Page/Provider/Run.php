@@ -23,6 +23,7 @@ use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use testonaut\Selenese\Runner;
+use testonaut\Settings\Profile;
 
 class Run implements ControllerProviderInterface {
 
@@ -31,7 +32,7 @@ class Run implements ControllerProviderInterface {
   /**
    * @var \testonaut\Page $page
    */
-  private $page;
+  private  $page;
   private $imagePath;
   private $dirArray = array();
   private $path;
@@ -43,6 +44,7 @@ class Run implements ControllerProviderInterface {
     $edit->get('/', function (Request $request, $path) use ($app) {
 
       $this->path = $path;
+
       $this->page = new \testonaut\Page($path);
       $this->basePath = $this->page->transCodePath();
       $this->imagePath = $this->page->getImagePath();
@@ -64,17 +66,29 @@ class Run implements ControllerProviderInterface {
         $this->platform = '';
       }
 
+      $this->profile = $request->query->get('profile');
+      if ($this->profile == '') {
+        $this->profile = '';
+      }
+
       if ($request->query->get('suite') == 'true') {
         $result = $this->runSuite($this->page);
       } else {
         $result = $this->run($this->page);
       }
 
-      $capabilities['browser'] = $this->browser;
-      $capabilities['version'] = $this->version;
-      $capabilities['platform'] = $this->platform;
-
-      $this->writeResultFile($result, $capabilities);
+      if ($this->profile != '') {
+        $profiles = new Profile();
+        $profile = $profiles->getByName($this->profile);
+        $capabilities = $profile[0];
+        $capabilities['browser'] = $profile[0]['name'].'_'.$profile[0]['browser'];
+        $capabilities['version'] = $this->version;
+        $capabilities['platform'] = $this->platform;
+      } else {
+        $capabilities['browser'] = $this->browser;
+        $capabilities['version'] = $this->version;
+        $capabilities['platform'] = $this->platform;
+      }
 
       $app['request'] = array(
         'path' => $path,
@@ -91,6 +105,8 @@ class Run implements ControllerProviderInterface {
 
     return $edit;
   }
+
+
 
   /**
    * @param $content
@@ -130,7 +146,6 @@ class Run implements ControllerProviderInterface {
   protected function run($path) {
 
     $testCollect[] = $path;
-
     return $this->_run($testCollect);
   }
 
@@ -177,34 +192,38 @@ class Run implements ControllerProviderInterface {
    */
   private function _run(array $tests) {
     try {
-      $capabilities = $this->getCapabilities();
-      $runner = new Runner($tests, \testonaut\Config::getInstance()->seleniumHub, $this->basePath, $this->imagePath);
 
-      $browserUrl = $this->baseUrlSettings($capabilities);
-      $runner->setBaseUrl($browserUrl);
+      $profile = new Profile();
 
-      if ($this->screenshotSettings() == 2) {
-        $runner->screenshotsAfterEveryStep();
-      }
-      if ($this->screenshotSettings() == 1) {
-        $runner->screenshotsAfterTest();
-      }
-
-      if (!is_array($capabilities)) {
-        $result = $runner->run($capabilities);
-
-        return $result;
+      if ($this->profile == '') {
+        $profiles = $this->getCapabilities();
       } else {
-        for ($i = 0; $i < count($capabilities); $i++) {
-          $result[] = $runner->run($capabilities[$i]);
-        }
-        return $result;
+        $profiles = $profile->getByName($this->profile);
       }
+
+      $runner = new Runner($profiles, $this->page);
+      $result = $runner->run();
+
+      $browserResult = TRUE;
+      for($i = 0; $i < count($result); $i++) {
+        for($k = 0; $k < count($result[$i]); $k++) {
+          if($result[$i][$k][0] == false) {
+            $browserResult = FALSE;
+          }
+        }
+      }
+
+      return array(
+        'run' => $result,
+        'browserResult' => $browserResult,
+        'path' => $tests[0]->getPath()
+      );
+
     } catch (\Exception $e) {
       return array(array(
           'run' => array(array(FALSE, $e->getMessage(), "open connection")),
           'browserResult' => FALSE,
-          'path' => $tests[0]->path
+          'path' => $tests[0]->getPath()
       ));
     }
   }
@@ -249,34 +268,42 @@ class Run implements ControllerProviderInterface {
    * @return array
    */
   private function getCapabilities() {
-
-    $DesiredCapabilities = new Capabilities();
+    $profile = array();
 
     if ($this->browser == 'all') {
-      $api = new Api();
-      $list = $api->getBrowserList();
+
+      $profileObj = new Profile();
+      $list = $profileObj->get();
+      $list = $list['all'];
+
       $capabilities = array();
 
+
       for ($i = 0; $i < count($list); $i++) {
-        $browserName = $this->normalizeBrowserName($list[$i]['browserName']);
-        if (method_exists($DesiredCapabilities, $browserName)) {
-          $DesiredCapabilities = new Capabilities();
-          $DesiredCapabilities::$browserName();
-          $DesiredCapabilities->setVersion($list[$i]['version']);
-          $DesiredCapabilities->setPlatform($list[$i]['platform']);
-
-          $capabilities[] = $DesiredCapabilities;
-
+        if (isset($list[$i]['browserName'])) {
+          $browserName = $this->normalizeBrowserName($list[$i]['browserName']);
+        } else {
+          $browserName = $this->normalizeBrowserName($list[$i]['browser']);
         }
+
+        $profile['browser'] = $this->normalizeBrowserName($browserName);
+        if (isset($list[$i]['version'])) {
+          $profile['version'] = $list[$i]['version'];
+        }
+        if (isset($list[$i]['platform'])) {
+          $profile['platform'] = $list[$i]['platform'];
+        }
+        $capabilities[] = $profile;
       }
 
     } else {
-      $browserName = $this->normalizeBrowserName($this->browser);
-      if (method_exists($DesiredCapabilities, $browserName)) {
-        $capabilities = $DesiredCapabilities::$browserName();
-        $capabilities->setVersion($this->version);
-        $capabilities->setPlatform($this->platform);
-      }
+
+      $profile['browser'] = $this->normalizeBrowserName($this->browser);
+      $profile['version'] = $this->version;
+      $profile['platform'] = $this->platform;
+
+      $capabilities[] = $profile;
+
     }
 
     return $capabilities;

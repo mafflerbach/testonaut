@@ -23,6 +23,7 @@ use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use testonaut\Settings\Profile;
 
 class Page implements ControllerProviderInterface {
 
@@ -41,13 +42,14 @@ class Page implements ControllerProviderInterface {
 
       $content = $this->getContent($page);
 
-      $browserSettings = new Browser($path);
-      $browsers = $browserSettings->getSettings();
+      $browserSettings = new Profile();
+      $browsers = $browserSettings->get();
 
       $matrix = new Matrix($page, $browsers);
       $lastRun = $matrix->read();
 
       $images = $page->getImages();
+
 
       $root = \testonaut\Config::getInstance()->Path;
 
@@ -56,7 +58,7 @@ class Page implements ControllerProviderInterface {
         'path'       => $path,
         'baseUrl'    => $request->getBaseUrl(),
         'mode'       => 'show',
-        'browsers'   => $browsers,
+        'browsers'   => $browsers['all'],
         'images'     => $images,
         'imagePath'  => \testonaut\Config::getInstance()->appPath . str_replace($root, '', $page->getImagePath()),
         'type'       => $settings->getType(),
