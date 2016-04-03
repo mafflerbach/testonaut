@@ -67,7 +67,7 @@ class Matrix {
       $summery[$row['browser']]['result'][] = $row['result'];
       $summery[$row['browser']]['run'][] = json_decode($row['run']);
     }
-    
+
     return $summery;
   }
 
@@ -138,6 +138,4 @@ class Matrix {
     file_put_contents($pathDir . '/' . $fileName, json_encode($content));
 
   }
-
-
 }

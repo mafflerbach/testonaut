@@ -50,7 +50,6 @@ class Page implements ControllerProviderInterface {
 
       $images = $page->getImages();
 
-
       $root = \testonaut\Config::getInstance()->Path;
 
       $app['request'] = array(
@@ -65,7 +64,6 @@ class Page implements ControllerProviderInterface {
         'lastResult' => $lastRun
       );
 
-
       $toc = $this->getToc($page->transCodePath());
       $app['menu'] = $toc;
 
@@ -78,8 +76,7 @@ class Page implements ControllerProviderInterface {
         'Cache-Control' => 'maxage=3600',
       ));
 
-    })
-    ;
+    });
 
     return $page;
   }

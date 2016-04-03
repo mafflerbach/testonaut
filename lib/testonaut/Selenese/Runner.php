@@ -142,13 +142,10 @@ class Runner {
       $i++;
     }
 
-
     if ($pageConf['screenshots'] == 'test') {
       $srcImage = $this->getPath($profile) . "/afterTest.png";
-
       $this->takeScreenshot($profile, $webDriver, $srcImage);
     }
-
 
     $webDriver->quit();
     $matrix = new Matrix($page, $this->browser);

@@ -60,7 +60,6 @@ class Test {
       }
     }
 
-    // todo: catch loading of things NOT selenese
     if($dom->getElementsByTagName('tbody')->length == 0) {
       $this->commands = '';
       return;
