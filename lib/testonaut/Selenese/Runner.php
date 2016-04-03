@@ -19,6 +19,7 @@ use testonaut\Image;
 use testonaut\Matrix;
 use testonaut\Page;
 use testonaut\Selenese\Command\captureEntirePageScreenshot;
+use testonaut\Selenese\Command\Pause;
 
 class Runner {
 
@@ -101,17 +102,24 @@ class Runner {
 
   protected function _run($test, $profile, Page $page) {
     $this->imageDir = $page->getImagePath();
+    $pageConf = $page->config();
 
     $capabilities = $this->getCapabilities($profile);
     $webDriver = \RemoteWebDriver::create("http://localhost:4444/wd/hub", $capabilities, 5000);
     $webDriver = $this->setDriverOption($webDriver, $profile);
-
+    $i = 0;
     foreach ($test->commands as $command) {
 
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
       $commandStr = str_replace(' ', '', $commandStr);
       try {
         $commandResult = $command->runWebDriver($webDriver);
+
+        if ($pageConf['screenshots'] == 'step') {
+          $srcImage = $this->getPath($profile) . "/step_".$i.".png";
+          $this->takeScreenshot($profile, $webDriver, $srcImage);
+        }
+
       } catch (\Exception $e) {
         $commandResult = new CommandResult(FALSE, FALSE, $e->getMessage());
       }
@@ -123,29 +131,45 @@ class Runner {
         $browserResult = FALSE;
       }
 
-      // @TODO consider page settings for screenshots
       if ($commandStr == 'CaptureEntirePageScreenshot') {
         $srcImage = $this->getPath($profile) . "/" . $command->arg1;
-
-        if ($profile['browser'] == "internet explorer") {
-          $screenCommand = new CaptureEntirePageScreenshot();
-          $screenCommand->arg1 = $srcImage;
-          $screenCommand->runWebDriver($webDriver);
-        } else {
-          $webDriver->executeScript($this->getJs($srcImage), array());
-        }
+        $this->takeScreenshot($profile, $webDriver, $srcImage);
       }
 
       if ($commandResult->continue === FALSE) {
         break;
       }
-
+      $i++;
     }
+
+
+    if ($pageConf['screenshots'] == 'test') {
+      $srcImage = $this->getPath($profile) . "/afterTest.png";
+
+      $this->takeScreenshot($profile, $webDriver, $srcImage);
+    }
+
+
     $webDriver->quit();
     $matrix = new Matrix($page, $this->browser);
     $matrix->writeResult($res, $profile);
 
     return $res;
+  }
+
+  private function takeScreenshot($profile, $webDriver, $srcImage) {
+    if ($profile['browser'] == "internet explorer") {
+      $screenCommand = new CaptureEntirePageScreenshot();
+      $screenCommand->arg1 = $srcImage;
+      $screenCommand->runWebDriver($webDriver);
+    } else {
+      $webDriver->executeScript($this->getJs($srcImage), array());
+    }
+
+    $pause = new Command\Pause();
+    $pause->arg1 = 2000;
+    $pause->runWebDriver($webDriver);
+
   }
 
   private function getPath($profile) {
