@@ -31,9 +31,8 @@ class Runner {
   protected $imageDir = NULL;
 
 
-
   protected $profiles;
-  
+
 
   /**
    * @param $dir
@@ -49,9 +48,7 @@ class Runner {
   protected function collect($outerDir, $tests = array()) {
     $paths = array();
 
-    $objects =
-      new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($outerDir), \RecursiveIteratorIterator::SELF_FIRST
-      );
+    $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($outerDir), \RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
       /**
        * @var \SplFileInfo $object
@@ -65,19 +62,22 @@ class Runner {
   }
 
 
-  public function run() {
+  public function run($tests) {
     $result = array();
-    for($k = 0; $k < count($this->profiles); $k++) {
-      for ($i = 0; $i < count($this->tests); $i++) {
+
+    for ($k = 0; $k < count($this->profiles); $k++) {
+      for ($i = 0; $i < count($tests); $i++) {
         /**
          * @var \SplFileInfo $this ->tests
          */
-        $test = new \testonaut\Command\Line\Test();
-        $test->loadFromSeleneseHtml($this->tests[$i]);
+        $test = new Test();
+
+        $test->loadFromSeleneseHtml($tests[$i]);
         if ($test->commands == '') {
           continue;
         }
-        $result[] = $this->_run($test, $this->profiles[$k]);
+
+        $result[] = $this->_run($test, $this->profiles[$k], $tests[$i]);
       }
     }
     return $result;
@@ -99,7 +99,9 @@ class Runner {
     return $driver;
   }
 
-  protected function _run($test, $profile) {
+  protected function _run($test, $profile, Page $page) {
+    $this->imageDir = $page->getImagePath();
+
     $capabilities = $this->getCapabilities($profile);
     $webDriver = \RemoteWebDriver::create("http://localhost:4444/wd/hub", $capabilities, 5000);
     $webDriver = $this->setDriverOption($webDriver, $profile);
@@ -116,13 +118,12 @@ class Runner {
 
       if ($commandResult->success) {
         $res[] = array(TRUE, $commandResult->message, $commandStr);
-       // print(".");
       } else {
         $res[] = array(FALSE, $commandResult->message, $commandStr);
         $browserResult = FALSE;
-       // print("F");
       }
 
+      // @TODO consider page settings for screenshots
       if ($commandStr == 'CaptureEntirePageScreenshot') {
         $srcImage = $this->getPath($profile) . "/" . $command->arg1;
 
@@ -141,8 +142,7 @@ class Runner {
 
     }
     $webDriver->quit();
-
-    $matrix = new Matrix($this->page, $this->browser);
+    $matrix = new Matrix($page, $this->browser);
     $matrix->writeResult($res, $profile);
 
     return $res;
@@ -152,17 +152,17 @@ class Runner {
 
     if (isset($profile['browser'])) {
       if (isset($profile['name'])) {
-        $profileName = $profile['name']. '_'.$profile['browser'];
+        $profileName = $profile['name'] . '_' . $profile['browser'];
       } else {
-        $profileName = $profile['browser']. '_default';
+        $profileName = $profile['browser'] . '_default';
       }
     }
 
     if ($this->imageDir != NULL) {
       $path = $this->imageDir;
-      $srcDir = $path .'/'.$profileName."/src";
-      $comp = $path .'/'.$profileName."/comp";
-      $ref = $path .'/'.$profileName."/ref";
+      $srcDir = $path . '/' . $profileName . "/src";
+      $comp = $path . '/' . $profileName . "/comp";
+      $ref = $path . '/' . $profileName . "/ref";
 
       if (!file_exists($srcDir)) {
         mkdir($srcDir, 0777, TRUE);
@@ -174,10 +174,10 @@ class Runner {
         mkdir($ref, 0777, TRUE);
       }
     } else {
-      $path = $this->imageDir .'/'.$profileName."/src";
+      $path = $this->imageDir . '/' . $profileName . "/src";
     }
 
-    return $this->imageDir .'/'.$profileName."/src";
+    return $this->imageDir . '/' . $profileName . "/src";
   }
 
   private function setExperimentalOption($profile, \ChromeOptions $options) {
@@ -208,13 +208,11 @@ class Runner {
       if ($browserName == 'chrome') {
         $options = new \ChromeOptions();
         $options->addArguments(array(
-          '--disable-web-security',
-        )
-        );
+            '--disable-web-security',
+          ));
         $options->addArguments(array(
-          '--user-data-dir=C:\Users\maren\AppData\Local\Temp',
-        )
-        );
+            '--user-data-dir=C:\Users\maren\AppData\Local\Temp',
+          ));
 
         $options = $this->setExperimentalOption($profile, $options);
         $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
@@ -263,7 +261,6 @@ class Runner {
   }
 
   private function getJs($srcImage) {
-
 
     $srcImage = str_replace('\\', '\\\\', $srcImage);
     $srcImage = str_replace('/', '\\\\', $srcImage);

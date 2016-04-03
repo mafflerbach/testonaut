@@ -5,19 +5,21 @@
 {% set testName = '' %}
 {% set testName = app.result.path %}
 
+
 {% for results in app.result %}
 
-    {% set i = 0 %}
-    {% set step = 0 %}
-    {% for result in results %}
-      <table class="table-bordered">
-      {% for command in result  %}
+
+  {% set test = 1 %}
+  {% set step = 0 %}
+  {% set fail = 0 %}
+
+  {% for result in results %}
+    <table class="table-bordered">
+      {% set i = 0 %}
+      {% for command in result %}
         {% if command.0  != true %}
           {% set buildResult = false %}
-          {% set step = i %}
-          {% set k = i %}
-          {% set stepk = i %}
-
+          {% set fail = i %}
           {% set style = '#fcc' %}
         {% else %}
           {% set style = '#bfb' %}
@@ -28,18 +30,18 @@
           <td>{{ command.2 }}</td>
           <td>{{ command.1 }}</td>
         </tr>
-
+        {% set i=i + 1 %}
       {% endfor %}
-      </table>
-      {% set i=i + 1 %}
-      {% set k = 0 %}
-    {% endfor %}
+      {% set i = 0 %}
+    </table>
+    {% set test=test + 1 %}
+  {% endfor %}
 
 {% endfor %}
 
     {% if buildResult == true %}
       <p>Build: Success</p>
-    {%else%}
+    {% else %}
       <p>Build: Failed <br/>
       In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName }}">{{ testName }}</a>
     {% endif %}

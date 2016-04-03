@@ -67,7 +67,7 @@ class Matrix {
       $summery[$row['browser']]['result'][] = $row['result'];
       $summery[$row['browser']]['run'][] = json_decode($row['run']);
     }
-
+    
     return $summery;
   }
 

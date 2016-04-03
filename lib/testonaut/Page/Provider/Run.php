@@ -200,9 +200,9 @@ class Run implements ControllerProviderInterface {
       } else {
         $profiles = $profile->getByName($this->profile);
       }
-
+      
       $runner = new Runner($profiles, $this->page);
-      $result = $runner->run();
+      $result = $runner->run($tests);
 
       $browserResult = TRUE;
       for($i = 0; $i < count($result); $i++) {
@@ -212,11 +212,11 @@ class Run implements ControllerProviderInterface {
           }
         }
       }
-
+      
       return array(
         'run' => $result,
         'browserResult' => $browserResult,
-        'path' => $tests[0]->getPath()
+        'path' => $tests
       );
 
     } catch (\Exception $e) {
