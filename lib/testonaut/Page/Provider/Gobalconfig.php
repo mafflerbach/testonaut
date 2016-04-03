@@ -146,7 +146,7 @@ class Globalconfig implements ControllerProviderInterface {
     if ($browser == 'chrome') {
       $capabilities['arguments'] = array(
         "--disable-web-security",
-        "--user-data-dir=C:\\Users\\maren\\AppData\\Local\\Temp"
+        "--user-data-dir=".sys_get_temp_dir()
       );
 
       if ($request->request->get('device') != '' &&

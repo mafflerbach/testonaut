@@ -160,7 +160,7 @@ class Runner {
             '--disable-web-security',
           ));
           $options->addArguments(array(
-            '--user-data-dir=C:\Users\maren\AppData\Local\Temp',
+            '--user-data-dir='.sys_get_temp_dir(),
           ));
 
 

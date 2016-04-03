@@ -116,8 +116,10 @@ class Runner {
         $commandResult = $command->runWebDriver($webDriver);
 
         if ($pageConf['screenshots'] == 'step') {
-          $srcImage = $this->getPath($profile) . "/step_".$i.".png";
+          $imageName = "/step_".$i.".png";
+          $srcImage = $this->getPath($profile) .'/'. $imageName;
           $this->takeScreenshot($profile, $webDriver, $srcImage);
+          $this->compare($profile, "step_".$i.".png");
         }
 
       } catch (\Exception $e) {
@@ -134,6 +136,7 @@ class Runner {
       if ($commandStr == 'CaptureEntirePageScreenshot') {
         $srcImage = $this->getPath($profile) . "/" . $command->arg1;
         $this->takeScreenshot($profile, $webDriver, $srcImage);
+        $this->compare($profile, $command->arg1);
       }
 
       if ($commandResult->continue === FALSE) {
@@ -145,6 +148,7 @@ class Runner {
     if ($pageConf['screenshots'] == 'test') {
       $srcImage = $this->getPath($profile) . "/afterTest.png";
       $this->takeScreenshot($profile, $webDriver, $srcImage);
+      $this->compare($profile, 'afterTest.png');
     }
 
     $webDriver->quit();
@@ -152,6 +156,31 @@ class Runner {
     $matrix->writeResult($res, $profile);
 
     return $res;
+  }
+
+  protected function compare($profile, $imgName) {
+
+    $profileName = $this->getProfileName($profile);
+
+    $imageDir = $this->imagePath;
+    $path = $imageDir . '/' . $profileName . "/src/" . $imgName;
+    $pathref = $imageDir . '/' . $profileName. "/ref/" . $imgName;
+    $comp = $imageDir . '/' . $profileName . "/comp/" . $imgName;
+
+    if (file_exists($pathref)) {
+      if (file_exists($comp)) {
+        unlink($comp);
+      }
+      if (class_exists('\\Imagick')) {
+        $compare = new Image();
+
+        return $compare->compare($path, $pathref, $comp);
+      } else {
+        return FALSE;
+      }
+    } else {
+      return FALSE;
+    }
   }
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
@@ -169,8 +198,7 @@ class Runner {
 
   }
 
-  private function getPath($profile) {
-
+  protected function getProfileName($profile) {
     if (isset($profile['browser'])) {
       if (isset($profile['name'])) {
         $profileName = $profile['name'] . '_' . $profile['browser'];
@@ -178,6 +206,12 @@ class Runner {
         $profileName = $profile['browser'] . '_default';
       }
     }
+    return $profileName;
+  }
+
+  private function getPath($profile) {
+
+    $profileName = $this->getProfileName($profile);
 
     if ($this->imageDir != NULL) {
       $path = $this->imageDir;
@@ -232,16 +266,14 @@ class Runner {
             '--disable-web-security',
           ));
         $options->addArguments(array(
-            '--user-data-dir=C:\Users\maren\AppData\Local\Temp',
+            '--user-data-dir='.sys_get_temp_dir(),
           ));
 
         $options = $this->setExperimentalOption($profile, $options);
         $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
       }
 
-      if ($browserName == "MicrosoftEdge") {
-
-      }
+      if ($browserName == "MicrosoftEdge") {}
 
       if ($browserName == 'firefox') {
 

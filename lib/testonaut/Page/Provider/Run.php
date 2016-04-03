@@ -204,6 +204,8 @@ class Run implements ControllerProviderInterface {
       $runner = new Runner($profiles, $this->page);
       $result = $runner->run($tests);
 
+      
+
       $browserResult = TRUE;
       for($i = 0; $i < count($result); $i++) {
         for($k = 0; $k < count($result[$i]); $k++) {
