@@ -20,7 +20,21 @@ The best part of all - it runs on your existing selenium infrastructure.
 
 
 ---------------------------------------
+## Features ##
 
+* using the standard output from selenium IDE
+* Different Browser profiles i.e:
+    * using chrome mobile device emulator
+    * different window width and height
+* automated screenshot comparison
+* automated selenium node recognition
+* simple html wysiwyg
+* possible call via commandline
+* jenkins compatible output
+* build history
+
+
+---------------------------------------
 ##Installation ##
 
 Testonaut is still in beta phases, so there is no absolute brain afk installation. There is also some requirements for the runtime.
