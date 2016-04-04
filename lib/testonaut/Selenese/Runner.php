@@ -20,6 +20,8 @@ use testonaut\Matrix;
 use testonaut\Page;
 use testonaut\Selenese\Command\captureEntirePageScreenshot;
 use testonaut\Selenese\Command\Pause;
+use testonaut\Config;
+
 
 class Runner {
 
@@ -105,7 +107,11 @@ class Runner {
     $pageConf = $page->config();
 
     $capabilities = $this->getCapabilities($profile);
-    $webDriver = \RemoteWebDriver::create("http://localhost:4444/wd/hub", $capabilities, 5000);
+
+    $hub = Config::getInstance()->seleniumHub;
+    $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
+
+
     $webDriver = $this->setDriverOption($webDriver, $profile);
     $i = 0;
     foreach ($test->commands as $command) {
@@ -133,7 +139,7 @@ class Runner {
         $browserResult = FALSE;
       }
 
-      if ($commandStr == 'CaptureEntirePageScreenshot') {
+      if ($commandStr == 'captureEntirePageScreenshot') {
         $srcImage = $this->getPath($profile) . "/" . $command->arg1;
         $this->takeScreenshot($profile, $webDriver, $srcImage);
         $this->compare($profile, $command->arg1);
@@ -162,7 +168,7 @@ class Runner {
 
     $profileName = $this->getProfileName($profile);
 
-    $imageDir = $this->imagePath;
+    $imageDir = $this->imageDir;
     $path = $imageDir . '/' . $profileName . "/src/" . $imgName;
     $pathref = $imageDir . '/' . $profileName. "/ref/" . $imgName;
     $comp = $imageDir . '/' . $profileName . "/comp/" . $imgName;
@@ -315,15 +321,20 @@ class Runner {
 
   private function getJs($srcImage) {
 
-    $srcImage = str_replace('\\', '\\\\', $srcImage);
-    $srcImage = str_replace('/', '\\\\', $srcImage);
+
+if (PATH_SEPARATOR == '\\') {
+        $srcImage = str_replace('\\', '\\\\', $srcImage);
+      } else {
+        $srcImage = str_replace(PATH_SEPARATOR, PATH_SEPARATOR.PATH_SEPARATOR, $srcImage);
+      }
+
 
     $js = "
       setTimeout(function () {
           var d = document;
           var script = d.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://localhost/testonaut/html2canvas.js';
+          script.src = 'https://".$_SERVER['SERVER_ADDR']."/testonaut/html2canvas.js';
           d.getElementsByTagName('head')[0].appendChild(script);
       }, 100);
 
@@ -340,7 +351,7 @@ class Runner {
 
             $.ajax({
                 method: 'POST',
-                url: 'https://localhost/testonaut/server.php',
+                url: 'https://".$_SERVER['SERVER_ADDR']."/testonaut/server.php',
                 xhrFields: {
                     withCredentials: true
                 },

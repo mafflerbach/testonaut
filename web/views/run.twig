@@ -3,8 +3,13 @@
 {% set stepk = 0 %}
 {% set k = 0 %}
 {% set testName = '' %}
-{% set testName = app.result.path %}
 
+
+{% if app.result.0.path is defined %}
+  {% set testName = app.result.0.path %}
+{% else %}
+  {% set testName = app.result.path %}
+{% endif %}
 
 {% for results in app.result %}
 
