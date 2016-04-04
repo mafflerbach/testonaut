@@ -6,14 +6,7 @@
     {{ app.menu|raw }}
   </div>
   <div class="col-xs-12 col-md-9">
-    <div class="contentBox">
-      {% if app.request.lastResult is defined %}
 
-        <div class="lastResult">
-
-        </div>
-      {% endif %}
-    </div>
     <div class="content">
       {{ app.request.content|raw }}
     </div>
@@ -34,12 +27,14 @@
                   <span class="desc">
                     {{ image }}
                   </span>
-                  <a class="copyImage" href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="copyImage"
+                     href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="copy glyphicon glyphicon-ok-sign"
                           data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
                   </a>
-                  <a class="deleteImage" href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="deleteImage"
+                     href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="delete glyphicon glyphicon-remove-sign"
                           data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
@@ -55,7 +50,8 @@
                   <span class="desc">
                     {{ image }}
                   </span>
-                  <a class="deleteImage" href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="deleteImage"
+                     href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="delete glyphicon glyphicon-remove-sign"
                           data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
@@ -70,7 +66,8 @@
                   <span class="desc">
                     {{ image }}
                   </span>
-                  <a class="deleteImage" href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  <a class="deleteImage"
+                     href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
                     <span class="delete glyphicon glyphicon-remove-sign"
                           data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
                     </span>
@@ -84,42 +81,43 @@
     </div>
 
 
-    <div class="suiteResult">
-      <div class="panel">
-        <div class="panel-heading"><h3>Browser Results</h3></div>
+    {% if app.request.lastResult|length  > 0 %}
+      <div class="suiteResult">
+        <div class="panel">
+          <div class="panel-heading"><h3>Browser Results</h3></div>
           <div class="panel-body">
-          {% for key, val  in app.request.lastResult %}
-          <h4>{{ key }}</h4>
-          {% for key, run in val.run %}
-            {% if val.result[key] == true %}
-              {% set pathclass = 'panel-success' %}
-            {% else %}
-              {% set pathclass = 'panel-danger' %}
-            {% endif %}
-            <div class="panel {{ pathclass }}">
-              <div class="panel-heading"><a href="{{ app.request.baseUrl }}/{{ val.path[key] }}">{{ val.path[key] }}</a></div>
-              <div class="panel-body">
-                <ul class="list-group">
-                  {% for step in run %}
-                    {% if step.0 == true %}
-                      {% set class = 'list-group-item-success' %}
-                    {% else %}
-                      {% set class = 'list-group-item-success' %}
-                    {% endif %}
-                    <li class="{{ class }} list-group-item">
-                      {{ step.1 }}
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-
-          {% endfor %}
-        {% endfor %}
+            {% for key, val  in app.request.lastResult %}
+              <h4>{{ key }}</h4>
+              {% for key, run in val.run %}
+                {% if val.result[key] == true %}
+                  {% set pathclass = 'panel-success' %}
+                {% else %}
+                  {% set pathclass = 'panel-danger' %}
+                {% endif %}
+                <div class="panel {{ pathclass }}">
+                  <div class="panel-heading"><a
+                      href="{{ app.request.baseUrl }}/{{ val.path[key] }}">{{ val.path[key] }}</a></div>
+                  <div class="panel-body">
+                    <ul class="list-group">
+                      {% for step in run %}
+                        {% if step.0 == true %}
+                          {% set class = 'list-group-item-success' %}
+                        {% else %}
+                          {% set class = 'list-group-item-success' %}
+                        {% endif %}
+                        <li class="{{ class }} list-group-item">
+                          {{ step.1 }}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       </div>
-    </div>
-
+    {% endif %}
 
     <div class="pulsarbox">
     </div>
@@ -132,7 +130,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"></h4>
       </div>
       <div class="modal-body">
@@ -141,7 +140,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 
 <script type="text/javascript">
@@ -159,7 +157,7 @@
     });
 
     $('.panel-heading').on('click', function () {
-      if($(this).next(':visible').length == 0) {
+      if ($(this).next(':visible').length == 0) {
         $(this).next().slideDown('slow');
       } else {
         $(this).next().slideUp('slow');
@@ -193,23 +191,23 @@
     $.ajax({
       method: "get",
       url: href
-    }).done(function( data) {
+    }).done(function (data) {
       $('.modal-title').empty().append(modalTitle);
       $('.modal-body').empty().append($(data).find('.content'));
       $('#myModal').modal('show');
 
-      $('.backLink').click(function(ev) {
+      $('.backLink').click(function (ev) {
         ev.preventDefault();
         $('#myModal').modal('hide');
       });
 
-      $('.btn-action').click(function(ev) {
+      $('.btn-action').click(function (ev) {
         ev.preventDefault();
 
         $.ajax({
           method: "post",
-          url: href+ending
-        }).done(function( data) {
+          url: href + ending
+        }).done(function (data) {
           $('.modal-body').empty().append($(data).find('.content'));
         });
       });

@@ -1,4 +1,4 @@
-#Welcome by Testonaut#
+#Welcome by Testonaut #
 
 ## In short: ##
 Testonaut is a simple wiki, which you can running selenium test on every selenium node in your infrastructure.
@@ -21,7 +21,7 @@ The best part of all - it runs on your existing selenium infrastructure.
 
 ---------------------------------------
 
-##Installation
+##Installation ##
 
 Testonaut is still in beta phases, so there is no absolute brain afk installation. There is also some requirements for the runtime.
 
@@ -37,7 +37,7 @@ The definition of "app path" defining your subpath on your apache DOCUMENT_ROOT,
 
 ---------------------------------------
 
-##Get Started##
+##Get Started ##
 Testonaut needs a selenium infrastructure. You configure the selenium hub addresse and all tests can be run on your selenium installation.
 Everyone who must working with Integration tests, should install the firefox extension Selenium IDE. It's a capture replay tool for your frontendintegration tests.
 
@@ -50,7 +50,7 @@ After these steps, you can run your test on every selenium node.
 
 ---------------------------------------
 
-##Pagesettings##
+##Pagesettings ##
 There are four types of page types. static, suite, test and project pages.
 * static pages were skipped in test runs.
 * suite pages runs amount of test pages which runs automatically.
@@ -61,12 +61,12 @@ In project and suite pages you can configure node specific base url for every se
 
 This is interesting for paralell test runs.
 
-##Screenshot settings##
+##Screenshot settings ##
 Besides being able to use the command *captureEntirePageScreenshot* at any time, you have opportunity taking screenshot automatically.
 This can be defined  after each test or after every single command.
 
 ---------------------------------------
-##Header and Footer##
+##Header and Footer ##
 
 There are three types of header and footers.
 
@@ -78,12 +78,23 @@ At this point you must look out at the "close command" in included files, otherw
 
 ---------------------------------------
 
-##Running tests
+##Running tests ##
 If you have set your configuration right the single wiki page must be configurate as *test*,*suite* or *project page*.
 After this settings change, you can use the run button on yout wikipage and select your browser flavour.
 
 ---------------------------------------
-## Import your Tests
+##Working with Browserprofiles ##
+
+Testronaut provides the possibility to apply different browser profile. So you can save different settings for each browser.
+#### Firefox / Internet Explorer
+
+You can set different height and width of the browser window.
+#### Chrome
+Chrome has the additional possibility to emulate different mobile devices. (Https://developer.chrome.com/devtools/docs/device-mode)
+The list of supported devices can be selected via drop down menu.
+---------------------------------------
+
+## Import your Tests ##
 
 You can import your existing (html) selenium zip via zip File. Set Your Page as type 'Project'
 
@@ -115,7 +126,7 @@ In the first picture there is also a checkmark. This action allows you to replac
         
 ---------------------------------------
 
-##"Quicksetup"##
+##"Quicksetup" ##
 
 with a bunch of internet explorers on your machine:
 
@@ -146,7 +157,7 @@ After installation from Java and selenium
 
 you should customize the version number and Hub ip ;) 
 
-##Jenkins setup##
+##Jenkins setup ##
 
 You need the HTTP Request Plugin: https://wiki.jenkins-ci.org/display/JENKINS/HTTP+Request+Plugin
 
@@ -172,7 +183,6 @@ Set option "Index page[s]" to index.html
 ---------------------------------------
 
 #planned features....
-##Milestone 1.1 - 1.5
 
 * moooaar commands
 * implementing variables
@@ -182,319 +192,9 @@ Set option "Index page[s]" to index.html
 
 ##modules
 
-* Login bzw tiny usermanagment 
+* Login or tiny usermanagment
 * Pagecrawler for generating a testing tree
 * testgenerator for Equivalence classes analysis
 * checklist for Accessibility (Bitv) (inkl Prio)
 
 ---------------------------------------
-##suported Commands
- 
-* AssertElementNotPresent
-* AssertElementPresent
-* AssertNotBodyText
-* AssertNotText
-* AssertNotTitle
-* AssertText
-* AssertTextNotPresent
-* AssertTextPresent
-* AssertTitle 
-* captureEntirePageScreenshot 
-* click 
-* clickAndWait 
-* close 
-* deleteAllVisibleCookies 
-* open 
-* pause 
-* stubs 
-* title 
-* type 
-* typeKeys 
-* verifyBodyText 
-* verifyElementNotPresent 
-* verifyElementPresent 
-* verifyNotBodyText 
-* verifyNotText 
-* verifyNotTitle 
-* verifyText 
-* verifyTextNotPresent 
-* verifyTextPresent 
-* verifyTitle
-
-##unsuported command yet 
- 
-* addLocationStrategy 
-* addScript 
-* addSelection 
-* allowNativeXpath 
-* altKeyDown 
-* altKeyUp 
-* answerOnNextPrompt 
-* AssertAlert 
-* AssertAlertNotPresent 
-* AssertAlertPresent 
-* AssertAllButtons 
-* AssertAllFields 
-* AssertAllLinks 
-* AssertAllWindowIds 
-* AssertAllWindowNames 
-* AssertAllWindowTitles 
-* AssertAttribute 
-* AssertAttributeFromAllWindows 
-* AssertChecked 
-* AssertConfirmation 
-* AssertConfirmationNotPresent 
-* AssertConfirmationPresent 
-* AssertCookie 
-* AssertCookieByName 
-* AssertCookieNotPresent 
-* AssertCookiePresent 
-* AssertCursorPosition 
-* AssertEditable 
-* AssertElementHeight 
-* AssertElementIndex 
-* AssertElementPositionLeft 
-* AssertElementPositionTop 
-* AssertElementWidth 
-* AssertErrorOnNext 
-* AssertEval 
-* AssertExpression 
-* AssertFailureOnNext 
-* AssertHtmlSource 
-* AssertLocation 
-* AssertMouseSpeed 
-* AssertNotAlert 
-* AssertNotAllButtons 
-* AssertNotAllFields 
-* AssertNotAllLinks 
-* AssertNotAllWindowIds 
-* AssertNotAllWindowNames 
-* AssertNotAllWindowTitles 
-* AssertNotAttribute 
-* AssertNotAttributeFromAllWindows 
-* AssertNotChecked 
-* AssertNotConfirmation 
-* AssertNotCookie 
-* AssertNotCookieByName 
-* AssertNotCursorPosition 
-* AssertNotEditable 
-* AssertNotElementHeight 
-* AssertNotElementIndex 
-* AssertNotElementPositionLeft 
-* AssertNotElementPositionTop 
-* AssertNotElementWidth 
-* AssertNotErrorOnNext 
-* AssertNotEval 
-* AssertNotExpression 
-* AssertNotFailureOnNext 
-* AssertNotHtmlSource 
-* AssertNotLocation 
-* AssertNotMouseSpeed 
-* AssertNotPrompt 
-* AssertNotSelectOptions 
-* AssertNotSelected 
-* AssertNotSelectedId 
-* AssertNotSelectedIds 
-* AssertNotSelectedIndex 
-* AssertNotSelectedIndexes 
-* AssertNotSelectedLabel 
-* AssertNotSelectedLabels 
-* AssertNotSelectedValue 
-* AssertNotSelectedValues 
-* AssertNotSomethingSelected 
-* AssertNotSpeed 
-* AssertNotTable 
-* AssertNotValue 
-* AssertNotVisible 
-* AssertNotWhetherThisFrameMatchFrameExpression 
-* AssertNotWhetherThisWindowMatchWindowExpression 
-* AssertNotXpathCount 
-* AssertPrompt 
-* AssertPromptNotPresent 
-* AssertPromptPresent 
-* AssertSelectOptions 
-* AssertSelected 
-* AssertSelectedId 
-* AssertSelectedIds 
-* AssertSelectedIndex 
-* AssertSelectedIndexes 
-* AssertSelectedLabel 
-* AssertSelectedLabels 
-* AssertSelectedValue 
-* AssertSelectedValues 
-* AssertSomethingSelected 
-* AssertSpeed 
-* AssertTable 
-* AssertValue 
-* AssertVisible 
-* AssertWhetherThisFrameMatchFrameExpression 
-* AssertWhetherThisWindowMatchWindowExpression 
-* AssertXpathCount 
-* assignId 
-* check 
-* chooseCancelOnNextConfirmation 
-* chooseOkOnNextConfirmation 
-* clickAt 
-* confirm 
-* contextMenu 
-* contextMenuAt 
-* controlKeyDown 
-* controlKeyUp 
-* count 
-* createCookie 
-* deleteCookie 
-* deselectPopUp 
-* doubleClick 
-* doubleClickAt 
-* dragAndDrop 
-* dragAndDropToObject 
-* dragdrop 
-* fireEvent 
-* focus 
-* getCurrentWindow 
-* getElementById 
-* goBack 
-* highlight 
-* ignoreAttributesWithoutValue 
-* keyDown 
-* keyPress 
-* keyUp 
-* metaKeyDown 
-* metaKeyUp 
-* mouseDown 
-* mouseDownAt 
-* mouseDownRight 
-* mouseDownRightAt 
-* mouseMove 
-* mouseMoveAt 
-* mouseOut 
-* mouseOver 
-* mouseUp 
-* mouseUpAt 
-* mouseUpRight 
-* mouseUpRightAt 
-* openWindow 
-* prompt 
-* refresh 
-* removeAllSelections 
-* removeScript 
-* removeSelection 
-* rollup 
-* runScript 
-* select 
-* selectFrame 
-* selectPopUp 
-* selectWindow 
-* setBrowserLogLevel 
-* setCursorPosition 
-* setMouseSpeed 
-* setSpeed 
-* setTimeout 
-* shiftKeyDown 
-* shiftKeyUp 
-* sonload 
-* submit 
-* uncheck 
-* useXpathLibrary 
-* verifyAlert 
-* verifyAlertNotPresent 
-* verifyAlertPresent 
-* verifyAllButtons 
-* verifyAllFields 
-* verifyAllLinks 
-* verifyAllWindowIds 
-* verifyAllWindowNames 
-* verifyAllWindowTitles 
-* verifyAttribute 
-* verifyAttributeFromAllWindows 
-* verifyChecked 
-* verifyConfirmation 
-* verifyConfirmationNotPresent 
-* verifyConfirmationPresent 
-* verifyCookie 
-* verifyCookieByName 
-* verifyCookieNotPresent 
-* verifyCookiePresent 
-* verifyCursorPosition 
-* verifyEditable 
-* verifyElementHeight 
-* verifyElementIndex 
-* verifyElementPositionLeft 
-* verifyElementPositionTop 
-* verifyElementWidth 
-* verifyErrorOnNext 
-* verifyEval 
-* verifyExpression 
-* verifyFailureOnNext 
-* verifyHtmlSource 
-* verifyLocation 
-* verifyMouseSpeed 
-* verifyNotAlert 
-* verifyNotAllButtons 
-* verifyNotAllFields 
-* verifyNotAllLinks 
-* verifyNotAllWindowIds 
-* verifyNotAllWindowNames 
-* verifyNotAllWindowTitles 
-* verifyNotAttribute 
-* verifyNotAttributeFromAllWindows 
-* verifyNotChecked 
-* verifyNotConfirmation 
-* verifyNotCookie 
-* verifyNotCookieByName 
-* verifyNotCursorPosition 
-* verifyNotEditable 
-* verifyNotElementHeight 
-* verifyNotElementIndex 
-* verifyNotElementPositionLeft 
-* verifyNotElementPositionTop 
-* verifyNotElementWidth 
-* verifyNotErrorOnNext 
-* verifyNotEval 
-* verifyNotExpression 
-* verifyNotFailureOnNext 
-* verifyNotHtmlSource 
-* verifyNotLocation 
-* verifyNotMouseSpeed 
-* verifyNotPrompt 
-* verifyNotSelectOptions 
-* verifyNotSelected 
-* verifyNotSelectedId 
-* verifyNotSelectedIds 
-* verifyNotSelectedIndex 
-* verifyNotSelectedIndexes 
-* verifyNotSelectedLabel 
-* verifyNotSelectedLabels 
-* verifyNotSelectedValue 
-* verifyNotSelectedValues 
-* verifyNotSomethingSelected 
-* verifyNotSpeed 
-* verifyNotTable 
-* verifyNotValue 
-* verifyNotVisible 
-* verifyNotWhetherThisFrameMatchFrameExpression 
-* verifyNotWhetherThisWindowMatchWindowExpression 
-* verifyNotXpathCount 
-* verifyPrompt 
-* verifyPromptNotPresent 
-* verifyPromptPresent 
-* verifySelectOptions 
-* verifySelected 
-* verifySelectedId 
-* verifySelectedIds 
-* verifySelectedIndex 
-* verifySelectedIndexes 
-* verifySelectedLabel 
-* verifySelectedLabels 
-* verifySelectedValue 
-* verifySelectedValues 
-* verifySomethingSelected 
-* verifySpeed 
-* verifyTable 
-* verifyValue 
-* verifyVisible 
-* verifyWhetherThisFrameMatchFrameExpression 
-* verifyWhetherThisWindowMatchWindowExpression 
-* verifyXpathCount 
-* windowFocus 
-* windowMaximize
