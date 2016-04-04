@@ -92,6 +92,7 @@ You can set different height and width of the browser window.
 #### Chrome
 Chrome has the additional possibility to emulate different mobile devices. (Https://developer.chrome.com/devtools/docs/device-mode)
 The list of supported devices can be selected via drop down menu.
+
 ---------------------------------------
 
 ## Import your Tests ##
