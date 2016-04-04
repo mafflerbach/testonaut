@@ -2,10 +2,10 @@
 {% include 'headNavi.twig' %}
 
 <div class="row">
-  <div class="col-xs-6 col-md-3">
+  <div class="col-xs-6 col-md-2">
     {{ app.menu|raw }}
   </div>
-  <div class="col-xs-12 col-md-9">
+  <div class="col-xs-6 col-md-8">
 
     <div class="content">
       {{ app.request.content|raw }}
@@ -22,7 +22,6 @@
                 <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
                   <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
                 </a>
-
                 <span class="ops">
                   <span class="desc">
                     {{ image }}
@@ -40,9 +39,7 @@
                     </span>
                   </a>
                 </span>
-
               </div>
-
               <div class="image">
                 <a href="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}">
                   <img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></a>
@@ -79,7 +76,8 @@
         {% endfor %}
       {% endif %}
     </div>
-
+  </div>
+  <div class="col-xs-6 col-md-2">
 
     {% if app.request.lastResult|length  > 0 %}
       <div class="suiteResult">
