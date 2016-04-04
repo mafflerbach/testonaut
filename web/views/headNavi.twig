@@ -81,7 +81,6 @@
                                  data-path="{{ app.request.path }}"
                                  data-browser="{{ browser.name }}"
                                  class="run-test">{{ browser.name }} <span class="label label-default">{{ browser.browser }}</span></a>
-
                             {% endif %}
                           </li>
                         {% endfor %}
@@ -117,7 +116,10 @@
                        data-path="{{ app.request.path }}">Import</a>
                   </li>
                 {% endif %}
-
+                <li>
+                  <a href="{{ app.request.baseUrl }}/screenshot/{{ app.request.path }}"
+                     data-path="{{ app.request.path }}">screenshot</a>
+                </li>
               {% else %}
                 {% if app.request.type is not defined or app.request.type is null %}
                   <li>

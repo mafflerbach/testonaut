@@ -35,7 +35,6 @@ class History implements ControllerProviderInterface {
     $edit->get('/', function (Request $request, $path) use ($app) {
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
-
       
       if ($request->query->get('delete')) {
         $this->deleteHistory($request);

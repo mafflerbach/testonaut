@@ -72,6 +72,7 @@ $app->mount('/import/{path}', new testonaut\Page\Provider\Import());
 $app->mount('/globalconfig/', new testonaut\Page\Provider\Globalconfig());
 $app->mount('/edit/{path}', new testonaut\Page\Provider\Edit());
 $app->mount('/history/{path}', new testonaut\Page\Provider\History());
+$app->mount('/screenshot/{path}', new testonaut\Page\Provider\Screenshot());
 $app->mount('/config/{path}', new testonaut\Page\Provider\Config());
 $app->mount('/delete/{path}', new testonaut\Page\Provider\Delete());
 $app->mount('/run/{path}', new testonaut\Page\Provider\Run());

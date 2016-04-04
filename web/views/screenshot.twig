@@ -1,0 +1,139 @@
+{% include 'head.twig' %}
+{% include 'headNavi.twig' %}
+
+
+<div class="screens">
+  {% if app.request.images is defined %}
+    {% for key, val  in app.request.images %}
+
+      <h4 id="{{ key }}">{{ key }}</h4>
+      {% for image in val.src %}
+        <div class="compare">
+          <div class="image">
+            <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
+              <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
+            </a>
+                <span class="ops">
+                  <span class="desc">
+                    {{ image }}
+                  </span>
+                  <a class="copyImage"
+                     href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="copy glyphicon glyphicon-ok-sign"
+                          data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                  <a class="deleteImage"
+                     href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="delete glyphicon glyphicon-remove-sign"
+                          data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                </span>
+          </div>
+          <div class="image">
+            <a href="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}">
+              <img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></a>
+                <span class="ops">
+                  <span class="desc">
+                    {{ image }}
+                  </span>
+                  <a class="deleteImage"
+                     href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="delete glyphicon glyphicon-remove-sign"
+                          data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                </span>
+          </div>
+
+          <div class="image">
+            <a href="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}">
+              <img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></a>
+                <span class="ops">
+                  <span class="desc">
+                    {{ image }}
+                  </span>
+                  <a class="deleteImage"
+                     href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    <span class="delete glyphicon glyphicon-remove-sign"
+                          data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
+                    </span>
+                  </a>
+                </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.copyImage').click(function (e) {
+      e.preventDefault();
+
+      var href = $(this).attr('href');
+      modalHandling(href, "Copy Image", '');
+    });
+
+    $('.deleteImage').click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      modalHandling(href, "Delete Image", '');
+    });
+
+    $("a[data-action='delete']").click(function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      modalHandling(href, "Delete Page", "/");
+    });
+
+  });
+
+  function modalHandling(href, modalTitle, ending) {
+    $.ajax({
+      method: "get",
+      url: href
+    }).done(function (data) {
+      $('.modal-title').empty().append(modalTitle);
+      $('.modal-body').empty().append($(data).find('.content'));
+      $('#myModal').modal('show');
+
+      $('.backLink').click(function (ev) {
+        ev.preventDefault();
+        $('#myModal').modal('hide');
+      });
+
+      $('.btn-action').click(function (ev) {
+        ev.preventDefault();
+
+        $.ajax({
+          method: "post",
+          url: href + ending
+        }).done(function (data) {
+          $('.modal-body').empty().append($(data).find('.content'));
+        });
+      });
+    });
+  }
+
+</script>
+
+
+{% include 'footer.twig' %}
