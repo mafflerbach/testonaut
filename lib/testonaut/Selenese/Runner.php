@@ -322,12 +322,12 @@ class Runner {
   private function getJs($srcImage) {
 
 
-if (PATH_SEPARATOR == '\\') {
-        $srcImage = str_replace('\\', '\\\\', $srcImage);
-      } else {
-        $srcImage = str_replace(PATH_SEPARATOR, PATH_SEPARATOR.PATH_SEPARATOR, $srcImage);
-      }
-
+    if (DIRECTORY_SEPARATOR == '\\') {
+      $srcImage = str_replace('\\', '\\\\', $srcImage);
+      $srcImage = str_replace('/', '\\\\', $srcImage);
+    } else {
+      $srcImage = str_replace(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, $srcImage);
+    }
 
     $js = "
       setTimeout(function () {
