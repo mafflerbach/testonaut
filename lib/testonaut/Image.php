@@ -24,11 +24,15 @@ class Image {
       $imageRef = new \Imagick($image2);
 
       $result = $imageSrc->compareImages($imageRef, \Imagick::METRIC_MEANSQUAREERROR);
-      
+
       if (isset($result[0])) {
         $result[0]->setImageFormat("png");
         if (file_put_contents($resultImg, $result[0])) {
-          return TRUE;
+          if ($result[1] == 0) {
+            return TRUE;
+          }
+          return FALSE;
+
         } else {
           return FALSE;
         }

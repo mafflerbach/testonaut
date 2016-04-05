@@ -62,9 +62,16 @@ class Db {
         "arguments" TEXT,
         "capabilities" TEXT );';
 
+    $imageCompare = 'CREATE TABLE "imageCompare" (
+        "date" TEXT,
+        "path" TEXT,
+        "result" TEXT,
+        "images" TEXT);';
+
     $this->dbInstance->query($files);
     $this->dbInstance->query($profile);
     $this->dbInstance->query($history);
+    $this->dbInstance->query($imageCompare);
   }
   
   public function getInstance() {

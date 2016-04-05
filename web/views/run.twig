@@ -42,10 +42,9 @@
   {% endfor %}
 
 {% endfor %}
-
     {% if buildResult == true %}
       <p>Build: Success</p>
     {% else %}
       <p>Build: Failed <br/>
-      In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName }}">{{ testName }}</a>
+      In Test <a href="http://{{ app.request.host }}{{ app.request.baseUrl }}/{{ testName.0.path }}">{{ testName.0.path }}</a>
     {% endif %}

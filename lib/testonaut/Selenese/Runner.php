@@ -105,12 +105,11 @@ class Runner {
   protected function _run($test, $profile, Page $page) {
     $this->imageDir = $page->getImagePath();
     $pageConf = $page->config();
-
+    $res = array();
     $capabilities = $this->getCapabilities($profile);
 
     $hub = Config::getInstance()->seleniumHub;
     $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
-
 
     $webDriver = $this->setDriverOption($webDriver, $profile);
     $i = 0;
@@ -125,7 +124,8 @@ class Runner {
           $imageName = "/step_".$i.".png";
           $srcImage = $this->getPath($profile) .'/'. $imageName;
           $this->takeScreenshot($profile, $webDriver, $srcImage);
-          $this->compare($profile, "step_".$i.".png");
+          $compare = $this->compare($profile, $imageName, $page->getPath());
+          $res = $this->compareResult($compare, $res, "step_".$i.".png");
         }
 
       } catch (\Exception $e) {
@@ -142,7 +142,9 @@ class Runner {
       if ($commandStr == 'captureEntirePageScreenshot') {
         $srcImage = $this->getPath($profile) . "/" . $command->arg1;
         $this->takeScreenshot($profile, $webDriver, $srcImage);
-        $this->compare($profile, $command->arg1);
+        $compare = $this->compare($profile, $command->arg1, $page->getPath());
+
+        $res = $this->compareResult($compare, $res, $command->arg1);
       }
 
       if ($commandResult->continue === FALSE) {
@@ -154,7 +156,9 @@ class Runner {
     if ($pageConf['screenshots'] == 'test') {
       $srcImage = $this->getPath($profile) . "/afterTest.png";
       $this->takeScreenshot($profile, $webDriver, $srcImage);
-      $this->compare($profile, 'afterTest.png');
+      $compare = $this->compare($profile, 'afterTest.png', $page->getPath());
+
+      $res = $this->compareResult($compare, $res, 'afterTest.png');
     }
 
     $webDriver->quit();
@@ -164,7 +168,16 @@ class Runner {
     return $res;
   }
 
-  protected function compare($profile, $imgName) {
+  private function compareResult($compare, $res, $imageName) {
+    if ($compare) {
+      $res[] = array(TRUE, 'Compare Image '.$imageName, 'Compare Success');
+    } else {
+      $res[] = array(FALSE, 'Compare Images'.$imageName, 'Compare Fail');
+    }
+    return $res;
+  }
+
+  protected function compare($profile, $imgName, $pagePath) {
 
     $profileName = $this->getProfileName($profile);
 
@@ -180,14 +193,38 @@ class Runner {
       if (class_exists('\\Imagick')) {
         $compare = new Image();
 
-        return $compare->compare($path, $pathref, $comp);
+        $result = $compare->compare($path, $pathref, $comp);
       } else {
-        return FALSE;
+        $result = FALSE;
       }
     } else {
-      return FALSE;
+      $result = FALSE;
     }
+
+    $this->writeCompareToDb($pagePath,$path, $pathref, $comp, $result);
+
+    return $result;
+
   }
+
+  private function writeCompareToDb($path,$src, $pathref, $comp, $result) {
+    $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
+    $this->db = $db->getInstance();
+
+    $date = new \DateTime();
+    $isoDate = $date->format(\DateTime::ISO8601);
+    $images = json_encode(array($src, $pathref, $comp));
+
+    $sql = "insert into imageCompare (date, path, result, images) values (:date, :path, :result, :images)";
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':date', $isoDate);
+    $stm->bindParam(':path', $path);
+    $stm->bindParam(':result', $result);
+    $stm->bindParam(':images', $images);
+    $stm->execute();
+
+  }
+
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
     if ($profile['browser'] == "internet explorer") {
@@ -199,7 +236,7 @@ class Runner {
     }
 
     $pause = new Command\Pause();
-    $pause->arg1 = 2000;
+    $pause->arg1 = 4000;
     $pause->runWebDriver($webDriver);
 
   }

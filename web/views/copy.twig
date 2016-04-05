@@ -4,7 +4,7 @@
   {% if app.request.message is defined %}
     <p>{{ app.request.message }}</p>
 
-    <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+    <a href="{{ app.request.baseUrl }}/screenshot/{{ app.request.path }}"
        class="backLink  btn-link">Zurück</a>
   {% else %}
 
@@ -17,7 +17,7 @@
              value="Ja"
              name="copy"
              class="btn btn-primary btn-action"/>
-      <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
+      <a href="{{ app.request.baseUrl }}/screenshot/{{ app.request.path }}"
          class="backLink btn  btn-link">Abbrechen</a>
     </form>
   {% endif %}
