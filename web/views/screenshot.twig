@@ -1,71 +1,70 @@
 {% include 'head.twig' %}
 {% include 'headNavi.twig' %}
 
+<div class="contentBox">
+  <div class="content">
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <button type="button" class="btn btn-primary">All</button>
+          <button type="button" class="btn btn-success">Success</button>
+          <button type="button" class="btn btn-danger">Failed</button>
+      </div>
+    </div>
 
-<div class="screens">
-  {% if app.request.images is defined %}
-    {% for key, val  in app.request.images %}
+    <div class="screens">
+      {% if app.request.images is defined %}
+        {% for key, val  in app.request.images %}
+          {% if val.result == 0 %}
+            {% set class = 'fail' %}
+          {% else %}
+            {% set class = 'success' %}
+          {% endif %}
 
-      <h4 id="{{ key }}">{{ key }}</h4>
-      {% for image in val.src %}
-        <div class="compare">
-          <div class="image">
-            <a href="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}">
-              <img src="{{ app.request.imagePath }}/{{ key }}/src/{{ image }}"/>
-            </a>
+
+          <div class="compare {{ class }}">
+            {% for key, image in val.webpath %}
+              {% if key == 0 %}
+                {% set src = 'src' %}
+              {% elseif key == 1 %}
+                {% set src = 'ref' %}
+              {% else %}
+                {% set src = 'comp' %}
+              {% endif %}
+              <div class="image">
+                <a href="{{ image }}">
+                  <img src="{{ image }}" onerror="imgError(this);"/></a>
                 <span class="ops">
                   <span class="desc">
-                    {{ image }}
+                    {{ val.imageName }}
+                    {% if key == 0 %}
+                      <a href="{{ app.request.baseUrl }}/screenshot/{{ val.path }}">
+                      <span class="glyphicon glyphicon-link pagelink">
+                    </span>
+                      </a>
+                    {% endif %}
                   </span>
-                  <a class="copyImage"
-                     href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                  {% if key == 0 %}
+                    <a class="copyImage"
+                       href="{{ app.request.baseUrl }}/image/copy/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
                     <span class="copy glyphicon glyphicon-ok-sign"
-                          data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ image }}/{{ app.request.path }}">
+                          data-link="{{ app.request.baseUrl }}/image/copy/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
                     </span>
-                  </a>
+                    </a>
+                  {% endif %}
                   <a class="deleteImage"
-                     href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                     href="{{ app.request.baseUrl }}/image/delete/{{ src }}/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
                     <span class="delete glyphicon glyphicon-remove-sign"
-                          data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ image }}/{{ app.request.path }}">
+                          data-link="{{ app.request.baseUrl }}/image/delete/{{ src }}/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
                     </span>
                   </a>
                 </span>
+              </div>
+            {% endfor %}
           </div>
-          <div class="image">
-            <a href="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}">
-              <img src="{{ app.request.imagePath }}/{{ key }}/ref/{{ image }}"/></a>
-                <span class="ops">
-                  <span class="desc">
-                    {{ image }}
-                  </span>
-                  <a class="deleteImage"
-                     href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
-                    <span class="delete glyphicon glyphicon-remove-sign"
-                          data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ image }}/{{ app.request.path }}">
-                    </span>
-                  </a>
-                </span>
-          </div>
-
-          <div class="image">
-            <a href="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}">
-              <img src="{{ app.request.imagePath }}/{{ key }}/comp/{{ image }}"/></a>
-                <span class="ops">
-                  <span class="desc">
-                    {{ image }}
-                  </span>
-                  <a class="deleteImage"
-                     href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
-                    <span class="delete glyphicon glyphicon-remove-sign"
-                          data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ image }}/{{ app.request.path }}">
-                    </span>
-                  </a>
-                </span>
-          </div>
-        </div>
-      {% endfor %}
-    {% endfor %}
-  {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
@@ -104,7 +103,31 @@
       modalHandling(href, "Delete Page", "/");
     });
 
+    $('.btn-primary').click(function(){
+      $('.btn').removeClass('active');
+      $(this).addClass('active');
+      $('.compare').show();
+    });
+    $('.btn-success').click(function(){
+      $('.btn').removeClass('active');
+      $(this).addClass('active');
+      $('.compare.success').show();
+      $('.compare:not(.success)').hide();
+    });
+    $('.btn-danger').click(function(){
+      $('.btn').removeClass('active');
+      $(this).addClass('active');
+      $('.compare.fail').show();
+      $('.compare:not(.fail)').hide();
+    });
   });
+
+
+  function imgError(image) {
+    console.log($(image).parents('div.image').hide());
+    image.onerror = "";
+    return true;
+  }
 
   function modalHandling(href, modalTitle, ending) {
     $.ajax({

@@ -15,12 +15,14 @@
 namespace testonaut\Selenese;
 
 use testonaut\Capabilities;
+use testonaut\Compare;
 use testonaut\Image;
 use testonaut\Matrix;
 use testonaut\Page;
 use testonaut\Selenese\Command\captureEntirePageScreenshot;
 use testonaut\Selenese\Command\Pause;
 use testonaut\Config;
+use testonaut\Utils\Javascript;
 
 
 class Runner {
@@ -110,6 +112,9 @@ class Runner {
 
     $hub = Config::getInstance()->seleniumHub;
     $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
+    $javascript = new Javascript($webDriver);
+    $javascript->invokeHtml2Canvas();
+    $javascript->invokeNanoajax();
 
     $webDriver = $this->setDriverOption($webDriver, $profile);
     $i = 0;
@@ -121,11 +126,13 @@ class Runner {
         $commandResult = $command->runWebDriver($webDriver);
 
         if ($pageConf['screenshots'] == 'step') {
-          $imageName = "/step_".$i.".png";
+          $imageName = "step_".$i.".png";
           $srcImage = $this->getPath($profile) .'/'. $imageName;
           $this->takeScreenshot($profile, $webDriver, $srcImage);
-          $compare = $this->compare($profile, $imageName, $page->getPath());
-          $res = $this->compareResult($compare, $res, "step_".$i.".png");
+
+          $compareObj = new Compare();
+          $compare = $compareObj->compare($profile, $imageName, $page->getPath(), $this->imageDir);
+          $res = $compareObj->compareResult($compare, $res, "step_".$i.".png");
         }
 
       } catch (\Exception $e) {
@@ -142,9 +149,10 @@ class Runner {
       if ($commandStr == 'captureEntirePageScreenshot') {
         $srcImage = $this->getPath($profile) . "/" . $command->arg1;
         $this->takeScreenshot($profile, $webDriver, $srcImage);
-        $compare = $this->compare($profile, $command->arg1, $page->getPath());
 
-        $res = $this->compareResult($compare, $res, $command->arg1);
+        $compareObj = new Compare();
+        $compare = $compareObj->compare($profile, $command->arg1, $page->getPath(), $this->imageDir );
+        $res = $compareObj->compareResult($compare, $res, $command->arg1);
       }
 
       if ($commandResult->continue === FALSE) {
@@ -156,9 +164,10 @@ class Runner {
     if ($pageConf['screenshots'] == 'test') {
       $srcImage = $this->getPath($profile) . "/afterTest.png";
       $this->takeScreenshot($profile, $webDriver, $srcImage);
-      $compare = $this->compare($profile, 'afterTest.png', $page->getPath());
 
-      $res = $this->compareResult($compare, $res, 'afterTest.png');
+      $compareObj = new Compare();
+      $compare = $compareObj->compare($profile, 'afterTest.png', $page->getPath(), $this->imageDir);
+      $res = $compareObj->compareResult($compare, $res, 'afterTest.png');
     }
 
     $webDriver->quit();
@@ -168,71 +177,14 @@ class Runner {
     return $res;
   }
 
-  private function compareResult($compare, $res, $imageName) {
-    if ($compare) {
-      $res[] = array(TRUE, 'Compare Image '.$imageName, 'Compare Success');
-    } else {
-      $res[] = array(FALSE, 'Compare Images'.$imageName, 'Compare Fail');
-    }
-    return $res;
-  }
-
-  protected function compare($profile, $imgName, $pagePath) {
-
-    $profileName = $this->getProfileName($profile);
-
-    $imageDir = $this->imageDir;
-    $path = $imageDir . '/' . $profileName . "/src/" . $imgName;
-    $pathref = $imageDir . '/' . $profileName. "/ref/" . $imgName;
-    $comp = $imageDir . '/' . $profileName . "/comp/" . $imgName;
-
-    if (file_exists($pathref)) {
-      if (file_exists($comp)) {
-        unlink($comp);
-      }
-      if (class_exists('\\Imagick')) {
-        $compare = new Image();
-
-        $result = $compare->compare($path, $pathref, $comp);
-      } else {
-        $result = FALSE;
-      }
-    } else {
-      $result = FALSE;
-    }
-
-    $this->writeCompareToDb($pagePath,$path, $pathref, $comp, $result);
-
-    return $result;
-
-  }
-
-  private function writeCompareToDb($path,$src, $pathref, $comp, $result) {
-    $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
-    $this->db = $db->getInstance();
-
-    $date = new \DateTime();
-    $isoDate = $date->format(\DateTime::ISO8601);
-    $images = json_encode(array($src, $pathref, $comp));
-
-    $sql = "insert into imageCompare (date, path, result, images) values (:date, :path, :result, :images)";
-    $stm = $this->db->prepare($sql);
-    $stm->bindParam(':date', $isoDate);
-    $stm->bindParam(':path', $path);
-    $stm->bindParam(':result', $result);
-    $stm->bindParam(':images', $images);
-    $stm->execute();
-
-  }
-
-
   private function takeScreenshot($profile, $webDriver, $srcImage) {
     if ($profile['browser'] == "internet explorer") {
       $screenCommand = new CaptureEntirePageScreenshot();
       $screenCommand->arg1 = $srcImage;
       $screenCommand->runWebDriver($webDriver);
     } else {
-      $webDriver->executeScript($this->getJs($srcImage), array());
+      $javascript = new Javascript($webDriver);
+      $javascript->invokeTakeScreenshot($srcImage);
     }
 
     $pause = new Command\Pause();
@@ -356,49 +308,4 @@ class Runner {
     return $browserName;
   }
 
-  private function getJs($srcImage) {
-
-
-    if (DIRECTORY_SEPARATOR == '\\') {
-      $srcImage = str_replace('\\', '\\\\', $srcImage);
-      $srcImage = str_replace('/', '\\\\', $srcImage);
-    } else {
-      $srcImage = str_replace(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, $srcImage);
-    }
-
-    $js = "
-      setTimeout(function () {
-          var d = document;
-          var script = d.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://".$_SERVER['SERVER_ADDR']."/testonaut/html2canvas.js';
-          d.getElementsByTagName('head')[0].appendChild(script);
-      }, 100);
-
-      setTimeout(function () {
-          var d = document;
-          var script = d.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
-          d.getElementsByTagName('head')[0].appendChild(script);
-      }, 100);
-      setTimeout(function () {
-        html2canvas(document.html, {
-          onrendered: function(canvas) {
-
-            $.ajax({
-                method: 'POST',
-                url: 'https://".$_SERVER['SERVER_ADDR']."/testonaut/server.php',
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: { canvas: canvas.toDataURL('image/png'), path:'" . $srcImage . "'}
-            })
-            .done(function( msg ) {
-            console.log(msg);
-            });
-          }})}, 500);";
-
-    return $js;
-  }
 }

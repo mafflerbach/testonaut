@@ -66,6 +66,9 @@ class Db {
         "date" TEXT,
         "path" TEXT,
         "result" TEXT,
+        "webpath" TEXT,
+        "profile" TEXT,
+        "imageName" TEXT,
         "images" TEXT);';
 
     $this->dbInstance->query($files);

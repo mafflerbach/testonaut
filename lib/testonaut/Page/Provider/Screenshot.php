@@ -14,6 +14,7 @@
 
 namespace testonaut\Page\Provider;
 
+use testonaut\Compare;
 use testonaut\Page\Base;
 use testonaut\Page\Breadcrumb;
 use testonaut\Settings\Browser;
@@ -41,7 +42,17 @@ class Screenshot implements ControllerProviderInterface {
     $config->get('/', function (Request $request, $path) use ($app) {
 
       $page = new \testonaut\Page($path);
-      $images = $page->getImages();
+
+      $compare = new Compare();
+
+      $conf = $page->config();
+
+      if ($conf['type'] == 'project' || $conf['type'] == 'suite') {
+        $images = $compare->getComparedImages($path, true);
+      } else {
+        $images = $compare->getComparedImages($path);
+      }
+
       $root = \testonaut\Config::getInstance()->Path;
       $this->path = $path;
 

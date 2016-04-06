@@ -4,9 +4,7 @@
   <div class="content">
     
     {% if app.request.message is defined %}
-  
     <div class="alert alert-info" role="alert">{{ app.request.message }}</div>
-    
     {% endif %}
     <form action=""
           method="POST">
@@ -97,7 +95,6 @@
       <br/>
       <br/>
       <br/>
-
       <input type="submit"
              name="action"
              value="save"
