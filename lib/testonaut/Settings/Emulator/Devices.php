@@ -14,11 +14,26 @@
 
 namespace testonaut\Settings\Emulator;
 class Devices {
-  public static $devices = array(
-    "Google_Nexus_4" => "Google Nexus 4",
-    "Google_Nexus_5" => "Google Nexus 5",
-    "Google_Nexus_6" => "Google Nexus 6",
-    "Google_Nexus_7" => "Google Nexus 7",
-    "Google_Nexus_10" => "Google Nexus 10",
-  );
+  protected $devices = array();
+
+  public function __construct() {
+    $this->fetchDeviceJson();
+  }
+
+  public function getDevices() {
+    return $this->devices;
+  }
+
+  protected function fetchDeviceJson() {
+    $url = "https://src.chromium.org/blink/trunk/Source/devtools/front_end/emulated_devices/module.json";
+    $module = file_get_contents($url);
+
+    $moduleArray = json_decode($module, true);
+
+    for($i = 0; $i < count($moduleArray['extensions']); $i++) {
+      $this->devices[str_replace(' ', '_', $moduleArray['extensions'][$i]['device']['title'])] = $moduleArray['extensions'][$i]['device']['title'];
+    }
+  }
+
+
 }

@@ -77,7 +77,7 @@ class Matrix {
    */
   public function writeResult($content, $capabilities) {
 
-    if ($capabilities['platform'] != '') {
+    if (isset($capabilities['platform'])) {
       $browser = $capabilities['platform'] ."_";
     } else {
       $browser = "";
@@ -89,7 +89,7 @@ class Matrix {
       $browser .= $capabilities['browser'] ;
     }
 
-    if ($capabilities['version'] != '') {
+    if (isset($capabilities['version'])) {
       $browser .= "_".$capabilities['version'];
     }
 

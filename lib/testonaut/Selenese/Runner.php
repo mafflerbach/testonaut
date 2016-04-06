@@ -112,18 +112,26 @@ class Runner {
 
     $hub = Config::getInstance()->seleniumHub;
     $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
-    $javascript = new Javascript($webDriver);
-    $javascript->invokeHtml2Canvas();
-    $javascript->invokeNanoajax();
+
 
     $webDriver = $this->setDriverOption($webDriver, $profile);
+    $javascript = new Javascript($webDriver);
+   // $javascript->invokeHtml2Canvas();
+   // $javascript->invokeNanoajax();
+
     $i = 0;
     foreach ($test->commands as $command) {
 
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
       $commandStr = str_replace(' ', '', $commandStr);
       try {
+
         $commandResult = $command->runWebDriver($webDriver);
+
+        if($i == 0) {
+          $javascript->invokeHtml2Canvas();
+          $javascript->invokeNanoajax();
+        }
 
         if ($pageConf['screenshots'] == 'step') {
           $imageName = "step_".$i.".png";
@@ -178,19 +186,19 @@ class Runner {
   }
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
+    $pause = new Command\Pause();
+    $pause->arg1 = 5000;
+    $pause->runWebDriver($webDriver);
+
     if ($profile['browser'] == "internet explorer") {
       $screenCommand = new CaptureEntirePageScreenshot();
       $screenCommand->arg1 = $srcImage;
       $screenCommand->runWebDriver($webDriver);
     } else {
+
       $javascript = new Javascript($webDriver);
       $javascript->invokeTakeScreenshot($srcImage);
     }
-
-    $pause = new Command\Pause();
-    $pause->arg1 = 4000;
-    $pause->runWebDriver($webDriver);
-
   }
 
   protected function getProfileName($profile) {

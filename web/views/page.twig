@@ -2,16 +2,15 @@
 {% include 'headNavi.twig' %}
 
 <div class="row">
-  <div class="col-xs-6 col-md-2">
+  <div class="col-xs-3 col-md-2">
     {{ app.menu|raw }}
   </div>
   <div class="col-xs-6 col-md-8">
-
     <div class="content">
       {{ app.request.content|raw }}
     </div>
   </div>
-  <div class="col-xs-6 col-md-2">
+  <div class="col-xs-3 col-md-2">
 
     {% if app.request.lastResult|length  > 0 %}
       <div class="suiteResult">

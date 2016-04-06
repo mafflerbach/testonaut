@@ -27,17 +27,21 @@ class Javascript {
    *
    */
   public function invokeHtml2Canvas() {
-    $js = "
+
+    $js = " 
       setTimeout(function () {
           var d = document;
           var script = d.createElement('script');
           script.type = 'text/javascript';
           script.src = 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/html2canvas.js';
           d.getElementsByTagName('head')[0].appendChild(script);
-      }, 100);
+    
+      }, 1000);
      ";
 
     $this->webDriver->executeScript($js, array());
+
+    return $this->webDriver;
 
 
   }
@@ -54,16 +58,17 @@ class Javascript {
           script.type = 'text/javascript';
           script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
           d.getElementsByTagName('head')[0].appendChild(script);
-      }, 100);
+          
+      }, 1000);
     ";
     $this->webDriver->executeScript($js, array());
+    return $this->webDriver;
   }
 
   /**
    * @param $srcImage
    */
   public function invokeTakeScreenshot($srcImage) {
-
     if (DIRECTORY_SEPARATOR == '\\') {
       $srcImage = str_replace('\\', '\\\\', $srcImage);
       $srcImage = str_replace('/', '\\\\', $srcImage);
@@ -88,9 +93,10 @@ class Javascript {
             });
           }
         })
-      }, 500);";
+      }, 1500);";
 
     $this->webDriver->executeScript($js, array());
+    return $this->webDriver;
   }
 
 }

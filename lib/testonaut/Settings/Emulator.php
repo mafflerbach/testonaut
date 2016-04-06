@@ -17,16 +17,11 @@ namespace testonaut\Settings;
 use testonaut\Settings\Emulator\Devices;
 
 class Emulator {
-
-
-  public function __construct() {
-
-
-  }
-
+  public function __construct() {}
 
   public function getDevices() {
-    return Devices::$devices;
+    $devices = new Devices();
+    return $devices->getDevices();
   }
 
 }
