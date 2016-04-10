@@ -21,7 +21,7 @@
                      name="appPath"
                      aria-label="FOOOO"
                      id="appPath"
-                >
+              >
             </label>
           </div>
           <div>
@@ -34,7 +34,7 @@
                      value="{{ app.request.settings.seleniumAddress }}"
                      name="seleniumAddress"
                      id="selAddr"
-                >
+              >
             </label>
           </div>
 
@@ -67,7 +67,9 @@
 
       </form>
 
-      <h3>Profile <button name="profile" class="btn btn-primary" id="addProfile">Add Profile</button></h3>
+      <h3>Profile
+        <button name="profile" class="btn btn-primary" id="addProfile">Add Profile</button>
+      </h3>
 
       <div style="display: none;" id="addProfile-form">
         <form class="form-inline" action=""
@@ -201,7 +203,7 @@
     })
 
 
-    $('#addProfile').click(function() {
+    $('#addProfile').click(function () {
       $('#addProfile-form').slideDown();
     })
 
@@ -265,7 +267,7 @@
 
         console.log(data.capabilities.experimental.mobileEmulation);
         console.log(data.capabilities.experimental.mobileEmulation.deviceName);
-        if(data.capabilities.experimental != undefined) {
+        if (data.capabilities.experimental != undefined) {
           $('#dimension').hide();
           $('#devices').show();
           $('#device').val(data.capabilities.experimental.mobileEmulation.deviceName);

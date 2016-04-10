@@ -3,6 +3,7 @@
 namespace testonaut\Settings;
 
 use testonaut\Config;
+use testonaut\Selenium\Api;
 
 class Profile {
 
@@ -48,7 +49,10 @@ class Profile {
   public function get() {
 
     $browserSettings = new Browser("root");
-    $browsers = $grid = $browserSettings->getSettings();
+    $browsers = $browserSettings->getSettings();
+
+    $api = new Api();
+    $grid = $api->getBrowserList();
 
     $foo = $this->getCustomProfiles();
 
@@ -60,7 +64,6 @@ class Profile {
       'grid' => $grid,
       'custom' => $foo
       );
-
     return $browserProfiles;
 
   }
