@@ -57,6 +57,20 @@ class Compare {
     $this->writeCompareToDb($pagePath,$path, $pathref, $comp, $result, $web, $imgName, $profileName);
 
     return $result;
+  }
+
+  public function deleteComparison($profile, $path, $imageName) {
+
+    $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
+    $this->db = $db->getInstance();
+
+    $sql = "delete from imageCompare where profile = :profile and path = :path and imageName = :imageName";
+
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':path', $path);
+    $stm->bindParam(':profile', $profile);
+    $stm->bindParam(':imageName', $imageName);
+    $stm->execute();
 
   }
 

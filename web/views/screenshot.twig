@@ -3,6 +3,21 @@
 
 <div class="contentBox">
   <div class="content">
+
+    <div class="screenshotNav col-xs-3 col-md-2">
+      <ul class="list-group">
+        {% for profile, page  in app.request.images %}
+          <li class="list-group-item"><a href="#{{ profile }}">{{ profile }}</a>
+            <ul class="list-group">
+            {% for name, val  in page %}
+              <li class="list-group-item"><a href="#{{ profile }}_{{ name }}">{{ name }}</a>
+            {% endfor %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
     <div class="panel panel-default">
       <div class="panel-body">
         <button type="button" class="btn btn-primary">All</button>
@@ -10,154 +25,185 @@
         <button type="button" class="btn btn-danger">Failed</button>
       </div>
     </div>
-    
+
     <div class="screens">
       {% if app.request.images is defined %}
-
         {% for key, val  in app.request.images %}
-          {% if val.result == 0 %}
-            {% set class = 'fail' %}
-          {% else %}
-            {% set class = 'success' %}
-          {% endif %}
+          <div class="panel panel-default">
+            <div class="panel-heading" id="{{ key }}"><h3 class="panel-title">{{ key }}</h3></div>
+            <div class="panel-body">
 
-          <div class="compare {{ class }}">
-
-            {% for key, image in val.webpath %}
-              {% if key == 0 %}
-                {% set src = 'src' %}
-              {% elseif key == 1 %}
-                {% set src = 'ref' %}
-              {% else %}
-                {% set src = 'comp' %}
-              {% endif %}
-              <div class="image">
-                <a href="{{ image }}">
-                  <img src="{{ image }}" onerror="imgError(this);"/></a>
-                <span class="ops">
-                  <span class="desc">
-                    {{ val.imageName }}
-                    {% if key == 0 %}
-                      <a href="{{ app.request.baseUrl }}/screenshot/{{ val.path }}">
-                      <span class="glyphicon glyphicon-link pagelink">
-                    </span>
-                      </a>
-                    {% endif %}
-                  </span>
-                  {% if key == 0 %}
-                    <a class="copyImage"
-                       href="{{ app.request.baseUrl }}/image/copy/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
-                    <span class="copy glyphicon glyphicon-ok-sign"
-                          data-link="{{ app.request.baseUrl }}/image/copy/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
-                    </span>
+              {% for itemsKey, items in val %}
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <a id="{{ key }}_{{ itemsKey }}" href="{{ app.request.baseUrl }}/screenshot/{{ itemsKey }}">
+                            <span class="glyphicon glyphicon-link pagelink">
+                          </span>
+                      {{ itemsKey }}
                     </a>
-                  {% endif %}
-                  <a class="deleteImage"
-                     href="{{ app.request.baseUrl }}/image/delete/{{ src }}/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
-                    <span class="delete glyphicon glyphicon-remove-sign"
-                          data-link="{{ app.request.baseUrl }}/image/delete/{{ src }}/{{ val.profile }}/{{ val.imageName }}/{{ app.request.path }}">
-                    </span>
-                  </a>
-                </span>
-              </div>
-            {% endfor %}
+                  </div>
+
+                  {% for imageKey, images in items.webpath %}
+                    <div class="panel-body">
+                      {% if images.result == 0 %}
+                        {% set class = 'fail' %}
+                      {% else %}
+                        {% set class = 'success' %}
+                      {% endif %}
+                      <div class="compare {{ class }}">
+                        <div class="image">
+                          <a href="{{ images.0 }}">
+                            <img src="{{ images.0 }}" onerror="imgError(this)"/></a>
+                      <span class="ops">
+                        <span class="desc">
+                          {{ images.imageName }}
+                        </span>
+                            <a class="copyImage"
+                               href="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                            <span class="copy glyphicon glyphicon-ok-sign"
+                                  data-link="{{ app.request.baseUrl }}/image/copy/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                            </span>
+                            </a>
+                            <a class="deleteImage"
+                               href="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                              <span class="delete glyphicon glyphicon-remove-sign"
+                                    data-link="{{ app.request.baseUrl }}/image/delete/src/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                              </span>
+                            </a>
+                      </span>
+                        </div>
+
+
+                        <div class="image">
+                          <a href="{{ images.1 }}">
+                            <img src="{{ images.1 }}" onerror="imgError(this)"/></a>
+                      <span class="ops">
+
+                        <a class="deleteImage"
+                           href="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                          <span class="delete glyphicon glyphicon-remove-sign"
+                                data-link="{{ app.request.baseUrl }}/image/delete/ref/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                          </span>
+                        </a>
+                      </span>
+                        </div>
+
+                        <div class="image">
+                          <a href="{{ images.2 }}">
+                            <img src="{{ images.2 }}" onerror="imgError(this)"/></a>
+                  <span class="ops">
+
+                        <a class="deleteImage"
+                           href="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                          <span class="delete glyphicon glyphicon-remove-sign"
+                                data-link="{{ app.request.baseUrl }}/image/delete/comp/{{ key }}/{{ images.imageName }}/{{ app.request.path }}">
+                          </span>
+                        </a>
+                  </span>
+                        </div>
+                      </div>
+                    </div>
+
+                  {% endfor %}
+                </div>
+              {% endfor %}
+            </div>
           </div>
         {% endfor %}
       {% endif %}
     </div>
-  </div>
-</div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body&hellip;</p>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    $('.copyImage').click(function (e) {
-      e.preventDefault();
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('.copyImage').click(function (e) {
+          e.preventDefault();
 
-      var href = $(this).attr('href');
-      modalHandling(href, "Copy Image", '');
-    });
+          var href = $(this).attr('href');
+          modalHandling(href, "Copy Image", '');
+        });
 
-    $('.deleteImage').click(function (e) {
-      e.preventDefault();
-      var href = $(this).attr('href');
-      modalHandling(href, "Delete Image", '');
-    });
+        $('.deleteImage').click(function (e) {
+          e.preventDefault();
+          var href = $(this).attr('href');
+          modalHandling(href, "Delete Image", '');
+        });
 
-    $("a[data-action='delete']").click(function (e) {
-      e.preventDefault();
-      var href = $(this).attr('href');
-      modalHandling(href, "Delete Page", "/");
-    });
+        $("a[data-action='delete']").click(function (e) {
+          e.preventDefault();
+          var href = $(this).attr('href');
+          modalHandling(href, "Delete Page", "/");
+        });
 
-    $('.btn-primary').click(function () {
-      $('.btn').removeClass('active');
-      $(this).addClass('active');
-      $('.compare').show();
-    });
-    $('.btn-success').click(function () {
-      $('.btn').removeClass('active');
-      $(this).addClass('active');
-      $('.compare.success').show();
-      $('.compare:not(.success)').hide();
-    });
-    $('.btn-danger').click(function () {
-      $('.btn').removeClass('active');
-      $(this).addClass('active');
-      $('.compare.fail').show();
-      $('.compare:not(.fail)').hide();
-    });
-  });
+        $('.btn-primary').click(function () {
+          $('.btn').removeClass('active');
+          $(this).addClass('active');
+          $('.compare').parent().show();
+        });
+        $('.btn-success').click(function () {
+          $('.btn').removeClass('active');
+          $(this).addClass('active');
+          $('.compare.success').parent().show();
+          $('.compare:not(.success)').parent().hide();
+        });
+        $('.btn-danger').click(function () {
+          $('.btn').removeClass('active');
+          $(this).addClass('active');
+          $('.compare.fail').parent().show();
+          $('.compare:not(.fail)').parent().hide();
 
-
-  function imgError(image) {
-    console.log($(image).parents('div.image').hide());
-    image.onerror = "";
-    return true;
-  }
-
-  function modalHandling(href, modalTitle, ending) {
-    $.ajax({
-      method: "get",
-      url: href
-    }).done(function (data) {
-      $('.modal-title').empty().append(modalTitle);
-      $('.modal-body').empty().append($(data).find('.content'));
-      $('#myModal').modal('show');
-
-      $('.backLink').click(function (ev) {
-        ev.preventDefault();
-        $('#myModal').modal('hide');
-      });
-
-      $('.btn-action').click(function (ev) {
-        ev.preventDefault();
-
-        $.ajax({
-          method: "post",
-          url: href + ending
-        }).done(function (data) {
-          $('.modal-body').empty().append($(data).find('.content'));
         });
       });
-    });
-  }
 
-</script>
+      function modalHandling(href, modalTitle, ending) {
+        $.ajax({
+          method: "get",
+          url: href
+        }).done(function (data) {
+          $('.modal-title').empty().append(modalTitle);
+          $('.modal-body').empty().append($(data).find('.content'));
+          $('#myModal').modal('show');
+
+          $('.backLink').click(function (ev) {
+            ev.preventDefault();
+            $('#myModal').modal('hide');
+          });
+
+          $('.btn-action').click(function (ev) {
+            ev.preventDefault();
+
+            $.ajax({
+              method: "post",
+              url: href + ending
+            }).done(function (data) {
+              $('.modal-body').empty().append($(data).find('.content'));
+            });
+          });
+        });
+      }
+
+      function imgError(image) {
+        $(image).hide();
+        image.onerror = "";
+        image.src = "{{ app.request.baseUrl }}/placeholder.png";
+
+        return true;
+      }
+    </script>
 
 
 {% include 'footer.twig' %}

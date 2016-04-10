@@ -17,6 +17,7 @@ namespace testonaut\Page\Provider;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use testonaut\Compare;
 
 class Image implements ControllerProviderInterface {
 
@@ -80,12 +81,18 @@ class Image implements ControllerProviderInterface {
       $this->path = $path;
       $src = $this->getImagePath() . '/' . $browser . '/' . $type . '/' . $image;
 
+      $compare = new Compare();
+      $compare->deleteComparison($browser, $path, $image);
+      
       if (file_exists($src)) {
         if (unlink($src)) {
           $message = 'delete';
         } else {
           $message = 'can not delete';
         }
+      } else {
+        $message = "can not delete, image doesn't exist";
+
       }
 
       $app['request'] = array(

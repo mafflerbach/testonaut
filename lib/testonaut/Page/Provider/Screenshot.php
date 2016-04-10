@@ -49,8 +49,11 @@ class Screenshot implements ControllerProviderInterface {
 
       if ($conf['type'] == 'project' || $conf['type'] == 'suite') {
         $images = $compare->getComparedImages($path, true);
+        $images = $this->prepareImageResult($images);
       } else {
         $images = $compare->getComparedImages($path);
+        $images = $this->prepareImageResult($images);
+
       }
 
       $root = \testonaut\Config::getInstance()->Path;
@@ -73,5 +76,18 @@ class Screenshot implements ControllerProviderInterface {
 
     return $config;
   }
+
+  protected function prepareImageResult($images) {
+    $me = array();
+    for($i = 0; $i  < count($images); $i++) {
+      $images[$i]['webpath']['result'] = $images[$i]['result'];
+      $images[$i]['webpath']['imageName'] = $images[$i]['imageName'];
+      $me[$images[$i]['profile']][$images[$i]['path']]['webpath'][] = $images[$i]['webpath'];
+      $me[$images[$i]['profile']][$images[$i]['path']]['images'][] = $images[$i]['images'];
+    }
+
+    return $me;
+  }
+
 
 }
