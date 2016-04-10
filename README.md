@@ -23,9 +23,11 @@ The best part of all - it runs on your existing selenium infrastructure.
 ## Features ##
 
 * using the standard output from selenium IDE
+* workaround for full capturing pages in chrome (https://bugs.chromium.org/p/chromedriver/issues/detail?id=294)
 * Different Browser profiles i.e:
     * using chrome mobile device emulator
     * different window width and height
+* different base url settings for every profile
 * automated screenshot comparison
 * automated selenium node recognition
 * simple html wysiwyg
