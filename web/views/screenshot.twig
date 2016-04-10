@@ -197,10 +197,8 @@
       }
 
       function imgError(image) {
-        $(image).hide();
         image.onerror = "";
         image.src = "{{ app.request.baseUrl }}/placeholder.png";
-
         return true;
       }
     </script>
