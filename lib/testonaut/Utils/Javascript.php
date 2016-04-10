@@ -88,7 +88,7 @@ class Javascript {
                 },
                 data: { canvas: canvas.toDataURL('image/png'), path:'" . $srcImage . "'}
             })
-            .done(function( msg ) {
+            .done(function(msg) {
             console.log(msg);
             });
           }

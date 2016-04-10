@@ -32,11 +32,7 @@ class Profile {
     }
   }
 
-  public function get() {
-
-    $browserSettings = new Browser("root");
-    $browsers = $grid = $browserSettings->getSettings();
-
+  public function getCustomProfiles() {
     $sql = "select * from profile";
     $stm = $this->db->prepare($sql);
     $result = $stm->execute();
@@ -46,6 +42,15 @@ class Profile {
       $foo [] = $row;
     }
 
+    return $foo ;
+  }
+
+  public function get() {
+
+    $browserSettings = new Browser("root");
+    $browsers = $grid = $browserSettings->getSettings();
+
+    $foo = $this->getCustomProfiles();
 
     for ($i = 0; $i < count($foo); $i++){
       $browsers[] = $foo[$i];

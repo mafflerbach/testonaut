@@ -20,6 +20,7 @@ use testonaut\Settings\Browser;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use testonaut\Settings\Profile;
 
 /**
  * Class Config
@@ -119,6 +120,7 @@ class Config implements ControllerProviderInterface {
   protected function browserSettings($settings = NULL) {
     $pathArray = explode('.', $this->path);
     $bSettings = new Browser($this->path);
+
     if ($settings != NULL) {
       return $bSettings->setSettings($settings);
     } else {

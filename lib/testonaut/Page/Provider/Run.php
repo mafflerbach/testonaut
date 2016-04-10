@@ -23,6 +23,7 @@ use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use testonaut\Selenese\Runner;
+use testonaut\Settings\Browser;
 use testonaut\Settings\Profile;
 
 class Run implements ControllerProviderInterface {
@@ -203,8 +204,6 @@ class Run implements ControllerProviderInterface {
       
       $runner = new Runner($profiles, $this->page);
       $result = $runner->run($tests);
-
-      
 
       $browserResult = TRUE;
       for($i = 0; $i < count($result); $i++) {

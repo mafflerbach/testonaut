@@ -2,9 +2,9 @@
 {% include 'headNavi.twig' %}
 <div class="contentBox">
   <div class="content">
-    
+
     {% if app.request.message is defined %}
-    <div class="alert alert-info" role="alert">{{ app.request.message }}</div>
+      <div class="alert alert-info" role="alert">{{ app.request.message }}</div>
     {% endif %}
     <form action=""
           method="POST">
@@ -20,32 +20,49 @@
             {% set lighten = 'class=lighten' %}
 
           {% endif %}
-          
+
           {% if browser.active is defined and browser.active == true %}
             {% set checked = 'checked="checked"' %}
           {% else %}
             {% set checked = '' %}
           {% endif %}
 
-          <label class="checkbox"
-                 for="{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}">
-            <input type="checkbox"
-                   value="{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}"
-                   name="active[]{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}"
-                   {{ checked }}
-                   id="{{ browser.browserName }}"/>{{ browser.platform }} {{ browser.browserName }} {{ browser.version }}
-          </label>
 
-          
-           <div class="input-group">
+          {% if browser.browserName is defined %}
+            <label class="checkbox"
+                   for="{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}">
+              <input type="checkbox"
+                     value="{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}"
+                     name="active[]{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}"
+                {{ checked }}
+                     id="{{ browser.browserName }}"/>{{ browser.platform }} {{ browser.browserName }} {{ browser.version }}
+            </label>
+          {% else %}
+            <label class="checkbox"
+                   for="{{ browser.name }}_{{ browser.browser }}">
+              <input type="checkbox"
+                     value="{{ browser.name }}_{{ browser.browser }}"
+                     name="active[]{{ browser.name }}_{{ browser.browser }}"
+                {{ checked }}
+                     id="{{ browser.name }}_{{ browser.browser }}"/>{{ browser.name }} ({{ browser.browser }})
+            </label>
+          {% endif %}
+
+          <div class="input-group">
             <div class="input-group-addon"><span class="fa fa-link collored"></span></div>
-            
-          <input type="text"
-                 value="{{ url }}"
-                 placeholder="Baseurl"
-                 class="form-control input-sm"
-                 name="browser[{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}]{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}Url"/>
-
+            {% if browser.browserName is defined %}
+              <input type="text"
+                     value="{{ url }}"
+                     placeholder="Baseurl"
+                     class="form-control input-sm"
+                     name="browser[{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}]{{ browser.platform }}{{ browser.browserName }}{{ browser.version }}Url"/>
+            {% else %}
+              <input type="text"
+                     value="{{ url }}"
+                     placeholder="Baseurl"
+                     class="form-control input-sm"
+                     name="browser[{{ browser.name }}_{{ browser.browser }}]{{ browser.name }}Url"/>
+            {% endif %}
           </div>
         {% endfor %}
       {% endif %}
@@ -64,7 +81,7 @@
             <input type="radio"
                    value="{{ type }}"
                    name="type"
-                   {{ checked }}
+              {{ checked }}
                    id="pagetype_{{ type }}"/> {{ type }}
           </label>
 
@@ -85,7 +102,7 @@
             <input type="radio"
                    value="{{ screen }}"
                    name="screenshot"
-                   {{ checked }}
+              {{ checked }}
                    id="screenshot_{{ screen }}"/>{{ screen }}
           </label>
 

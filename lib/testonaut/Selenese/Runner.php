@@ -22,6 +22,7 @@ use testonaut\Page;
 use testonaut\Selenese\Command\captureEntirePageScreenshot;
 use testonaut\Selenese\Command\Pause;
 use testonaut\Config;
+use testonaut\Settings\Browser;
 use testonaut\Utils\Javascript;
 
 
@@ -35,9 +36,7 @@ class Runner {
   protected $configFile;
   protected $imageDir = NULL;
 
-
   protected $profiles;
-
 
   /**
    * @param $dir
@@ -70,12 +69,29 @@ class Runner {
   public function run($tests) {
     $result = array();
 
+    $bSettings = new Browser($this->page->getPath());
+
     for ($k = 0; $k < count($this->profiles); $k++) {
       for ($i = 0; $i < count($tests); $i++) {
         /**
          * @var \SplFileInfo $this ->tests
          */
+
+        if (isset($this->profiles[$i]['name'])) {
+          $name = str_replace(' ', '_', $this->profiles[$i]['name']).'_'
+            .str_replace(' ', '_', $this->profiles[$i]['browser']);
+        } else {
+          $name = str_replace(' ', '_', $this->profiles[$i]['platform'])
+            .str_replace(' ', '_', $this->profiles[$i]['browser'])
+            .$this->profiles[$i]['version'];
+        }
+
         $test = new Test();
+
+        if (in_array($name, $bSettings->settings['browser']['active'])) {
+          $url = $bSettings->settings['browser']['urls'][$name];
+          $test->setBaseUrl($url);
+        }
 
         $test->loadFromSeleneseHtml($tests[$i]);
         if ($test->commands == '') {
@@ -312,7 +328,6 @@ class Runner {
     } else {
       $browserName = $browserString;
     }
-
     return $browserName;
   }
 

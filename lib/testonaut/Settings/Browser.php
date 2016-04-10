@@ -33,10 +33,25 @@ class Browser {
     $settings = $this->page->config();
     $list = $this->getBrowserList();
 
+    $profile = new Profile();
+    $custom = $profile->getCustomProfiles();
+
+    $list = array_merge($list, $custom);
+    
     for ($i = 0; $i < count($list); $i++) {
-      $browserName = $list[$i]['platform'];
-      $browserName .= $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);
-      $browserName .= $list[$i]['version'];
+      $browserName ="";
+      if (isset($list[$i]['platform'])) {
+        $browserName .= $list[$i]['platform'];
+      }
+      if (isset($list[$i]['browserName'])) {
+        $browserName .= $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);
+      } else {
+        $browserName .= $list[$i]['name'] = str_replace(' ', '_', $list[$i]['name']);
+        $browserName .= "_".$list[$i]['browser'] = str_replace(' ', '_', $list[$i]['browser']);
+      }
+      if (isset($list[$i]['version'])) {
+        $browserName .= $list[$i]['version'];
+      }
 
       if (isset($settings['browser']['active'])) {
         $active = $settings['browser']['active'];
@@ -48,7 +63,6 @@ class Browser {
         }
       }
     }
-
     return $list;
   }
 
@@ -70,9 +84,7 @@ class Browser {
    * @param array $browser
    */
   public function setSettings(array $browser) {
-
     $this->setting['browser'] = $browser;
-
     return $this->page->config($this->setting);
   }
 }
