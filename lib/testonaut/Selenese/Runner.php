@@ -199,10 +199,11 @@ class Runner {
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
 
-    if ($profile['browser'] == "internet explorer") {
+    if ($profile['browser'] == "internet explorer" || $profile['browser'] == "firefox") {
       $screenCommand = new CaptureEntirePageScreenshot();
       $screenCommand->arg1 = $srcImage;
       $screenCommand->runWebDriver($webDriver);
+      sleep(2);
     } else {
 
       $javascript = new Javascript($webDriver);

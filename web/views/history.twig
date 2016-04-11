@@ -24,51 +24,58 @@
             <div class="panel-heading">{{ date }}</div>      
             <div class="panel-body">
               {% for hour, realResult in hourResult %}
-                {% if realResult.result == '1' %}
-                  {% set class = 'bg-success' %}
-                {% else %}
-                  {% set class = 'bg-danger' %}
-                {% endif %}
+                {% for path, pathResult in realResult %}
+                  {% if pathResult.result == '1' %}
+                    {% set class = 'bg-success' %}
+                  {% else %}
+                    {% set class = 'bg-danger' %}
+                  {% endif %}
 
-                <div class="hour {{ class }}">{{ hour }}</div>
-                <div class="historyResult" >
+                  <div class="hour {{ class }}">{{ hour }}</div>
+                  <div class="historyResult" >
 
-                  <table class="table table-bordered">
-                  {% for result in realResult.run %}
-                    {% if result.0  == true %}
-                      {% set class = 'bg-success' %}
-                    {% else %}
-                      {% set class = 'bg-danger' %}
-                    {% endif %}
-                    <tr class="{{ class }}">
-                      <td>Command</td>
-                      <td>{{  result.2}}</td>
-                      <td>{{  result.1}}</td>
-                    </tr>
-                  {% endfor %}
-                  </table>
-                </div>
-              {% endfor %}    
-            </div>
-          </div>
-        {% endfor %}  
-      </div>
-    {% endfor %}  
-  </div>
+                    <table class="table table-bordered">
+                      {% for result in pathResult.run %}
+                        {% if result.0  == true %}
+                          {% set class = 'bg-success' %}
+                        {% else %}
+                          {% set class = 'bg-danger' %}
+                        {% endif %}
+                        <tr class="{{ class }}">
+                          <td>Command</td>
+                          <td>{{  result.2}}</td>
+                          <td>{{  result.1}}</td>
+                        </tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+
+
+                {% endfor %}
+{#         {% for hour, realResult in hourResult %}
+
+         {% endfor %}#}
+         {% endfor %}
+       </div>
+     </div>
+   {% endfor %}
+ </div>
+{% endfor %}
+</div>
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function () {
-    $('.history .historyResult').hide();
-    $('.hour').click(function () {
-      console.log($(this).next('table'));
-      if ($(this).next('.historyResult').is(':visible')) {
-        $(this).next().slideUp('slow');
-      } else {
-        $(this).next().slideDown('slow');
-      }
-    })
-  });
+$(document).ready(function () {
+$('.history .historyResult').hide();
+$('.hour').click(function () {
+ console.log($(this).next('table'));
+ if ($(this).next('.historyResult').is(':visible')) {
+   $(this).next().slideUp('slow');
+ } else {
+   $(this).next().slideDown('slow');
+ }
+})
+});
 </script>
 
 {% include 'footer.twig' %}

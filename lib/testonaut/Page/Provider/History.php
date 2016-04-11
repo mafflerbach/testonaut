@@ -16,6 +16,7 @@ namespace testonaut\Page\Provider;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use testonaut\Page;
 use testonaut\Page\Breadcrumb;
 use testonaut\Settings\Browser;
 
@@ -26,6 +27,9 @@ use testonaut\Settings\Browser;
  */
 class History implements ControllerProviderInterface {
 
+  /**
+   * @var $page Page
+   */
   private $page;
   private $browsers;
   private $path;
@@ -87,19 +91,30 @@ class History implements ControllerProviderInterface {
 
   protected function getHistoryList() {
 
+    $conf = $this->page->config();
+
     $db = \testonaut\Config::getInstance()->db;
     $dbIns = $db->getInstance();
-    $sql = "select * from history where path=:path";
+
+    if ($conf['type'] == 'project' || $conf['type'] == 'suite') {
+      $sql = "select * from history where path like :path;";
+      $path = $this->path.'%';
+    } else {
+      $sql = "select * from history where path=:path";
+      $path = $this->path;
+    }
+
     $stm = $dbIns->prepare($sql);
-    $stm->bindParam(':path', $this->path);
+    $stm->bindParam(':path', $path);
     $res = $stm->execute();
     
     $foo = array();
     while ($result = $res->fetchArray(SQLITE3_ASSOC)) {
       $date = new \DateTime($result['date']);
-      $foo[$result['browser']][$date->format('m.d.Y')][$date->format('H:i:s')]['run'] = json_decode($result['run'], true);
-      $foo[$result['browser']][$date->format('m.d.Y')][$date->format('H:i:s')]['result'] = $result['result'];
+      $foo[$result['browser']][$result['path']][$date->format('m.d.Y')][$date->format('H:i:s')]['run'] = json_decode($result['run'], true);
+      $foo[$result['browser']][$result['path']][$date->format('m.d.Y')][$date->format('H:i:s')]['result'] = $result['result'];
     }
+
     return $foo;
   }
 
