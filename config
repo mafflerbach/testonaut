@@ -1,1 +1,1 @@
-{"appPath":"\/testonaut","cache":false,"theme":"bootstrap","seleniumAddress":"http:\/\/192.168.0.21:4444"}
+{"appPath":"\/testonaut","cache":false,"theme":"bootstrap","seleniumAddress":"http:\/\/localhost:4444"}
