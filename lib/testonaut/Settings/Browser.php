@@ -22,12 +22,19 @@ class Browser {
   private $setting;
   private $page;
 
+  /**
+   * Browser constructor.
+   * @param $path
+   */
   public function __construct($path) {
 
     $this->page = new PageHandler($path);
     $this->settings = $this->page->config();
   }
 
+  /**
+   * @return array
+   */
   public function getSettings() {
 
     $settings = $this->page->config();
@@ -37,7 +44,7 @@ class Browser {
     $custom = $profile->getCustomProfiles();
 
     $list = array_merge($list, $custom);
-    
+
     for ($i = 0; $i < count($list); $i++) {
       $browserName ="";
       if (isset($list[$i]['platform'])) {
@@ -46,7 +53,7 @@ class Browser {
       if (isset($list[$i]['browserName'])) {
         $browserName .= $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);
       } else {
-        $browserName .= $list[$i]['name'] = str_replace(' ', '_', $list[$i]['name']);
+        $browserName .= $list[$i]['name'];
         $browserName .= "_".$list[$i]['browser'] = str_replace(' ', '_', $list[$i]['browser']);
       }
       if (isset($list[$i]['version'])) {
@@ -66,22 +73,17 @@ class Browser {
     return $list;
   }
 
+  /**
+   * @return array
+   */
   protected function getBrowserList() {
-
     $api = new Api();
-
     return $api->getBrowserList();
   }
 
   /**
-   * $browser = array(
-   *  'browser' => array (
-   *    'firefox' => true,
-   *    'chrome' => true
-   *  )
-   * );
-   *
    * @param array $browser
+   * @return bool
    */
   public function setSettings(array $browser) {
     $this->setting['browser'] = $browser;

@@ -36,14 +36,12 @@ class Javascript {
           script.src = 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/html2canvas.js';
           d.getElementsByTagName('head')[0].appendChild(script);
     
-      }, 1000);
+      }, 500);
      ";
 
     $this->webDriver->executeScript($js, array());
 
     return $this->webDriver;
-
-
   }
 
 
@@ -59,7 +57,7 @@ class Javascript {
           script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
           d.getElementsByTagName('head')[0].appendChild(script);
           
-      }, 1000);
+      }, 500);
     ";
     $this->webDriver->executeScript($js, array());
     return $this->webDriver;

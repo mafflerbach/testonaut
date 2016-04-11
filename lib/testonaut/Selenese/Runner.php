@@ -88,7 +88,7 @@ class Runner {
 
         $test = new Test();
 
-        if (in_array($name, $bSettings->settings['browser']['active'])) {
+        if (is_array($bSettings->settings['browser']['active']) && in_array($name, $bSettings->settings['browser']['active'])) {
           $url = $bSettings->settings['browser']['urls'][$name];
           $test->setBaseUrl($url);
         }
@@ -132,8 +132,6 @@ class Runner {
 
     $webDriver = $this->setDriverOption($webDriver, $profile);
     $javascript = new Javascript($webDriver);
-   // $javascript->invokeHtml2Canvas();
-   // $javascript->invokeNanoajax();
 
     $i = 0;
     foreach ($test->commands as $command) {
@@ -142,12 +140,23 @@ class Runner {
       $commandStr = str_replace(' ', '', $commandStr);
       try {
 
-        $commandResult = $command->runWebDriver($webDriver);
+
+        if ($commandStr == 'captureEntirePageScreenshot') {
+          $srcImage = $this->getPath($profile) . "/" . $command->arg1;
+          $this->takeScreenshot($profile, $webDriver, $srcImage);
+
+          $compareObj = new Compare();
+          $compare = $compareObj->compare($profile, $command->arg1, $page->getPath(), $this->imageDir );
+          $res = $compareObj->compareResult($compare, $res, $command->arg1);
+        } else {
+          $commandResult = $command->runWebDriver($webDriver);
+        }
 
         if($i == 0) {
           $javascript->invokeHtml2Canvas();
           $javascript->invokeNanoajax();
         }
+
 
         if ($pageConf['screenshots'] == 'step') {
           $imageName = "step_".$i.".png";
@@ -170,14 +179,7 @@ class Runner {
         $browserResult = FALSE;
       }
 
-      if ($commandStr == 'captureEntirePageScreenshot') {
-        $srcImage = $this->getPath($profile) . "/" . $command->arg1;
-        $this->takeScreenshot($profile, $webDriver, $srcImage);
 
-        $compareObj = new Compare();
-        $compare = $compareObj->compare($profile, $command->arg1, $page->getPath(), $this->imageDir );
-        $res = $compareObj->compareResult($compare, $res, $command->arg1);
-      }
 
       if ($commandResult->continue === FALSE) {
         break;
@@ -202,9 +204,6 @@ class Runner {
   }
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
-    $pause = new Command\Pause();
-    $pause->arg1 = 5000;
-    $pause->runWebDriver($webDriver);
 
     if ($profile['browser'] == "internet explorer") {
       $screenCommand = new CaptureEntirePageScreenshot();
@@ -214,6 +213,7 @@ class Runner {
 
       $javascript = new Javascript($webDriver);
       $javascript->invokeTakeScreenshot($srcImage);
+      sleep(8);
     }
   }
 

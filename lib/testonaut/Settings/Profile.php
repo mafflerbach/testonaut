@@ -14,6 +14,9 @@ class Profile {
     $this->db = $db->getInstance();
   }
 
+  /**
+   * @param $data
+   */
   public function write($data) {
     $sql = "select * from profile where `name`=:name";
     $stm = $this->db->prepare($sql);
@@ -33,6 +36,9 @@ class Profile {
     }
   }
 
+  /**
+   * @return array
+   */
   public function getCustomProfiles() {
     $sql = "select * from profile";
     $stm = $this->db->prepare($sql);
@@ -40,12 +46,15 @@ class Profile {
 
     $foo = array();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-      $foo [] = $row;
+      $foo[] = $row;
     }
 
     return $foo ;
   }
 
+  /**
+   * @return array
+   */
   public function get() {
 
     $browserSettings = new Browser("root");
@@ -56,10 +65,6 @@ class Profile {
 
     $foo = $this->getCustomProfiles();
 
-    for ($i = 0; $i < count($foo); $i++){
-      $browsers[] = $foo[$i];
-    }
-
     $browserProfiles = array('all' => $browsers,
       'grid' => $grid,
       'custom' => $foo
@@ -67,9 +72,12 @@ class Profile {
     return $browserProfiles;
 
   }
+
+  /**
+   * @param $name
+   * @return array
+   */
   public function getByName($name) {
-
-
     $sql = "select * from profile where name = :name";
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':name', $name);
@@ -83,6 +91,9 @@ class Profile {
 
   }
 
+  /**
+   * @param $name
+   */
   public function delete($name) {
 
     $sql = "delete from profile where `name` = :name";
@@ -93,6 +104,9 @@ class Profile {
 
   }
 
+  /**
+   * @param $data
+   */
   protected function update($data) {
     $browser = $data['browser'];
     $name = $data['name'];
@@ -120,6 +134,9 @@ class Profile {
     $stm->execute();
   }
 
+  /**
+   * @param $data
+   */
   protected function insert($data) {
     $browser = $data['browser'];
     $name = $data['name'];
@@ -139,9 +156,6 @@ class Profile {
 
     $stm->execute();
   }
-
-
-
 
 }
 
