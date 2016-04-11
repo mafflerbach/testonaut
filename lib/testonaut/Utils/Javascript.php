@@ -35,8 +35,8 @@ class Javascript {
           script.type = 'text/javascript';
           script.src = 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/html2canvas.js';
           d.getElementsByTagName('head')[0].appendChild(script);
-    
-      }, 500);
+          console.log('invoke canvas' + script.src);
+      }, 1000);
      ";
 
     $this->webDriver->executeScript($js, array());
@@ -56,8 +56,8 @@ class Javascript {
           script.type = 'text/javascript';
           script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
           d.getElementsByTagName('head')[0].appendChild(script);
-          
-      }, 500);
+          console.log('invoke jquery');
+      }, 1000);
     ";
     $this->webDriver->executeScript($js, array());
     return $this->webDriver;
@@ -94,6 +94,7 @@ class Javascript {
       }, 1500);";
 
     $this->webDriver->executeScript($js, array());
+    sleep(5);
     return $this->webDriver;
   }
 

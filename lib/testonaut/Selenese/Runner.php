@@ -152,12 +152,6 @@ class Runner {
           $commandResult = $command->runWebDriver($webDriver);
         }
 
-        if($i == 0) {
-          $javascript->invokeHtml2Canvas();
-          $javascript->invokeNanoajax();
-        }
-
-
         if ($pageConf['screenshots'] == 'step') {
           $imageName = "step_".$i.".png";
           $srcImage = $this->getPath($profile) .'/'. $imageName;
@@ -212,8 +206,11 @@ class Runner {
     } else {
 
       $javascript = new Javascript($webDriver);
+      $javascript->invokeHtml2Canvas();
+      $javascript->invokeNanoajax();
+      sleep(3);
       $javascript->invokeTakeScreenshot($srcImage);
-      sleep(8);
+      sleep(5);
     }
   }
 
