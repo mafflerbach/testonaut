@@ -1,0 +1,69 @@
+<link rel="selenium.base" href="http://localhost">
+
+
+
+<table>
+<thead>
+<tr><td rowspan="1" colspan="3">addTestUnderSuite</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/testonaut/web/test.suitePage.test/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=span.fa.fa-code</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=textarea</td>
+	<td><br><br><link rel="selenium.base" href="https://www.weisse-liste.de/"><br><br><br> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<table><thead><tr><td rowspan="1" colspan="3">test</td></tr></thead><tbody><tr><td>open</td><td>/de/</td><td></td></tr><tr><td>CaptureEntirePageScreenshot</td><td>test.png</td><td></td></tr></tbody></table></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=span.fa.fa-code</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=action</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Config</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=pagetype_test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=action</td>
+	<td></td>
+</tr>
+        <tr>
+            <td>captureEntirePageScreenshot</td>
+            <td>savedType.png</td>
+            <td></td>
+        </tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Zurück</td>
+	<td></td>
+</tr>
+        <tr>
+            <td>captureEntirePageScreenshot</td>
+            <td>last.png</td>
+            <td></td>
+        </tr>
+</tbody></table>
