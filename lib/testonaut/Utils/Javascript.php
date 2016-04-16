@@ -54,9 +54,9 @@ class Javascript {
           var d = document;
           var script = d.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
+          script.src = 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/qwest.min.js';
           d.getElementsByTagName('head')[0].appendChild(script);
-          console.log('invoke jquery');
+          console.log('invoke nano');
       }, 1000);
     ";
     $this->webDriver->executeScript($js, array());
@@ -78,17 +78,10 @@ class Javascript {
       setTimeout(function () {
         html2canvas(document.html, {
           onrendered: function(canvas) {
-            $.ajax({
-                method: 'POST',
-                url: 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/server.php',
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: { canvas: canvas.toDataURL('image/png'), path:'" . $srcImage . "'}
-            })
-            .done(function(msg) {
-            console.log(msg);
-            });
+          qwest.post('https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/server.php', {
+              canvas: canvas.toDataURL('image/png'),
+              path:'" . $srcImage . "'
+              }).then(function(xhr, response) {})
           }
         })
       }, 1500);";
