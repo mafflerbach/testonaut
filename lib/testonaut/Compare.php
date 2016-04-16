@@ -16,9 +16,9 @@ class Compare {
 
   public function compareResult($compare, $res, $imageName) {
     if ($compare) {
-      $res[] = array(TRUE, 'Compare Image '.$imageName, 'Compare Success');
+      $res[] = array(TRUE, 'Compare Image ' . $imageName, 'Compare Success');
     } else {
-      $res[] = array(FALSE, 'Compare Image '.$imageName, 'Compare Fail');
+      $res[] = array(FALSE, 'Compare Image ' . $imageName, 'Compare Fail');
     }
     return $res;
   }
@@ -29,19 +29,20 @@ class Compare {
 
 
     $path = $imageDir . '/' . $profileName . "/src/" . $imgName;
-    $pathref = $imageDir . '/' . $profileName. "/ref/" . $imgName;
+    $pathref = $imageDir . '/' . $profileName . "/ref/" . $imgName;
     $comp = $imageDir . '/' . $profileName . "/comp/" . $imgName;
 
     $dir = str_replace('.', '/', $pagePath);
-    $web = array (
-      Config::getInstance()->appPath.'/web/images/'. $dir. '/' . $profileName . "/src/" . $imgName,
-      Config::getInstance()->appPath.'/web/images/'. $dir. '/' . $profileName . "/ref/" . $imgName,
-      Config::getInstance()->appPath.'/web/images/'. $dir. '/' . $profileName . "/comp/" . $imgName,
+    $web = array(
+      Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/src/" . $imgName, Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/ref/" . $imgName, Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/comp/" . $imgName,
     );
 
     if (file_exists($pathref)) {
       if (file_exists($comp)) {
         unlink($comp);
+      } else {
+        // no compare needed
+        return TRUE;
       }
       if (class_exists('\\Imagick')) {
         $compare = new Image();
@@ -54,7 +55,7 @@ class Compare {
       $result = FALSE;
     }
 
-    $this->writeCompareToDb($pagePath,$path, $pathref, $comp, $result, $web, $imgName, $profileName);
+    $this->writeCompareToDb($pagePath, $path, $pathref, $comp, $result, $web, $imgName, $profileName);
 
     return $result;
   }
@@ -94,16 +95,55 @@ class Compare {
     $images = json_encode(array($src, $pathref, $comp));
     $webpath = json_encode($web);
 
-    $sql = "insert into imageCompare (date, path, result, images, webpath, imageName, profile) values (:date, :path, :result, :images, :webpath, :imageName, :profile)";
+    if ($this->exist($imageName, $profile, $path)) {
+      $sql = "update imageCompare set 
+                date = :date, 
+                result = :result 
+              where 
+                imageName = :imageName AND 
+                path = :path AND
+                profile = :profile";
+
+      $stm = $this->db->prepare($sql);
+      $stm->bindParam(':date', $isoDate);
+      $stm->bindParam(':path', $path);
+      $stm->bindParam(':result', $result);
+      $stm->bindParam(':imageName', $imageName);
+      $stm->bindParam(':profile', $profile);
+
+    } else {
+      $sql = "insert into imageCompare (date, path, result, images, webpath, imageName, profile) values (:date, :path, :result, :images, :webpath, :imageName, :profile)";
+
+      $stm = $this->db->prepare($sql);
+      $stm->bindParam(':date', $isoDate);
+      $stm->bindParam(':path', $path);
+      $stm->bindParam(':result', $result);
+      $stm->bindParam(':images', $images);
+      $stm->bindParam(':webpath', $webpath);
+      $stm->bindParam(':imageName', $imageName);
+      $stm->bindParam(':profile', $profile);
+
+    }
+
+    $stm->execute();
+  }
+
+
+  protected function exist($imageName, $profile, $path) {
+
+    $sql = "select count(*) as count from imageCompare WHERE imageName=:imageName and profile=:profile and path=:path";
+
     $stm = $this->db->prepare($sql);
-    $stm->bindParam(':date', $isoDate);
     $stm->bindParam(':path', $path);
-    $stm->bindParam(':result', $result);
-    $stm->bindParam(':images', $images);
-    $stm->bindParam(':webpath', $webpath);
     $stm->bindParam(':imageName', $imageName);
     $stm->bindParam(':profile', $profile);
-    $stm->execute();
+    $result = $stm->execute();
+    $res = $result->fetchArray(SQLITE3_ASSOC);
+
+    if ($res['count'] > 0) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   public function getComparedImages($path, $children = FALSE) {
@@ -111,9 +151,9 @@ class Compare {
     $this->db = $db->getInstance();
 
     $extendBinding = '';
-    if($children) {
+    if ($children) {
       $sql = "select * from imageCompare where path LIKE :path GROUP BY images ORDER BY date";
-      $path = $path.'%';
+      $path = $path . '%';
     } else {
       $sql = "select * from imageCompare where path = :path GROUP BY images ORDER BY date";
     }
@@ -125,14 +165,9 @@ class Compare {
     $result = $stm->execute();
 
     $return = array();
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)){
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $return[] = array(
-        'result' => $row['result'],
-        'images' => json_decode($row['images'], true),
-        'webpath' => json_decode($row['webpath'], true),
-        'imageName' => $row['imageName'],
-        'profile' => $row['profile'],
-        'path' => $row['path']
+        'result' => $row['result'], 'images' => json_decode($row['images'], true), 'webpath' => json_decode($row['webpath'], true), 'imageName' => $row['imageName'], 'profile' => $row['profile'], 'path' => $row['path']
       );
     }
 
