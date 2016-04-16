@@ -40,9 +40,6 @@ class Compare {
     if (file_exists($pathref)) {
       if (file_exists($comp)) {
         unlink($comp);
-      } else {
-        // no compare needed
-        return TRUE;
       }
       if (class_exists('\\Imagick')) {
         $compare = new Image();
@@ -52,7 +49,8 @@ class Compare {
         $result = FALSE;
       }
     } else {
-      $result = FALSE;
+      // no compared needet
+      $result = TRUE;
     }
 
     $this->writeCompareToDb($pagePath, $path, $pathref, $comp, $result, $web, $imgName, $profileName);
