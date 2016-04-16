@@ -39,8 +39,9 @@ class Runner {
   protected $profiles;
 
   /**
-   * @param $dir
-   * @param $config
+   * Runner constructor.
+   * @param $profiles
+   * @param Page $tests
    */
   public function __construct($profiles, Page $tests) {
     $this->profiles = $profiles;
@@ -65,18 +66,17 @@ class Runner {
     return $paths;
   }
 
-
-  public function run($tests) {
+  /**
+   * @param array $tests
+   * @return array
+   */
+  public function run(array $tests) {
     $result = array();
 
     $bSettings = new Browser($this->page->getPath());
 
     for ($k = 0; $k < count($this->profiles); $k++) {
       for ($i = 0; $i < count($tests); $i++) {
-        /**
-         * @var \SplFileInfo $this ->tests
-         */
-
         if (isset($this->profiles[$i]['name'])) {
           $name = str_replace(' ', '_', $this->profiles[$i]['name']).'_'
             .str_replace(' ', '_', $this->profiles[$i]['browser']);
@@ -88,7 +88,8 @@ class Runner {
 
         $test = new Test();
 
-        if (is_array($bSettings->settings['browser']['active']) && in_array($name, $bSettings->settings['browser']['active'])) {
+        if (isset($bSettings->settings['browser']['active']) &&
+            in_array($name, $bSettings->settings['browser']['active'])) {
           $url = $bSettings->settings['browser']['urls'][$name];
           $test->setBaseUrl($url);
         }
@@ -120,6 +121,12 @@ class Runner {
     return $driver;
   }
 
+  /**
+   * @param $test
+   * @param $profile
+   * @param Page $page
+   * @return array
+   */
   protected function _run($test, $profile, Page $page) {
     $this->imageDir = $page->getImagePath();
     $pageConf = $page->config();
@@ -129,18 +136,13 @@ class Runner {
     $hub = Config::getInstance()->seleniumHub;
     $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
 
-
     $webDriver = $this->setDriverOption($webDriver, $profile);
-    $javascript = new Javascript($webDriver);
-
     $i = 0;
     foreach ($test->commands as $command) {
 
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
       $commandStr = str_replace(' ', '', $commandStr);
       try {
-
-
         if ($commandStr == 'captureEntirePageScreenshot') {
           $srcImage = $this->getPath($profile) . "/" . $command->arg1;
           $this->takeScreenshot($profile, $webDriver, $srcImage);
@@ -173,8 +175,6 @@ class Runner {
         $browserResult = FALSE;
       }
 
-
-
       if ($commandResult->continue === FALSE) {
         break;
       }
@@ -199,19 +199,19 @@ class Runner {
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
 
-    if ($profile['browser'] == "internet explorer" || $profile['browser'] == "firefox") {
-      $screenCommand = new CaptureEntirePageScreenshot();
-      $screenCommand->arg1 = $srcImage;
-      $screenCommand->runWebDriver($webDriver);
-      sleep(2);
-    } else {
-
+    if ($profile['browser'] == "chrome") {
       $javascript = new Javascript($webDriver);
       $javascript->invokeHtml2Canvas();
       $javascript->invokeNanoajax();
       sleep(3);
       $javascript->invokeTakeScreenshot($srcImage);
       sleep(5);
+
+    } else {
+      $screenCommand = new CaptureEntirePageScreenshot();
+      $screenCommand->arg1 = $srcImage;
+      $screenCommand->runWebDriver($webDriver);
+      sleep(2);
     }
   }
 
