@@ -262,11 +262,7 @@
           $('#width').val(data.driverOptions.dimensions.width);
           $('#height').val(data.driverOptions.dimensions.height);
         }
-
         $('#browsers').val(data.browser);
-
-        console.log(data.capabilities.experimental.mobileEmulation);
-        console.log(data.capabilities.experimental.mobileEmulation.deviceName);
         if (data.capabilities.experimental != undefined) {
           $('#dimension').hide();
           $('#devices').show();
