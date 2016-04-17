@@ -118,10 +118,10 @@ class Run implements ControllerProviderInterface {
   }
 
   /**
-   * @param $path
+   * @param Page $path
    * @return array
    */
-  protected function runSuite($path) {
+  protected function runSuite(Page $path) {
 
     $testCollect = array();
 
@@ -141,10 +141,10 @@ class Run implements ControllerProviderInterface {
   }
 
   /**
-   * @param $path
+   * @param Page $path
    * @return array
    */
-  protected function run($path) {
+  protected function run(Page $path) {
 
     $testCollect[] = $path;
     return $this->_run($testCollect);
