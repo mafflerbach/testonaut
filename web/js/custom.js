@@ -26,16 +26,18 @@ $(document).ready(function () {
     $.ajax({
       method: "GET",
       url: run
-    }).always(function () {
+    }).always(function (e) {
       $('.pulsarbox .pulsar.' + browser).remove();
       $('table.' + browser).remove();
+
     }).done(function () {
       window.location.reload();
     });
+    poll();
     invokePulsar(browser);
   });
 
-  $("a[data-action='run']").click(function(e) {
+  $("a[data-action='run']").click(function (e) {
     e.preventDefault();
     $(this).toggleClass('active')
     $('.nodes').toggleClass('hide');
@@ -47,18 +49,18 @@ $(document).ready(function () {
     var index = 0;
     invokePulsar('all');
 
-    $.each( $('.run-test'), function() {
+    $.each($('.run-test'), function () {
       var href = $(this).attr('href');
       $.ajax({
-        method: "get",
-        url: href
+          method: "get",
+          url: href
         })
-      .done(function( data) {
-        index++;
-        if (index == $('.run-test').length) {
-          window.location.reload();
-        }
-      });
+        .done(function (data) {
+          index++;
+          if (index == $('.run-test').length) {
+            window.location.reload();
+          }
+        });
     });
   })
 })

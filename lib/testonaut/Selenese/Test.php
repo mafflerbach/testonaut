@@ -31,6 +31,10 @@ class Test {
    */
   private  $baseUrl = '';
 
+  protected $path = '';
+
+
+
   /**
    * @param string $file
    * @return Command[]
@@ -46,6 +50,7 @@ class Test {
       throw new \InvalidArgumentException("$file is not readable");
     }
 
+    $this->path = $file->getPath();
     libxml_use_internal_errors(true);
     $dom = new \DOMDocument;
     $compiledPage = $file->getCompiledPage(); 
@@ -101,6 +106,15 @@ class Test {
       }
     }
   }
+
+  /**
+   * @return string
+   */
+  public function getPath() {
+    return $this->path;
+  }
+
+
   public function setBaseUrl($baseUrl) {
     $this->baseUrl = $baseUrl;
   }

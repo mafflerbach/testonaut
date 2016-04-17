@@ -15,6 +15,7 @@
 namespace testonaut\Selenese;
 
 use testonaut\Capabilities;
+use testonaut\Selenese\Test;
 use testonaut\Compare;
 use testonaut\Image;
 use testonaut\Matrix;
@@ -127,7 +128,7 @@ class Runner {
    * @param Page $page
    * @return array
    */
-  protected function _run($test, $profile, Page $page) {
+  protected function _run( $test, $profile, Page $page) {
     $this->imageDir = $page->getImagePath();
     $pageConf = $page->config();
     $res = array();
@@ -135,6 +136,8 @@ class Runner {
 
     $hub = Config::getInstance()->seleniumHub;
     $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
+
+    $pollFile = Config::getInstance()->Path."/tmp/".$this->page->getPath();
 
     $webDriver = $this->setDriverOption($webDriver, $profile);
     $i = 0;
@@ -175,6 +178,9 @@ class Runner {
         $browserResult = FALSE;
       }
 
+      error_log($test->getPath());
+      $this->polling($pollFile, array($test->getPath(), $res));
+
       if ($commandResult->continue === FALSE) {
         break;
       }
@@ -188,13 +194,20 @@ class Runner {
       $compareObj = new Compare();
       $compare = $compareObj->compare($profile, 'afterTest.png', $page->getPath(), $this->imageDir);
       $res = $compareObj->compareResult($compare, $res, 'afterTest.png');
+      $this->polling($pollFile, $res);
     }
 
     $webDriver->quit();
     $matrix = new Matrix($page, $this->browser);
     $matrix->writeResult($res, $profile);
 
+    unlink($pollFile);
+
     return $res;
+  }
+
+  private function polling($pollFile, $res) {
+    file_put_contents($pollFile, json_encode($res));
   }
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
