@@ -78,11 +78,6 @@
                  class="btn btn-primary">Search</a>
       </div>
 
-      <div id="upload">
-        <iframe scrolling="no"
-                src="{{ app.request.baseUrl }}/files/{{ app.request.path }}"></iframe>
-      </div>
-
       <div data-wysihtml5-dialog="search"
            class="editorBox"
            style="display: none;">
@@ -147,6 +142,24 @@
            name="content"
            value=""/>
   </form>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">File Upload</h4>
+        </div>
+        <div class="modal-body">
+          <iframe class="modalIframe" src="{{ app.request.baseUrl }}/files/{{ app.request.path }}" scrolling="no"></iframe>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 </div>
 <script>
   var editor = new wysihtml5.Editor("textarea", {
@@ -157,7 +170,9 @@
 
   $(document).ready(function () {
     $("a[data-wysihtml5-command='uploadFile']").click(function () {
-      $('#upload').slideToggle();
+
+      $('#myModal').modal('show');
+
     });
     $("a[data-wysihtml5-command='createLink']").click(function () {
       $("div[data-wysihtml5-dialog='createLink']").slideToggle();
@@ -239,10 +254,11 @@
       }
     });
   });
+
 </script>
 
-
 </div>
+
 
 
 {% include 'footer.twig' %}
