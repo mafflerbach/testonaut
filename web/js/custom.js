@@ -65,6 +65,35 @@ $(document).ready(function () {
   })
 })
 
+
+function modalHandling(href, modalTitle, ending) {
+
+  $.ajax({
+    method: "get",
+    url: href
+  }).done(function (data) {
+    $('.modal-title').empty().append(modalTitle);
+    $('.modal-body').empty().append($(data).find('.content'));
+    $('#myModal').modal('show');
+
+    $('.backLink').click(function (ev) {
+      ev.preventDefault();
+      $('#myModal').modal('hide');
+    });
+
+    $('.btn-action').click(function (ev) {
+      ev.preventDefault();
+      console.log('meee')
+      $.ajax({
+        method: "post",
+        url: href + ending
+      }).done(function (data) {
+        $('.modal-body').empty().append($(data).find('.content'));
+      });
+    });
+  });
+}
+
 function invokePulsar(browser) {
   var content = '<div class="pulsar ' + browser + '"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>';
   $('.pulsarbox').append(content);
