@@ -10,7 +10,7 @@
  * See the GNU General Public License for more details.
  *
  */
-
+session_start();
 
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('testonaut', __DIR__ . '/../lib/');
@@ -57,11 +57,13 @@ $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
 )); */
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
   'twig.path' => __DIR__ . '/views',
-  'twig.options'    => array('cache' => __DIR__ . '/cache')
+  //'twig.options'    => array('cache' => __DIR__ . '/cache')
 ));
+$app->register(new Silex\Provider\RoutingServiceProvider());
 
 use Silex\Provider\CsrfServiceProvider;
 $app->register(new CsrfServiceProvider());
+
 
 
 $app->mount('/', new testonaut\Page\Provider\Start());
@@ -76,8 +78,10 @@ $app->mount('/screenshot/{path}', new testonaut\Page\Provider\Screenshot());
 $app->mount('/config/{path}', new testonaut\Page\Provider\Config());
 $app->mount('/delete/{path}', new testonaut\Page\Provider\Delete());
 $app->mount('/run/{path}', new testonaut\Page\Provider\Run());
+$app->mount('/user/', new testonaut\Page\Provider\User());
+$app->mount('/login/', new testonaut\Page\Provider\Login());
+$app->mount('/logout/', new testonaut\Page\Provider\Logout());
 $app->mount('/{path}/', new testonaut\Page\Provider\Page());
-
 
 if ($app['debug']) {
   $app->run();

@@ -1,7 +1,7 @@
-#!/bin/sh -x
+#!/bin/bash
 
 # $2 gitDir
-cd $2
+cd '$2'
 
 # $1 action
 # $2 gitDir
@@ -11,10 +11,10 @@ cd $2
 if [ "$1" = "commit" ]; then
     git add .
     if [ "$4" != "" ]; then
-        git config user.email $4;
-        git config user.name $5;
+        git config user.email "$4";
+        git config user.name "$5";
     fi
-    git commit -m"'commit $3'"
+    git commit -m "$3"
 fi
 
 # $1 action
@@ -41,13 +41,11 @@ if [ "$1" = "revert" ]; then
     git checkout $3
 fi
 
-
 # $1 action
 # $2 git Dir
 if [ "$1" = "pull" ]; then
     git pull $2
 fi
-
 
 # $1 action
 # $2 git Dir
@@ -58,3 +56,4 @@ if [ "$1" = "diff" ]; then
     git diff --word-diff -U0 $3 $4
     #git diff --word-diff -U0  --numstat --word-diff-regex=. $3 $4
 fi
+

@@ -67,10 +67,11 @@ class Toc {
     $dirs = array();
     $r = array();
     foreach ($ritit as $splFileInfo) {
-      if ($splFileInfo->getFilename() == '.' || $splFileInfo->getFilename() == '..') {
+      if ($splFileInfo->getFilename() == '.' || $splFileInfo->getFilename() == '..' || strpos($splFileInfo->getPath(), '.git') !== FALSE) {
         continue;
       }
-      if ($splFileInfo->isDir() && !in_array($splFileInfo->getFilename(), $dirs)) {
+
+      if ($splFileInfo->isDir() && !in_array($splFileInfo->getFilename(), $dirs) && $splFileInfo->getFilename() !== '.git') {
         $path = array($splFileInfo->getFilename() => array());
         for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
           $path = array(
@@ -83,6 +84,39 @@ class Toc {
       }
     }
     ksort($r);
+    $this->dirArray = $r;
+  }
+
+  public function run2() {
+
+    if (!file_exists($this->basePath)) {
+      return '';
+    }
+    $ritit = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath), \RecursiveIteratorIterator::CHILD_FIRST);
+    $dirs = array();
+    $r = array();
+    /**
+     * @var  \SplFileInfo $splFileInfo
+     */
+    foreach ($ritit as $splFileInfo) {
+      if ($splFileInfo->getFilename() == '.' || $splFileInfo->getFilename() == '..' || strpos($splFileInfo->getPath(), '.git') !== FALSE) {
+        continue;
+      }
+
+      if ($splFileInfo->isDir() && !in_array($splFileInfo->getFilename(), $dirs) && $splFileInfo->getFilename() !== '.git') {
+        $path = array($splFileInfo->getFilename() => array());
+        for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
+          $path = array(
+            $ritit->getSubIterator($depth)
+              ->current()
+              ->getFilename() => $path
+          );
+        }
+        $r = array_merge_recursive($r, $path);
+      }
+    }
+    ksort($r);
+
     $this->dirArray = $r;
   }
 

@@ -44,6 +44,10 @@ class Globalconfig implements ControllerProviderInterface {
   public function connect(Application $app) {
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       $conf = $this->getConfig();
 
       $profile = new Profile();

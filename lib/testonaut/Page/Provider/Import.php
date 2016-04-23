@@ -36,6 +36,9 @@ class Import implements ControllerProviderInterface {
     ;
     $file = $app['controllers_factory'];
     $file->match('/', function (Request $request, $path) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
 
       $page = new Page($path);
       $this->request = $request;

@@ -110,11 +110,11 @@ class Config {
 
     return FALSE;
   }
+
   /**
-   * 
-   * @param type $key
-   * @param type $args
-   * @return type
+   * @param $key
+   * @param $args
+   * @return mixed
    */
   public function __call($key, $args) {
     if ($this->exists($key) && is_callable($this->register[$key])) {

@@ -8,8 +8,53 @@
     {% endif %}
     <form action=""
           method="POST">
-      {% if app.browser is defined %}
 
+      <div class="row">
+        <div class="col-xs-6 col-md-6">
+          <h2>Pagetype</h2>
+          {% if app.type is defined %}
+            {% for type, key  in app.type %}
+              {% if key == true %}
+                {% set checked = 'checked="checked"' %}
+              {% else %}
+                {% set checked = '' %}
+              {% endif %}
+              <label class="radio"
+                     for="pagetype_{{ type }}">
+                <input type="radio"
+                       value="{{ type }}"
+                       name="type"
+                  {{ checked }}
+                       id="pagetype_{{ type }}"/> {{ type }}
+              </label>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <h2>Screenshot Settings </h2>
+          {% if app.screenshots is defined %}
+            {% for screen, key  in app.screenshots %}
+              {% if key == true %}
+                {% set checked = 'checked="checked"' %}
+              {% else %}
+                {% set checked = '' %}
+              {% endif %}
+              <label class="radio"
+                     for="screenshot_{{ screen }}">
+                <input type="radio"
+                       value="{{ screen }}"
+                       name="screenshot"
+                  {{ checked }}
+                       id="screenshot_{{ screen }}"/>{{ screen }}
+              </label>
+
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+
+      <br/>
+      {% if app.browser is defined %}
         <h2>Browser Settings</h2>
         {% for browser  in app.browser %}
           {% if browser.url is defined and browser.url != '' %}
@@ -18,15 +63,12 @@
           {% else %}
             {% set url = '' %}
             {% set lighten = 'class=lighten' %}
-
           {% endif %}
-
           {% if browser.active is defined and browser.active == true %}
             {% set checked = 'checked="checked"' %}
           {% else %}
             {% set checked = '' %}
           {% endif %}
-
 
           {% if browser.browserName is defined %}
             <label class="checkbox"
@@ -66,50 +108,6 @@
           </div>
         {% endfor %}
       {% endif %}
-      <br/>
-
-      <h2>Pagetype</h2>
-      {% if app.type is defined %}
-        {% for type, key  in app.type %}
-          {% if key == true %}
-            {% set checked = 'checked="checked"' %}
-          {% else %}
-            {% set checked = '' %}
-          {% endif %}
-          <label class="radio"
-                 for="pagetype_{{ type }}">
-            <input type="radio"
-                   value="{{ type }}"
-                   name="type"
-              {{ checked }}
-                   id="pagetype_{{ type }}"/> {{ type }}
-          </label>
-
-        {% endfor %}
-      {% endif %}
-      <br/>
-
-      <h2>Screenshot Settings </h2>
-      {% if app.screenshots is defined %}
-        {% for screen, key  in app.screenshots %}
-          {% if key == true %}
-            {% set checked = 'checked="checked"' %}
-          {% else %}
-            {% set checked = '' %}
-          {% endif %}
-          <label class="radio"
-                 for="screenshot_{{ screen }}">
-            <input type="radio"
-                   value="{{ screen }}"
-                   name="screenshot"
-              {{ checked }}
-                   id="screenshot_{{ screen }}"/>{{ screen }}
-          </label>
-
-        {% endfor %}
-      {% endif %}
-
-      <br/>
       <br/>
       <br/>
       <input type="submit"

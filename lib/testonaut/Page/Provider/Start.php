@@ -32,19 +32,13 @@ class Start implements ControllerProviderInterface {
 
   public function connect(Application $app) {
 
+
     $start = $app['controllers_factory'];
-    $start->post('/', function (Request $request) use ($app) {
-
-      $path = $request->request->get('path');
-      $content = $request->request->get('content');
-      $page = new \testonaut\Page('');
-      $page->content($content, TRUE);
-
-      return $app->redirect($request->getBaseUrl() . '/');
-    })
-    ;
 
     $start->get('/', function (Request $request) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
 
       $toc = $this->getToc();
       $app['menu'] = $toc;
@@ -78,7 +72,16 @@ class Start implements ControllerProviderInterface {
           'Cache-Control' => 'maxage=300',
         ));
       }
+    })
+    ;
+    $start->post('/', function (Request $request) use ($app) {
 
+      $path = $request->request->get('path');
+      $content = $request->request->get('content');
+      $page = new \testonaut\Page('');
+      $page->content($content, TRUE);
+
+      return $app->redirect($request->getBaseUrl() . '/');
     })
     ;
 

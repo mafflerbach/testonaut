@@ -71,10 +71,17 @@ class Db {
         "imageName" TEXT,
         "images" TEXT);';
 
+    $user ='CREATE TABLE "User" (
+            "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+            "email" TEXT NOT NULL,
+            "password" TEXT NOT NULL
+        );';
+
     $this->dbInstance->query($files);
     $this->dbInstance->query($profile);
     $this->dbInstance->query($history);
     $this->dbInstance->query($imageCompare);
+    $this->dbInstance->query($user);
   }
   
   public function getInstance() {

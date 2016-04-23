@@ -216,6 +216,14 @@ class Page {
   /**
    * @return mixed
    */
+  public function getProjectRoot() {
+    $explode = explode(".", $this->path);
+    return $this->root ."/".$explode[0];
+  }
+
+  /**
+   * @return mixed
+   */
   public function relativePath() {
 
     return str_replace('.', '/', $this->path);

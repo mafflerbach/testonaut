@@ -38,13 +38,12 @@ class File implements ControllerProviderInterface {
       $this->request = $request;
       $form = $app['form.factory']->createBuilder('form')
         ->add('FileUpload', 'file')
-        ->getForm()
-      ;
+        ->getForm();
+
       $image = '';
       $message = 'Upload a file';
       if (isset($app['request'])) {
         $request = $app['request'];
-      } else {
       }
       if ($request->isMethod('POST')) {
         $form->bind($request);
@@ -59,8 +58,8 @@ class File implements ControllerProviderInterface {
           $search = new Search\File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
           $search->updateIndex();
           $image = $domain . $request->getBaseUrl() . '/files/' . $page->relativePath() . '/' . $filename;
-        } else {
         }
+
       }
       $app['request'] = array(
         'path'    => $path,

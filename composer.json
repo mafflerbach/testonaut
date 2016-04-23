@@ -19,7 +19,8 @@
     "symfony/config": "~2.6",
     "symfony/yaml": "~2.6",
     "symfony/form": "~2.6",
-    "symfony/security-csrf": "~2.6",
-    "sebastian/git": "2.0.*@dev"
+
+    "symfony/finder": "3.0.x-dev",
+    "symfony/security": "2.6.x-dev"
   }
 }

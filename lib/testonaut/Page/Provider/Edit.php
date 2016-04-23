@@ -19,14 +19,30 @@ use testonaut\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use testonaut\Utils\Git;
 
 class Edit implements ControllerProviderInterface {
+  protected  $path = '';
+  /**
+   * @var null| Git
+   */
+  protected $git = NULL;
+
   public function connect(Application $app) {
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request, $path) use ($app) {
+
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
+      $this->path = $path;
       $page = new \testonaut\Page($path);
       $content = $page->content();
       $uploadedFiles = $page->getLinkedFiles();
+
+      $this->git = new Git($page->transCodePath());
+
       $app['request'] = array(
         'content'      => $content,
         'path'         => $path,
@@ -35,6 +51,7 @@ class Edit implements ControllerProviderInterface {
         'linkedImages' => $uploadedFiles['images'],
         'mode'         => 'edit'
       );
+
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
 
@@ -82,10 +99,34 @@ class Edit implements ControllerProviderInterface {
       $page = new \testonaut\Page($path);
       $page->content($content, TRUE);
 
+
+      if (strpos($path, '.') === FALSE && !$this->git->exists()) {
+        $this->git = new Git($page->transCodePath());
+        $this->gitInit($page->transCodePath());
+      } else {
+        $this->git = new Git($page->getProjectRoot());
+        $this->gitCommit();
+      }
+
       return $app->redirect($request->getBaseUrl() . '/' . $path);
     })
     ;
 
     return $edit;
   }
+
+  protected function gitInit($workingDir) {
+
+    $git = new Git($workingDir);
+    if (!$git->exists()) {
+      $output = $this->git->init();
+    }
+  }
+
+  protected function gitCommit() {
+    $output = $this->git->commit('testcommit', 'maren@afflerbach.info', 'Maren Afflerbach');
+    var_dump($output);
+    return $output;
+  }
+
 }
