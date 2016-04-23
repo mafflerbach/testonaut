@@ -43,10 +43,11 @@ class User {
   }
 
 
-  public function add($name, $password) {
-    $sql = 'insert into user (email, password) VALUES (:email, :password)';
+  public function add($name, $password, $displayName) {
+    $sql = 'insert into user (email, password, displayName) VALUES (:email, :password, :displayName)';
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':email', $name);
+    $stm->bindParam(':displayName', $displayName);
     $password = password_hash($password, PASSWORD_DEFAULT);
     $stm->bindParam(':password', $password);
 
@@ -56,6 +57,22 @@ class User {
 
   public function remove($name) {
 
+  }
+
+
+  public function get($id) {
+    $sql = 'select email, displayName from user WHERE id=:id';
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':id', $id);
+    $result = $stm->execute();
+
+    $return = array();
+
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+      $return[] = $row;
+    }
+
+    return $return[0];
   }
 
   public function exist($email) {

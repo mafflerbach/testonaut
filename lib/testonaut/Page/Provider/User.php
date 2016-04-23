@@ -60,10 +60,12 @@ class User implements ControllerProviderInterface {
     $data = array(
       'email' => 'Your email',
       'password' => 'Your password',
+      'displayName' => '',
     );
 
     $form = $app['form.factory']->createBuilder('form', $data)
       ->add('email')
+      ->add('displayName')
       ->add('password', 'password')
       ->getForm();
 
@@ -76,7 +78,7 @@ class User implements ControllerProviderInterface {
       $user = new \testonaut\User();
 
       if (!$user->exist($data['email'])){
-        $user->add($data['email'], $data['password']);
+        $user->add($data['email'], $data['password'], $data['displayName']);
         $message = "Add User";
       } else {
         $message = "Can't create User. User exists";

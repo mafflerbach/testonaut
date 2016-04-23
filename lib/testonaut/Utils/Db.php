@@ -75,6 +75,7 @@ class Db {
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "email" TEXT NOT NULL,
             "password" TEXT NOT NULL
+            "displayName" TEXT NOT NULL
         );';
 
     $this->dbInstance->query($files);

@@ -19,6 +19,7 @@ use testonaut\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use testonaut\User;
 use testonaut\Utils\Git;
 
 class Edit implements ControllerProviderInterface {
@@ -100,6 +101,9 @@ class Edit implements ControllerProviderInterface {
       $page->content($content, TRUE);
 
 
+
+      $this->git = new Git($page->getProjectRoot());
+
       if (strpos($path, '.') === FALSE && !$this->git->exists()) {
         $this->git = new Git($page->transCodePath());
         $this->gitInit($page->transCodePath());
@@ -124,8 +128,12 @@ class Edit implements ControllerProviderInterface {
   }
 
   protected function gitCommit() {
-    $output = $this->git->commit('testcommit', 'maren@afflerbach.info', 'Maren Afflerbach');
-    var_dump($output);
+    $user = new User();
+    $loadedUser = $user->get($_SESSION['testonaut']['userId']);
+
+    $message = "commit " . date('l jS \of F Y h:i:s A');
+    $output = $this->git->commit($message, $loadedUser['email'], $loadedUser['displayName']);
+
     return $output;
   }
 
