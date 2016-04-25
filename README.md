@@ -29,6 +29,8 @@ The best part of all - it runs on your existing selenium infrastructure.
     * different window width and height
 * different base url settings for every profile
 * automated screenshot comparison
+* screenshot overview over all tests in project or suite pages
+    * screenshot filter (all | fail | success)
 * automated selenium node recognition
 * simple html wysiwyg
 * possible call via commandline
@@ -210,15 +212,11 @@ Set option "Index page[s]" to index.html
 
 #planned features....
 
-* moooaar commands
 * implementing variables
-* Overview about the project screenshot comparison
-* Filter for screenshot comparison
 * Templates for pagepresets in editmode
 
 ##modules
 
-* Login or tiny usermanagment
 * Pagecrawler for generating a testing tree
 * testgenerator for Equivalence classes analysis
 * checklist for Accessibility (Bitv) (inkl Prio)
