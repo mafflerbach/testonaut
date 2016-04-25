@@ -34,7 +34,16 @@ The best part of all - it runs on your existing selenium infrastructure.
 * possible call via commandline
 * jenkins compatible output
 * build history
+* ldap support
+* simple usermanagment if you don't have ldap
+* versioning via git (pull not implemented yet)
 
+
+---------------------------------------
+## TODO ##
+* implement revert to commits
+* implement diff for commits
+* implement pull to origin git repo
 
 ---------------------------------------
 ##Installation ##
