@@ -50,7 +50,7 @@ The best part of all - it runs on your existing selenium infrastructure.
 
 Testonaut is still in beta phases, so there is no absolute brain afk installation. There is also some requirements for the runtime.
 
-you need git and an apache installation with php greater then 5.3 with additional modules fileinfo and imagemagick. For dependencies installation you need a composer too. 
+you need git and an apache installation with php greater then 5.3 with additional modules ldap, fileinfo and imagemagick. For dependencies installation you need a composer too.
 
     git clone https://github.com/mafflerbach/testonaut.git
     composer install
