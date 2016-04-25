@@ -1,0 +1,29 @@
+
+<nav class="navbar navbar-default navbar-fixed-top navbar-collapse">
+  <div class="">
+
+      <ol class="breadcrumb">
+        <li>
+          <a href="{{ app.request.baseUrl }}/">root</a>
+        </li>
+      </ol>
+
+    {% block fancyNavBox %}
+
+        <div class="">
+          <ul class="nav navbar-nav navbar-right">
+            <li >
+              <button type="button" class="btn btn-danger navbar-btn">
+                <a href="{{ app.request.baseUrl }}/logout"
+                   data-path="{{ app.request.path }}">Logout</a>
+              </button>
+            </li>
+          </ul>
+        </div>
+    {% endblock %}
+  </div>
+</nav>
+
+
+
+

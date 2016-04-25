@@ -1,7 +1,6 @@
 {% include 'head.twig' %}
 {% include 'headNavi.twig' %}
 
-
   {% if app.request.mode == 'edit' %}
     {% if app.request.message  != '' %}
       <div class="alert alert-info" role="alert">{{ app.request.message }}</div>
@@ -25,10 +24,13 @@
         {{ form_widget(form.password) }}
       </div>
       <input type="submit" name="submit" class="btn  btn-primary"/>
+      <a href="{{ app.request.baseUrl }}/user/"
+         class="backLink btn">Zurück</a>
+
     </form>
   {% elseif app.request.mode == 'delete' %}
     {% if app.request.message != '' %}
-      <p>{{ app.request.message}}</p>
+      <p>{{ app.request.message }}</p>
       <a href="{{ app.request.baseUrl }}/user/"
          class="backLink btn">Zurück</a>
     {% else %}
@@ -45,41 +47,39 @@
     {% endif %}
   {% elseif app.request.mode == 'inactivate' %}
     {% if app.request.message != '' %}
-      <p>{{ app.request.message}}</p>
+      <p>{{ app.request.message }}</p>
       <a href="{{ app.request.baseUrl }}/user/"
          class="backLink btn">Zurück</a>
     {% else %}
-    <form action=""
-          method="POST">
-      Are you sure that you want to inactivate User <b>{{ app.request.displayName }}</b>?
-      <br/>
-      <br/>
-      <input type="submit"
-             value="Ja"
-             name="delete" class="btn btn-primary btn-action"/>
-      <a href="{{ app.request.baseUrl }}/user/" class="backLink btn btn-link">Zurück</a>
-    </form>
-      {% endif %}
+      <form action=""
+            method="POST">
+        Are you sure that you want to inactivate User <b>{{ app.request.displayName }}</b>?
+        <br/>
+        <br/>
+        <input type="submit"
+               value="Ja"
+               name="delete" class="btn btn-primary btn-action"/>
+        <a href="{{ app.request.baseUrl }}/user/" class="backLink btn btn-link">Zurück</a>
+      </form>
+    {% endif %}
   {% elseif app.request.mode == 'activate' %}
     {% if app.request.message != '' %}
-      <p>{{ app.request.message}}</p>
+      <p>{{ app.request.message }}</p>
       <a href="{{ app.request.baseUrl }}/user/"
          class="backLink btn">Zurück</a>
     {% else %}
 
       <form action=""
-          method="POST">
-      Are you sure that you want to activate User <b>{{ app.request.displayName }}</b>?
-      <br/>
-      <br/>
-      <input type="submit"
-             value="Ja"
-             name="delete" class="btn btn-primary btn-action"/>
-      <a href="{{ app.request.baseUrl }}/user/" class="backLink btn btn-link">Zurück</a>
-    </form>
+            method="POST">
+        Are you sure that you want to activate User <b>{{ app.request.displayName }}</b>?
+        <br/>
+        <br/>
+        <input type="submit"
+               value="Ja"
+               name="delete" class="btn btn-primary btn-action"/>
+        <a href="{{ app.request.baseUrl }}/user/" class="backLink btn btn-link">Zurück</a>
+      </form>
 
-  {% endif  %}
-  {% endif  %}
-
-
+    {% endif %}
+  {% endif %}
 {% include 'footer.twig' %}

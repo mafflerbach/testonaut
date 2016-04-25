@@ -1,5 +1,4 @@
 
-
 <nav class="navbar navbar-default navbar-fixed-top navbar-collapse">
   <div class="">
     {% if app.crumb is defined %}
@@ -31,15 +30,29 @@
                      data-action="add"
                      data-path="{{ app.request.path }}">Edit</a>
                 </li>
-
                 <li>
                   <a href="{{ app.request.baseUrl }}/globalconfig"
                      data-action="config"
-                     data-path="{{ app.request.path }}">Config</a>
+                     data-path="{{ app.request.baseUrl }}">Config</a>
                 </li>
+
               {% endif %}
+            {% else %}
+              <li>
+                <a href="{{ app.request.baseUrl }}/user/"
+                   data-path="{{ app.request.baseUrl }}">User Managment</a>
+              </li>
             {% endif %}
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li >
+              <button type="button" class="btn btn-danger navbar-btn">
+                <a href="{{ app.request.baseUrl }}/logout"
+                   data-path="{{ app.request.baseUrl }}">Logout</a>
+              </button>
+            </li>
+          </ul>
+
         </div>
       {% else %}
 
@@ -137,6 +150,14 @@
                    data-path="{{ app.request.path }}">history</a>
               </li>
             {% endif %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li >
+              <button type="button" class="btn btn-danger navbar-btn">
+                <a href="{{ app.request.baseUrl }}/logout"
+                   data-path="{{ app.request.path }}">Logout</a>
+              </button>
+            </li>
           </ul>
         </div>
       {% endif %}

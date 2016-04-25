@@ -47,12 +47,12 @@ class Login implements ControllerProviderInterface {
         ->getForm();
 
       $form->handleRequest($request);
+      $message = '';
 
       if ($request->isMethod('POST')) {
         $data = $form->getData();
         $user = new \testonaut\User();
 
-        $message = '';
         if($user->validate($data['username'], $data['password'])) {
           return $app->redirect($request->getBaseUrl());
         } else {

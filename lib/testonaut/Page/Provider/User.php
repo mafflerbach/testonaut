@@ -55,19 +55,8 @@ class User implements ControllerProviderInterface {
       return $foo;
     });
 
-    $page->get('/{id}', function (Request $request, $id) use ($app) {
-      $foo = $app['twig']->render('user.twig');
-      return $foo;
-    });
-
-
     $page->match('/register/', function (Request $request) use ($app) {
       return $this->register($request, $app);
-    });
-
-    $page->get('/logout', function (Request $request) use ($app) {
-      $foo = $app['twig']->render('logout.twig');
-      return $foo;
     });
     return $page;
   }
@@ -84,7 +73,6 @@ class User implements ControllerProviderInterface {
 
     return $app['twig']->render('userList.twig');
   }
-
 
   protected function editUser($request, $app, $id) {
 
