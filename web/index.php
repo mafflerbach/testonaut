@@ -81,6 +81,7 @@ $app->mount('/run/{path}', new testonaut\Page\Provider\Run());
 $app->mount('/user/', new testonaut\Page\Provider\User());
 $app->mount('/login/', new testonaut\Page\Provider\Login());
 $app->mount('/logout/', new testonaut\Page\Provider\Logout());
+$app->mount('/reset/', new testonaut\Page\Provider\Reset());
 $app->mount('/{path}/', new testonaut\Page\Provider\Page());
 
 if ($app['debug']) {

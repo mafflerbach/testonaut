@@ -31,32 +31,58 @@ class User implements ControllerProviderInterface {
     /**
      * List User
      */
+
     $page->get('/', function (Request $request) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       return $this->getUserList($request, $app);
     });
 
     $page->match('/{id}/edit/', function (Request $request, $id) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       $foo = $this->editUser($request, $app, $id);
       return $foo;
     });
 
     $page->match('/{id}/inactivate/', function (Request $request, $id) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       $foo = $this->setStatus($request, $app, $id, false);
       return $foo;
     });
 
     $page->match('/{id}/activate/', function (Request $request, $id) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       $foo = $this->setStatus($request, $app, $id, true);
       return $foo;
     });
 
     $page->match('/{id}/delete/', function (Request $request, $id) use ($app) {
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       $foo = $this->deleteUser($request, $app, $id);
       return $foo;
     });
 
     $page->match('/register/', function (Request $request) use ($app) {
+
       return $this->register($request, $app);
+    });
+
+    $page->match('/reset/', function (Request $request) use ($app) {
+      return $this->reset($request, $app);
     });
     return $page;
   }

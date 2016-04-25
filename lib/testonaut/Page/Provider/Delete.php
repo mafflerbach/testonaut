@@ -23,6 +23,11 @@ class Delete implements ControllerProviderInterface {
   public function connect(Application $app) {
     $edit = $app['controllers_factory'];
     $edit->get('/', function (Request $request, $path) use ($app) {
+
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+
       $app['request'] = array(
         'path' => $path,
         'baseUrl' => $request->getBaseUrl(),
@@ -38,6 +43,10 @@ class Delete implements ControllerProviderInterface {
 
     $edit->post('/', function (Request $request, $path) use ($app) {
 
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
+      
       $page = new \testonaut\Page($path);
       $deleted= $page->delete();
 

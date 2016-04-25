@@ -35,6 +35,9 @@ class Page implements ControllerProviderInterface {
     $page = $app['controllers_factory'];
     $page->get('/', function (Request $request, $path) use ($app) {
 
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
       $this->request = $request;
       $this->path = $path;
       $settings = new \testonaut\Settings\Page($path);

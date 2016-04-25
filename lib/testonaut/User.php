@@ -113,7 +113,6 @@ class User {
     $stm->bindValue(':active', 1);
 
     $stm->execute();
-
   }
 
   public function delete($id) {
@@ -147,6 +146,37 @@ class User {
     } else {
       return TRUE;
     }
+  }
+
+  public function reset($name) {
+    $sql = 'update user set password=:password where email=:email';
+
+    $stm = $this->db->prepare($sql);
+    $stm->bindValue(':email', $name);
+
+    $passwordGen = $this->generateRandomString();
+    $password = password_hash($passwordGen, PASSWORD_DEFAULT);
+    $stm->bindValue(':password', $password);
+    $result = $stm->execute();
+
+    var_dump($passwordGen);
+    if ($result === FALSE) {
+      return FALSE;
+    } else {
+      $message = "Your new password: ".$passwordGen;
+      mail($name, 'password reset', $message);
+      return TRUE;
+    }
+  }
+
+  private function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
   }
 
 

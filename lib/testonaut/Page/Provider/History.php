@@ -41,7 +41,10 @@ class History implements ControllerProviderInterface {
       $this->path = $path;
       
       if ($request->query->get('delete')) {
-        $this->deleteHistory($request);
+
+        if (isset($_SESSION['testonaut']['userId'])) {
+          $this->deleteHistory($request);
+        }
       }
 
       $browserSettings = new Browser($path);

@@ -60,6 +60,10 @@ class Edit implements ControllerProviderInterface {
     })
     ;
     $edit->get('/rename/', function (Request $request, $path) use ($app) {
+
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
       $page = new \testonaut\Page($path);
       $app['request'] = array(
         'path'    => $path,
@@ -71,6 +75,10 @@ class Edit implements ControllerProviderInterface {
     })
     ;
     $edit->post('/rename/', function (Request $request, $path) use ($app) {
+
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
       $page = new \testonaut\Page($path);
       $newPath = $request->request->get('newPath');
       $app['request'] = array(
@@ -96,6 +104,10 @@ class Edit implements ControllerProviderInterface {
     })
     ;
     $edit->post('/', function (Request $request, $path) use ($app) {
+
+      if (!isset($_SESSION['testonaut']['userId'])) {
+        return $app->redirect($request->getBaseUrl() . '/login/');
+      }
       $content = $request->request->get('content');
       $page = new \testonaut\Page($path);
       $page->content($content, TRUE);
