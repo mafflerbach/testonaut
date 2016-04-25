@@ -2,56 +2,143 @@
 {% include 'headNavi.twig' %}
 <div class="contentBox">
   <div class="content">
-
-
     {% if app.request.settings is defined %}
+      <div>
+        <form action=""
+              method="POST">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Basic</a>
+            </li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Ldap</a>
+            </li>
+          </ul>
 
-      <form action=""
-            method="POST">
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">
+              <div class="input-group">
+                <div>
+                  <label class=""
+                         for="appPath"> app Path
+                    <input type="text"
+                           class="form-control input-sm"
+                           placeholder="App Path"
+                           aria-describedby="basic-addon2"
+                           value="{{ app.request.settings.appPath }}"
+                           name="appPath"
+                           aria-label="FOOOO"
+                           id="appPath"
+                    >
+                  </label>
+                </div>
+                <div>
+                  <label class=""
+                         for="selAddr"> Selenium Hub <sub>Example: http://xxx.xxx.xxx.xxx:4444</sub>
+                    <input type="text"
+                           class="form-control input-sm"
+                           placeholder="Selenium Hub:"
+                           aria-describedby="basic-addon2"
+                           value="{{ app.request.settings.seleniumAddress }}"
+                           name="seleniumAddress"
+                           id="selAddr"
+                    >
+                  </label>
+                </div>
 
-        <div class="input-group">
-          <div>
-            <label class=""
-                   for="appPath"> app Path
-              <input type="text"
-                     class="form-control input-sm"
-                     placeholder="App Path"
-                     aria-describedby="basic-addon2"
-                     value="{{ app.request.settings.appPath }}"
-                     name="appPath"
-                     aria-label="FOOOO"
-                     id="appPath"
-              >
-            </label>
+
+                <select class="form-control input-sm" name="theme">
+                  {% for theme in app.request.themes %}
+                    {% if app.request.settings.theme is defined and app.request.settings.theme == theme %}
+                      {% set selected = 'selected="selected"' %}
+                    {% else %}
+                      {% set selected = '' %}
+                    {% endif %}
+                    <option value="{{ theme }}" {{ selected }}>{{ theme }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="profile">
+
+              <h3>LDAP Settings</h3>
+              <div class="input-group">
+                <div>
+                  <label class=""
+                         for="hostname"> Ldap Hostname
+                    <input type="text"
+                           class="form-control input-sm"
+                           placeholder="Ldap Hostname"
+                           aria-describedby="basic-addon2"
+                           value="{{ app.request.settings.ldapHostname }}"
+                           name="ldapHostname"
+                           id="hostname"
+                    >
+                  </label>
+                </div>
+                <div>
+                  <label class=""
+                         for="baseDn"> base Dn
+                    <input type="text"
+                           class="form-control input-sm"
+                           placeholder="base Dn"
+                           aria-describedby="basic-addon2"
+                           value="{{ app.request.settings.ldapBaseDn }}"
+                           name="ldapBaseDn"
+                           id="baseDn"
+                    >
+                  </label>
+                </div>
+                <div>
+                  <label class=""
+                         for="ldapCn"> ldap cn
+                    <input type="text"
+                           class="form-control input-sm"
+                           placeholder="ldap cn"
+                           aria-describedby="basic-addon2"
+                           value="{{ app.request.settings.ldapCn }}"
+                           name="ldapCn"
+                           id="ldapCn"
+                    >
+                  </label>
+                </div>
+                <div>
+                  <label class=""
+                         for="ldapPassword"> ldap password
+                    <input type="password"
+                           class="form-control input-sm"
+                           placeholder="Ldap Password"
+                           aria-describedby="basic-addon2"
+                           value="{{ app.request.settings.ldapPassword }}"
+                           name="ldapPassword"
+                           id="ldapPassword"
+                    >
+                  </label>
+                </div>
+                <div>
+
+                  {% if app.request.settings.useLdap != null %}
+                    {% set checked = 'checked="checked"' %}
+                  {% else %}
+                    {% set checked = '' %}
+                  {% endif %}
+
+                  <label class="checkbox"
+                         for="useLdap">
+                    <input type="checkbox"
+                           value="true"
+                           name="useLdap"
+                      {{ checked }}
+                           id="useLdap"/> Use ldap
+                  </label>
+                </div>
+
+
+              </div>
+            </div>
           </div>
-          <div>
-            <label class=""
-                   for="selAddr"> Selenium Hub <sub>Example: http://xxx.xxx.xxx.xxx:4444</sub>
-              <input type="text"
-                     class="form-control input-sm"
-                     placeholder="Selenium Hub:"
-                     aria-describedby="basic-addon2"
-                     value="{{ app.request.settings.seleniumAddress }}"
-                     name="seleniumAddress"
-                     id="selAddr"
-              >
-            </label>
-          </div>
-
-
-          <select class="form-control input-sm" name="theme">
-            {% for theme in app.request.themes %}
-              {% if app.request.settings.theme is defined and app.request.settings.theme == theme %}
-                {% set selected = 'selected="selected"' %}
-              {% else %}
-                {% set selected = '' %}
-              {% endif %}
-              <option value="{{ theme }}" {{ selected }}>{{ theme }}</option>
-            {% endfor %}
-          </select>
           <br/>
           <br/>
-
           <input type="submit"
                  name="action"
                  value="save"
@@ -59,14 +146,16 @@
 
           <a href="{{ app.request.baseUrl }}"
              class="btn-link btn">Zurück</a>
-        </div>
 
-        <input type="hidden"
-               name="save"
-               value="config"/>
+          <input type="hidden"
+                 name="save"
+                 value="config"/>
 
-      </form>
+        </form>
+      </div>
 
+      <br/>
+      <br/>
       <h3>Profile
         <button name="profile" class="btn btn-primary" id="addProfile">Add Profile</button>
       </h3>
@@ -200,12 +289,12 @@
         $(this).unbind('submit').submit()
       }
 
-    })
+    });
 
 
     $('#addProfile').click(function () {
       $('#addProfile-form').slideDown();
-    })
+    });
 
     $('#browsers').change(function () {
       if ($('#browsers').val() == "chrome") {
@@ -215,28 +304,28 @@
         $('#dimension').show();
         $('#devices').hide();
       }
-    })
+    });
 
     $('#devices select').change(function () {
       $('#dimension').hide();
       if ($('#devices select').val() == '') {
         $('#dimension').show();
       }
-    })
+    });
 
     $('#width').blur(function () {
       $('#devices').hide();
       if ($('#width').val() == '' && $('#height').val() == "") {
         $('#devices').show();
       }
-    })
+    });
 
     $('#height').blur(function () {
       $('#devices').hide();
       if ($('#width').val() == '' && $('#height').val() == "") {
         $('#devices').show();
       }
-    })
+    });
 
     $("a[data-action='delete']").click(function (e) {
       e.preventDefault();
@@ -271,8 +360,6 @@
       });
     });
   })
-
-
 
 
 </script>

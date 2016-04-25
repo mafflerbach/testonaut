@@ -1,0 +1,29 @@
+{% include 'head.twig' %}
+{% include 'headNavi.twig' %}
+
+
+
+<table class="table">
+
+  {% for user in app.request.userList  %}
+    {% if user.active >= 1 %}
+      {% set class = 'success' %}
+    {% else %}
+      {% set class = '' %}
+    {% endif %}
+
+
+    <tr class="{{ class }}">
+      <td>{{ user.displayName }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+
+          <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+
+{% include 'footer.twig' %}

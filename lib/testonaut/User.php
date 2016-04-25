@@ -14,6 +14,11 @@
 
 namespace testonaut;
 
+use testonaut\Page\Provider\Globalconfig;
+use Toyota\Component\Ldap\Core\Manager;
+use Toyota\Component\Ldap\Platform\Native\Driver;
+use Toyota\Component\Ldap\Platform\Native\Search;
+
 
 /**
  * Class User
@@ -24,13 +29,25 @@ class User {
    * @var \SQLite3 $db
    */
   protected $db;
+
   public function __construct() {
     $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
     $this->db = $db->getInstance();
   }
 
   public function validate($name, $password) {
-    $sql = 'select * from "user" WHERE email=:email';
+    $globalConf = new Globalconfig();
+    $configuration = $globalConf->getConfig();
+
+    if ($configuration['useLdap']) {
+      return $this->ldapValidate($name, $password);
+    } else {
+      return $this->internValidate($name, $password);
+    }
+  }
+
+  protected function internValidate($name, $password) {
+    $sql = 'select * from "user" WHERE email=:email and active <= 1';
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':email', $name);
     $result = $stm->execute();
@@ -42,14 +59,40 @@ class User {
     return false;
   }
 
+  protected function ldapValidate($name, $password) {
+    $globalConf = new Globalconfig();
+    $configuration = $globalConf->getConfig();
+
+    $params = array(
+      'hostname' => $configuration['ldapHostname'],
+      'base_dn' => $configuration['ldapBaseDn'],
+    );
+
+    $ldap = new Manager($params, new Driver());
+    $ldap->connect();
+    $ldap->bind($configuration['ldapCn'], $configuration['ldapPassword']);
+
+    $node = $ldap->getNode('uid=' . $name . ',ou=People,dc=example,dc=com');
+    $userPassword = $node->get('userPassword')->getValues();
+
+    if ($this->check_password($password, $userPassword[0])) {
+      $_SESSION['testonaut']['userId'] = $node->get('uidNumber')->getValues();
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+
+  }
+
 
   public function add($name, $password, $displayName) {
-    $sql = 'insert into user (email, password, displayName) VALUES (:email, :password, :displayName)';
+    $sql = 'insert into user (email, password, displayName, active) VALUES (:email, :password, :displayName, :active)';
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':email', $name);
     $stm->bindParam(':displayName', $displayName);
     $password = password_hash($password, PASSWORD_DEFAULT);
     $stm->bindParam(':password', $password);
+    $stm->bindValue(':active', 1);
 
     $stm->execute();
 
@@ -61,18 +104,62 @@ class User {
 
 
   public function get($id) {
+    $globalConf = new Globalconfig();
+    $configuration = $globalConf->getConfig();
+
+    if ($configuration['useLdap']) {
+      return $this->getLdapUser($id);
+    } else {
+      return $this->getInternUser($id);
+    }
+
+  }
+
+  protected function getInternUser($id){
+
     $sql = 'select email, displayName from user WHERE id=:id';
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':id', $id);
     $result = $stm->execute();
-
     $return = array();
-
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $return[] = $row;
     }
-
     return $return[0];
+  }
+
+  protected function getLdapUser($id){
+    $globalConf = new Globalconfig();
+    $configuration = $globalConf->getConfig();
+
+    $params = array(
+      'hostname' => $configuration['ldapHostname'],
+      'base_dn' => $configuration['ldapBaseDn'],
+    );
+
+    $ldap = new Manager($params, new Driver());
+    $ldap->connect();
+    $ldap->bind($configuration['ldapCn'], $configuration['ldapPassword']);
+
+    $results = $ldap->search(Search::SCOPE_ONE, 'uidnumber=' . $id[0]);
+    foreach ($results as $node) {
+      $mail = $node->get('mail')->getValues();
+      $cn = $node->get('cn')->getValues();
+      return array('email' => $mail[0],
+        'displayName' => $cn[0]);
+    }
+  }
+
+
+  public function getAll() {
+    $sql = 'select email, displayName, active from user';
+    $stm = $this->db->prepare($sql);
+    $result = $stm->execute();
+    $return = array();
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+      $return[] = $row;
+    }
+    return $return;
   }
 
   public function exist($email) {
@@ -85,6 +172,43 @@ class User {
     if ($res['count'] > 0) {
       return TRUE;
     }
+    return FALSE;
+  }
+
+  private function check_password($password, $hash) {
+    if ($hash == '') {
+      //echo "No password";
+      return FALSE;
+    }
+
+    if ($hash{0} != '{') {
+      if ($password == $hash) {
+        return TRUE;
+      }
+      return FALSE;
+    }
+
+    if (substr($hash, 0, 7) == '{crypt}') {
+      if (crypt($password, substr($hash, 7)) == substr($hash, 7)) {
+        return TRUE;
+      }
+      return FALSE;
+    } elseif (substr($hash, 0, 5) == '{MD5}') {
+      $encrypted_password = '{MD5}' . base64_encode(md5($password, TRUE));
+    } elseif (substr($hash, 0, 6) == '{SHA1}') {
+      $encrypted_password = '{SHA}' . base64_encode(sha1($password, TRUE));
+    } elseif (substr($hash, 0, 6) == '{SSHA}') {
+      $salt = substr(base64_decode(substr($hash, 6)), 20);
+      $encrypted_password = '{SSHA}' . base64_encode(sha1($password . $salt, TRUE) . $salt);
+    } else {
+      echo "Unsupported password hash format";
+      return FALSE;
+    }
+
+    if ($hash == $encrypted_password) {
+      return TRUE;
+    }
+
     return FALSE;
   }
 

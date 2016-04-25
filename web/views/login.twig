@@ -2,12 +2,16 @@
 
 
 
+    {% if app.request.message  != '' %}
+      <div class="alert alert-info" role="alert">{{ app.request.message }}</div>
+    {% endif %}
+
   <form action="#" method="post">
 
     <div class="form-group">
-      {{ form_label(form.email) }}
-      {{ form_errors(form.email) }}
-      {{ form_widget(form.email) }}
+      {{ form_label(form.username) }}
+      {{ form_errors(form.username) }}
+      {{ form_widget(form.username) }}
     </div>
 
     <div class="form-group">

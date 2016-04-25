@@ -14,6 +14,7 @@
 
 namespace testonaut\Page\Provider;
 
+use testonaut\Ldap\Settings;
 use testonaut\Page\Breadcrumb;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
@@ -93,17 +94,16 @@ class Globalconfig implements ControllerProviderInterface {
 
     $edit->get('/editProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
 
-
       $profile = new Profile();
       $profileList = $profile->getByName($browserProfile);
 
       $data = array(
-        'browser' =>$profileList[0]['browser'],
-        'name' =>$profileList[0]['name'],
+        'browser' => $profileList[0]['browser'],
+        'name' => $profileList[0]['name'],
         'arguments' => ($profileList[0]['arguments'] == '') ? '' : json_decode($profileList[0]['arguments'], true),
         'driverOptions' => ($profileList[0]['driverOptions'] == '') ? '' : json_decode($profileList[0]['driverOptions'], true),
-        'capabilities' => ($profileList[0]['capabilities'] == '') ? '': json_decode($profileList[0]['capabilities'], true) ,
-        );
+        'capabilities' => ($profileList[0]['capabilities'] == '') ? '' : json_decode($profileList[0]['capabilities'], true),
+      );
 
       return $app->json($data);
     });
@@ -126,6 +126,7 @@ class Globalconfig implements ControllerProviderInterface {
         $this->saveProfile($request);
       } else {
         $this->saveConfigForm($request);
+
       }
 
       return $app->redirect($request->getBaseUrl() . '/globalconfig/');
@@ -145,37 +146,43 @@ class Globalconfig implements ControllerProviderInterface {
     $name = $request->request->get('profileName');
     $driverOptions = '';
     if ($request->request->get('width') != '' && $request->request->get('height') != '') {
-      $driverOptions = json_encode(array('dimensions' => array('width' => $request->request->get('width'), "height" => $request->request->get('height'))));
+      $driverOptions = json_encode(array(
+        'dimensions' => array(
+          'width' => $request->request->get('width'),
+          "height" => $request->request->get('height')
+        )
+      ));
     }
     if ($browser == 'chrome') {
       $capabilities['arguments'] = array(
         "--disable-web-security",
-        "--user-data-dir=".sys_get_temp_dir()
+        "--user-data-dir=" . sys_get_temp_dir()
       );
 
-      if ($request->request->get('device') != '' &&
-          $request->request->get('width') == '' &&
-          $request->request->get('height') == '') {
-        $capabilities['experimental'] = array('mobileEmulation' => array(
-          "deviceName" =>$request->request->get('device')
-        ));
+      if ($request->request->get('device') != '' && $request->request->get('width') == '' && $request->request->get('height') == '') {
+        $capabilities['experimental'] = array(
+          'mobileEmulation' => array(
+            "deviceName" => $request->request->get('device')
+          )
+        );
       }
     } else {
       $capabilities = '';
     }
 
-    if($browser == 'firefox') {
-      $arguments = json_encode(array('security.fileuri.strict_origin_policy' => false,
-      'network.http.referer.XOriginPolicy' => 1));
+    if ($browser == 'firefox') {
+      $arguments = json_encode(array(
+        'security.fileuri.strict_origin_policy' => false,
+        'network.http.referer.XOriginPolicy' => 1
+      ));
     } else {
       $arguments = '';
     }
 
-
     $data['browser'] = $browser;
     $data['name'] = $name;
     $data['driverOptions'] = $driverOptions;
-    $data['arguments'] =  $arguments;
+    $data['arguments'] = $arguments;
 
     if ($capabilities != '') {
       $data['capabilities'] = json_encode($capabilities);
@@ -192,6 +199,11 @@ class Globalconfig implements ControllerProviderInterface {
     $cache = $request->request->get('cache');
     $appPath = $request->request->get('appPath');
     $theme = $request->request->get('theme');
+    $ldapHostname = $request->request->get('ldapHostname');
+    $ldapBaseDn = $request->request->get('ldapBaseDn');
+    $ldapCn = $request->request->get('ldapCn');
+    $ldapPassword = $request->request->get('ldapPassword');
+    $useLdap = $request->request->get('useLdap');
 
     if ($cache != null) {
       $cache = true;
@@ -199,13 +211,21 @@ class Globalconfig implements ControllerProviderInterface {
       $cache = false;
     }
 
+
     $configuration = array(
       'appPath' => $appPath,
       'cache' => $cache,
       'theme' => $theme,
-      'seleniumAddress' => $address);
+      'seleniumAddress' => $address,
+      'ldapHostname' => $ldapHostname,
+      'ldapBaseDn' => $ldapBaseDn,
+      'ldapCn' => $ldapCn,
+      'ldapPassword' => $ldapPassword,
+      'useLdap' => $useLdap
+    );
 
     $this->saveConfig($configuration);
+
   }
 
   protected function saveConfig($array) {
@@ -219,12 +239,18 @@ class Globalconfig implements ControllerProviderInterface {
     if (file_exists($config)) {
       $configuration = json_decode(file_get_contents($config), true);
     } else {
-
       $configuration = array(
         'appPath' => '',
         'cache' => '',
         'theme' => 'bootstrap',
-        'seleniumAddress' => '');
+        'seleniumAddress' => '',
+        'ldapHostname' => '',
+        'ldapBaseDn' => '',
+        'ldapCn' => '',
+        'ldapPassword' => '',
+        'useLdap' => ''
+      );
+
       $this->writeToFile($config, json_encode($configuration));
     };
     return $configuration;
@@ -235,7 +261,7 @@ class Globalconfig implements ControllerProviderInterface {
   }
 
   protected function getThemes() {
-    $themePath = \testonaut\Config::getInstance()->Path .'/web/css/themes';
+    $themePath = \testonaut\Config::getInstance()->Path . '/web/css/themes';
     $themes = array();
     foreach (new \DirectoryIterator($themePath) as $fileInfo) {
       if ($fileInfo->isDot()) {

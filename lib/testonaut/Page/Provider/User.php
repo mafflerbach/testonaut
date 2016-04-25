@@ -16,6 +16,9 @@ namespace testonaut\Page\Provider;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Toyota\Component\Ldap\Core\Manager;
+use Toyota\Component\Ldap\Platform\Native\Driver;
+use Toyota\Component\Ldap\Platform\Native\Search;
 
 /**
  * Class User
@@ -29,8 +32,7 @@ class User implements ControllerProviderInterface {
      * List User
      */
     $page->get('/', function (Request $request) use ($app) {
-      $foo = $app['twig']->render('userList.twig');
-      return $foo;
+      return $this->getUserList($request, $app);
     });
 
     $page->get('/{id}', function (Request $request, $id) use ($app) {
@@ -44,9 +46,7 @@ class User implements ControllerProviderInterface {
     });
 
     $page->match('/register/', function (Request $request) use ($app) {
-
       return $this->register($request, $app);
-
     });
 
     $page->get('/logout', function (Request $request) use ($app) {
@@ -55,6 +55,20 @@ class User implements ControllerProviderInterface {
     });
     return $page;
   }
+
+  protected function getUserList($request, $app) {
+    $user = new \testonaut\User();
+
+    $app['request'] = array(
+      'baseUrl' => $request->getBaseUrl(),
+      'mode' => 'show',
+      'content' => '',
+      'userList' => $user->getAll()
+    );
+
+    return $app['twig']->render('userList.twig');
+  }
+
 
   protected function register($request, $app) {
     $data = array(
@@ -77,7 +91,7 @@ class User implements ControllerProviderInterface {
 
       $user = new \testonaut\User();
 
-      if (!$user->exist($data['email'])){
+      if (!$user->exist($data['email'])) {
         $user->add($data['email'], $data['password'], $data['displayName']);
         $message = "Add User";
       } else {
@@ -92,5 +106,5 @@ class User implements ControllerProviderInterface {
 
     return $app['twig']->render('register.twig', array('form' => $form->createView()));
   }
-
+  
 }

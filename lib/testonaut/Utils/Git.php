@@ -22,7 +22,7 @@ class Git {
    *
    * @param type $dir
    */
-  public function __construct($dir ) {
+  public function __construct($dir) {
     $this->gitDir = $dir;
 
   }
@@ -40,14 +40,14 @@ class Git {
     }
 
     if (!$this->existBaseConfig()) {
-      $command = 'cd '.escapeshellarg($this->gitDir) . '; 
-                  git config user.email '.escapeshellarg($email).'; 
-                  git config user.name '.escapeshellarg($name).';
+      $command = 'cd ' . escapeshellarg($this->gitDir) . '; 
+                  git config user.email ' . escapeshellarg($email) . '; 
+                  git config user.name ' . escapeshellarg($name) . ';
                   git add .; 
-                  git commit -m ' . escapeshellarg($message)  ;
+                  git commit -m ' . escapeshellarg($message);
     } else {
-      $command = 'cd '.escapeshellarg($this->gitDir) . '; 
-                  git add .;git commit -m ' . escapeshellarg($message)  ;
+      $command = 'cd ' . escapeshellarg($this->gitDir) . '; 
+                  git add .;git commit -m ' . escapeshellarg($message);
     }
 
     exec($command, $output);
@@ -142,15 +142,14 @@ class Git {
 
   private function getDecoratedBarString($content) {
     return "\n" . '===================================================================
-                ' . $content . "\n"
-                . '===================================================================' . "\n\n";
+                ' . $content . "\n" . '===================================================================' . "\n\n";
   }
 
-  public function exists(){
-    return file_exists($this->gitDir.'/.git');
+  public function exists() {
+    return file_exists($this->gitDir . '/.git');
   }
 
-  public function existBaseConfig(){
+  public function existBaseConfig() {
     $command = 'cd ' . escapeshellarg($this->gitDir) . '; git config --get user.name; git config --get user.email';
     exec($command, $output);
     if (empty($output[0]) || empty($output[1])) {

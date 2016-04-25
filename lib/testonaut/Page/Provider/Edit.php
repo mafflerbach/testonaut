@@ -100,8 +100,6 @@ class Edit implements ControllerProviderInterface {
       $page = new \testonaut\Page($path);
       $page->content($content, TRUE);
 
-
-
       $this->git = new Git($page->getProjectRoot());
 
       if (strpos($path, '.') === FALSE && !$this->git->exists()) {
@@ -133,7 +131,6 @@ class Edit implements ControllerProviderInterface {
 
     $message = "commit " . date('l jS \of F Y h:i:s A');
     $output = $this->git->commit($message, $loadedUser['email'], $loadedUser['displayName']);
-
     return $output;
   }
 

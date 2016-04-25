@@ -21,6 +21,7 @@
     "symfony/form": "~2.6",
 
     "symfony/finder": "3.0.x-dev",
-    "symfony/security": "2.6.x-dev"
+    "symfony/security": "2.6.x-dev",
+    "tiesa/ldap": "dev-master"
   }
 }

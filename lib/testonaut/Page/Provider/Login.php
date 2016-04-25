@@ -37,12 +37,12 @@ class Login implements ControllerProviderInterface {
     $page->match('/', function (Request $request) use ($app) {
 
       $data = array(
-        'email' => 'Your email',
+        'username' => '',
         'password' => 'Your password',
       );
 
       $form = $app['form.factory']->createBuilder('form', $data)
-        ->add('email')
+        ->add('username')
         ->add('password', 'password')
         ->getForm();
 
@@ -52,13 +52,17 @@ class Login implements ControllerProviderInterface {
         $data = $form->getData();
         $user = new \testonaut\User();
 
-        if($user->validate($data['email'], $data['password'])) {
+        $message = '';
+        if($user->validate($data['username'], $data['password'])) {
           return $app->redirect($request->getBaseUrl());
+        } else {
+          $message = 'User not valid';
         }
       }
 
       $app['request'] = array(
         'baseUrl' => $request->getBaseUrl(),
+        'message' => $message,
       );
 
       return $app['twig']->render('login.twig', array('form' => $form->createView()));
