@@ -84,6 +84,24 @@ class User {
 
   }
 
+  public function save($name, $password, $displayName, $id) {
+    $sql = 'update user set email= :email, password= :password, displayName= :displayName where id=:id';
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':email', $name);
+    $stm->bindParam(':displayName', $displayName);
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    $stm->bindParam(':password', $password);
+    $stm->bindValue(':id', $id);
+
+    $result = $stm->execute();
+
+    if ($result === FALSE) {
+      return FALSE;
+    } else {
+      return TRUE;
+    }
+
+  }
 
   public function add($name, $password, $displayName) {
     $sql = 'insert into user (email, password, displayName, active) VALUES (:email, :password, :displayName, :active)';
@@ -98,8 +116,37 @@ class User {
 
   }
 
-  public function remove($name) {
+  public function delete($id) {
+    $sql = 'delete from user where id=:id';
+    $stm = $this->db->prepare($sql);
+    $stm->bindValue(':id', $id);
 
+    $result = $stm->execute();
+
+    if ($result === FALSE) {
+      return FALSE;
+    } else {
+      return TRUE;
+    }
+  }
+
+  public function changeStatus($id, $bool) {
+    if ($bool) {
+      $sql = 'update user set active=1 where id=:id';
+    } else {
+      $sql = 'update user set active=0 where id=:id';
+    }
+
+    $stm = $this->db->prepare($sql);
+    $stm->bindValue(':id', $id);
+
+    $result = $stm->execute();
+
+    if ($result === FALSE) {
+      return FALSE;
+    } else {
+      return TRUE;
+    }
   }
 
 
@@ -117,7 +164,7 @@ class User {
 
   protected function getInternUser($id){
 
-    $sql = 'select email, displayName from user WHERE id=:id';
+    $sql = 'select * from user WHERE id=:id';
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':id', $id);
     $result = $stm->execute();
@@ -152,7 +199,7 @@ class User {
 
 
   public function getAll() {
-    $sql = 'select email, displayName, active from user';
+    $sql = 'select id, email, displayName, active from user';
     $stm = $this->db->prepare($sql);
     $result = $stm->execute();
     $return = array();

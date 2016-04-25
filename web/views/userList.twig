@@ -4,7 +4,6 @@
 
 
 <table class="table">
-
   {% for user in app.request.userList  %}
     {% if user.active >= 1 %}
       {% set class = 'success' %}
@@ -12,14 +11,26 @@
       {% set class = '' %}
     {% endif %}
 
-
     <tr class="{{ class }}">
       <td>{{ user.displayName }}</td>
       <td>{{ user.email }}</td>
       <td>
+        <a href="{{ app.request.baseUrl }}/user/{{ user.id }}/edit/">
           <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </a>
+        <a href="{{ app.request.baseUrl }}/user/{{ user.id }}/delete/">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>
 
-          <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        {% if user.active >= 1 %}
+          <a href="{{ app.request.baseUrl }}/user/{{ user.id }}/inactivate/">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+          </a>
+        {% else %}
+          <a href="{{ app.request.baseUrl }}/user/{{ user.id }}/activate/">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </a>
+        {% endif %}
       </td>
     </tr>
   {% endfor %}

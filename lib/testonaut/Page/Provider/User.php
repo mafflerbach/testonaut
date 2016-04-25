@@ -35,15 +35,31 @@ class User implements ControllerProviderInterface {
       return $this->getUserList($request, $app);
     });
 
+    $page->match('/{id}/edit/', function (Request $request, $id) use ($app) {
+      $foo = $this->editUser($request, $app, $id);
+      return $foo;
+    });
+
+    $page->match('/{id}/inactivate/', function (Request $request, $id) use ($app) {
+      $foo = $this->setStatus($request, $app, $id, false);
+      return $foo;
+    });
+
+    $page->match('/{id}/activate/', function (Request $request, $id) use ($app) {
+      $foo = $this->setStatus($request, $app, $id, true);
+      return $foo;
+    });
+
+    $page->match('/{id}/delete/', function (Request $request, $id) use ($app) {
+      $foo = $this->deleteUser($request, $app, $id);
+      return $foo;
+    });
+
     $page->get('/{id}', function (Request $request, $id) use ($app) {
       $foo = $app['twig']->render('user.twig');
       return $foo;
     });
 
-    $page->get('/{id}/edit', function (Request $request, $id) use ($app) {
-      $foo = $app['twig']->render('user.twig');
-      return $foo;
-    });
 
     $page->match('/register/', function (Request $request) use ($app) {
       return $this->register($request, $app);
@@ -67,6 +83,101 @@ class User implements ControllerProviderInterface {
     );
 
     return $app['twig']->render('userList.twig');
+  }
+
+
+  protected function editUser($request, $app, $id) {
+
+    $user = new \testonaut\User();
+    $userData = $user->get($id);
+
+    $data = array(
+      'email' => $userData['email'],
+      'displayName' => $userData['displayName'],
+      'password' => $userData['password'],
+    );
+
+    $form = $app['form.factory']->createBuilder('form', $data)
+      ->add('email')
+      ->add('displayName')
+      ->add('password', 'password')
+      ->getForm();
+
+    $form->handleRequest($request);
+
+    $message = "";
+    if ($request->isMethod('POST')) {
+      $data = $form->getData();
+      
+      $user = new \testonaut\User();
+
+      if ($user->save($data['email'], $data['password'], $data['displayName'], $userData['id'])) {
+        $message = "Edit User";
+      } else {
+        $message = "Can't edit User.";
+      }
+    }
+
+    $app['request'] = array(
+      'message' => $message,
+      'baseUrl' => $request->getBaseUrl(),
+      'mode' => 'edit'
+    );
+
+    return $app['twig']->render('user.twig', array('form' => $form->createView()));
+  }
+
+
+  protected function deleteUser($request, $app, $id) {
+
+    $user = new \testonaut\User();
+    $userData = $user->get($id);
+
+    $message = "";
+    if ($request->isMethod('POST')) {
+      if ($user->delete($id)) {
+        $message = "Delete User";
+      } else {
+        $message = "Can't delete User.";
+      }
+    }
+
+    $app['request'] = array(
+      'message' => $message,
+      'baseUrl' => $request->getBaseUrl(),
+      'mode' => 'delete',
+      'displayName' => $userData['displayName']
+    );
+
+    return $app['twig']->render('user.twig');
+  }
+  protected function setStatus($request, $app, $id, $bool) {
+
+    $user = new \testonaut\User();
+    $userData = $user->get($id);
+
+    $message = "";
+    if ($request->isMethod('POST')) {
+      if ($user->changeStatus($id, $bool)) {
+        $message = "Change User status ";
+      } else {
+        $message = "Can't change User status";
+      }
+    }
+
+    if ($bool) {
+      $mode = 'activate';
+    } else {
+      $mode = 'inactivate';
+    }
+    $app['request'] = array(
+      'message' => $message,
+      'baseUrl' => $request->getBaseUrl(),
+      'mode' => $mode,
+      'displayName' => $userData['displayName']
+    );
+
+    return $app['twig']->render('user.twig');
   }
 
 
