@@ -83,7 +83,6 @@ function modalHandling(href, modalTitle, ending) {
 
     $('.btn-action').click(function (ev) {
       ev.preventDefault();
-      console.log('meee')
       $.ajax({
         method: "post",
         url: href + ending

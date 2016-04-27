@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use testonaut\Page;
 use testonaut\Page\Breadcrumb;
 use testonaut\Settings\Browser;
+use testonaut\Utils\Git;
 
 /**
  * Description of History
@@ -39,9 +40,8 @@ class History implements ControllerProviderInterface {
     $edit->get('/', function (Request $request, $path) use ($app) {
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
-      
-      if ($request->query->get('delete')) {
 
+      if ($request->query->get('delete')) {
         if (isset($_SESSION['testonaut']['userId'])) {
           $this->deleteHistory($request);
         }
@@ -53,16 +53,58 @@ class History implements ControllerProviderInterface {
       $app['request'] = array(
         'mode' => 'show',
         'baseUrl' => $request->getBaseUrl(),
+        'path' => $path,
         'content' => '',
-        'history' => $this->getHistoryList()
-      );
+        'history' => $this->getHistoryList(),
+        'githistory' => $this->getGitHistory()
+
+    );
       $crumb = new Breadcrumb($path);
       $app['crumb'] = $crumb->getBreadcrumb();
 
       return $app['twig']->render('history.twig');
     });
 
+    $edit->post('/compare/{version}/{version2}', function (Request $request, $path, $version, $version2 ) use ($app) {
+      return $this->compare($app, $request, $path, $version, $version2);
+    });
+    $edit->get('/compare/{version}/{version2}', function (Request $request, $path, $version, $version2 ) use ($app) {
+      return $this->compare($app, $request, $path, $version, $version2);
+    });
+
+    $edit->get('/revert/{version}', function (Request $request, $path, $version) use ($app) {
+      var_dump($version);
+      var_dump($path);
+      return $app['twig']->render('history.twig');
+    });
+
     return $edit;
+  }
+
+
+  protected function compare($app, $request, $path, $version, $version2) {
+    $page = new Page($path);
+
+
+    $git = new Git($page->getProjectRoot());
+    $log = $git->diff($version, $version2, $page->transCodePath());
+
+    $app['request'] = array(
+      'mode' => 'compare',
+      'baseUrl' => $request->getBaseUrl(),
+      'path' => $page->getProjectRootPage(),
+      'content' => '',
+      'compare' => $log
+    );
+
+    return $app['twig']->render('history.twig');
+  }
+
+
+
+  protected function getGitHistory() {
+    $git = new Git($this->page->getProjectRoot());
+    return $git->log();
   }
 
   protected function deleteHistory($request) {

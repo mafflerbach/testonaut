@@ -220,6 +220,13 @@ class Page {
     $explode = explode(".", $this->path);
     return $this->root ."/".$explode[0];
   }
+  /**
+   * @return mixed
+   */
+  public function getProjectRootPage() {
+    $explode = explode(".", $this->path);
+    return $explode[0];
+  }
 
   /**
    * @return mixed

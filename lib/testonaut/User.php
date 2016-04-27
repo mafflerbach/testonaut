@@ -159,13 +159,10 @@ class User {
     $stm->bindValue(':password', $password);
     $result = $stm->execute();
 
-    var_dump($passwordGen);
     if ($result === FALSE) {
       return FALSE;
     } else {
-      $message = "Your new password: ".$passwordGen;
-      mail($name, 'password reset', $message);
-      return TRUE;
+      return array('result' => TRUE, 'password' => $passwordGen);
     }
   }
 

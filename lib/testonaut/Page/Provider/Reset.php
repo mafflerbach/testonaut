@@ -28,10 +28,11 @@ class Reset implements ControllerProviderInterface {
     $name = $request->request->get('email');
     if ($request->isMethod('POST')) {
       $user = new \testonaut\User();
-      if ($user->reset($name)) {
-        $message = "send E-Mail to: ";
+      $reset = $user->reset($name);
+      if ($reset['result']) {
+        $message = "Your new password: " . $reset['password'];
       } else {
-        $message = "Can't send E-mail.";
+        $message = "Can't reset password.";
       }
     }
 

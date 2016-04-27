@@ -72,10 +72,25 @@ class Git {
    * @return type
    */
   public function log() {
-    $command = "cp '$this->gitDir'; git log --all --pretty=format:'%h^%s^%cr' --abbrev-commit --date=relative";
+    $command = "cd " .escapeshellarg($this->gitDir) ."; git log --all --pretty=format:'%h^%cn^%s^%cr' --abbrev-commit --date=relative";
     exec($command, $output);
-    $outputStr = $this->getTerminalOutput($output, 'Executing Git log');
-    return $outputStr;
+
+    $result = array();
+    for ($i = 0; $i < count($output); $i++) {
+      $result[] =  explode('^', $output[$i]);
+    }
+
+    $foo = array(
+      array('9db797c', 'Maren Afflerbach' , 'commit Monday 25th of April 2016 01:54:42 PM' , '20 hours ago' ),
+      array( 'f8b7079' , 'Andy Bergin' , 'commit Monday 25th of April 2016 01:35:43 PM' , '20 hours ago' ),
+      array( 'd79c5a2' , 'Maren Afflerbach' , 'commit Saturday 23rd of April 2016 11:39:10 PM' , '2 days ago' ),
+      array( '459e12d' , 'Maren Afflerbach', 'commit Saturday 23rd of April 2016 10:22:28 PM' , '2 days ago' ),
+      array( '3224284' , 'Maren Afflerbach', 'testcommit', '4 days ago' ),
+      array( 'edf8dbf' , 'Maren Afflerbach' , 'testcommit' , '4 days ago' ));
+
+    //print_r($result);
+
+    return $result;
   }
 
   /**
@@ -94,16 +109,14 @@ class Git {
    * @return type
    */
   public function revert($revision) {
-    $command = $this->bashDir . '/gitWrapper.sh revert ' . escapeshellarg($this->gitDir) . ' ' . $revision;
+    $command = 'cd ' . escapeshellarg($this->gitDir) . '; git checkout ' .$revision ;
     exec($command, $output);
     $outputStr = $this->getTerminalOutput($output, 'Executing Git revert to ' . $revision);
     return $outputStr;
   }
 
   /**
-   *
-   * @param type $revision
-   * @return type
+   * @return string
    */
   public function pull() {
     $command = $this->bashDir . '/gitWrapper.sh pull ' . escapeshellarg($this->gitDir);
@@ -113,16 +126,18 @@ class Git {
   }
 
   /**
-   *
-   * @param type $rev1
-   * @param type $rev2
-   * @return type
+   * @param $rev1
+   * @param $rev2
+   * @return array
    */
-  public function diff($rev1, $rev2) {
-    $command = $this->bashDir . '/gitWrapper.sh diff ' . escapeshellarg($this->gitDir) . ' ' . $rev1 . ' ' . $rev2;
+  public function diff($rev1, $rev2, $path) {
+    $command = 'cd ' . escapeshellarg($this->gitDir) . '; git diff --word-diff -U1 '. $rev1 . ' ' . $rev2 .' '. escapeshellarg($path);
+
     $output = shell_exec($command);
-    $outputStr = $this->getTerminalOutput($output, 'Executing Git diff');
-    return $outputStr;
+    $diff = new Diff($output);
+    $content = $diff->buildDiff(false);
+
+    return $content;
   }
 
   private function getTerminalOutput($output, $barMessage) {

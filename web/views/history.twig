@@ -3,79 +3,205 @@
 
 <div class="contentBox">
 
-  <div>
-    <a class="btn btn-primary" href="?delete=true&all=true">Delete history</a>
-    {% for browser, resultList in app.request.history %}
+  {% if app.request.mode == 'show' %}
+    <div>
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#history" aria-controls="home" role="tab" data-toggle="tab">Build
+            history</a>
+        </li>
+        <li role="presentation"><a href="#githistory" aria-controls="profile" role="tab" data-toggle="tab">Git
+            history</a></li>
+      </ul>
 
-      <div class="history">
-        <div class="page-header">
-          <h4>{{ browser }}
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="history">
 
-            <a class="btn btn-primary btn-sm" href="?delete=true&browser={{ browser }}">Delete browser history</a>
-            <a class="btn btn-primary btn-sm" href="?delete=true&count=10&browser={{ browser }}">Delete browser first 10 results</a>
-          </h4>
-        </div>
+          <a class="btn btn-primary" href="?delete=true&all=true">Delete history</a>
+          {% for browser, resultList in app.request.history %}
+
+            <div class="history">
+              <div class="page-header">
+                <h4>{{ browser }}
+
+                  <a class="btn btn-primary btn-sm" href="?delete=true&browser={{ browser }}">Delete browser history</a>
+                  <a class="btn btn-primary btn-sm" href="?delete=true&count=10&browser={{ browser }}">Delete browser
+                    first 10
+                    results</a>
+                </h4>
+              </div>
+
+              {% for date, hourResult in resultList %}
+                <div class="panel panel-default">
 
 
-        {% for date, hourResult in resultList %}
-          <div class="panel panel-default">
-
-
-            <div class="panel-heading">{{ date }}</div>      
-            <div class="panel-body">
-              {% for hour, realResult in hourResult %}
-                {% for path, pathResult in realResult %}
-                  {% if pathResult.result == '1' %}
-                    {% set class = 'bg-success' %}
-                  {% else %}
-                    {% set class = 'bg-danger' %}
-                  {% endif %}
-
-                  <div class="hour {{ class }}">{{ hour }}</div>
-                  <div class="historyResult" >
-
-                    <table class="table table-bordered">
-                      {% for result in pathResult.run %}
-                        {% if result.0  == true %}
+                  <div class="panel-heading">{{ date }}</div>
+                  <div class="panel-body">
+                    {% for hour, realResult in hourResult %}
+                      {% for path, pathResult in realResult %}
+                        {% if pathResult.result == '1' %}
                           {% set class = 'bg-success' %}
                         {% else %}
                           {% set class = 'bg-danger' %}
                         {% endif %}
-                        <tr class="{{ class }}">
-                          <td>Command</td>
-                          <td>{{  result.2}}</td>
-                          <td>{{  result.1}}</td>
-                        </tr>
+
+                        <div class="hour {{ class }}">{{ hour }}</div>
+                        <div class="historyResult">
+
+                          <table class="table table-bordered">
+                            {% for result in pathResult.run %}
+                              {% if result.0  == true %}
+                                {% set class = 'bg-success' %}
+                              {% else %}
+                                {% set class = 'bg-danger' %}
+                              {% endif %}
+                              <tr class="{{ class }}">
+                                <td>Command</td>
+                                <td>{{ result.2 }}</td>
+                                <td>{{ result.1 }}</td>
+                              </tr>
+                            {% endfor %}
+                          </table>
+                        </div>
+
+
                       {% endfor %}
-                    </table>
+                      {#         {% for hour, realResult in hourResult %}
+
+                               {% endfor %}#}
+                    {% endfor %}
                   </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="githistory">
+          <table class="table table-bordered">
+            <tr>
+              <th>hash</th>
+              <th>author</th>
+              <th>date</th>
+              <th>time</th>
+              <th>actions</th>
+            </tr>
+            {% for line in app.request.githistory %}
+              <tr>
+                <td>{{ line.0 }}</td>
+                <td>{{ line.1 }}</td>
+                <td>{{ line.2 }}</td>
+                <td>{{ line.3 }}</td>
+                <td>
+                  <a href="{{ app.request.baseUrl }}/history/{{ app.request.path }}/compare/{{ line.0 }}"
+                     data-compare="{{ line.0 }}" class="inactive">
+                    <span class="glyphicon glyphicon-resize-small" data-toggle="tooltip" data-placement="left"
+                          title="compare with {{ line.0 }}"></span>
+                  </a>
+                  <a href="{{ app.request.baseUrl }}/history/{{ app.request.path }}/revert/{{ line.0 }}">
+                    <span class="glyphicon glyphicon-backward" data-toggle="tooltip" data-placement="left"
+                          title="revert to {{ line.0 }}"></span>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
 
+        </div>
+      </div>
+    </div>
+  {% endif %}
 
-                {% endfor %}
-{#         {% for hour, realResult in hourResult %}
+  {% if app.request.mode == 'compare' %}
+    <div class="content">
+      {% for line in app.request.compare %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            {% if line.path  != '' %}
+              <a href="{{ app.request.baseUrl }}/{{ app.request.path }}.{{ line.path }}">
+                {{ app.request.path }}.{{ line.path }}
+              </a>
+            {% else %}
+              <a href="{{ app.request.baseUrl }}/{{ app.request.path }}">
+                {{ app.request.path }}
+              </a>
+            {% endif %}
 
-         {% endfor %}#}
-         {% endfor %}
-       </div>
-     </div>
-   {% endfor %}
- </div>
-{% endfor %}
+          </div>
+          <div class="panel-body">
+            {{ line.content|raw }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <p>One fine body&hellip;</p>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 </div>
-</div>
+
 
 <script type="text/javascript">
-$(document).ready(function () {
-$('.history .historyResult').hide();
-$('.hour').click(function () {
- console.log($(this).next('table'));
- if ($(this).next('.historyResult').is(':visible')) {
-   $(this).next().slideUp('slow');
- } else {
-   $(this).next().slideDown('slow');
- }
-})
-});
+  $(document).ready(function () {
+    $('.history .historyResult').hide();
+
+    $('.hour').click(function () {
+      console.log($(this).next('table'));
+      if ($(this).next('.historyResult').is(':visible')) {
+        $(this).next().slideUp('slow');
+      } else {
+        $(this).next().slideDown('slow');
+      }
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+
+    $('a[data-compare]').click(function (e) {
+      e.preventDefault();
+      $(this).toggleClass('inactive');
+      $(this).toggleClass('active');
+
+
+      if ($('a[data-compare].active').length > 2 || $('a[data-compare].active').length < 2) {
+        $('#compareoutput').empty();
+      }
+
+      if ($('a[data-compare].active').length == 2) {
+
+        var rev1 = $($('a[data-compare].active').get(0)).data('compare');
+        var rev2 = $($('a[data-compare].active').get(1)).data('compare');
+        var href = "{{ app.request.baseUrl }}/history/{{ app.request.path }}/compare/" + rev2 + "/" + rev1;
+
+
+        $.ajax({
+          method: "get",
+          url: href
+        }).done(function (data) {
+          $('.modal-title').empty().append('show Diff');
+          $('.modal-body').empty().append($(data).find('.content'));
+          $('#myModal').modal('show');
+        });
+
+      }
+    })
+  });
 </script>
+
+
 
 {% include 'footer.twig' %}
