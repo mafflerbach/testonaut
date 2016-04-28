@@ -45,9 +45,7 @@ The best part of all - it runs on your existing selenium infrastructure.
 
 ---------------------------------------
 ## TODO ##
-* implement revert to commits
-* implement diff for commits
-* implement pull to origin git repo
+* implement pull to upstream git repo
 
 ---------------------------------------
 ##Installation ##
