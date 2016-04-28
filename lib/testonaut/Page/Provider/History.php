@@ -75,19 +75,19 @@ class History implements ControllerProviderInterface {
 
     $edit->get('/revert/{version}', function (Request $request, $path, $version) use ($app) {
 
-      $user = new User();
+      $user = new User(); 
       $loadedUser = $user->get($_SESSION['testonaut']['userId']);
 
       $page = new Page($path);
       $git = new Git($page->getProjectRoot());
       $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
 
-      var_dump($log);
-
       $app['request'] = array(
         'mode' => 'revert',
         'baseUrl' => $request->getBaseUrl(),
-        'content' => ''
+        'content' => '',
+        'path' => $path,
+        'message' => $log
       );
 
 
