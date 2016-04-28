@@ -145,7 +145,7 @@ And you get in your wiki:
 comparisons are quite easy to implement, they are done almost automatically.
 In selenium there is the command *captureEntirePageScreenshot*. The second parameter specifies the imagefilename. 
 If a reference image exists, it will be automatically compared with the reference image.
-All Screenshot comparisons are displayed below the bottom at the page.
+You can find all Screenshot comparisons under the "screenshot" section.
 The first column displays the recently captured image. The second column displays the reference image.
 The third column displays the diff image, it will mark all differences in red 
 
