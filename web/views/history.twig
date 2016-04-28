@@ -196,8 +196,11 @@
           $('.modal-body').empty().append($(data).find('.content'));
           $('#myModal').modal('show');
         });
-
       }
+
+      $('#myModal').on('hidden.bs.modal', function (e) {
+        $('a[data-compare].active').toggleClass('active');
+      })
     })
   });
 </script>

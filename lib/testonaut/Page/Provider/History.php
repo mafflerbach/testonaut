@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use testonaut\Page;
 use testonaut\Page\Breadcrumb;
 use testonaut\Settings\Browser;
+use testonaut\User;
 use testonaut\Utils\Git;
 
 /**
@@ -73,8 +74,23 @@ class History implements ControllerProviderInterface {
     });
 
     $edit->get('/revert/{version}', function (Request $request, $path, $version) use ($app) {
-      var_dump($version);
-      var_dump($path);
+
+      $user = new User();
+      $loadedUser = $user->get($_SESSION['testonaut']['userId']);
+
+      $page = new Page($path);
+      $git = new Git($page->getProjectRoot());
+      $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
+
+      var_dump($log);
+
+      $app['request'] = array(
+        'mode' => 'revert',
+        'baseUrl' => $request->getBaseUrl(),
+        'content' => ''
+      );
+
+
       return $app['twig']->render('history.twig');
     });
 
@@ -84,7 +100,6 @@ class History implements ControllerProviderInterface {
 
   protected function compare($app, $request, $path, $version, $version2) {
     $page = new Page($path);
-
 
     $git = new Git($page->getProjectRoot());
     $log = $git->diff($version, $version2, $page->transCodePath());

@@ -108,8 +108,14 @@ class Git {
    * @param type $revision
    * @return type
    */
-  public function revert($revision) {
+  public function revert($revision, $email, $displayName) {
+    $message = 'revert to revision ' . $revision;
     $command = 'cd ' . escapeshellarg($this->gitDir) . '; git checkout ' .$revision ;
+    $command .= 'git config user.email ' . escapeshellarg($email) . '; 
+                  git config user.name ' . escapeshellarg($displayName) . ';
+                  git add .; 
+                  git commit -m ' . escapeshellarg($message);
+
     exec($command, $output);
     $outputStr = $this->getTerminalOutput($output, 'Executing Git revert to ' . $revision);
     return $outputStr;
