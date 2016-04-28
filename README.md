@@ -39,6 +39,8 @@ The best part of all - it runs on your existing selenium infrastructure.
 * ldap support
 * simple usermanagment if you don't have ldap
 * versioning via git (pull not implemented yet)
+    reverts (btw checkout to previews revisions)
+* diff view between revisions;
 
 
 ---------------------------------------
