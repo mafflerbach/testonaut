@@ -170,7 +170,6 @@ You must download under http://selenium-release.storage.googleapis.com/index.htm
 after installation from Java and selenium go in your cmd in the jdk install dir e.g. ( cd "C:\Program Files\Java\jdk1.8.0_25\bin")
 
 you should customize the version number, path and Hub ip ;)
-    
 
 * The IEDriverServer exectuable must be downloaded and placed in your PATH.
 * On IE 7 or higher on Windows Vista or Windows 7, you must set the Protected Mode settings for each zone to be the same value. The value can be on or off, as long as it is the same for every zone. To set the Protected Mode settings, choose "Internet Options..." from the Tools menu, and click on the Security tab. For each zone, there will be a check box at the bottom of the tab labeled "Enable Protected Mode".
