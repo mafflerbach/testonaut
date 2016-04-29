@@ -163,4 +163,25 @@ class Git {
     return true;
   }
 
+  public function setOriginUrl($url) {
+
+    $command = 'cd ' . escapeshellarg($this->gitDir) . '; git remote -v ';
+    exec($command, $output);
+
+    if (count($output) == 2) {
+      $output[0] = str_replace("\t", ' ', $output[0]);
+      $expl = explode(' ', $output[0]);
+
+      if ($expl[1] != $url ){
+        $command = 'cd ' . escapeshellarg($this->gitDir) . '; git remote rm origin; git remote add origin ' . escapeshellarg($url);
+        exec($command, $output);
+      }
+    }
+    
+    if (empty($output)) {
+      $command = 'cd ' . escapeshellarg($this->gitDir) . '; git remote add origin ' . escapeshellarg($url);
+      exec($command, $output);
+    }
+  }
+
 }

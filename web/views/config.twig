@@ -52,8 +52,16 @@
           {% endif %}
         </div>
       </div>
-
-      <br/>
+      <!-- <div class="row">
+        <div class="col-xs-6 col-md-6">
+          <h2>Remote origin </h2>
+          <div class="form-group">
+            <label for="origin">origin url</label>
+            <input class="form-control" id="origin" name="originurl" value="{{ app.request.originUrl }}" placeholder="origin url">
+          </div>
+        </div>
+      </div>
+      <br/> -->
       {% if app.browser is defined %}
         <h2>Browser Settings</h2>
         {% for browser  in app.browser %}
@@ -117,7 +125,6 @@
 
       <a href="{{ app.request.baseUrl }}/{{ app.request.path }}"
          class="backLink btn">Zurück</a>
-
     </form>
   </div>
 </div>

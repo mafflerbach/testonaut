@@ -54,6 +54,7 @@ class Config implements ControllerProviderInterface {
       $app['request'] = array(
         'content' => $content,
         'path'    => $path,
+        'originUrl'    => $this->originUrl(),
         'baseUrl' => $request->getBaseUrl(),
         'mode'    => 'show'
       );
@@ -77,7 +78,13 @@ class Config implements ControllerProviderInterface {
         } else {
           $message = 'Can not save browser config';
         }
+
+        $originUrl = $request->request->get('originurl');
+        if ($originUrl != '') {
+          $this->originUrl($originUrl);
+        }
       }
+
       $screenshot = $request->request->get('screenshot');
       if ($this->screenshotSettings($screenshot)) {
         $message = 'Saved';
@@ -103,6 +110,7 @@ class Config implements ControllerProviderInterface {
         'path'    => $path,
         'baseUrl' => $request->getBaseUrl(),
         'mode'    => 'show',
+        'originUrl'    => $this->originUrl(),
         'message' => $message,
       );
 
@@ -155,4 +163,18 @@ class Config implements ControllerProviderInterface {
       return $pSettings->getScreenshotSettings();
     }
   }
+
+  /**
+   * @param $originUrl
+   * @return bool
+   */
+  protected function originUrl($originUrl = NULL) {
+    $settings = new \testonaut\Settings\Page($this->path);
+    if ($originUrl != NULL) {
+      return $settings->setOriginUrl($originUrl);
+    } else {
+      return $settings->getOriginUrl();
+    }
+  }
+
 }
