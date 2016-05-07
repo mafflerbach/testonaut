@@ -30,7 +30,38 @@ class Request {
       'cookie' => $_COOKIE,
       'session' => $_SESSION,
       'server' => $_SERVER,
-      );
+    );
+  }
+
+  public function getBasePath() {
+    $requestUri = $_SERVER['REQUEST_URI'];
+
+    if (isset($_REQUEST['xml'])) {
+      $requestUri = str_replace('?xml=true', '', $requestUri);
+      $requestUri = str_replace('&xml=true', '', $requestUri);
+    }
+
+    return $requestUri;
+  }
+
+  public function redirect($path) {
+    $requestUri = str_replace('index.php', '', $_SERVER['PHP_SELF']);
+    $url = $requestUri . $path;
+    $from = $this->removeDebug($_SERVER['REQUEST_URI']);
+    if ($from != $url) {
+      header('Location: ' . $url);
+      die;
+    }
+  }
+
+  private function removeDebug($requestUri) {
+    if (isset($_REQUEST['xml'])) {
+      $requestUri = str_replace('?xml=true', '', $requestUri);
+      $requestUri = str_replace('&xml=true', '', $requestUri);
+      $requestUri .= '/';
+      $this->debug = true;
+    }
+    return $requestUri;
   }
 
 }

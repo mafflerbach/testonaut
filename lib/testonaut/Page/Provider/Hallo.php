@@ -54,6 +54,6 @@ class Hallo extends Base implements Page\ProviderInterface {
       $this->routing->response($this->response);
       $this->routing->render('test.xsl');
     });
-
+    
   }
 }

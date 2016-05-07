@@ -75,96 +75,45 @@ class Toc {
         $path = array($splFileInfo->getFilename() => array());
         for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
           $path = array(
-            $ritit->getSubIterator($depth)
-              ->current()
-              ->getFilename() => $path
+            $ritit->getSubIterator($depth)->current()->getFilename() => $path
           );
         }
         $r = array_merge_recursive($r, $path);
       }
     }
     ksort($r);
-    $this->dirArray = $r;
+
+    $xml_data = new \SimpleXMLElement('<?xml version="1.0"?><toc></toc>');
+    $this->array_to_xml($r, $xml_data, true);
+
+    return $xml_data;
   }
 
-  public function run2() {
-
-    if (!file_exists($this->basePath)) {
-      return '';
-    }
-    $ritit = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath), \RecursiveIteratorIterator::CHILD_FIRST);
-    $dirs = array();
-    $r = array();
+  private function array_to_xml($data, &$xml_data, $ignoreAssoc = false) {
     /**
-     * @var  \SplFileInfo $splFileInfo
+     * @var \SimpleXMLElement $xml_data
      */
-    foreach ($ritit as $splFileInfo) {
-      if ($splFileInfo->getFilename() == '.' || $splFileInfo->getFilename() == '..' || strpos($splFileInfo->getPath(), '.git') !== FALSE) {
-        continue;
-      }
-
-      if ($splFileInfo->isDir() && !in_array($splFileInfo->getFilename(), $dirs) && $splFileInfo->getFilename() !== '.git') {
-        $path = array($splFileInfo->getFilename() => array());
-        for ($depth = $ritit->getDepth() - 1; $depth >= 0; $depth--) {
-          $path = array(
-            $ritit->getSubIterator($depth)
-              ->current()
-              ->getFilename() => $path
-          );
-        }
-        $r = array_merge_recursive($r, $path);
-      }
-    }
-    ksort($r);
-
-    $this->dirArray = $r;
-  }
-
-  /**retuns a ul with all pages
-   *
-   * @return string
-   */
-  public function generateMenu() {
-
-    return '<div class="contentList"><h5>Contentlist</h5>' . $this->makeList($this->dirArray) . '</div>';
-  }
-
-  /**
-   * return an html ul with the wiki pages
-   *
-   * @param        $array
-   * @param string $path
-   *
-   * @return string
-   */
-  protected function makeList($array, $path = '', $tree = '', $level = 0) {
-    ksort($array);
-    $level++;
-    foreach ($array as $key => $value) {
+    foreach ($data as $key => $value) {
       if (is_array($value)) {
-        if ($path != '') {
-          $_path = $path . '.' . $key;
+        if (is_numeric($key)) {
+          $key = 'item' . $key;
+        }
+
+        if (strpos($key, ' ') !== FALSE || $ignoreAssoc) {
+          $c = $key;
+          $key = 'item';
+          $subnode = $xml_data->addChild($key);
+          $subnode->addAttribute('name', $c);
         } else {
-          $_path = $key;
+          $subnode = $xml_data->addChild($key);
         }
-        $prefix = '';
-        if ($this->page != '') {
-          $prefix = $this->page . '.';
-        }
-        $link = '<a href="' . Config::getInstance()->appPath . '/web/' . $prefix . $_path . '">' . $key . '</a>';
-        $tree .= '<li> <span class="level' . $level . '"></span>' . $link;
-        $tree .= '' . $this->makeList($value, $_path, '', $level);
-        $tree .= '</li>';
+
+        $this->array_to_xml($value, $subnode, $ignoreAssoc);
+
       } else {
-        if ($value == 'content' || $value == 'config') {
-          continue;
-        }
+        $xml_data->addChild("$key", htmlspecialchars("$value"));
       }
     }
-    if ($tree != '') {
-      $tree = '<ul class="ascii">' . $tree . '</ul>';
-    }
-
-    return $tree;
   }
+
 }

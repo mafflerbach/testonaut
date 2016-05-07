@@ -11,7 +11,7 @@
     <html>
       <xsl:call-template name="head"/>
       <body>
-        <xsl:value-of select="/data/hello"/>
+
       </body>
     </html>
   </xsl:template>

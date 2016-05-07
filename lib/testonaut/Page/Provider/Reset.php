@@ -8,42 +8,61 @@
 
 namespace testonaut\Page\Provider;
 
-use Symfony\Component\HttpFoundation\Request;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
 
-class Reset implements ControllerProviderInterface {
-  public function connect(Application $app) {
+use mafflerbach\Page\ProviderInterface;
+use \mafflerbach\Http\Request;
+use mafflerbach\Routing;
 
-    $page = $app['controllers_factory'];
-    $page->match('/', function (Request $request) use ($app) {
-      return $this->reset($request, $app);
+class Reset extends Base implements ProviderInterface {
+
+  private $routing;
+  private $response;
+
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+    $this->routing->route('/', function () {
+      $request = new Request();
+      $this->response['form'] = $this->getForm();
+      $this->reset($request);
+
+      $this->routing->response($this->response);
+      $this->routing->render('reset.xsl');
     });
-    return $page;
+
   }
 
 
-  protected function reset($request, $app) {
+  protected function reset($response) {
     $message = '';
-    $name = $request->request->get('email');
-    if ($request->isMethod('POST')) {
+
+    $request = new Request();
+    $data = $request->request;
+
+    if (!empty($request->request) && isset($data['email'])) {
+      $name = $data['email'];
       $user = new \testonaut\User();
       $reset = $user->reset($name);
+
       if ($reset['result']) {
         $message = "Your new password: " . $reset['password'];
       } else {
         $message = "Can't reset password.";
       }
     }
+    $this->response['message'] = $message;
 
-    $app['request'] = array(
-      'baseUrl' => $request->getBaseUrl(),
-      'mode' => 'reset',
-      'content' => '',
-      'message' => $message,
+    return $response;
+  }
+
+
+  private function getForm() {
+    return array(
+      'text' => array('label' => 'email')
     );
-
-    return $app['twig']->render('reset.twig');
   }
 
 }

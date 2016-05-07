@@ -14,7 +14,6 @@
 
 namespace testonaut;
 
-use testonaut\Page\Provider\Globalconfig;
 use Toyota\Component\Ldap\Core\Manager;
 use Toyota\Component\Ldap\Platform\Native\Driver;
 use Toyota\Component\Ldap\Platform\Native\Search;
@@ -36,7 +35,7 @@ class User {
   }
 
   public function validate($name, $password) {
-    $globalConf = new Globalconfig();
+    $globalConf = new State();
     $configuration = $globalConf->getConfig();
 
     if ($configuration['useLdap']) {
@@ -58,6 +57,14 @@ class User {
     }
     return false;
   }
+
+  public function checkUser(){
+    if (isset($_SESSION['testonaut']['userId'])) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
 
   protected function ldapValidate($name, $password) {
     $globalConf = new Globalconfig();

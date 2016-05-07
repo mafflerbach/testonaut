@@ -15,11 +15,14 @@
 namespace mafflerbach;
 
 use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Xml\Util;
 use testonaut\Config;
 
 class Routing {
   private static $routes = array();
   private $provider = array();
+  private $before = array();
+  private $after = array();
   private $content = '';
 
   private function __clone() {
@@ -31,6 +34,14 @@ class Routing {
   }
 
   public function execute() {
+
+    $this->attachBeforeProvider();
+    $this->attachSiteProvider();
+    $this->attachAfterProvider();
+
+  }
+
+  private function attachSiteProvider() {
     $basePath = str_replace('index.php', '', $_SERVER['PHP_SELF']);
     $requestUri = $_SERVER['REQUEST_URI'];
 
@@ -39,23 +50,27 @@ class Routing {
       $requestUri = str_replace('&xml=true', '', $requestUri);
     }
 
+
     $paramQuery = str_replace($basePath, '', $requestUri);
 
     foreach ($this->provider as $route => $provider) {
       /**
        * @var $provider ProviderInterface
        */
-      $provider->connect();
+      $response = $provider->connect();
+
       $mee = str_replace($route, '/', $paramQuery);
 
       foreach (self::$routes as $pattern => $callback) {
         if (preg_match($pattern, $mee, $params)) {
           array_shift($params);
           return call_user_func_array($callback, array_values($params));
+
         }
       }
     }
   }
+
 
   public function push($route, ProviderInterface $provider) {
     $this->provider[$route] = $provider;
@@ -63,14 +78,18 @@ class Routing {
 
   public function response(array $response) {
 
+    $xmlUtil = new Util();
     $xml_data = new \SimpleXMLElement('<?xml version="1.0"?><data></data>');
-    $this->array_to_xml($response, $xml_data);
+    $xmlUtil->array_to_xml($response, $xml_data);
 
     $dom = new \DOMDocument();
     $dom->formatOutput = true;
+
+
     $dom->loadXML($xml_data->saveXML());
 
     $this->content = $dom->saveXML();
+
   }
 
   public function render($file) {
@@ -100,19 +119,30 @@ class Routing {
     }
   }
 
+  public function before(ProviderInterface $provider) {
+    $this->before[] = $provider;
+  }
 
-  private function array_to_xml($data, &$xml_data) {
-    foreach ($data as $key => $value) {
-      if (is_array($value)) {
-        if (is_numeric($key)) {
-          $key = 'item' . $key;
-        }
-        $subnode = $xml_data->addChild($key);
-        $this->array_to_xml($value, $subnode);
-      } else {
-        $xml_data->addChild("$key", htmlspecialchars("$value"));
-      }
+  private function attachBeforeProvider() {
+    foreach ($this->before as $provider) {
+      /**
+       * @var $provider ProviderInterface
+       */
+      $provider->connect();
     }
+  }
+
+  private function attachAfterProvider() {
+    foreach ($this->after as $provider) {
+      /**
+       * @var $provider ProviderInterface
+       */
+      $provider->connect();
+    }
+  }
+
+  public function after(ProviderInterface $provider) {
+    $this->after[] = $provider;
   }
 
 

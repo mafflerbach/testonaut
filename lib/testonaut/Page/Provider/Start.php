@@ -14,22 +14,33 @@
 
 namespace testonaut\Page\Provider;
 
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use testonaut\Generate;
-use testonaut\Page\Breadcrumb;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class Start implements ControllerProviderInterface {
 
-  private $edit = FALSE;
+class Start extends Base implements ProviderInterface {
 
-  public function __construct($edit = FALSE) {
+  private $routing;
+  private $response;
 
-    $this->edit = $edit;
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+    $this->routing->route('', function () {
+
+      $this->routing->response($this->response);
+      $this->routing->render('page.xsl');
+    });
   }
 
+
+}
+
+ /*
   public function connect(Application $app) {
 
 
@@ -113,4 +124,4 @@ class Start implements ControllerProviderInterface {
     return FALSE;
   }
 
-}
+}*/

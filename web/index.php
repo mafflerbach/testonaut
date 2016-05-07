@@ -41,7 +41,15 @@ $config->define('domain', $_SERVER['HTTP_HOST']);
 $config->define('db', $db);
 $config->define('templates', dirname(__DIR__).'/template/' );
 
+
+
+
+
 $routing = new \mafflerbach\Routing();
+
 $routing->push('test/', new \testonaut\Page\Provider\Test());
-$routing->push('hallo/', new \testonaut\Page\Provider\Hallo());
+$routing->push('/', new \testonaut\Page\Provider\Start());
+$routing->push('login/', new \testonaut\Page\Provider\Login());
+$routing->push('reset/', new \testonaut\Page\Provider\Reset());
+//$routing->before(new \testonaut\Security\Provider());
 $routing->execute();

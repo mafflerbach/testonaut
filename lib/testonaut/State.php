@@ -12,51 +12,10 @@
  */
 
 
-namespace testonaut\Page\Provider;
+namespace testonaut;
 
 
-use mafflerbach\Http\Request;
-use testonaut\Generate\Toc;
-
-class Base {
-
-  public function system() {
-    $system['baseUrl'] = $this->getBaseUrl();
-    $system['requestUri'] = $this->getRequestUri();
-    $system['globalconfig'] = $this->getConfig();
-    $system['toc'] = $this->getToc();
-
-    return $system;
-  }
-
-  protected function getToc() {
-    $toc = new Toc(\testonaut\Config::getInstance()->wikiPath);
-    return $toc->runDir();
-  }
-
-
-  public function getBaseUrl() {
-    $request = new Request();
-    $basePath = str_replace('index.php', '', $request->server['PHP_SELF']);
-
-    return $basePath;
-  }
-
-  public function getRequestUri() {
-    $request = new Request();
-    $basePath = str_replace('index.php', '', $request->server['PHP_SELF']);
-    $requestUri = $request->server['REQUEST_URI'];
-
-    if (array_key_exists('xml', $request->request)) {
-      $requestUri = str_replace('?xml=true', '', $requestUri);
-      $requestUri = str_replace('&xml=true', '', $requestUri);
-    }
-
-    $paramQuery = str_replace($basePath, '', $requestUri);
-
-    return $paramQuery;
-  }
-
+class State {
 
   public function getConfig() {
 
@@ -81,5 +40,9 @@ class Base {
     return $configuration;
   }
 
+
+  protected function writeToFile($path, $content) {
+    file_put_contents($path, $content);
+  }
 
 }
