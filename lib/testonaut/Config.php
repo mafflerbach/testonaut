@@ -43,8 +43,8 @@ class Config {
   
   /**
    * 
-   * @param type $key
-   * @param type $value
+   * @param String $key
+   * @param mixed $value
    */
   public function define($key, $value) {
     if (!$this->exists($key)) {
@@ -57,8 +57,8 @@ class Config {
 
   /**
    * 
-   * @param type $key
-   * @return type
+   * @param String $key
+   * @return boolean
    */
   public function exists($key) {
     return array_key_exists($key, $this->register);
@@ -66,8 +66,8 @@ class Config {
 
   /**
    * 
-   * @param type $key
-   * @return type
+   * @param string $key
+   * @return mixed
    */
   public function __get($key) {
     return $this->exists($key) ? $this->register[$key] : die('<h1>Error: Key \'<em>' . $key . '</em>\' not found in Registry!</h1>');
@@ -75,8 +75,8 @@ class Config {
   
   /**
    * 
-   * @param type $key
-   * @param type $value
+   * @param string $key
+   * @param mixed $value
    */
   public function __set($key, $value) {
     if ($this->isConstant($key)) {
@@ -88,15 +88,15 @@ class Config {
   
   /**
    * 
-   * @param type $key
-   * @return type
+   * @param String $key
+   * @return boolean
    */
   public function isConstant($key) {
     return array_key_exists($key, $this->readOnly) && $this->readOnly[$key] === TRUE ? TRUE : FALSE;
   }
   /**
    * 
-   * @param type $key
+   * @param String $key
    * @return boolean
    */
   public function remove($key) {
@@ -122,7 +122,7 @@ class Config {
     }
     trigger_error($key . ' is not callable.', E_USER_ERROR);
   }
-  
+
   /**
    * 
    */
