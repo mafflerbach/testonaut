@@ -43,13 +43,46 @@ $config->define('templates', dirname(__DIR__).'/template/' );
 
 
 
+/*
+ *
+ * $app->mount('/', new testonaut\Page\Provider\Start());
+$app->mount('/edit/', new testonaut\Page\Provider\Start(true));
+$app->mount('/image/', new testonaut\Page\Provider\Image());
+$app->mount('/files/{path}', new testonaut\Page\Provider\File());
+$app->mount('/import/{path}', new testonaut\Page\Provider\Import());
+$app->mount('/globalconfig/', new testonaut\Page\Provider\Globalconfig());
+$app->mount('/edit/{path}', new testonaut\Page\Provider\Edit());
+$app->mount('/history/{path}', new testonaut\Page\Provider\History());
+$app->mount('/screenshot/{path}', new testonaut\Page\Provider\Screenshot());
+$app->mount('/config/{path}', new testonaut\Page\Provider\Config());
+$app->mount('/delete/{path}', new testonaut\Page\Provider\Delete());
+$app->mount('/run/{path}', new testonaut\Page\Provider\Run());
+$app->mount('/user/', new testonaut\Page\Provider\User());
+$app->mount('/login/', new testonaut\Page\Provider\Login());
+$app->mount('/logout/', new testonaut\Page\Provider\Logout());
+$app->mount('/reset/', new testonaut\Page\Provider\Reset());
+$app->mount('/{path}/', new testonaut\Page\Provider\Page());
+*/
+
+$rules = array (
+  'public' => array(
+    '/', 'history/', 'run/', 'screenshot/'
+  ),
+  'private' => array(
+    'edit/', 'image/', 'files/', 'import/', 'globalconfig/', 'config/', 'delete/', 'logout/', 'user/'
+  ),
+  'fallback' => 'login/'
+);
+
+$security = new \testonaut\Security\Provider();
+$security->setFirewall($rules);
 
 
 $routing = new \mafflerbach\Routing();
 
-$routing->push('test/', new \testonaut\Page\Provider\Test());
-$routing->push('/', new \testonaut\Page\Provider\Start());
 $routing->push('login/', new \testonaut\Page\Provider\Login());
+$routing->push('logout/', new \testonaut\Page\Provider\Logout());
 $routing->push('reset/', new \testonaut\Page\Provider\Reset());
-//$routing->before(new \testonaut\Security\Provider());
+$routing->push('/', new \testonaut\Page\Provider\Start());
+$routing->before($security);
 $routing->execute();

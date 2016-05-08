@@ -34,7 +34,6 @@ class Login extends Base implements ProviderInterface {
     $this->routing->route('/', function () {
       $request = new \mafflerbach\Http\Request();
 
-      $this->response['content'] = array('hello' => 'asdf');
       $this->response['form'] = $this->getForm();
 
       $data = $request->request;

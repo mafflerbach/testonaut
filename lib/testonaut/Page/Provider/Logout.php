@@ -8,11 +8,39 @@
 
 namespace testonaut\Page\Provider;
 
-use Symfony\Component\HttpFoundation\Request;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 
-class Logout implements ControllerProviderInterface {
+/**
+ * Class Logout
+ * @package testonaut\Page\Provider
+ */
+class Logout extends Base implements ProviderInterface {
+
+
+  private $routing;
+  private $response;
+
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+    $this->routing->route('/', function () {
+
+      unset($_SESSION['testonaut']);
+
+
+      $this->response['message'] = 'You are logged out';
+      $this->routing->response($this->response);
+      $this->routing->render('logout.xsl');
+    });
+  }
+
+
+  /*
+
   public function connect(Application $app) {
 
     $page = $app['controllers_factory'];
@@ -26,5 +54,5 @@ class Logout implements ControllerProviderInterface {
       return $app['twig']->render('logout.twig');
     });
     return $page;
-  }
+  }*/
 }

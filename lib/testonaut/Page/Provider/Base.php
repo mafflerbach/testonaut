@@ -17,6 +17,7 @@ namespace testonaut\Page\Provider;
 
 use mafflerbach\Http\Request;
 use testonaut\Generate\Toc;
+use testonaut\Page\Breadcrumb;
 
 class Base {
 
@@ -24,13 +25,20 @@ class Base {
     $system['baseUrl'] = $this->getBaseUrl();
     $system['requestUri'] = $this->getRequestUri();
     $system['globalconfig'] = $this->getConfig();
-    $system['toc'] = $this->getToc();
-
+    $system['toc'] = $this->getToc($this->getRequestUri());
+    $system['breadcrumb'] = $this->getBreadcrumb($this->getRequestUri());
     return $system;
   }
 
+  protected function getBreadcrumb($path) {
+
+    $crumb = new Breadcrumb(urldecode($path));
+    return $crumb->getBreadcrumb();
+  }
+
   protected function getToc() {
-    $toc = new Toc(\testonaut\Config::getInstance()->wikiPath);
+    $path = \testonaut\Config::getInstance()->wikiPath . '/' . str_replace('.', '/', urldecode($this->getRequestUri()));
+    $toc = new Toc($path);
     return $toc->runDir();
   }
 

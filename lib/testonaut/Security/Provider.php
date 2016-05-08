@@ -20,16 +20,29 @@ use mafflerbach\Page\ProviderInterface;
 use testonaut\User;
 
 class Provider implements ProviderInterface {
+  private $rules = array();
+
   public function connect() {
-    
+
     $this->checkUserSession();
+  }
+
+  public function setFirewall(array $rules) {
+    $this->rules = $rules;
   }
 
   private function checkUserSession() {
     $user = new User();
-    if (!$user->checkUser()) {
-      $request = new Request();
-      $request->redirect('login/');
+
+    $request = new Request();
+
+    if (!empty($this->rules) && in_array($request->getPath(), $this->rules['private'])) {
+
+      if (!$user->checkUser()) {
+        $request = new Request();
+        $request->redirect('login/');
+      }
     }
+
   }
 }

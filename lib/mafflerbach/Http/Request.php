@@ -44,6 +44,13 @@ class Request {
     return $requestUri;
   }
 
+  public function getPath () {
+    $requestUri = str_replace('index.php', '', $_SERVER['PHP_SELF']);
+    $requestUri = str_replace($requestUri, '', $_SERVER['REQUEST_URI']);
+
+    return $requestUri.'/';
+  }
+
   public function redirect($path) {
     $requestUri = str_replace('index.php', '', $_SERVER['PHP_SELF']);
     $url = $requestUri . $path;

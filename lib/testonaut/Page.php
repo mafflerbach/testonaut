@@ -15,7 +15,7 @@
 
 namespace testonaut;
 
-use testonaut\Selenium\Api;
+
 use testonaut\Settings\Profile;
 
 /**

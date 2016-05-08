@@ -31,97 +31,120 @@ class Start extends Base implements ProviderInterface {
     );
 
     $this->routing->route('', function () {
+      $this->response['content'] = $this->getContent('');
 
       $this->routing->response($this->response);
       $this->routing->render('page.xsl');
     });
+
+    $this->routing->route('(\w+)', function ($path) {
+      $this->response['content'] = $this->getContent($path);
+
+      $this->routing->response($this->response);
+      $this->routing->render('page.xsl');
+    });
+
+    $this->routing->route('(.+(?:\..+)*)', function ($path) {
+      $path = urldecode($path);
+
+      $this->response['content'] = $this->getContent($path);
+
+      $this->routing->response($this->response);
+      $this->routing->render('page.xsl');
+    });
+
   }
 
+  private function getContent($path) {
+    $page = new \testonaut\Page($path);
+    return $page->content();
 
+  }
 }
 
- /*
-  public function connect(Application $app) {
+
+/*
+ public function connect(Application $app) {
 
 
-    $start = $app['controllers_factory'];
+   $start = $app['controllers_factory'];
 
-    $start->get('/', function (Request $request) use ($app) {
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
+   $start->get('/', function (Request $request) use ($app) {
+     if (!isset($_SESSION['testonaut']['userId'])) {
+       return $app->redirect($request->getBaseUrl() . '/login/');
+     }
 
-      $toc = $this->getToc();
-      $app['menu'] = $toc;
+     $toc = $this->getToc();
+     $app['menu'] = $toc;
 
-      $page = new \testonaut\Page('');
-      $content = $page->content();
+     $page = new \testonaut\Page('');
+     $content = $page->content();
 
-      if ($this->edit) {
-        $app['request'] = array(
-          'content' => $content,
-          'path'    => 'edit',
-          'baseUrl' => $request->getBaseUrl(),
-          'mode'    => 'edit'
-        );
-        $crumb = new Breadcrumb('edit');
-        $app['crumb'] = $crumb->getBreadcrumb();
+     if ($this->edit) {
+       $app['request'] = array(
+         'content' => $content,
+         'path'    => 'edit',
+         'baseUrl' => $request->getBaseUrl(),
+         'mode'    => 'edit'
+       );
+       $crumb = new Breadcrumb('edit');
+       $app['crumb'] = $crumb->getBreadcrumb();
 
-        return $app['twig']->render('edit.twig');
-      } else {
-        $app['request'] = array(
-          'content' => $content,
-          'path'    => '',
-          'baseUrl' => $request->getBaseUrl(),
-          'mode'    => 'show',
-          'type'    => 'start',
-          'update'  => $this->checkVersion()
-        );
-        $foo = $app['twig']->render('index.twig');
+       return $app['twig']->render('edit.twig');
+     } else {
+       $app['request'] = array(
+         'content' => $content,
+         'path'    => '',
+         'baseUrl' => $request->getBaseUrl(),
+         'mode'    => 'show',
+         'type'    => 'start',
+         'update'  => $this->checkVersion()
+       );
+       $foo = $app['twig']->render('index.twig');
 
-        return new Response($foo, 200, array(
-          'Cache-Control' => 'maxage=300',
-        ));
-      }
-    })
-    ;
-    $start->post('/', function (Request $request) use ($app) {
+       return new Response($foo, 200, array(
+         'Cache-Control' => 'maxage=300',
+       ));
+     }
+   })
+   ;
+   $start->post('/', function (Request $request) use ($app) {
 
-      $path = $request->request->get('path');
-      $content = $request->request->get('content');
-      $page = new \testonaut\Page('');
-      $page->content($content, TRUE);
+     $path = $request->request->get('path');
+     $content = $request->request->get('content');
+     $page = new \testonaut\Page('');
+     $page->content($content, TRUE);
 
-      return $app->redirect($request->getBaseUrl() . '/');
-    })
-    ;
+     return $app->redirect($request->getBaseUrl() . '/');
+   })
+   ;
 
-    return $start;
-  }
+   return $start;
+ }
 
-  protected function getToc() {
+ protected function getToc() {
 
-    $toc = new Generate\Toc(\testonaut\Config::getInstance()->wikiPath);
-    $toc->runDir();
+   $toc = new Generate\Toc(\testonaut\Config::getInstance()->wikiPath);
+   $toc->runDir();
 
-    return $toc->generateMenu();
-  }
+   return $toc->generateMenu();
+ }
 
-  protected function checkVersion() {
+ protected function checkVersion() {
 
-    $versionIni = \testonaut\Config::getInstance()->Path.'/version.ini';
+   $versionIni = \testonaut\Config::getInstance()->Path.'/version.ini';
 
-    $iniContent = parse_ini_file($versionIni);
-    $version = $iniContent['version'];
-    $gitUri = 'https://raw.githubusercontent.com/mafflerbach/testonaut/master/version.ini';
-    $rv = parse_ini_string(file_get_contents($gitUri));
-    $remoteVersion = $rv['version'];
+   $iniContent = parse_ini_file($versionIni);
+   $version = $iniContent['version'];
+   $gitUri = 'https://raw.githubusercontent.com/mafflerbach/testonaut/master/version.ini';
+   $rv = parse_ini_string(file_get_contents($gitUri));
+   $remoteVersion = $rv['version'];
 
-    if ($remoteVersion > $version) {
-      return TRUE;
-    }
+   if ($remoteVersion > $version) {
+     return TRUE;
+   }
 
-    return FALSE;
-  }
+   return FALSE;
+ }
 
 }*/

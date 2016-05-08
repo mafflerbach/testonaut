@@ -53,19 +53,22 @@ class Routing {
 
     $paramQuery = str_replace($basePath, '', $requestUri);
 
+
     foreach ($this->provider as $route => $provider) {
       /**
        * @var $provider ProviderInterface
        */
+
       $response = $provider->connect();
 
       $mee = str_replace($route, '/', $paramQuery);
 
       foreach (self::$routes as $pattern => $callback) {
+
         if (preg_match($pattern, $mee, $params)) {
           array_shift($params);
-          return call_user_func_array($callback, array_values($params));
 
+          return call_user_func_array($callback, array_values($params));
         }
       }
     }
@@ -84,7 +87,6 @@ class Routing {
 
     $dom = new \DOMDocument();
     $dom->formatOutput = true;
-
 
     $dom->loadXML($xml_data->saveXML());
 
@@ -129,6 +131,7 @@ class Routing {
        * @var $provider ProviderInterface
        */
       $provider->connect();
+      
     }
   }
 

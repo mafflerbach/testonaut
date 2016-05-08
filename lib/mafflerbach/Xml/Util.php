@@ -25,7 +25,7 @@ class Util {
     foreach ($data as $key => $value) {
       if (is_array($value)) {
         if (is_numeric($key)) {
-          $key = 'item' . $key;
+          $key = 'item';
         }
 
         if (strpos($key, ' ') !== FALSE) {
