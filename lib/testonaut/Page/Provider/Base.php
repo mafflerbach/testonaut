@@ -16,6 +16,7 @@ namespace testonaut\Page\Provider;
 
 
 use mafflerbach\Http\Request;
+use testonaut\Generate\Menu;
 use testonaut\Generate\Toc;
 use testonaut\Page\Breadcrumb;
 
@@ -28,6 +29,11 @@ class Base {
     $system['toc'] = $this->getToc($this->getRequestUri());
     $system['breadcrumb'] = $this->getBreadcrumb($this->getRequestUri());
     return $system;
+  }
+
+  public function getMenu($page) {
+    $menu = new Menu($page);
+    return $menu->getMenu();
   }
 
   protected function getBreadcrumb($path) {
@@ -68,6 +74,7 @@ class Base {
 
   public function getConfig() {
 
+
     $config = \testonaut\Config::getInstance()->Path . '/config';
     if (file_exists($config)) {
       $configuration = json_decode(file_get_contents($config), true);
@@ -85,7 +92,7 @@ class Base {
       );
 
       $this->writeToFile($config, json_encode($configuration));
-    };
+    }
     return $configuration;
   }
 

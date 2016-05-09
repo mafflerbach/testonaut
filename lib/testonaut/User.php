@@ -185,7 +185,7 @@ class User {
 
 
   public function get($id) {
-    $globalConf = new Globalconfig();
+    $globalConf = new State();
     $configuration = $globalConf->getConfig();
 
     if ($configuration['useLdap']) {

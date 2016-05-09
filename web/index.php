@@ -18,17 +18,19 @@ $loader->add('mafflerbach', __DIR__ . '/../lib/');
 
 //require_once('../lib/testonaut/Page/Provider/Gobalconfig.php');
 
-//$globalConf = new \testonaut\Page\Provider\Globalconfig();
-//$configuration = $globalConf->getConfig();
-
-$db = new testonaut\Utils\Db('../index.db');
-
 $config = \testonaut\Config::getInstance();
 $config->define('Path', dirname(__DIR__));
 
+
+$globalConf = new \testonaut\Page\Provider\Base();
+$configuration = $globalConf->getConfig();
+
+$db = new testonaut\Utils\Db('../index.db');
+
+
 $seleniumAddress = "http://localhost:4444";
-//$config->define('Cache', $configuration['cache']);
-//$config->define('appPath', $configuration['appPath']);
+$config->define('Cache', $configuration['cache']);
+$config->define('appPath', $configuration['appPath']);
 $config->define('seleniumHub', $seleniumAddress.'/wd/hub');
 
 $config->define('wikiPath', dirname(__DIR__) . '/root');
@@ -83,6 +85,7 @@ $routing = new \mafflerbach\Routing();
 $routing->push('login/', new \testonaut\Page\Provider\Login());
 $routing->push('logout/', new \testonaut\Page\Provider\Logout());
 $routing->push('reset/', new \testonaut\Page\Provider\Reset());
-$routing->push('/', new \testonaut\Page\Provider\Start());
+$routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
+$routing->push('.*', new \testonaut\Page\Provider\Start());
 $routing->before($security);
 $routing->execute();

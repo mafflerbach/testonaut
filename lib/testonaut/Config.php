@@ -40,7 +40,11 @@ class Config {
 
   public function __destruct() {
   }
-  
+
+  public function getAll() {
+    return $this->register;
+  }
+
   /**
    * 
    * @param String $key
@@ -70,6 +74,7 @@ class Config {
    * @return mixed
    */
   public function __get($key) {
+   // debug_print_backtrace();
     return $this->exists($key) ? $this->register[$key] : die('<h1>Error: Key \'<em>' . $key . '</em>\' not found in Registry!</h1>');
   }
   

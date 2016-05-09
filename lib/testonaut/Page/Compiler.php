@@ -12,201 +12,201 @@
  */
 
 
-
 namespace testonaut\Page;
 
 use testonaut\Page;
 
 class Compiler {
 
-    private $page;
+  private $page;
 
-    public function __construct(Page $page) {
+  public function __construct(Page $page) {
 
-        $this->page = $page;
+    $this->page = $page;
+  }
+
+  public function compile($variables) {
+
+    $path = $this->page->transCodePath();
+    $contentPath = $path . '/content';
+
+    $conf = $this->page->config();
+
+    $content = $this->invokePages($contentPath);
+    $content = '<div class="pageContent">' . $content . '</div>';
+    $content = $this->includeSpecialHeadPages($content, $conf['type']);
+    $content = $this->includeSpecialFooterPages($content, $conf['type']);
+    $content = $this->compileTwigTags($content, $variables);
+
+    return $content;
+  }
+
+  protected function compileTwigTags($content, array $variables) {
+
+    foreach ($variables as $key => $val) {
+      $content = str_replace($key, $val, $content);
     }
 
-    public function compile($variables) {
+    return $content;
+  }
 
-        $path = $this->page->transCodePath();
-        $contentPath = $path . '/content';
+  public function getContent() {
+    $path = $this->page->transCodePath();
+    $contentPath = $path . '/content';
 
-        $conf = $this->page->config();
+    $conf = $this->page->config();
 
-        $content = $this->invokePages($contentPath);
-        $content = '<div class="pageContent">' . $content . '</div>';
-        $content = $this->includeSpecialHeadPages($content, $conf['type']);
-        $content = $this->includeSpecialFooterPages($content, $conf['type']);
-        $content = $this->compileTwigTags($content, $variables);
+    $content = $this->invokePages($contentPath);
 
-        return $content;
+    $content = $this->includeSpecialHeadPages($content, $conf['type'], false);
+    $content = $this->includeSpecialFooterPages($content, $conf['type'], false);
+    return $content;
+  }
+
+  protected function invokePages($contentPath) {
+
+    $tmp = array();
+    if (file_exists($contentPath)) {
+      $lines = file($contentPath);
+      $content = $this->parseIncludes($lines);
+
+      return $content;
     }
 
-    protected function compileTwigTags($content, array $variables) {
+    return '';
+  }
 
-        foreach ($variables as $key => $val) {
-            $content = str_replace($key, $val, $content);
+  protected function parseIncludes($fileArr) {
+    for ($i = 0; $i < count($fileArr); $i++) {
+      preg_match_all('/!include ([a-zA-Z.]+)/', $fileArr[$i], $result, PREG_SET_ORDER);
+      rsort($result);
+      if (!empty($result[0])) {
+        for ($k = 0; $k < count($result); $k++) {
+          $page = new Page($result[$k][1]);
+          $c = $page->getCompiledPage();
+          $content = $this->generateIncludeBox($c, $result[$k][1]);
+          $content = str_replace($result[$k][0], $content, $fileArr[$i]);
+          $fileArr[$i] = $content;
         }
 
-        return $content;
+      }
+    }
+    $return = implode("", $fileArr);
+    return $return;
+  }
+
+  protected function includeSpecialFooterPages($content, $type, $decorate = true) {
+
+    if ($type == 'suite') {
+      $pages[] = 'suiteTearDown';
     }
 
-    public function getContent() {
-        $path = $this->page->transCodePath();
-        $contentPath = $path . '/content';
-
-        $conf = $this->page->config();
-
-        $content = $this->invokePages($contentPath);
-        
-        $content = $this->includeSpecialHeadPages($content, $conf['type'], false);
-        $content = $this->includeSpecialFooterPages($content, $conf['type'], false);
-        return $content;
+    if ($type == 'test') {
+      $pages[] = 'tearDown';
     }
 
-    protected function invokePages($contentPath) {
+    $pages[] = 'pageFooter';
 
-        $tmp = array();
-        if (file_exists($contentPath)) {
-            $lines = file($contentPath);
-            $content = $this->parseIncludes($lines);
+    if ($decorate) {
+      $content = $this->patchPage($content, $pages);
 
-            return $content;
-        }
-
-        return '';
+    } else {
+      $content = $this->patchTestContent($content, $pages);
     }
 
-    protected function parseIncludes($fileArr) {
+    return $content;
+  }
 
-        for ($i = 0; $i < count($fileArr); $i++) {
-            preg_match_all('/!include ([a-zA-Z.]+)/', $fileArr[$i], $result, PREG_SET_ORDER);
-            rsort($result);
-            if (!empty($result[0])) {
-                for ($k = 0; $k < count($result); $k++) {
-                    $page = new Page($result[$k][1]);
-                    $c = $page->getCompiledPage();
-                    $content = $this->generateIncludeBox($c, $result[$k][1]);
-                    $content = str_replace($result[$k][0], $content, $fileArr[$i]);
-                    $fileArr[$i] = $content;
-                }
-            }
-        }
+  protected function includeSpecialHeadPages($content, $type, $decorate = true) {
 
-        return implode("", $fileArr);
+    if ($type == 'suite') {
+      $pages[] = 'suiteSetUp';
     }
 
-    protected function includeSpecialFooterPages($content, $type, $decorate = true) {
-
-        if ($type == 'suite') {
-            $pages[] = 'suiteTearDown';
-        }
-
-        if ($type == 'test') {
-            $pages[] = 'tearDown';
-        }
-
-        $pages[] = 'pageFooter';
-
-        if ($decorate) {
-            $content = $this->patchPage($content, $pages);
-            
-        } else {
-            $content = $this->patchTestContent($content, $pages);
-        }
-
-        return $content;
+    if ($type == 'test') {
+      $pages[] = 'setUp';
     }
 
-    protected function includeSpecialHeadPages($content, $type, $decorate = true) {
+    $pages[] = 'pageHeader';
 
-        if ($type == 'suite') {
-            $pages[] = 'suiteSetUp';
-        }
+    if ($decorate) {
+      $content = $this->patchPage($content, $pages, TRUE);
 
-        if ($type == 'test') {
-            $pages[] = 'setUp';
-        }
-
-        $pages[] = 'pageHeader';
-        
-        if ($decorate) {
-            $content = $this->patchPage($content, $pages, TRUE);
-            
-        } else {
-            $content = $this->patchTestContent($content, $pages, TRUE);
-        }
-        
-        return $content;
+    } else {
+      $content = $this->patchTestContent($content, $pages, TRUE);
     }
 
-    protected function patchPage($content, $pages, $prepend = FALSE) {
+    return $content;
+  }
 
-        $path = $this->page->path;
+  protected function patchPage($content, $pages, $prepend = FALSE) {
 
-        $pathArr = explode('.', $path);
+    $path = $this->page->path;
 
-        for ($k = 0; $k < count($pages); $k++) {
-            $tmp = array();
-            for ($i = 0; $i < count($pathArr); $i++) {
-                $tmp[] = $pathArr[$i];
-                $path = implode('.', $tmp) . '.' . $pages[$k];
+    $pathArr = explode('.', $path);
 
-                $page = new Page($path);
-                $c = $page->content();
-                if ($c != '') {
-                    $container = $this->generateIncludeBox($c, $path);
-                    if ($prepend) {
-                        $content = $container . '<div>' . $content . '</div>';
-                    } else {
-                        $content = '<div>' . $content . '</div>' . $container;
-                    }
-                }
-            }
+    for ($k = 0; $k < count($pages); $k++) {
+      $tmp = array();
+      for ($i = 0; $i < count($pathArr); $i++) {
+        $tmp[] = $pathArr[$i];
+        $path = implode('.', $tmp) . '.' . $pages[$k];
+
+        $page = new Page($path);
+        $c = $page->content();
+        if ($c != '') {
+          $container = $this->generateIncludeBox($c, $path);
+          if ($prepend) {
+            $content = $container . '<div>' . $content . '</div>';
+          } else {
+            $content = '<div>' . $content . '</div>' . $container;
+          }
         }
-
-        return $content;
+      }
     }
 
-    protected function generateIncludeBox($content, $path) {
-      $id = rand(1, 999);
-$return = '<button class="btn btn-link btn-xs" type="button" data-toggle="collapse" data-target="#collapse_'.$id.'" aria-expanded="false" aria-controls="collapseExample">
-  Include ' . $path . '
-</button> <a href="{{ app.request.baseUrl }}/edit/' . $path . '"><span class="fa fa-pencil"></span></a>
-<div class="collapse" id="collapse_'.$id.'">
-  <div class="well">
-    ' . $content . '
-  </div>
-</div>';
+    return $content;
+  }
 
-        return $return;
-    }
+  protected function generateIncludeBox($content, $path) {
 
-    protected function patchTestContent($content, $pages, $prepend = FALSE) {
-        $path = $this->page->path;
+    $return = '<div class="accordion" data-role="accordion">
+          <div class="frame">
+              <div class="heading">Include ' . $path . '</div>
+              <div class="content" >
+                ' . $content . '
+              </div>
+          </div>
+          </div>
+        ';
 
-        $pathArr = explode('.', $path);
+    return $return;
+  }
 
-        for ($k = 0; $k < count($pages); $k++) {
-            $tmp = array();
-            for ($i = 0; $i < count($pathArr); $i++) {
-                $tmp[] = $pathArr[$i];
-                $path = implode('.', $tmp) . '.' . $pages[$k];
+  protected function patchTestContent($content, $pages, $prepend = FALSE) {
+    $path = $this->page->path;
 
-                $page = new Page($path);
-                $c = $page->content();
-                if ($c != '') {
-                    $container = $c;
-                    if ($prepend) {
-                        $content = $container . $content;
-                    } else {
-                        $content = $content . $container;
-                    }
-                }
-            }
+    $pathArr = explode('.', $path);
+
+    for ($k = 0; $k < count($pages); $k++) {
+      $tmp = array();
+      for ($i = 0; $i < count($pathArr); $i++) {
+        $tmp[] = $pathArr[$i];
+        $path = implode('.', $tmp) . '.' . $pages[$k];
+
+        $page = new Page($path);
+        $c = $page->content();
+        if ($c != '') {
+          $container = $c;
+          if ($prepend) {
+            $content = $container . $content;
+          } else {
+            $content = $content . $container;
+          }
         }
-
-        return $content;
+      }
     }
+
+    return $content;
+  }
 
 }

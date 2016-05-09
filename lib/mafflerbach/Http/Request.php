@@ -18,10 +18,12 @@ namespace mafflerbach\Http;
 class Request {
   public $request;
   public $server;
+  public $files;
 
   public function __construct() {
     $this->request = $_REQUEST;
     $this->server = $_SERVER;
+    $this->files = $_FILES;
   }
 
   public function get() {
@@ -31,6 +33,10 @@ class Request {
       'session' => $_SESSION,
       'server' => $_SERVER,
     );
+  }
+
+  public function getSelf() {
+    return str_replace('index.php', '', $_SERVER['PHP_SELF']);
   }
 
   public function getBasePath() {

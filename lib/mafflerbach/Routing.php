@@ -50,24 +50,20 @@ class Routing {
       $requestUri = str_replace('&xml=true', '', $requestUri);
     }
 
-
     $paramQuery = str_replace($basePath, '', $requestUri);
-
 
     foreach ($this->provider as $route => $provider) {
       /**
        * @var $provider ProviderInterface
        */
-
-      $response = $provider->connect();
-
       $mee = str_replace($route, '/', $paramQuery);
-
+      $routepattern = '/^' . str_replace('/', '\/', $route) . '$/';
+      if (preg_match($routepattern, $mee, $result)) {
+        $response = $provider->connect();
+      }
       foreach (self::$routes as $pattern => $callback) {
-
         if (preg_match($pattern, $mee, $params)) {
           array_shift($params);
-
           return call_user_func_array($callback, array_values($params));
         }
       }
@@ -131,7 +127,7 @@ class Routing {
        * @var $provider ProviderInterface
        */
       $provider->connect();
-      
+
     }
   }
 
