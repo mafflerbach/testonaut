@@ -36,8 +36,8 @@ class Base {
     return $menu->getMenu();
   }
 
-  protected function getBreadcrumb($path) {
 
+  protected function getBreadcrumb($path) {
     $crumb = new Breadcrumb(urldecode($path));
     return $crumb->getBreadcrumb();
   }

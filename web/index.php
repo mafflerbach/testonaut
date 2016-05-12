@@ -71,7 +71,7 @@ $rules = array (
     '/', 'history/', 'run/', 'screenshot/'
   ),
   'private' => array(
-    'edit/', 'image/', 'files/', 'import/', 'globalconfig/', 'config/', 'delete/', 'logout/', 'user/'
+    'edit/', 'image/', 'files/', 'import/', 'globalconfig/', 'config/', 'delete/', 'logout/', 'user/', 'image/'
   ),
   'fallback' => 'login/'
 );
@@ -86,6 +86,7 @@ $routing->push('login/', new \testonaut\Page\Provider\Login());
 $routing->push('logout/', new \testonaut\Page\Provider\Logout());
 $routing->push('reset/', new \testonaut\Page\Provider\Reset());
 $routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
+$routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
 $routing->push('.*', new \testonaut\Page\Provider\Start());
 $routing->before($security);
 $routing->execute();

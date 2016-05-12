@@ -2,6 +2,10 @@
         version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 >
+
+  <xsl:import href="menu.xsl"/>
+
+
   <xsl:output method="html"/>
   <xsl:template name="head">
     <head>
@@ -32,6 +36,11 @@
     <script src="{/data/system/baseUrl}js/vendor/advanced.js"></script>
     <script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
     <script src="{/data/system/baseUrl}js/custom.js"></script>
+
+    <script type="text/javascript">
+      var baseUrl = '<xsl:value-of select="/data/system/baseUrl"/>';
+    </script>
+
   </xsl:template>
 
 </xsl:stylesheet>

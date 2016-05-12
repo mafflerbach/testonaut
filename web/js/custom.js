@@ -186,14 +186,34 @@ function initEditor() {
     });
 
     $("a[data-wysihtml5-dialog-action='search']").click(function () {
-      $("div[data-wysihtml5-dialog='search']").slideToggle();
+      $("div[data-wysihtml5-dialog='search']").slideToggle('fast', function () {
+        if ($("div[data-wysihtml5-dialog='search']:visible").length == 1) {
+          $("a[data-wysihtml5-dialog-action='search'] button").css('display', 'block');
+        } else {
+          $("a[data-wysihtml5-dialog-action='search'] button").css('display', 'none');
+        }
+      });
+
       searchFileEvent();
     });
     $("a[data-wysihtml5-dialog-action='searchImage']").click(function () {
-      $("div[data-wysihtml5-dialog='searchImage']").slideToggle();
-
+      $("div[data-wysihtml5-dialog='searchImage']").slideToggle('fast', function () {
+        if ($("div[data-wysihtml5-dialog='searchImage']:visible").length == 1) {
+          $("a[data-wysihtml5-dialog-action='searchImage'] button").css('display', 'block');
+        } else {
+          $("a[data-wysihtml5-dialog-action='searchImage'] button").css('display', 'none');
+        }
+      });
       searchImageEvent();
     });
+
+
+    $("a[data-wysihtml5-dialog-action='save']").click(function() {
+      $("div[data-wysihtml5-dialog='searchImage']").css('display', 'none');
+      $("div[data-wysihtml5-dialog='search']").css('display', 'none');
+      $("a[data-wysihtml5-dialog-action='searchImage'] button").css('display', 'none');
+      $("a[data-wysihtml5-dialog-action='search'] button").css('display', 'none');
+    })
 
     function searchFileEvent() {
 
@@ -218,43 +238,104 @@ function initEditor() {
 //type: image filename: tum*
     $("input[name='search']").keyup(function () {
       if ($(this).val().length >= 3) {
-        var server = location.href.replace('/web/edit/', '/web/files/') + 'search/' + $(this).val();
+
+        var server = baseUrl + 'search/image/' + $(this).val();
+
         $.ajax({
-          url: server
+          url: server,
+          data: {
+            'type': 'image',
+            'term': $(this).val()
+          },
+          dataType: 'json',
+          method: 'post'
         }).done(function (data) {
 
-          $('#fileListing').empty();
+          $('#listFile').empty();
+
+          var content = '<div class="listview">';
 
           for (var i = 0; i < data.length; i++) {
-            var filename = data[i].filename;
-            var path = data[i].path.replace('web/', '');
-            var link = '{{ app.request.baseUrl }}' + path + '/' + filename;
-            var content = '<a href="' + link + '">' + filename + '</a><br/>'
-            $('#fileListing').append(content);
+            var path = data[i].path.replace('/web', '');
+            var link = baseUrl + path + '/' + data[i].filename;
+            link = link.replace('//', '/');
+            link = link.replace('\\', '/');
+
+            var cssclass = 'mif-file-empty';
+            var type = data[i].type;
+
+            if (type.indexOf('image') > -1) {
+              cssclass = 'mif-file-image';
+            }
+            if (type.indexOf('pdf') > -1) {
+              cssclass = 'mif-file-pdf';
+            }
+
+            content += '<div class="list">' +
+              '<span class="' + cssclass + ' mif-2x"></span>' +
+              '<span class="list-title"><span class="filename" data-url="' + link + '">' + data[i].filename + '</span></span>' +
+              '</div>';
           }
-          searchFileEvent();
+
+          content += '</div>';
+
+          $('#listFile').append(content);
+
+          $('.list').click(function () {
+
+            var url = $($(this).find('.filename')[0]).data('url');
+            $("div[data-wysihtml5-dialog='createLink'] input").val(url);
+          });
+
+          searchImageEvent();
         })
       }
     });
 
     $("input[name='searchImage']").keyup(function () {
       if ($(this).val().length >= 3) {
-        var term = 'type:image filename: ' + $(this).val();
 
-        var server = location.href.replace('/web/edit/', '/web/files/') + 'search/' + term;
+        var server = baseUrl + 'search/image/' + $(this).val();
+
         $.ajax({
-          url: server
+          url: server,
+          data: {
+            'type': 'image',
+            'term': $(this).val()
+          },
+          dataType: 'json',
+          method: 'post'
         }).done(function (data) {
 
-          $('#imageListing').empty();
-
+          $('#listimage').empty();
           for (var i = 0; i < data.length; i++) {
-            var filename = data[i].filename;
-            var path = data[i].path.replace('web/', '');
-            var link = '{{ app.request.baseUrl }}' + path + '/' + filename;
-            var content = '<a href="' + link + '">' + filename + '</a><br/>'
-            $('#imageListing').append(content);
+            var path = data[i].path.replace('/web', '');
+            var link = "'" + baseUrl + path + '/' + data[i].filename + "'";
+            link = link.replace('//', '/');
+            link = link.replace('\\', '/');
+            var content =
+              '<div class="tile fg-white text-shadow" data-role="tile">' +
+              '<div class="tile-content zooming-out">' +
+              '<div class="slide">' +
+              '<div class="image-container image-format-square" style="width: 100%;">' +
+              '<div class="frame">' +
+              '<div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(' + link + '); background-size: cover; background-repeat: no-repeat;"></div>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="tile-label">' + data[i].filename + '</div>' +
+              '</div>' +
+              '</div>';
+            $('#listimage').append(content);
           }
+
+          $('.frame div').click(function () {
+            var url = $(this).css('background-image');
+            url = url.replace('url("', '');
+            url = url.replace('")', '');
+            $("div[data-wysihtml5-dialog='insertImage'] input").val(url);
+          });
+
           searchImageEvent();
         })
       }

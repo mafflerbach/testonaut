@@ -38,46 +38,25 @@ class Edit extends Base implements ProviderInterface {
       'system' => $this->system()
     );
 
-    $this->routing->route('/', function () {
-
-      $this->response['page'] = $this->getContent('');
-      $this->response['menu'] = $this->getMenu('');
-
-      $this->routing->response($this->response);
-      $this->routing->render('edit.xsl');
-    });
-
-    $this->routing->route('(\w+)', function ($path) {
+    $this->routing->route('.*/(.+(?:\..+)*)', function ($path) {
       $path = urldecode($path);
-      $path = str_replace('edit/', '', $path);
-      $this->response['page'] = $this->getContent($path);
-      $this->response['menu'] = $this->getMenu($path);
-
-      $this->routing->response($this->response);
-      $this->routing->render('edit.xsl');
-    });
-
-    $this->routing->route('(.+(?:\..+)*)', function ($path) {
-      $path = urldecode($path);
-      $path = str_replace('edit/', '', $path);
       $request = new Request();
 
-      if (!empty($request->request) && empty($_FILES)) {
+      if (!empty($request->post) && empty($_FILES)) {
         $this->handelPostData($path, $request);
       }
 
-      if (!empty($request->request) && !empty($request->files)) {
+      if (!empty($request->post) && !empty($request->files)) {
         $this->handelUpload($path, $request);
       }
 
       $this->response['page'] = $this->getContent($path);
       $this->response['menu'] = $this->getMenu($path);
+      $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
 
       $this->routing->response($this->response);
       $this->routing->render('edit.xsl');
     });
-
-
   }
 
   protected function handelUpload($path, Request $request) {
@@ -133,9 +112,7 @@ class Edit extends Base implements ProviderInterface {
       'content' => $page->content(),
       'path' => str_replace('/', '', $path)
     );
-
   }
-
 
   protected function gitInit($workingDir) {
 

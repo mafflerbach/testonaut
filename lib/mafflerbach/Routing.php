@@ -58,15 +58,19 @@ class Routing {
        */
       $mee = str_replace($route, '/', $paramQuery);
       $routepattern = '/^' . str_replace('/', '\/', $route) . '$/';
+
       if (preg_match($routepattern, $mee, $result)) {
         $response = $provider->connect();
-      }
-      foreach (self::$routes as $pattern => $callback) {
-        if (preg_match($pattern, $mee, $params)) {
-          array_shift($params);
-          return call_user_func_array($callback, array_values($params));
+        foreach (self::$routes as $pattern => $callback) {
+          
+          if (preg_match($pattern, $mee, $params)) {
+            array_shift($params);
+            return call_user_func_array($callback, array_values($params));
+          }
         }
+        break;
       }
+
     }
   }
 

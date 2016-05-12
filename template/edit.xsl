@@ -70,48 +70,84 @@
            data-wysihtml5-command-value="blue">blue</a> |
         <a data-wysihtml5-action="change_view"><span class="mif-file-code"></span></a>
 
+
         <div data-wysihtml5-dialog="createLink"
              class="editorBox"
              style="display: none;">
-          <label>
-            Link:
+          <div class="input-control text">
             <input data-wysihtml5-dialog-field="href"
                    value="http://"
                    type="text"/>
-          </label>
+          </div>
+
           <a data-wysihtml5-dialog-action="save"
-             class="btn  btn-primary">OK</a> <a data-wysihtml5-dialog-action="cancel"
-                                                     class="btn btn-link">Cancel</a>
+             class="button primary">OK</a> <a data-wysihtml5-dialog-action="cancel"
+                                                     class="button">Cancel</a>
           <a data-wysihtml5-dialog-action="search"
-                   class="button primary">Search</a>
+                   class="button primary">Search
+            <button class="cycle-button mini-button" style="position: absolute; top: -14px; right: -10px; color: darkred; display:none;"><span class="mif-cross"></span></button>
+          </a>
         </div>
 
         <div data-wysihtml5-dialog="insertImage"
              class="editorBox"
              style="display: none;">
-          <label>
-            Image:
+
+          <div class="input-control text">
             <input data-wysihtml5-dialog-field="src"
                    value="http://"
                    type="text"/>
-          </label>
+          </div>
+
           <label>
-            Align:
-            <select data-wysihtml5-dialog-field="className">
-              <option value="">default</option>
-              <option value="wysiwyg-float-left">left</option>
-              <option value="wysiwyg-float-right">right</option>
-            </select>
+            <div class="input-control select"  data-wysihtml5-dialog-field="className">
+              <select>
+                <option value="">default</option>
+                <option value="wysiwyg-float-left">left</option>
+                <option value="wysiwyg-float-right">right</option>
+              </select>
+            </div>
+
           </label>
           <a data-wysihtml5-dialog-action="save"
              class="button primary">OK</a>
           <a data-wysihtml5-dialog-action="cancel"
              class="button">Cancel</a>
           <a data-wysihtml5-dialog-action="searchImage"
-             class="button primary">Search</a>
+             class="button primary">Search
+            <button class="cycle-button mini-button" style="position: absolute; top: -14px; right: -10px; color: darkred; display:none;"><span class="mif-cross"></span></button>
+          </a>
         </div>
 
+        <div data-wysihtml5-dialog="search"
+             class="editorBox"
+             style="display: none;">
+
+        <div class="input-control text">
+          <input type="text"
+                         name="search"
+                         value=""
+                         placeholder="search for file"/>
+        </div>
+
+          <div style="width: 640px" id="listFile"></div>
+        </div>
       </div>
+
+      <div data-wysihtml5-dialog="searchImage"
+           class="editorBox"
+           style="display: none;">
+        <div class="input-control text">
+          <input type="text"
+                         name="searchImage"
+                         value=""
+                         placeholder="search for file"/>
+        </div>
+
+        <div class="tile-container bg-darkCobalt" style="width: 640px" id="listimage">
+        </div>
+      </div>
+
       <br/>
 
       <textarea id="textarea" name="pageContent"
@@ -139,162 +175,4 @@
       initEditor()
     </script>
   </xsl:template>
-
-  <xsl:template name="breadcrumb">
-
-    <ul class="breadcrumbs2 small">
-      <li>
-        <a href="{/data/system/baseUrl}">
-          <span class="icon mif-home"></span>
-        </a>
-      </li>
-      <xsl:for-each select="/data/system/breadcrumb/item">
-        <li>
-          <a href="{path}">
-            <xsl:value-of select="label"/>
-          </a>
-        </li>
-      </xsl:for-each>
-    </ul>
-
-  </xsl:template>
-
-
-  <xsl:template name="toc">
-    <div class="treeview" data-role="treeview">
-      <ul>
-        <xsl:for-each select="/data/system/toc/item">
-          <xsl:call-template name="list-item">
-            <xsl:with-param name="style" select="'node'"/>
-            <xsl:with-param name="label" select="@name"/>
-            <xsl:with-param name="link" select="@name"/>
-          </xsl:call-template>
-        </xsl:for-each>
-      </ul>
-    </div>
-  </xsl:template>
-
-
-  <xsl:template name="list-item">
-    <xsl:param name="label"/>
-    <xsl:param name="link"/>
-    <xsl:param name="style"/>
-
-    <xsl:choose>
-      <xsl:when test="item">
-        <li class="node">
-          <xsl:choose>
-            <xsl:when test="/data/system/requestUri/text() != ''">
-              <xsl:call-template name="link">
-                <xsl:with-param name="link">
-                  <xsl:value-of select="/data/system/requestUri"/>
-                  <xsl:value-of select="$link"/>
-                </xsl:with-param>
-                <xsl:with-param name="label" select="$label"/>
-              </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="link">
-                <xsl:with-param name="link">
-                  <xsl:value-of select="$link"/>
-                </xsl:with-param>
-                <xsl:with-param name="label" select="$label"/>
-              </xsl:call-template>
-            </xsl:otherwise>
-          </xsl:choose>
-
-          <span class="node-toggle"></span>
-          <ul>
-            <xsl:for-each select="item">
-              <xsl:call-template name="list-item">
-                <xsl:with-param name="link">
-                  <xsl:value-of select="$link"/>.<xsl:value-of select="@name"/>
-                </xsl:with-param>
-                <xsl:with-param name="label" select="@name"/>
-                <xsl:with-param name="style" select="''"/>
-              </xsl:call-template>
-            </xsl:for-each>
-          </ul>
-        </li>
-      </xsl:when>
-      <xsl:otherwise>
-        <li class="{$style}">
-          <span class="leaf">
-            <xsl:call-template name="link">
-              <xsl:with-param name="link" select="$link"/>
-              <xsl:with-param name="label" select="$label"/>
-            </xsl:call-template>
-          </span>
-        </li>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="link">
-    <xsl:param name="label"/>
-    <xsl:param name="link"/>
-
-    <a class="leaf">
-      <xsl:choose>
-        <xsl:when test="/data/system/requestUri/text() != ''">
-          <xsl:attribute name="href">
-            <xsl:value-of select="/data/system/requestUri"/>.<xsl:value-of select="$link"/>
-          </xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="href">
-            <xsl:value-of select="$link"/>
-          </xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:value-of select="$label"/>
-    </a>
-  </xsl:template>
-
-
-  <xsl:template name="application-bar">
-    <div class="app-bar">
-      <ul class="app-bar-menu">
-        <xsl:for-each select="/data/menu/item">
-          <xsl:choose>
-            <xsl:when test="item">
-              <li>
-                <a href="" class="dropdown-toggle">
-                  <xsl:value-of select="label"/>
-                </a>
-                <ul class="d-menu" data-role="dropdown">
-                  <xsl:for-each select="item">
-                    <xsl:call-template name="application-bar-item">
-                      <xsl:with-param name="label" select="label"/>
-                      <xsl:with-param name="path" select="path"/>
-                    </xsl:call-template>
-                  </xsl:for-each>
-                </ul>
-              </li>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="application-bar-item">
-                <xsl:with-param name="label" select="label"/>
-                <xsl:with-param name="path" select="path"/>
-              </xsl:call-template>
-            </xsl:otherwise>
-          </xsl:choose>
-
-        </xsl:for-each>
-      </ul>
-    </div>
-
-  </xsl:template>
-
-  <xsl:template name="application-bar-item">
-    <xsl:param name="label"/>
-    <xsl:param name="path"/>
-    <li>
-      <a href="{$path}">
-        <xsl:value-of select="$label"/>
-      </a>
-    </li>
-  </xsl:template>
-
-
 </xsl:stylesheet>

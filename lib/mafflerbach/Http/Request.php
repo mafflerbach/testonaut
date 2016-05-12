@@ -17,13 +17,19 @@ namespace mafflerbach\Http;
 
 class Request {
   public $request;
+  public $post;
+  public $get;
   public $server;
   public $files;
 
   public function __construct() {
     $this->request = $_REQUEST;
+    $this->post = $_POST;
+    $this->get = $_GET;
     $this->server = $_SERVER;
     $this->files = $_FILES;
+
+
   }
 
   public function get() {

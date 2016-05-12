@@ -22,9 +22,11 @@ use testonaut\User;
 
 class Menu {
   private $page;
+  private $path;
 
   public function __construct($page) {
     $this->page = new Page($page);
+    $this->path = $page;
   }
 
   public function getMenu() {
@@ -128,27 +130,27 @@ class Menu {
       'run' => $run,
       'edit' => array(
         'label' => 'Edit',
-        'path' => 'edit/'.$request->getPath()
+        'path' => 'edit/' . $this->path
       ),
       'history' => array(
         'label' => 'History',
-        'path' => 'history/'
+        'path' => 'history/' . $this->path
       ),
       'screenshots' => array(
         'label' => 'Screenshot',
-        'path' => 'screenshot/'
+        'path' => 'screenshot/' . $this->path
       ),
       'import' => array(
         'label' => 'Import',
-        'path' => 'import/'
+        'path' => 'import/' . $this->path
       ),
       'config' => array(
         'label' => 'Config',
-        'path' => 'config/'
+        'path' => 'config/' . $this->path
       ),
       'delete' => array(
         'label' => 'Delete',
-        'path' => 'delete/'
+        'path' => 'delete/' . $this->path
       ),
       'logout' => array(
         'label' => 'Logout',
@@ -177,7 +179,7 @@ class Menu {
         'badge' => $node['platform'],
         'version' => $node['version'],
         'label' => $node['browserName'],
-        'path' => 'run/'.$request->getPath() .''. $node['browserName'],
+        'path' => 'run/' . $request->getPath() . '' . $node['browserName'],
       );
 
       if ($node['version'] != '') {
