@@ -87,6 +87,7 @@ $routing->push('logout/', new \testonaut\Page\Provider\Logout());
 $routing->push('reset/', new \testonaut\Page\Provider\Reset());
 $routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
 $routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
+$routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('.*', new \testonaut\Page\Provider\Start());
 $routing->before($security);
 $routing->execute();

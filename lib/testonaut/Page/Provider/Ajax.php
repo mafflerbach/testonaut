@@ -41,8 +41,7 @@ class Ajax extends Base implements ProviderInterface {
       print(json_encode($search->search($term)));
 
     });
-
-
+    
   }
 
 }

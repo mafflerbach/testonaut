@@ -63,8 +63,6 @@ $(document).ready(function () {
         });
     });
   })
-
-
 })
 
 
@@ -179,6 +177,17 @@ function initEditor() {
   });
 
   $(document).ready(function () {
+    $("a[data-wysihtml5-action='change_view']").click(function() {
+
+      if($('#textarea:visible').length == 1) {
+        $('#textarea').css('background-color', '#fff');
+        $('#textarea').css('color', '#000');
+        $('#textarea').css('cssText', 'font-family: "Segoe UI","Open Sans",sans-serif,serif !important; color:#000; background-color:#fff;');
+      } else {
+        $('#textarea').css('cssText', 'font-family: monospace !important; color:#fff; background-color:#000;');
+      }
+    })
+
     $("a[data-wysihtml5-command='uploadFile']").click(function () {
       uploadFrame();
     });

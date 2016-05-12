@@ -11,7 +11,6 @@
     <html>
       <xsl:call-template name="head"/>
       <body>
-
         <div class="flex-grid">
           <div class="row">
             <xsl:call-template name="application-bar"/>
@@ -29,7 +28,6 @@
             </div>
           </div>
         </div>
-
       </body>
     </html>
   </xsl:template>
@@ -221,6 +219,7 @@
              name="action"
              value="save"
              class="button primary"/>
+      <xsl:text> </xsl:text>
       <a href="{/data/system/baseUrl}{/data/page/path}"
          class="backLink button">Zurück
       </a>
