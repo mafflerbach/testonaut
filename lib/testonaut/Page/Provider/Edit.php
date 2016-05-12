@@ -78,7 +78,7 @@ class Edit extends Base implements ProviderInterface {
     $search = new File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
     $search->updateIndex();
     $image = array(
-      'file' => $domain . $request->getSelf() . 'files/' . $page->relativePath() . $request->files['files']['name'],
+      'file' => $domain . $request->getSelf() . 'files/' . $page->relativePath().'/'. $request->files['files']['name'],
       'message' => $message
     );
 
@@ -132,107 +132,3 @@ class Edit extends Base implements ProviderInterface {
   }
 
 }
-
-
-/*
- *
- *   public function connect(Application $app) {
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request, $path) use ($app) {
-
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
-
-      $this->path = $path;
-      $page = new \testonaut\Page($path);
-      $content = $page->content();
-      $uploadedFiles = $page->getLinkedFiles();
-
-      $this->git = new Git($page->transCodePath());
-
-      $app['request'] = array(
-        'content'      => $content,
-        'path'         => $path,
-        'baseUrl'      => $request->getBaseUrl(),
-        'linkedFiles'  => $uploadedFiles['documents'],
-        'linkedImages' => $uploadedFiles['images'],
-        'mode'         => 'edit'
-      );
-
-      $crumb = new Breadcrumb($path);
-      $app['crumb'] = $crumb->getBreadcrumb();
-
-      return $app['twig']->render('edit.twig');
-    })
-    ;
-    $edit->get('/rename/', function (Request $request, $path) use ($app) {
-
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
-      $page = new \testonaut\Page($path);
-      $app['request'] = array(
-        'path'    => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'edit'
-      );
-
-      return $app['twig']->render('rename.twig');
-    })
-    ;
-    $edit->post('/rename/', function (Request $request, $path) use ($app) {
-
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
-      $page = new \testonaut\Page($path);
-      $newPath = $request->request->get('newPath');
-      $app['request'] = array(
-        'path'    => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'edit'
-      );
-      if ($page->rename($path, $newPath)) {
-        $message = "rename Page";
-
-        return $app->redirect($request->getBaseUrl() . '/' . $newPath);
-      } else {
-        $message = "can't rename Page";
-      }
-      $app['request'] = array(
-        'path'    => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'edit',
-        'message' => $message
-      );
-
-      return $app['twig']->render('rename.twig');
-    })
-    ;
-    $edit->post('/', function (Request $request, $path) use ($app) {
-
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
-      $content = $request->request->get('content');
-      $page = new \testonaut\Page($path);
-      $page->content($content, TRUE);
-
-      $this->git = new Git($page->getProjectRoot());
-
-      if (strpos($path, '.') === FALSE && !$this->git->exists()) {
-        $this->git = new Git($page->transCodePath());
-        $this->gitInit($page->transCodePath());
-      } else {
-        $this->git = new Git($page->getProjectRoot());
-        $this->gitCommit();
-      }
-
-      return $app->redirect($request->getBaseUrl() . '/' . $path);
-    })
-    ;
-
-    return $edit;
-  }
- * */

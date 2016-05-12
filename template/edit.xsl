@@ -42,33 +42,75 @@
       <div id="toolbar"
            style="display: none;">
         <a data-wysihtml5-command="bold"
-           title="CTRL+B"><span class="mif-bold"></span></a> |
+           title="CTRL+B">
+          <span class="mif-bold"></span>
+        </a>
+        |
         <a data-wysihtml5-command="italic"
-           title="CTRL+I"><span class="mif-italic"></span></a> |
+           title="CTRL+I">
+          <span class="mif-italic"></span>
+        </a>
+        |
         <a data-wysihtml5-command="underline"
-           title="CTRL+U"><span class="mif-underline"></span></a> |
-        <a data-wysihtml5-command="createLink"><span class="mif-link"></span></a> |
-        <a data-wysihtml5-command="insertImage"><span class="mif-image"></span></a> |
+           title="CTRL+U">
+          <span class="mif-underline"></span>
+        </a>
+        |
+        <a data-wysihtml5-command="createLink">
+          <span class="mif-link"></span>
+        </a>
+        |
+        <a data-wysihtml5-command="insertImage">
+          <span class="mif-image"></span>
+        </a>
+        |
         <a data-wysihtml5-command="uploadFile">
           <span class="mif-upload"></span>
-        </a> |
+        </a>
+        |
         <a data-wysihtml5-command="formatBlock"
-           data-wysihtml5-command-value="h1"><span class="fa fa-header">H1</span></a> |
+           data-wysihtml5-command-value="h1">
+          <span class="fa fa-header">H1</span>
+        </a>
+        |
         <a data-wysihtml5-command="formatBlock"
-           data-wysihtml5-command-value="h2"><span class="fa fa-header">H2</span></a> |
+           data-wysihtml5-command-value="h2">
+          <span class="fa fa-header">H2</span>
+        </a>
+        |
         <a data-wysihtml5-command="formatBlock"
-           data-wysihtml5-command-value="h3"><span class="fa fa-header">H3</span></a> |
+           data-wysihtml5-command-value="h3">
+          <span class="fa fa-header">H3</span>
+        </a>
+        |
         <a data-wysihtml5-command="formatBlock"
-           data-wysihtml5-command-value="h4"><span class="fa fa-header">H4</span></a> |
-        <a data-wysihtml5-command="insertUnorderedList"><span class="mif-list"></span></a> |
-        <a data-wysihtml5-command="insertOrderedList"><span class="mif-list-numbered"></span></a> |
+           data-wysihtml5-command-value="h4">
+          <span class="fa fa-header">H4</span>
+        </a>
+        |
+        <a data-wysihtml5-command="insertUnorderedList">
+          <span class="mif-list"></span>
+        </a>
+        |
+        <a data-wysihtml5-command="insertOrderedList">
+          <span class="mif-list-numbered"></span>
+        </a>
+        |
         <a data-wysihtml5-command="foreColor"
-           data-wysihtml5-command-value="red">red</a> |
+           data-wysihtml5-command-value="red">red
+        </a>
+        |
         <a data-wysihtml5-command="foreColor"
-           data-wysihtml5-command-value="green">green</a> |
+           data-wysihtml5-command-value="green">green
+        </a>
+        |
         <a data-wysihtml5-command="foreColor"
-           data-wysihtml5-command-value="blue">blue</a> |
-        <a data-wysihtml5-action="change_view"><span class="mif-file-code"></span></a>
+           data-wysihtml5-command-value="blue">blue
+        </a>
+        |
+        <a data-wysihtml5-action="change_view">
+          <span class="mif-file-code"></span>
+        </a>
 
 
         <div data-wysihtml5-dialog="createLink"
@@ -79,13 +121,21 @@
                    value="http://"
                    type="text"/>
           </div>
-
+          <xsl:text> </xsl:text>
           <a data-wysihtml5-dialog-action="save"
-             class="button primary">OK</a> <a data-wysihtml5-dialog-action="cancel"
-                                                     class="button">Cancel</a>
+             class="button primary">OK
+          </a>
+          <xsl:text> </xsl:text>
+          <a data-wysihtml5-dialog-action="cancel"
+             class="button">Cancel
+          </a>
+          <xsl:text> </xsl:text>
           <a data-wysihtml5-dialog-action="search"
-                   class="button primary">Search
-            <button class="cycle-button mini-button" style="position: absolute; top: -14px; right: -10px; color: darkred; display:none;"><span class="mif-cross"></span></button>
+             class="button primary">Search
+            <button class="cycle-button mini-button"
+                    style="position: absolute; top: -14px; right: -10px; color: darkred; display:none;">
+              <span class="mif-cross"></span>
+            </button>
           </a>
         </div>
 
@@ -100,7 +150,7 @@
           </div>
 
           <label>
-            <div class="input-control select"  data-wysihtml5-dialog-field="className">
+            <div class="input-control select" data-wysihtml5-dialog-field="className">
               <select>
                 <option value="">default</option>
                 <option value="wysiwyg-float-left">left</option>
@@ -109,13 +159,21 @@
             </div>
 
           </label>
+          <xsl:text> </xsl:text>
           <a data-wysihtml5-dialog-action="save"
-             class="button primary">OK</a>
+             class="button primary">OK
+          </a>
+          <xsl:text> </xsl:text>
           <a data-wysihtml5-dialog-action="cancel"
-             class="button">Cancel</a>
+             class="button">Cancel
+          </a>
+          <xsl:text> </xsl:text>
           <a data-wysihtml5-dialog-action="searchImage"
              class="button primary">Search
-            <button class="cycle-button mini-button" style="position: absolute; top: -14px; right: -10px; color: darkred; display:none;"><span class="mif-cross"></span></button>
+            <button class="cycle-button mini-button"
+                    style="position: absolute; top: -14px; right: -10px; color: darkred; display:none;">
+              <span class="mif-cross"></span>
+            </button>
           </a>
         </div>
 
@@ -123,12 +181,12 @@
              class="editorBox"
              style="display: none;">
 
-        <div class="input-control text">
-          <input type="text"
-                         name="search"
-                         value=""
-                         placeholder="search for file"/>
-        </div>
+          <div class="input-control text">
+            <input type="text"
+                   name="search"
+                   value=""
+                   placeholder="search for file"/>
+          </div>
 
           <div style="width: 640px" id="listFile"></div>
         </div>
@@ -139,9 +197,9 @@
            style="display: none;">
         <div class="input-control text">
           <input type="text"
-                         name="searchImage"
-                         value=""
-                         placeholder="search for file"/>
+                 name="searchImage"
+                 value=""
+                 placeholder="search for file"/>
         </div>
 
         <div class="tile-container bg-darkCobalt" style="width: 640px" id="listimage">
@@ -152,10 +210,10 @@
 
       <textarea id="textarea" name="pageContent"
                 placeholder="Enter text ...">
-        <xsl:value-of select="/data/page/content" />
+        <xsl:value-of select="/data/page/content"/>
       </textarea>
-<br/>
-<br/>
+      <br/>
+      <br/>
       <input type="hidden"
              name="path"
              value="{/data/system/baseUrl}/{requestUri}"/>
@@ -164,7 +222,8 @@
              value="save"
              class="button primary"/>
       <a href="{/data/system/baseUrl}{/data/page/path}"
-         class="backLink button">Zurück</a>
+         class="backLink button">Zurück
+      </a>
       <input type="hidden"
              name="content"
              value=""/>

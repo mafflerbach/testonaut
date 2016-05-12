@@ -118,6 +118,7 @@ function fileupload() {
     done: function (e, data) {
       var dialog = $('.upload').data('dialog');
       dialog.close();
+      $('#editform').empty();
       $.Notify({
         caption: data.result.message,
         content: data.result.file,

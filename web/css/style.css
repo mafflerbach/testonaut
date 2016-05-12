@@ -24,3 +24,7 @@
     box-shadow: inset 0px 0px 7px -2px black;
     padding: 0.5em;
 }
+
+.notify {
+    max-width: inherit;
+}
