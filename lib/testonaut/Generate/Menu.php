@@ -179,7 +179,7 @@ class Menu {
         'badge' => $node['platform'],
         'version' => $node['version'],
         'label' => $node['browserName'],
-        'path' => 'run/' . $request->getPath() . '' . $node['browserName'],
+        'path' => 'run/' . $this->path . '/' . $node['browserName'],
       );
 
       if ($node['version'] != '') {

@@ -11,7 +11,6 @@
     <html>
       <xsl:call-template name="head"/>
       <body>
-
         <div class="flex-grid">
           <div class="row">
             <xsl:call-template name="application-bar"/>
