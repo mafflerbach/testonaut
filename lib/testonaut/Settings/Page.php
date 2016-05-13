@@ -176,7 +176,10 @@ class Page {
 
   public function getOriginUrl() {
     $settings = $this->page->config();
-    return $settings['originUrl'];
+    if (isset($settings['originUrl'])) {
+      return $settings['originUrl'];
+    }
+    return '';
   }
 
 }

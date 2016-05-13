@@ -44,13 +44,12 @@ class Config extends Base implements ProviderInterface {
       $settings = $this->pageSettings();
       $this->response['pagesettings'] = $settings;
 
-
       $screenshotSettings = $this->screenshotSettings();
       $this->response['screenshotsettings'] = $screenshotSettings;
 
-
       if ($settings['suite'] || $settings['project']) {
         $this->response['browser'] = $this->browserSettings();
+        $this->response['originUrl'] = $this->originUrl();
       }
 
       $this->routing->response($this->response);
@@ -58,12 +57,38 @@ class Config extends Base implements ProviderInterface {
     });
   }
 
+
+  protected function handelPostData($path, Request $request) {
+
+    if ($request->post['pagesettings'] == 'project' || $request->post['pagesettings'] == 'suite') {
+
+      if (isset($request->post['browser']) && isset($request->post['active'])) {
+        $browserSettings = array_merge(array('urls' => $request->post['browser']), array('active' => $request->post['active']));
+        $this->browserSettings($browserSettings);
+      } else {
+
+        $this->browserSettings(array(
+          array(
+            'urls' => array(),
+            array('active' => false)
+          )
+        ));
+      }
+    }
+
+    $this->pageSettings($request->post['pagesettings']);
+    $this->screenshotSettings($request->post['screenshotsettings']);
+
+    if (isset($request->post['originUrl'])) {
+      $this->originUrl($request->post['originUrl']);
+    }
+  }
+
   protected function getContent($path) {
-
-    return array('content' => 'foo',
-    'path' => $path
-  );
-
+    return array(
+      'content' => 'foo',
+      'path' => $path
+    );
   }
 
 
@@ -105,130 +130,3 @@ class Config extends Base implements ProviderInterface {
     }
   }
 }
-
-
-/**
- * public function connect(Application $app) {
- * $config = $app['controllers_factory'];
- * $config->get('/', function (Request $request, $path) use ($app) {
- * $this->path = $path;
- * $page = new \testonaut\Page($path);
- * $content = $page->content();
- * $crumb = new Breadcrumb($path);
- * $app['crumb'] = $crumb->getBreadcrumb();
- * $app['type'] = $this->pageSettings();
- * if ($app['type']['project'] || $app['type']['suite']) {
- * $app['browser'] = $this->browserSettings();
- * }
- *
- * $app['screenshots'] = $this->screenshotSettings();
- * $app['request'] = array(
- * 'content' => $content,
- * 'path'    => $path,
- * 'originUrl'    => $this->originUrl(),
- * 'baseUrl' => $request->getBaseUrl(),
- * 'mode'    => 'show'
- * );
- *
- * return $app['twig']->render('config.twig');
- * });
- *
- * $config->post('/', function (Request $request, $path) use ($app) {
- * $this->path = $path;
- * $page = new \testonaut\Page($path);
- * $content = $page->content();
- * $browserUrls = $request->request->get('browser');
- * $activeBrowser = $request->request->get('active');
- *
- * $type = $request->request->get('type');
- * $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser));
- *
- * if ($type == 'project' || $type == 'suite') {
- * if ($this->browserSettings($browserSettings)) {
- * $message = 'Saved';
- * } else {
- * $message = 'Can not save browser config';
- * }
- *
- * $originUrl = $request->request->get('originurl');
- * if ($originUrl != '') {
- * $this->originUrl($originUrl);
- * }
- * }
- *
- * $screenshot = $request->request->get('screenshot');
- * if ($this->screenshotSettings($screenshot)) {
- * $message = 'Saved';
- * } else {
- * $message = 'Can not save page config';
- * }
- * if ($this->pageSettings($type)) {
- * $message = 'Saved';
- * } else {
- * $message = 'Can not save page config';
- * }
- * $crumb = new Breadcrumb($path);
- *
- * $app['crumb'] = $crumb->getBreadcrumb();
- * $app['type'] = $this->pageSettings();
- * if ($app['type']['project'] || $app['type']['suite']) {
- * $app['browser'] = $this->browserSettings();
- * }
- *
- * $app['screenshots'] = $this->screenshotSettings();
- * $app['request'] = array(
- * 'content' => $content,
- * 'path'    => $path,
- * 'baseUrl' => $request->getBaseUrl(),
- * 'mode'    => 'show',
- * 'originUrl'    => $this->originUrl(),
- * 'message' => $message,
- * );
- *
- * return $app['twig']->render('config.twig');
- * })
- * ;
- *
- * return $config;
- * }
- *
- * protected function browserSettings($settings = NULL) {
- * $pathArray = explode('.', $this->path);
- * $bSettings = new Browser($this->path);
- *
- * if ($settings != NULL) {
- * return $bSettings->setSettings($settings);
- * } else {
- * return $bSettings->getSettings();
- * }
- * }
- *
- *
- * protected function pageSettings($settings = NULL) {
- * $pSettings = new \testonaut\Settings\Page($this->path);
- * if ($settings != NULL) {
- * return $pSettings->setSettings($settings);
- * } else {
- * return $pSettings->getSettings();
- * }
- * }
- *
- * protected function screenshotSettings($settings = NULL) {
- * $pSettings = new \testonaut\Settings\Page($this->path);
- * if ($settings != NULL) {
- * return $pSettings->setScreenshotSettings($settings);
- * } else {
- * return $pSettings->getScreenshotSettings();
- * }
- * }
- *
- * protected function originUrl($originUrl = NULL) {
- * $settings = new \testonaut\Settings\Page($this->path);
- * if ($originUrl != NULL) {
- * return $settings->setOriginUrl($originUrl);
- * } else {
- * return $settings->getOriginUrl();
- * }
- * }
- *
- */

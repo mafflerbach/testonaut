@@ -351,6 +351,12 @@ function initEditor() {
       }
     });
   });
+}
 
-
+function initConfig() {
+  $('input[type="checkbox"]').click(function(){
+    if($(this).prop("checked") == false){
+      console.log($(this).parent().parent().find('input[type="text"]').val(''))
+    }
+  });
 }
