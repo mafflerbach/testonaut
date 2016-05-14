@@ -13,6 +13,7 @@
 
 namespace testonaut\Generate;
 
+use mafflerbach\Xml\Util;
 use testonaut\Config;
 use testonaut\Parser\Config\Browser;
 use testonaut\Selenium\Api;
@@ -83,37 +84,10 @@ class Toc {
     }
     ksort($r);
 
-    $xml_data = new \SimpleXMLElement('<?xml version="1.0"?><toc></toc>');
-    $this->array_to_xml($r, $xml_data, true);
+    $util = new Util();
+    $util->formatOutput = true;
+    $util->node_create($r, null, 'toc');
 
-    return $xml_data;
+    return $util;
   }
-
-  private function array_to_xml($data, &$xml_data, $ignoreAssoc = false) {
-    /**
-     * @var \SimpleXMLElement $xml_data
-     */
-    foreach ($data as $key => $value) {
-      if (is_array($value)) {
-        if (is_numeric($key)) {
-          $key = 'item' . $key;
-        }
-
-        if (strpos($key, ' ') !== FALSE || $ignoreAssoc) {
-          $c = $key;
-          $key = 'item';
-          $subnode = $xml_data->addChild($key);
-          $subnode->addAttribute('name', $c);
-        } else {
-          $subnode = $xml_data->addChild($key);
-        }
-
-        $this->array_to_xml($value, $subnode, $ignoreAssoc);
-
-      } else {
-        $xml_data->addChild("$key", htmlspecialchars("$value"));
-      }
-    }
-  }
-
 }

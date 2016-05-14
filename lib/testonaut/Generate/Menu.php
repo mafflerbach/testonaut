@@ -198,7 +198,7 @@ class Menu {
 
     $push[] = array(
       'label' => 'ALL',
-      'path' => 'run/all',
+      'path' => 'run/' . $this->path . '/all',
     );
 
     return $push;

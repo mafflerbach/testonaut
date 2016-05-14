@@ -61,8 +61,9 @@ class Start extends Base implements ProviderInterface {
 
   private function getContent($path) {
     $page = new \testonaut\Page($path);
+
     return array(
-      'content' => $page->getCompiledPage(),
+      'content' => html_entity_decode($page->getCompiledPage()),
       'config' => $page->config()
     );
   }

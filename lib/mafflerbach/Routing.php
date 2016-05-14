@@ -62,7 +62,7 @@ class Routing {
       if (preg_match($routepattern, $mee, $result)) {
         $response = $provider->connect();
         foreach (self::$routes as $pattern => $callback) {
-          
+
           if (preg_match($pattern, $mee, $params)) {
             array_shift($params);
             return call_user_func_array($callback, array_values($params));
@@ -80,18 +80,11 @@ class Routing {
   }
 
   public function response(array $response) {
-
-    $xmlUtil = new Util();
-    $xml_data = new \SimpleXMLElement('<?xml version="1.0"?><data></data>');
-    $xmlUtil->array_to_xml($response, $xml_data);
-
-    $dom = new \DOMDocument();
+    $dom = new Util('1.0', 'utf-8');
     $dom->formatOutput = true;
-
-    $dom->loadXML($xml_data->saveXML());
+    $dom->node_create($response, null, 'data');
 
     $this->content = $dom->saveXML();
-
   }
 
   public function render($file) {
@@ -99,12 +92,9 @@ class Routing {
     $xslDoc = new \DOMDocument();
 
     $templateDir = Config::getInstance()->templates;
-
     $xslDoc->load($templateDir . $file);
-
     $xmlDoc = new \DOMDocument();
     $xmlDoc->loadXML($this->content);
-
 
     $proc = new \XSLTProcessor();
     $proc->importStylesheet($xslDoc);

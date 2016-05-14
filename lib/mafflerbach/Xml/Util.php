@@ -15,63 +15,51 @@
 namespace mafflerbach\Xml;
 
 
-class Util {
+class Util extends \DOMDocument {
 
 
-  public function array_to_xml($data, &$xml_data, $ignoreAssoc = false) {
-    /**
-     * @var \SimpleXMLElement $xml_data
-     */
-    foreach ($data as $key => $value) {
-      if (is_array($value)) {
-        if (is_numeric($key)) {
-          $key = 'item';
-        }
-
-        if (strpos($key, ' ') !== FALSE) {
-          $c = $key;
-          $key = 'item';
-          $subnode = $xml_data->addChild($key);
-          $subnode->addAttribute('name', $c);
-        } else {
-          $subnode = $xml_data->addChild($key);
-        }
-
-        $this->array_to_xml($value, $subnode, $ignoreAssoc);
-
-      } else {
-
-        if (gettype($value) == 'object' && get_class($value) == 'SimpleXMLElement') {
-          /**
-           * @var \SimpleXMLElement $value
-           */
-          $this->simplexml_import_xml($xml_data, str_replace('<?xml version="1.0"?>', '', $value->saveXML()));
-        } else {
-          $xml_data->addChild("$key", htmlspecialchars("$value"));
-        }
-      }
-    }
+  public function __construct() {
+    parent::__construct();
   }
 
-  private function simplexml_import_xml(\SimpleXMLElement $parent, $xml, $before = false)
-  {
-    $xml = (string)$xml;
-
-    // check if there is something to add
-    if ($nodata = !strlen($xml) or $parent[0] == NULL) {
-      return $nodata;
+  public function node_create($arr, $items = null, $rootName = 'items') {
+    $name = '';
+    if (is_null($items)) {
+      $items = $this->appendChild($this->createElement($rootName));
     }
 
-    // add the XML
-    $node     = dom_import_simplexml($parent);
-    $fragment = $node->ownerDocument->createDocumentFragment();
-    $fragment->appendXML($xml);
+    foreach ($arr as $element => $value) {
+      if (is_numeric($element)) {
+        $element = 'item';
+      }
+      if (strpos($element, ' ') !== FALSE) {
+        $name = $element;
+        $element = 'item';
+      }
 
-    if ($before) {
-      return (bool)$node->parentNode->insertBefore($fragment, $node);
+      if ($value instanceof Util) {
+        $me = $this->createDocumentFragment();
+
+        $tmp = $value->saveXML();
+        $tmp = str_replace('<?xml version="1.0"?>', '', $tmp);
+
+        $me->appendXML($tmp);
+        $fragment = $me->cloneNode(true);
+      } else {
+        $fragment = $this->createElement($element, (is_array($value) ? null : $value));
+      }
+
+      if ($name != '') {
+        $fragment->setAttribute('name', $name);
+        $name = '';
+      }
+
+      $items->appendChild($fragment);
+
+      if (is_array($value)) {
+        self::node_create($value, $fragment);
+      }
     }
-
-    return (bool)$node->appendChild($fragment);
   }
 
 }

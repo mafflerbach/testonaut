@@ -26,12 +26,23 @@
   <xsl:template name="toc">
     <div class="treeview" data-role="treeview">
       <ul>
-        <xsl:for-each select="/data/system/toc/item">
-          <xsl:call-template name="list-item">
-            <xsl:with-param name="style" select="'node'"/>
-            <xsl:with-param name="label" select="@name"/>
-            <xsl:with-param name="link" select="@name"/>
-          </xsl:call-template>
+        <xsl:for-each select="/data/system/toc/*">
+          <xsl:choose>
+            <xsl:when test="@name">
+              <xsl:call-template name="list-item">
+                <xsl:with-param name="style" select="'node'"/>
+                <xsl:with-param name="label" select="@name"/>
+                <xsl:with-param name="link" select="@name"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:call-template name="list-item">
+                <xsl:with-param name="style" select="'node'"/>
+                <xsl:with-param name="label" select="name(.)"/>
+                <xsl:with-param name="link" select="name(.)"/>
+              </xsl:call-template>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:for-each>
       </ul>
     </div>

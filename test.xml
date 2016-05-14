@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<data>
+  <system>
+    <baseUrl>/testonaut/web/</baseUrl>
+    <requestUri>mee</requestUri>
+    <globalconfig>
+      <appPath>/testonaut</appPath>
+      <cache/>
+      <theme>bootstrap</theme>
+      <seleniumAddress>http://192.168.0.21:4444</seleniumAddress>
+      <ldapHostname>localhost</ldapHostname>
+      <ldapBaseDn>dc=example,dc=com</ldapBaseDn>
+      <ldapCn/>
+      <ldapPassword/>
+      <useLdap/>
+    </globalconfig>
+    <toc/>
+    <breadcrumb>
+      <item>
+        <label>mee</label>
+        <path>mee</path>
+      </item>
+    </breadcrumb>
+  </system>
+  <page>
+    <content>&lt;ol&gt;&lt;li&gt;hallo welt kjkjh fasdfas fasdf&lt;/li&gt;&lt;li&gt;adsfakdfj&lt;/li&gt;&lt;li&gt;asdfk&#xF6;ajds&#xF6;f&lt;/li&gt;&lt;/ol&gt;</content>
+    <config>
+      <type>suite</type>
+      <browser>
+        <urls>
+          <WIN10_firefox_>asdfasd</WIN10_firefox_>
+          <WIN10_chrome_/>
+        </urls>
+        <active><0>WIN10_firefox_
+        </0>
+      </active>
+    </browser>
+    <screenshots>step</screenshots>
+    <originUrl>test.dfe</originUrl>
+  </config>
+</page><menu>
+<item>
+  <label>root</label>
+  <path>/</path>
+</item>
+<item>
+  <label>Run</label>
+  <path>run/</path>
+  <item>
+    <label>ALL</label>
+    <path>run/all</path>
+  </item>
+</item>
+<item>
+  <label>Edit</label>
+  <path>edit/mee</path>
+</item>
+<item>
+  <label>History</label>
+  <path>history/mee</path>
+</item>
+<item>
+  <label>Screenshot</label>
+  <path>screenshot/mee</path>
+</item>
+<item>
+  <label>Import</label>
+  <path>import/mee</path>
+</item>
+<item>
+  <label>Config</label>
+  <path>config/mee</path>
+</item>
+<item>
+  <label>Delete</label>
+  <path>delete/mee</path>
+</item>
+<item>
+  <label>Logout</label>
+  <path>logout/</path>
+</item>
+</menu></data>
