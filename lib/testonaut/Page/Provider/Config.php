@@ -29,7 +29,8 @@ class Config extends Base implements ProviderInterface {
     );
 
     $this->routing->route('.*/(.+(?:\..+)*)', function ($path) {
-      $this->path = $path;
+      $this->path = urldecode($path);
+
       $path = urldecode($path);
       $request = new Request();
 
@@ -60,8 +61,8 @@ class Config extends Base implements ProviderInterface {
 
   protected function handelPostData($path, Request $request) {
 
-    if ($request->post['pagesettings'] == 'project' || $request->post['pagesettings'] == 'suite') {
 
+    if ($request->post['pagesettings'] == 'project' || $request->post['pagesettings'] == 'suite') {
       if (isset($request->post['browser']) && isset($request->post['active'])) {
         $browserSettings = array_merge(array('urls' => $request->post['browser']), array('active' => $request->post['active']));
         $this->browserSettings($browserSettings);
@@ -104,6 +105,8 @@ class Config extends Base implements ProviderInterface {
   }
 
   protected function pageSettings($settings = NULL) {
+
+
     $pSettings = new \testonaut\Settings\Page($this->path);
     if ($settings != NULL) {
       return $pSettings->setSettings($settings);
