@@ -29,7 +29,7 @@ class Routing {
   }
 
   public function route($pattern, $callback) {
-    $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
+    $pattern = '/' . str_replace('/', '\/', $pattern) . '/';
     self::$routes[$pattern] = $callback;
   }
 
@@ -57,10 +57,11 @@ class Routing {
        * @var $provider ProviderInterface
        */
       $mee = str_replace($route, '/', $paramQuery);
-      $routepattern = '/^' . str_replace('/', '\/', $route) . '$/';
+      $routepattern = '/' . str_replace('/', '\/', $route) . '/';
 
       if (preg_match($routepattern, $mee, $result)) {
         $response = $provider->connect();
+
         foreach (self::$routes as $pattern => $callback) {
 
           if (preg_match($pattern, $mee, $params)) {
@@ -70,7 +71,6 @@ class Routing {
         }
         break;
       }
-
     }
   }
 
@@ -89,12 +89,16 @@ class Routing {
 
   public function render($file) {
 
+    putenv('XML_CATALOG_FILES=' . Config::getInstance()->Path . '/dtd/catalog.xml');
+
     $xslDoc = new \DOMDocument();
+    $content = $this->content;
+
 
     $templateDir = Config::getInstance()->templates;
     $xslDoc->load($templateDir . $file);
     $xmlDoc = new \DOMDocument();
-    $xmlDoc->loadXML($this->content);
+    $xmlDoc->loadXML($content);
 
     $proc = new \XSLTProcessor();
     $proc->importStylesheet($xslDoc);
@@ -130,13 +134,22 @@ class Routing {
       /**
        * @var $provider ProviderInterface
        */
-      $provider->connect();
+
+      if (method_exists($provider, 'observe'))
+      {
+        $provider->obj($this);
+        $provider->connect();
+      } else {
+        $provider->connect();
+      }
     }
   }
 
   public function after(ProviderInterface $provider) {
     $this->after[] = $provider;
   }
+
+
 
 
 }

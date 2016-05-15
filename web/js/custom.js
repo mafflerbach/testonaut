@@ -177,9 +177,9 @@ function initEditor() {
   });
 
   $(document).ready(function () {
-    $("a[data-wysihtml5-action='change_view']").click(function() {
+    $("a[data-wysihtml5-action='change_view']").click(function () {
 
-      if($('#textarea:visible').length == 1) {
+      if ($('#textarea:visible').length == 1) {
         $('#textarea').css('background-color', '#fff');
         $('#textarea').css('color', '#000');
         $('#textarea').css('cssText', 'font-family: "Segoe UI","Open Sans",sans-serif,serif !important; color:#000; background-color:#fff;');
@@ -218,7 +218,7 @@ function initEditor() {
     });
 
 
-    $("a[data-wysihtml5-dialog-action='save']").click(function() {
+    $("a[data-wysihtml5-dialog-action='save']").click(function () {
       $("div[data-wysihtml5-dialog='searchImage']").css('display', 'none');
       $("div[data-wysihtml5-dialog='search']").css('display', 'none');
       $("a[data-wysihtml5-dialog-action='searchImage'] button").css('display', 'none');
@@ -354,9 +354,63 @@ function initEditor() {
 }
 
 function initConfig() {
-  $('input[type="checkbox"]').click(function(){
-    if($(this).prop("checked") == false){
+  $('input[type="checkbox"]').click(function () {
+    if ($(this).prop("checked") == false) {
       console.log($(this).parent().parent().find('input[type="text"]').val(''))
     }
   });
+}
+
+function initCompare() {
+
+  $('a[data-revert]').click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    $.ajax({
+      method: "get",
+      url: href
+    }).done(function (data) {
+      $.Notify({
+        caption: 'Checkout',
+        content: data,
+        type: 'success'
+      });
+    });
+  })
+
+
+  $('a[data-compare]').click(function (e) {
+    e.preventDefault();
+    $(this).toggleClass('inactive');
+    $(this).toggleClass('active');
+
+
+    if ($('a[data-compare].active').length > 2 || $('a[data-compare].active').length < 2) {
+      $('#compareoutput').empty();
+    }
+
+    if ($('a[data-compare].active').length == 2) {
+
+      var rev1 = $($('a[data-compare].active').get(0)).data('compare');
+      var rev2 = $($('a[data-compare].active').get(1)).data('compare');
+      var href = baseUrl + "history/" + path + "/compare/" + rev2 + "/" + rev1;
+
+      $.ajax({
+        method: "get",
+        url: href,
+        dataType: 'json'
+
+      }).done(function (data) {
+        console.log(data);
+        $('#dialog-content').empty().append(data[0].content);
+        var dialog = $('#dialog').data('dialog');
+        dialog.open();
+      });
+    }
+
+    $('#myModal').on('hidden.bs.modal', function (e) {
+      $('a[data-compare].active').toggleClass('active');
+    })
+  })
+
 }

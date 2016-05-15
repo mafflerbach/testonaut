@@ -72,15 +72,20 @@ class Git {
    * @return type
    */
   public function log() {
-    $command = "cd " . escapeshellarg($this->gitDir) . "; git log --all --pretty=format:'%h^%cn^%s^%cr' --abbrev-commit --date=relative";
-    exec($command, $output);
 
-    $result = array();
-    for ($i = 0; $i < count($output); $i++) {
-      $result[] = explode('^', $output[$i]);
+    if ($this->exists($this->gitDir."/.git")) {
+      $command = "cd " . escapeshellarg($this->gitDir) . "; git log --all --pretty=format:'%h^%cn^%s^%cr' --abbrev-commit --date=relative";
+      exec($command, $output);
+
+      $result = array();
+      for ($i = 0; $i < count($output); $i++) {
+        $result[] = explode('^', $output[$i]);
+      }
+      return $result;
+    } else {
+      return array();
     }
 
-    return $result;
   }
 
   /**
@@ -101,6 +106,7 @@ class Git {
   public function revert($revision, $email, $displayName) {
     $message = 'checkout to ' . $revision;
     $command = 'cd ' . escapeshellarg($this->gitDir) . '; git checkout ' . $revision;
+
     exec($command, $output);
     return $message;
   }
@@ -125,6 +131,7 @@ class Git {
 
     $output = shell_exec($command);
     $diff = new Diff($output);
+
     $content = $diff->buildDiff(false);
 
     return $content;

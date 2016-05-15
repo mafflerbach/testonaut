@@ -75,7 +75,11 @@ class Page {
       return '';
     }
     if ($content == NULL && $save === NULL) {
-      $pageContent = file_get_contents($file);
+
+      $dom = new \DOMDocument();
+      $dom->loadHTMLFile($file);
+
+      $pageContent = $dom->saveXML();
 
       return $pageContent;
     } else {

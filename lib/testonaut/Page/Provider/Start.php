@@ -30,24 +30,8 @@ class Start extends Base implements ProviderInterface {
       'system' => $this->system()
     );
 
-    $this->routing->route('', function () {
 
-      $this->response['page'] = $this->getContent('');
-      $this->response['menu'] = $this->getMenu('');
-
-      $this->routing->response($this->response);
-      $this->routing->render('page.xsl');
-    });
-
-    $this->routing->route('(\w+)', function ($path) {
-      $this->response['page'] = $this->getContent($path);
-      $this->response['menu'] = $this->getMenu($path);
-
-      $this->routing->response($this->response);
-      $this->routing->render('page.xsl');
-    });
-
-    $this->routing->route('(.+(?:\..+)*)', function ($path) {
+    $this->routing->route('(.*)$', function ($path) {
       $path = urldecode($path);
 
       $this->response['page'] = $this->getContent($path);
@@ -56,6 +40,19 @@ class Start extends Base implements ProviderInterface {
       $this->routing->response($this->response);
       $this->routing->render('page.xsl');
     });
+
+
+    $this->routing->route('', function () {
+
+      var_dump('dfasdf');
+
+      $this->response['page'] = $this->getContent('');
+      $this->response['menu'] = $this->getMenu('');
+
+      $this->routing->response($this->response);
+      $this->routing->render('page.xsl');
+    });
+
 
   }
 

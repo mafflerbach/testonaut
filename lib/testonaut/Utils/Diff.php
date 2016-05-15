@@ -34,14 +34,14 @@ namespace testonaut\Utils;
     }
 
     private function replaceGitMarker($line) {
-      $line = str_replace('[- eirmod', '<mark class="text-danger bg-danger">', $line);
-      $line = str_replace('{+ eirmod', '<mark class="text-success bg-success">', $line);
-      $line = str_replace('eirmod[-', '<mark class="text-danger bg-danger">', $line);
-      $line = str_replace('eirmod{+', '<mark class="text-success bg-success">', $line);
-      $line = str_replace('[-eirmod', '<mark class="text-danger bg-danger">', $line);
-      $line = str_replace('{+eirmod', '<mark class="text-success bg-success">', $line);
-      $line = str_replace('[-', '<mark class="text-danger bg-danger">', $line);
-      $line = str_replace('{+', '<mark class="text-success bg-success">', $line);
+      $line = str_replace('[- eirmod', '<mark class="bg-red fg-white">', $line);
+      $line = str_replace('{+ eirmod', '<mark class="bg-emerald fg-white">', $line);
+      $line = str_replace('eirmod[-', '<mark class="bg-red fg-white">', $line);
+      $line = str_replace('eirmod{+', '<mark class="bg-emerald fg-white">', $line);
+      $line = str_replace('[-eirmod', '<mark class="bg-red fg-white">', $line);
+      $line = str_replace('{+eirmod', '<mark class="bg-emerald fg-white">', $line);
+      $line = str_replace('[-', '<mark class="bg-red fg-white">', $line);
+      $line = str_replace('{+', '<mark class="bg-emerald fg-white">', $line);
       $line = str_replace('+}', '</mark>', $line);
       $line = str_replace('-]', '</mark>', $line);
 

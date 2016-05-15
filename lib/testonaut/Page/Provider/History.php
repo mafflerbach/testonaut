@@ -17,6 +17,8 @@ namespace testonaut\Page\Provider;
 use mafflerbach\Http\Request;
 use mafflerbach\Page\ProviderInterface;
 use mafflerbach\Routing;
+use testonaut\Page;
+use testonaut\User;
 use testonaut\Utils\Git;
 
 class History extends Base implements ProviderInterface {
@@ -35,85 +37,79 @@ class History extends Base implements ProviderInterface {
       'system' => $this->system()
     );
 
-    $this->routing->route('.*/(.+(?:\..+)*)', function ($path) {
+
+    $this->routing->route('.*/(.+)/delete/(\w+)$', function ($path) {
       $path = urldecode($path);
       $request = new Request();
 
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
 
+      $this->deleteHistory($path, 'all', '');
+      $request->redirect('history/' . $path);
+    });
 
-      if (!empty($request->post) && empty($_FILES)) {
-        $this->handelPostData($path, $request);
-      }
+    $this->routing->route('.*/(.+)/delete/(\w+)/(\d+)$', function ($path, $browser, $limit) {
+      $path = urldecode($path);
+      $request = new Request();
 
-      if (!empty($request->post) && !empty($request->files)) {
-        $this->handelUpload($path, $request);
-      }
+      $this->page = new \testonaut\Page($path);
+      $this->path = $path;
 
+      $this->deleteHistory($path, $limit, $browser);
+      $request->redirect('history/' . $path);
+
+    });
+
+    $this->routing->route('.*/(.+)/compare/(\w+)/(\w+)$', function ($path, $version, $version2) {
+
+      print(json_encode($this->compare($path, $version, $version2)));
+      die;
+
+    });
+
+    $this->routing->route('.*/(.+)/revert/(\w+)$', function ($path, $version) {
+      return $this->revert($path, $version);
+    });
+
+
+    $this->routing->route('.*/(.*)$', function ($path) {
+      $path = urldecode($path);
+      $request = new Request();
+
+      $this->page = new \testonaut\Page($path);
+      $this->path = $path;
 
       $this->response['menu'] = $this->getMenu($path);
       $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
 
       $this->response['history'] = $this->getHistoryList();
-
-
       $this->response['githistory'] = $this->getGitHistory();
-
+      $this->response['path'] = $path;
 
       $this->routing->response($this->response);
       $this->routing->render('history.xsl');
     });
-
-    /*
-        $edit->post('/compare/{version}/{version2}', function (Request $request, $path, $version, $version2) use ($app) {
-          return $this->compare($app, $request, $path, $version, $version2);
-        });
-        $edit->get('/compare/{version}/{version2}', function (Request $request, $path, $version, $version2) use ($app) {
-          return $this->compare($app, $request, $path, $version, $version2);
-        });
-
-        $edit->get('/revert/{version}', function (Request $request, $path, $version) use ($app) {
-
-          $user = new User();
-          $loadedUser = $user->get($_SESSION['testonaut']['userId']);
-
-          $page = new Page($path);
-          $git = new Git($page->getProjectRoot());
-          $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
-
-          $app['request'] = array(
-            'mode' => 'revert',
-            'baseUrl' => $request->getBaseUrl(),
-            'content' => '',
-            'path' => $path,
-            'message' => $log
-          );
-
-
-          return $app['twig']->render('history.twig');
-        });
-
-        return $edit;
-    */
   }
 
+  protected function revert($path, $version) {
+    $user = new User();
+    $loadedUser = $user->get($_SESSION['testonaut']['userId']);
 
-  protected function compare($app, $request, $path, $version, $version2) {
-    $page = new Page($path);
+    $page = new Page(urldecode($path));
+    $git = new Git($page->getProjectRoot());
+    $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
+    
+    print($log);
+    die;
+  }
+
+  protected function compare($path, $version, $version2) {
+    $page = new Page(urldecode($path));
 
     $git = new Git($page->getProjectRoot());
     $log = $git->diff($version, $version2, $page->transCodePath());
-
-    $app['request'] = array(
-      'mode' => 'compare',
-      'baseUrl' => $request->getBaseUrl(),
-      'path' => $page->getProjectRootPage(),
-      'content' => '',
-      'compare' => $log
-    );
-
-    return $app['twig']->render('history.twig');
+    return $log;
   }
 
 
@@ -122,27 +118,27 @@ class History extends Base implements ProviderInterface {
     return $git->log();
   }
 
-  protected function deleteHistory($request) {
+  protected function deleteHistory($path, $param, $browser) {
     $db = \testonaut\Config::getInstance()->db;
     $dbIns = $db->getInstance();
     $sql = '';
-    if ($request->query->get('all')) {
+    if ($param == 'all') {
       $sql = "delete from history where path=:path";
+
       $stm = $dbIns->prepare($sql);
       $stm->bindParam(':path', $this->path);
     }
-    if ($request->query->get('browser')) {
-      $browser = $request->query->get('browser');
-      $limit = '';
-      if ($request->query->get('count')) {
-        $limit = ' limit ' . $request->query->get('count');
-      }
-      $sql = 'delete from history ' . 'where date in (' . 'select date from history where browser=:browser and path=:path order by date ' . $limit . '' . ')';
+    if ($browser != '') {
+
+      $limit = ' limit ' . $param;
+
+      $sql = 'delete from history where date in (select date from history where browser=:browser and path=:path order by date ' . $limit . ')';
 
       $stm = $dbIns->prepare($sql);
       $stm->bindParam(':browser', $browser);
-      $stm->bindParam(':path', $this->path);
+      $stm->bindParam(':path', $path);
     }
+
     $stm->execute();
   }
 

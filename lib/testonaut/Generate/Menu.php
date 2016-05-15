@@ -35,7 +35,7 @@ class Menu {
 
     $request = new Request();
 
-    $list = $this->list();
+    $list = $this->listing();
 
     if ($user->checkUser()) {
       return $list['private'];
@@ -44,10 +44,9 @@ class Menu {
     }
   }
 
-  protected function list() {
+  protected function listing() {
     $request = new Request();
     $config = $this->page->config();
-
 
     $rules = array(
       'public' => $this->getPublic(),
@@ -70,11 +69,13 @@ class Menu {
         $recources['run'],
         $recources['history'],
         $recources['screenshots'],
+        $recources['login'],
       );
     } else {
       $pub = array(
         $recources['root'],
         $recources['history'],
+        $recources['login']
       );
     }
     $priv[] = $recources['login'];

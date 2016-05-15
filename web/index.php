@@ -79,16 +79,19 @@ $rules = array (
 $security = new \testonaut\Security\Provider();
 $security->setFirewall($rules);
 
+$debug = new \testonaut\Debug\Provider();
+$debug->observe('\mafflerbach\Routing');
 
 $routing = new \mafflerbach\Routing();
 
-$routing->push('login/', new \testonaut\Page\Provider\Login());
-$routing->push('logout/', new \testonaut\Page\Provider\Logout());
-$routing->push('reset/', new \testonaut\Page\Provider\Reset());
+$routing->push('(login)', new \testonaut\Page\Provider\Login());
+$routing->push('(logout)', new \testonaut\Page\Provider\Logout());
+$routing->push('(reset)', new \testonaut\Page\Provider\Reset());
 $routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
 $routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
 $routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('history/.*', new \testonaut\Page\Provider\History());
-$routing->push('.*', new \testonaut\Page\Provider\Start());
+$routing->push('.*$', new \testonaut\Page\Provider\Start());
 $routing->before($security);
-$routing->execute();
+$routing->after($debug);
+$routing->execute($debug);

@@ -76,11 +76,9 @@ class Api {
   }
 
   private function getData($endpoints) {
-
+    // @TODO implement caching;
     $apiString = $this->seleniumAddress . "/" . $endpoints;
-
     $content = file_get_contents($apiString);
-
     return json_decode($content, TRUE);
   }
 }

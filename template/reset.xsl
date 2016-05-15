@@ -11,11 +11,9 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
     <html>
       <xsl:call-template name="head"/>
-      <body>
+      <body class="bg-darkTeal">
         <div class="uk-width-medium-1-2 uk-container-center">
           <xsl:call-template name="reset-form"/>
-          <a class="uk-button uk-button-primary" href="{/data/system/baseUrl}">Back</a>
-
         </div>
       </body>
     </html>

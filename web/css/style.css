@@ -1,4 +1,4 @@
-.login-form {
+.login-form, .reset-form {
     width: 25rem;
     height: 18.75rem;
     position: fixed;
@@ -12,6 +12,10 @@
     transform: scale(.8);
 }
 
+.reset-form {
+    height: inherit;
+}
+
 .compForm {
     width: 100%;
     height: 100%;
@@ -19,13 +23,29 @@
 
 #textarea {
     width: 100%;
-    min-height:500px;
+    min-height: 500px;
     height: 90%;
     box-shadow: inset 0px 0px 7px -2px black;
     padding: 0.5em;
-    font-family: "Segoe UI","Open Sans",sans-serif,serif !important;
+    font-family: "Segoe UI", "Open Sans", sans-serif, serif !important;
 }
 
 .notify {
     max-width: inherit;
+}
+
+.list-unstyled {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.code {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+}
+
+a.active {
+    color: #000140;
 }
