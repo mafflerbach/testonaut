@@ -122,7 +122,7 @@ class Menu {
     return array(
       'root' => array(
         'label' => 'root',
-        'path' => '/'
+        'path' => ''
       ),
       'globalconfig' => array(
         'label' => 'Globalconfig',

@@ -414,3 +414,43 @@ function initCompare() {
   })
 
 }
+
+
+function initScreenshots() {
+  $('.copyImage').click(function (e) {
+    e.preventDefault();
+    console.log('sdsdsdf')
+    //var href = $(this).attr('href');
+    //modalHandling(href, "Copy Image", '');
+  });
+
+  $('.deleteImage').click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    modalHandling(href, "Delete Image", '');
+  });
+
+  $("a[data-action='delete']").click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    modalHandling(href, "Delete Page", "/");
+  });
+
+  $('#all').click(function () {
+    $('.button').removeClass('active');
+    $(this).addClass('active');
+    $('.imagePanel').show();
+  });
+  $('#success').click(function () {
+    $('.button').removeClass('active');
+    $(this).addClass('active');
+    $('.imagePanel.success').show();
+    $('.imagePanel:not(.success)').hide();
+  });
+  $('#fail').click(function () {
+    $('.button').removeClass('active');
+    $(this).addClass('active');
+    $('.imagePanel.alert').show();
+    $('.imagePanel:not(.alert)').hide();
+  });
+}

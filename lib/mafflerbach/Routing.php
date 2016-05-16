@@ -82,7 +82,7 @@ class Routing {
   public function response(array $response) {
     $dom = new Util('1.0', 'utf-8');
     $dom->formatOutput = true;
-    $dom->node_create($response, null, 'data');
+    $dom->node_create($response, null, false, 'data');
 
     $this->content = $dom->saveXML();
   }

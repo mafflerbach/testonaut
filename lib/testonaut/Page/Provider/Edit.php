@@ -41,23 +41,33 @@ class Edit extends Base implements ProviderInterface {
     $this->routing->route('.*/(.+(?:\..+)*)', function ($path) {
       $path = urldecode($path);
       $request = new Request();
-
-      if (!empty($request->post) && empty($_FILES)) {
-        $this->handelPostData($path, $request);
-      }
-
-      if (!empty($request->post) && !empty($request->files)) {
-        $this->handelUpload($path, $request);
-      }
-
-      $this->response['page'] = $this->getContent($path);
-      $this->response['menu'] = $this->getMenu($path);
-      $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
-
-      $this->routing->response($this->response);
-      $this->routing->render('edit.xsl');
+      $this->setResponse($path, $request);
     });
+
+    $this->routing->route('', function () {
+      $request = new Request();
+      $this->setResponse('', $request);
+    });
+
   }
+
+  protected function setResponse($path, $request) {
+    if (!empty($request->post) && empty($_FILES)) {
+      $this->handelPostData($path, $request);
+    }
+
+    if (!empty($request->post) && !empty($request->files)) {
+      $this->handelUpload($path, $request);
+    }
+
+    $this->response['page'] = $this->getContent($path);
+    $this->response['menu'] = $this->getMenu($path);
+    $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
+
+    $this->routing->response($this->response);
+    $this->routing->render('edit.xsl');
+  }
+
 
   protected function handelUpload($path, Request $request) {
 
@@ -78,7 +88,7 @@ class Edit extends Base implements ProviderInterface {
     $search = new File(Config::getInstance()->Path . '/index.db', 'files', Config::getInstance()->fileRoot);
     $search->updateIndex();
     $image = array(
-      'file' => $domain . $request->getSelf() . 'files/' . $page->relativePath().'/'. $request->files['files']['name'],
+      'file' => $domain . $request->getSelf() . 'files/' . $page->relativePath() . '/' . $request->files['files']['name'],
       'message' => $message
     );
 
@@ -102,8 +112,6 @@ class Edit extends Base implements ProviderInterface {
       $this->git = new Git($page->getProjectRoot());
       $this->gitCommit();
     }
-
-
   }
 
   protected function getContent($path) {

@@ -22,7 +22,7 @@ class Util extends \DOMDocument {
     parent::__construct();
   }
 
-  public function node_create($arr, $items = null, $rootName = 'items') {
+  public function node_create($arr, $items = null, $useAttributes = false, $rootName = 'items') {
     $name = '';
     if (is_null($items)) {
       $items = $this->appendChild($this->createElement($rootName));
@@ -32,9 +32,10 @@ class Util extends \DOMDocument {
       if (is_numeric($element)) {
         $element = 'item';
       }
-      if (strpos($element, ' ') !== FALSE) {
+      if (strpos($element, ' ') !== FALSE || $useAttributes) {
         $name = $element;
         $element = 'item';
+
       }
 
       if ($value instanceof Util) {
@@ -49,7 +50,12 @@ class Util extends \DOMDocument {
         $fragment = $this->createElement($element, (is_array($value) ? null : $value));
       }
 
-      if ($name != '') {
+      if ($useAttributes) {
+        $fragment->setAttribute('name', $name);
+        $name = '';
+      }
+
+      if ($name != '' ) {
         $fragment->setAttribute('name', $name);
         $name = '';
       }
@@ -57,7 +63,7 @@ class Util extends \DOMDocument {
       $items->appendChild($fragment);
 
       if (is_array($value)) {
-        self::node_create($value, $fragment);
+        self::node_create($value, $fragment, $useAttributes);
       }
     }
   }
