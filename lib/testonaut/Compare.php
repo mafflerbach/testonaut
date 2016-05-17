@@ -70,7 +70,19 @@ class Compare {
     $stm->bindParam(':profile', $profile);
     $stm->bindParam(':imageName', $imageName);
     $stm->execute();
+  }
+  public function updateComparison($profile, $path, $imageName) {
 
+    $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
+    $this->db = $db->getInstance();
+
+    $sql = "update imageCompare set result = '' where profile = :profile and path = :path and imageName = :imageName";
+
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':path', $path);
+    $stm->bindParam(':profile', $profile);
+    $stm->bindParam(':imageName', $imageName);
+    $stm->execute();
   }
 
   protected function getProfileName($profile) {

@@ -29,6 +29,8 @@
             </div>
           </div>
         </div>
+
+        <xsl:call-template name="window-dialog"/>
         <script type="text/javascript">
           initScreenshots();
         </script>
@@ -135,15 +137,15 @@
               <div class="image-overlay op-green">
 
                 <a class="copyImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}image/copy/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{/data/path}">
                   <span class="copy mif-checkmark mif-4x"
-                        data-link="{/data/system/baseUrl}image/copy/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{/data/path}">
                   </span>
                 </a>
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}image/delete/src/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{/data/path}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/mage/delete/src/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{/data/path}">
                   </span>
                 </a>
 
@@ -159,9 +161,9 @@
               <div class="image-overlay op-green">
 
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}image/delete/ref/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{/data/path}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/mage/delete/ref/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}/screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{/data/path}">
                   </span>
                 </a>
               </div>
@@ -175,9 +177,9 @@
               </div>
               <div class="image-overlay op-green">
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}image/delete/comp/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{/data/path}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/mage/delete/comp/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}/screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{/data/path}">
                   </span>
                 </a>
               </div>
@@ -185,10 +187,26 @@
           </div>
         </div>
       </div>
-
-
     </div>
   </xsl:template>
+<xsl:template name="window-dialog">
+  <div class="window">
+    <div class="window-caption">
+      <span class="window-caption-icon"></span>
+      <span class="window-caption-title"></span>
+      <span class="btn-close"></span>
+    </div>
+    <div class="window-content" style="height: 100px">
+      <div class="message padding10">
+      </div>
+      <div class="window-buttons padding10">
+        <button class="button primary ok">OK</button><xsl:text> </xsl:text>
+        <button class="button cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+</xsl:template>
+
 
 
 </xsl:stylesheet>

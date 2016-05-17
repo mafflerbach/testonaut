@@ -49,3 +49,12 @@
 a.active {
     color: #000140;
 }
+
+.window {
+    display: none;
+    width: 400px;
+    z-index: 3;
+}
+.window .window-content{
+    height:auto !important;
+}

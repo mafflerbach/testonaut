@@ -38,6 +38,62 @@ class Screenshot extends Base implements ProviderInterface {
     );
 
 
+    $this->routing->route('.*/delete/(\w+)/(\w+)/(.*)/(.*)$', function ($src, $browser, $imageName, $path) {
+
+      $this->path = urldecode($path);
+      $src = $this->getImagePath() . '/' . $browser . '/' . $src . '/' . $imageName;
+
+      $compare = new Compare();
+      $compare->updateComparison($browser, $path, $imageName);
+
+      if (file_exists($src)) {
+        if (unlink($src)) {
+          $messageBody = 'deleted';
+          $result = 'success';
+
+        } else {
+          $result = 'fail';
+          $messageBody = 'can not delete';
+        }
+      } else {
+        $result = 'fail';
+        $messageBody = "can not delete, image doesn't exist";
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Delete'
+      );
+
+      print(json_encode($message));
+      die;
+    });
+    $this->routing->route('.*/copy/(\w+)/(.*)/(.*)$', function ($browser, $imageName, $path) {
+
+      $this->path = urldecode($path);
+
+      $src = $this->getImagePath() . '/' . $browser . '/src/' . $imageName;
+      $ref = $this->getImagePath() . '/' . $browser . '/ref/' . $imageName;
+
+      if (copy($src, $ref)) {
+        $result = 'success';
+        $messageBody = 'copied';
+      } else {
+        $result = 'fail';
+        $messageBody = 'can not copy';
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Copy'
+      );
+
+      print(json_encode($message));
+      die;
+    });
+
     $this->routing->route('.*/(.*)$', function ($path) {
       $path = urldecode($path);
       $request = new Request();
@@ -45,11 +101,8 @@ class Screenshot extends Base implements ProviderInterface {
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
 
-
       $page = new \testonaut\Page($path);
-
       $compare = new Compare();
-
       $conf = $page->config();
 
       if ($conf['type'] == 'project' || $conf['type'] == 'suite') {
@@ -74,7 +127,7 @@ class Screenshot extends Base implements ProviderInterface {
 
   protected function prepareImageResult($images) {
     $me = array();
-    for($i = 0; $i  < count($images); $i++) {
+    for ($i = 0; $i < count($images); $i++) {
       $images[$i]['webpath']['result'] = $images[$i]['result'];
       $images[$i]['webpath']['imageName'] = $images[$i]['imageName'];
       $me[$images[$i]['profile']][$images[$i]['path']]['webpath'][] = $images[$i]['webpath'];
@@ -84,5 +137,12 @@ class Screenshot extends Base implements ProviderInterface {
     return $me;
   }
 
+  public function getImagePath() {
+    return \testonaut\Config::getInstance()->imageRoot . "/" . $this->relativePath();
+  }
+
+  public function relativePath() {
+    return str_replace('.', '/', $this->path);
+  }
 
 }

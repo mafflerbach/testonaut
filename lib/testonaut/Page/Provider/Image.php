@@ -92,7 +92,6 @@ class Image implements ControllerProviderInterface {
         }
       } else {
         $message = "can not delete, image doesn't exist";
-
       }
 
       $app['request'] = array(

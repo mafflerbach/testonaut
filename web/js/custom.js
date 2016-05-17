@@ -135,32 +135,6 @@ function fileupload() {
   })
 }
 
-function modalHandling(href, modalTitle, ending) {
-
-  $.ajax({
-    method: "get",
-    url: href
-  }).done(function (data) {
-    $('.modal-title').empty().append(modalTitle);
-    $('.modal-body').empty().append($(data).find('.content'));
-    $('#myModal').modal('show');
-
-    $('.backLink').click(function (ev) {
-      ev.preventDefault();
-      $('#myModal').modal('hide');
-    });
-
-    $('.btn-action').click(function (ev) {
-      ev.preventDefault();
-      $.ajax({
-        method: "post",
-        url: href + ending
-      }).done(function (data) {
-        $('.modal-body').empty().append($(data).find('.content'));
-      });
-    });
-  });
-}
 
 function invokePulsar(browser) {
   var content = '<div class="pulsar ' + browser + '"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>';
@@ -417,23 +391,67 @@ function initCompare() {
 
 
 function initScreenshots() {
+  function closeDialog() {
+    $('.window').hide()
+    $('.window-caption-title').text('');
+    $('.window-content .message').text('');
+  }
+
+  function openDialog(messageTitle, message, href) {
+    $('.window-caption-title').text(messageTitle);
+    $('.window-content .message').text(message);
+
+    $('.window').center();
+    $('.window').show();
+
+    $('.btn-close, .cancel').click(function () {
+      closeDialog();
+      $(this).unbind('click');
+    })
+
+    $('.button.ok').click(function () {
+      closeDialog();
+      $(this).unbind('click');
+      console.log(href);
+      handelAjax(href);
+    })
+  }
+
+
+  function handelAjax(href) {
+    $.ajax({
+      method: "get",
+      url: href,
+      dataType: 'json'
+    }).done(function (data) {
+      var type = 'success';
+      if (data.result != 'success') {
+        type = 'alert';
+      }
+
+      $.Notify({
+        caption: data.messageTitle,
+        content: data.message,
+        type: type
+      });
+
+      window.setTimeout(function () {
+        location.reload()
+      }, 1500);
+    });
+  }
+
+
   $('.copyImage').click(function (e) {
     e.preventDefault();
-    console.log('sdsdsdf')
-    //var href = $(this).attr('href');
-    //modalHandling(href, "Copy Image", '');
+    var href = $(this).attr('href');
+    openDialog('Copy', 'Are you sure you want to set a new reference image?', href);
   });
 
   $('.deleteImage').click(function (e) {
     e.preventDefault();
     var href = $(this).attr('href');
-    modalHandling(href, "Delete Image", '');
-  });
-
-  $("a[data-action='delete']").click(function (e) {
-    e.preventDefault();
-    var href = $(this).attr('href');
-    modalHandling(href, "Delete Page", "/");
+    openDialog('Delete', 'Are you sure you want to delete the image?', href);
   });
 
   $('#all').click(function () {
@@ -453,4 +471,13 @@ function initScreenshots() {
     $('.imagePanel.alert').show();
     $('.imagePanel:not(.alert)').hide();
   });
+}
+
+jQuery.fn.center = function () {
+  this.css("position", "absolute");
+  this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+      $(window).scrollTop()) + "px");
+  this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+      $(window).scrollLeft()) + "px");
+  return this;
 }
