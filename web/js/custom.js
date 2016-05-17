@@ -473,6 +473,105 @@ function initScreenshots() {
   });
 }
 
+function initGlobalconfig() {
+
+  $('#addProfile-form form').submit(function (e) {
+    e.preventDefault();
+
+    if ($('#profileName').val() == '') {
+      $('#profileName').parent().addClass('has-error');
+    } else {
+      $('#profileName').parent().removeClass('has-error');
+    }
+
+    if ($('#browsers').val() == '') {
+      $('#browsers').parent().addClass('has-error');
+    } else {
+      $('#browsers').parent().removeClass('has-error');
+    }
+
+    if ($('#addProfile-form .has-error').length == 0) {
+      $(this).unbind('submit').submit()
+    }
+
+  });
+
+
+  $('#addProfile').click(function () {
+    $('#addProfile-form').slideDown();
+  });
+
+  $('#browsers').change(function () {
+    val = $('#browsers').val();
+    
+    if (val.indexOf('chrome') > -1) {
+      $('#devices').show();
+      $('#dimension').show();
+    } else {
+      $('#dimension').show();
+      $('#devices').hide();
+    }
+
+  });
+
+  $('#devices select').change(function () {
+    $('#dimension').hide();
+    if ($('#devices select').val() == '') {
+      $('#dimension').show();
+    }
+  });
+
+  $('#width').blur(function () {
+    $('#devices').hide();
+    if ($('#width').val() == '' && $('#height').val() == "") {
+      $('#devices').show();
+    }
+  });
+
+  $('#height').blur(function () {
+    $('#devices').hide();
+    if ($('#width').val() == '' && $('#height').val() == "") {
+      $('#devices').show();
+    }
+  });
+
+  $("a[data-action='delete']").click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    modalHandling(href, "Delete Profile", '');
+  });
+
+  $("a[data-action='edit']").click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    $('#addProfile-form').slideDown();
+
+    $.ajax({
+      method: "get",
+      url: href
+    }).done(function (data) {
+      console.log(data);
+      $('#profileName').val(data.name);
+
+      if (data.driverOptions.dimensions != undefined) {
+        $('#dimension').show();
+        $('#devices').hide();
+        $('#width').val(data.driverOptions.dimensions.width);
+        $('#height').val(data.driverOptions.dimensions.height);
+      }
+      $('#browsers').val(data.browser);
+      if (data.capabilities.experimental != undefined) {
+        $('#dimension').hide();
+        $('#devices').show();
+        $('#device').val(data.capabilities.experimental.mobileEmulation.deviceName);
+      }
+    });
+  });
+
+
+}
+
+
 jQuery.fn.center = function () {
   this.css("position", "absolute");
   this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +

@@ -44,16 +44,12 @@ class Start extends Base implements ProviderInterface {
 
     $this->routing->route('', function () {
 
-      var_dump('dfasdf');
-
       $this->response['page'] = $this->getContent('');
       $this->response['menu'] = $this->getMenu('');
 
       $this->routing->response($this->response);
       $this->routing->render('page.xsl');
     });
-
-
   }
 
   private function getContent($path) {

@@ -102,6 +102,7 @@ class Menu {
     } else {
       $priv = array(
         $recources['root'],
+        $recources['globalconfig'],
         $recources['edit'],
         $recources['history'],
         $recources['config'],
@@ -175,6 +176,7 @@ class Menu {
       'path' => 'run/'
     );
     $k = 0;
+
     foreach ($browsers['grid'] as $node) {
       $push[$k] = array(
         'badge' => $node['platform'],
@@ -197,7 +199,15 @@ class Menu {
       $k++;
     }
 
-    $push[] = array(
+    foreach ($browsers['custom'] as $node) {
+      $push[] = array(
+        'badge' => 'platform',
+        'version' => 'version',
+        'label' => $node['browser'],
+        'path' => 'run/' . $this->path . '/' . $node['name']
+      );
+    }
+    array(
       'label' => 'ALL',
       'path' => 'run/' . $this->path . '/all',
     );
@@ -205,6 +215,4 @@ class Menu {
     return $push;
 
   }
-
-
 }

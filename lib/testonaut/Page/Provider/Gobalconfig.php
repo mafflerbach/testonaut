@@ -14,11 +14,10 @@
 
 namespace testonaut\Page\Provider;
 
-use testonaut\Ldap\Settings;
-use testonaut\Page\Breadcrumb;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
+use testonaut\Generate;
 use testonaut\Settings\Emulator;
 use testonaut\Settings\Profile;
 
@@ -40,16 +39,25 @@ use testonaut\Settings\Profile;
  *
  *
  */
-class Globalconfig implements ControllerProviderInterface {
+class Globalconfig extends Base implements ProviderInterface {
 
-  public function connect(Application $app) {
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request) use ($app) {
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
+
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+
+    $this->routing->route('', function () {
+      $request = new Request();
+      if (!empty($request->post)) {
+        $this->handelPostData($request);
       }
 
+
       $conf = $this->getConfig();
+      $this->response['menu'] = $this->getMenu('');
 
       $profile = new Profile();
       $profileList = $profile->get();
@@ -57,83 +65,116 @@ class Globalconfig implements ControllerProviderInterface {
       $emulator = new Emulator();
       $devices = $emulator->getDevices();
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'settings' => $conf,
-        'themes' => $this->getThemes(),
-        'profiles' => $profileList,
-        'devices' => $devices
-      );
+      $this->response['devices'] = $devices;
+      $this->response['profiles'] = $profileList;
 
-      return $app['twig']->render('globalconfig.twig');
+      $this->routing->response($this->response);
+      $this->routing->render('globalconfig.xsl');
     });
-
-    $edit->get('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'profileName' => $browserProfile
-      );
-
-      return $app['twig']->render('globalconfig.twig');
-    });
-
-    $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-      $profile = new Profile();
-      $profile->delete($browserProfile);
-
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'message' => 'deleted'
-      );
-      return $app['twig']->render('globalconfig.twig');
-    });
-
-    $edit->get('/editProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-
-      $profile = new Profile();
-      $profileList = $profile->getByName($browserProfile);
-
-      $data = array(
-        'browser' => $profileList[0]['browser'],
-        'name' => $profileList[0]['name'],
-        'arguments' => ($profileList[0]['arguments'] == '') ? '' : json_decode($profileList[0]['arguments'], true),
-        'driverOptions' => ($profileList[0]['driverOptions'] == '') ? '' : json_decode($profileList[0]['driverOptions'], true),
-        'capabilities' => ($profileList[0]['capabilities'] == '') ? '' : json_decode($profileList[0]['capabilities'], true),
-      );
-
-      return $app->json($data);
-    });
-
-    $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-      $profile = new Profile();
-      $profile->delete($browserProfile);
-
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'message' => 'deleted'
-      );
-      return $app['twig']->render('globalconfig.twig');
-    });
-
-    $edit->post('/', function (Request $request) use ($app) {
-
-      if ($request->request->get('save') == 'profile') {
-        $this->saveProfile($request);
-      } else {
-        $this->saveConfigForm($request);
-
-      }
-
-      return $app->redirect($request->getBaseUrl() . '/globalconfig/');
-    });
-    return $edit;
   }
 
+  protected function handelPostData($request) {
+    if ($request->post['action'] == 'savebase') {
+      $this->saveConfigForm($request->post);
+    }
+    if ($request->post['action'] == 'saveprofile') {
+      $this->saveProfile($request->post);
+    }
+  }
+
+
+  /*  public function connect(Application $app) {
+      $edit = $app['controllers_factory'];
+      $edit->get('/', function (Request $request) use ($app) {
+        if (!isset($_SESSION['testonaut']['userId'])) {
+          return $app->redirect($request->getBaseUrl() . '/login/');
+        }
+
+        $conf = $this->getConfig();
+
+        $profile = new Profile();
+        $profileList = $profile->get();
+
+        $emulator = new Emulator();
+        $devices = $emulator->getDevices();
+
+        $app['request'] = array(
+          'baseUrl' => $request->getBaseUrl(),
+          'mode' => 'edit',
+          'settings' => $conf,
+          'themes' => $this->getThemes(),
+          'profiles' => $profileList,
+          'devices' => $devices
+        );
+
+        return $app['twig']->render('globalconfig.twig');
+      });
+
+      $edit->get('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+
+        $app['request'] = array(
+          'baseUrl' => $request->getBaseUrl(),
+          'mode' => 'edit',
+          'profileName' => $browserProfile
+        );
+
+        return $app['twig']->render('globalconfig.twig');
+      });
+
+      $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+        $profile = new Profile();
+        $profile->delete($browserProfile);
+
+        $app['request'] = array(
+          'baseUrl' => $request->getBaseUrl(),
+          'mode' => 'edit',
+          'message' => 'deleted'
+        );
+        return $app['twig']->render('globalconfig.twig');
+      });
+
+      $edit->get('/editProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+
+        $profile = new Profile();
+        $profileList = $profile->getByName($browserProfile);
+
+        $data = array(
+          'browser' => $profileList[0]['browser'],
+          'name' => $profileList[0]['name'],
+          'arguments' => ($profileList[0]['arguments'] == '') ? '' : json_decode($profileList[0]['arguments'], true),
+          'driverOptions' => ($profileList[0]['driverOptions'] == '') ? '' : json_decode($profileList[0]['driverOptions'], true),
+          'capabilities' => ($profileList[0]['capabilities'] == '') ? '' : json_decode($profileList[0]['capabilities'], true),
+        );
+
+        return $app->json($data);
+      });
+
+      $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+        $profile = new Profile();
+        $profile->delete($browserProfile);
+
+        $app['request'] = array(
+          'baseUrl' => $request->getBaseUrl(),
+          'mode' => 'edit',
+          'message' => 'deleted'
+        );
+        return $app['twig']->render('globalconfig.twig');
+      });
+
+      $edit->post('/', function (Request $request) use ($app) {
+
+        if ($request->request->get('save') == 'profile') {
+          $this->saveProfile($request);
+        } else {
+          $this->saveConfigForm($request);
+
+        }
+
+        return $app->redirect($request->getBaseUrl() . '/globalconfig/');
+      });
+      return $edit;
+    }
+  */
   /**
    * @param $request
    */
@@ -142,27 +183,41 @@ class Globalconfig implements ControllerProviderInterface {
     $profile = new Profile();
     $data = array();
 
-    $browser = $request->request->get('browsers');
-    $name = $request->request->get('profileName');
+    $browser = '';
+    if(strpos($request['browser'], 'chrome') !== FALSE) {
+      $browser = 'chrome';
+    }
+
+    var_dump($request['browser']);
+    if(strpos($request['browser'], 'firefox') !== FALSE) {
+      $browser = 'firefox';
+    }
+    if(strpos($request['browser'], 'explorer ') !== FALSE) {
+      $browser = 'internet explorer';
+    }
+
+    $name = $request['profileName'];
     $driverOptions = '';
-    if ($request->request->get('width') != '' && $request->request->get('height') != '') {
+    if ($request['width'] != '' && $request['height'] != '') {
       $driverOptions = json_encode(array(
         'dimensions' => array(
-          'width' => $request->request->get('width'),
-          "height" => $request->request->get('height')
+          'width' => $request['width'],
+          "height" => $request['height']
         )
       ));
     }
+
+    //@TODO add platform and version
     if ($browser == 'chrome') {
       $capabilities['arguments'] = array(
         "--disable-web-security",
         "--user-data-dir=" . sys_get_temp_dir()
       );
 
-      if ($request->request->get('device') != '' && $request->request->get('width') == '' && $request->request->get('height') == '') {
+      if ($request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
-            "deviceName" => $request->request->get('device')
+            "deviceName" => $request['device']
           )
         );
       }
@@ -191,31 +246,28 @@ class Globalconfig implements ControllerProviderInterface {
     }
 
     $profile->write($data);
-
   }
 
   protected function saveConfigForm($request) {
-    $address = $request->request->get('seleniumAddress');
-    $cache = $request->request->get('cache');
-    $appPath = $request->request->get('appPath');
-    $theme = $request->request->get('theme');
-    $ldapHostname = $request->request->get('ldapHostname');
-    $ldapBaseDn = $request->request->get('ldapBaseDn');
-    $ldapCn = $request->request->get('ldapCn');
-    $ldapPassword = $request->request->get('ldapPassword');
-    $useLdap = $request->request->get('useLdap');
+    $address = $request['seleniumAddress'];
+   // $cache = $request['cache'];
+    $appPath = $request['appPath'];
+   // $theme = $request['theme'];
+    $ldapHostname = $request['ldapHostname'];
+    $ldapBaseDn = $request['ldapBaseDn'];
+    $ldapCn = $request['ldapCn'];
+    $ldapPassword = $request['ldapPassword'];
 
-    if ($cache != null) {
-      $cache = true;
+    if (isset($request['useLdap'])) {
+      $useLdap = true;
     } else {
-      $cache = false;
+      $useLdap = false;
     }
-
 
     $configuration = array(
       'appPath' => $appPath,
-      'cache' => $cache,
-      'theme' => $theme,
+    //  'cache' => $cache,
+   //   'theme' => $theme,
       'seleniumAddress' => $address,
       'ldapHostname' => $ldapHostname,
       'ldapBaseDn' => $ldapBaseDn,
@@ -225,7 +277,6 @@ class Globalconfig implements ControllerProviderInterface {
     );
 
     $this->saveConfig($configuration);
-
   }
 
   protected function saveConfig($array) {
