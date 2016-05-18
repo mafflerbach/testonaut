@@ -34,6 +34,7 @@
 
     <xsl:call-template name="base-settings"/>
     <xsl:call-template name="profile-settings"/>
+    <xsl:call-template name="custom-browser-list"/>
   </xsl:template>
 
   <xsl:template name="base-settings">
@@ -258,8 +259,22 @@
         </div>
       </div>
     </div>
+  </xsl:template>
 
+  <xsl:template name="custom-browser-list">
 
+    <xsl:for-each select="/data/profiles/custom/item">
+      <div class="panel">
+        <div class="heading">
+          <span class="title"><xsl:value-of select="name"/></span>
+        </div>
+        <div class="content">
+          Type: <xsl:value-of select="browser"/><br/>
+          Driver options: <xsl:value-of select="driverOptions"/><br/>
+          Arguments: <xsl:value-of select="arguments"/>
+        </div>
+      </div>
+    </xsl:for-each>
   </xsl:template>
 
 
