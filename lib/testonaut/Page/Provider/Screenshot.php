@@ -76,7 +76,7 @@ class Screenshot extends Base implements ProviderInterface {
       $src = $this->getImagePath() . '/' . $browser . '/src/' . $imageName;
       $ref = $this->getImagePath() . '/' . $browser . '/ref/' . $imageName;
 
-      if (copy($src, $ref)) {
+      if (@copy($src, $ref)) {
         $result = 'success';
         $messageBody = 'copied';
       } else {

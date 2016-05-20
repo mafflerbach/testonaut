@@ -132,20 +132,20 @@
           <div class="cell size4" style="margin-right:10px;margin-left:-10px;">
             <div class="image-container image-format-square" style="width: 100%;">
               <div class="frame">
-                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/item[1]}'); background-size: cover; background-repeat: no-repeat;"></div>
+                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/src}'); background-size: cover; background-repeat: no-repeat;"></div>
               </div>
               <div class="image-overlay op-green">
 
                 <a class="copyImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   <span class="copy mif-checkmark mif-4x"
-                        data-link="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   </span>
                 </a>
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   </span>
                 </a>
 
@@ -156,14 +156,14 @@
           <div class="cell size4">
             <div class="image-container image-format-square" style="width: 100%;">
               <div class="frame">
-                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/item[2]}'); background-size: cover; background-repeat: no-repeat;"></div>
+                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/ref}'); background-size: cover; background-repeat: no-repeat;"></div>
               </div>
               <div class="image-overlay op-green">
 
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}/screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   </span>
                 </a>
               </div>
@@ -173,13 +173,13 @@
           <div class="cell size4" style="margin-left:10px; margin-right:-10px;">
             <div class="image-container image-format-square" style="width: 100%;">
               <div class="frame">
-                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/item[3]}'); background-size: cover; background-repeat: no-repeat;"></div>
+                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/comp}'); background-size: cover; background-repeat: no-repeat;"></div>
               </div>
               <div class="image-overlay op-green">
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{/data/path}">
+                   href="{/data/system/baseUrl}screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{/data/path}">
+                        data-link="{/data/system/baseUrl}/screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   </span>
                 </a>
               </div>

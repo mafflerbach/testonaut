@@ -50,6 +50,7 @@ class Routing {
       $requestUri = str_replace('&xml=true', '', $requestUri);
     }
 
+
     $paramQuery = str_replace($basePath, '', $requestUri);
 
     foreach ($this->provider as $route => $provider) {
@@ -74,6 +75,16 @@ class Routing {
     }
   }
 
+  protected function imageExists($webpath) {
+    $path = explode('/', $webpath);
+
+    array_shift($path);
+    array_shift($path);
+    $imagePath = Config::getInstance()->Path . '/'. implode('/',$path);
+
+    return file_exists($imagePath);
+  }
+
 
   public function push($route, ProviderInterface $provider) {
     $this->provider[$route] = $provider;
@@ -88,6 +99,16 @@ class Routing {
   }
 
   public function render($file) {
+    $requestUri = $_SERVER['REQUEST_URI'];
+
+    $this->cacheHeader();
+
+    preg_match('/.*.(png|gif|jpg)$/', $requestUri, $extension);
+    if (count($extension) >= 1 && !$this->imageExists($requestUri)) {
+      header("HTTP/1.0 404 Not Found");
+      header('Content-Type: image/'.$extension[1]);
+      die;
+    }
 
     putenv('XML_CATALOG_FILES=' . Config::getInstance()->Path . '/dtd/catalog.xml');
 
@@ -101,6 +122,7 @@ class Routing {
 
     $proc = new \XSLTProcessor();
     $proc->importStylesheet($xslDoc);
+
 
     if (isset($_REQUEST['xml'])) {
       header('Content-Type: text/xml');
@@ -146,6 +168,22 @@ class Routing {
 
   public function after(ProviderInterface $provider) {
     $this->after[] = $provider;
+  }
+
+  protected function cacheHeader() {
+    if (Config::getInstance()->debug) {
+      $ts = gmdate("D, d M Y H:i:s") . " GMT";
+      header("Expires: $ts");
+      header("Last-Modified: $ts");
+      header("Pragma: no-cache");
+      header("Cache-Control: no-cache, must-revalidate");
+    } else {
+      $seconds_to_cache = 36000;
+      $ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+      header("Expires: $ts");
+      header("Pragma: cache");
+      header("Cache-Control: max-age=$seconds_to_cache");
+    }
   }
 
 

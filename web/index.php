@@ -12,6 +12,7 @@
  */
 session_start();
 
+
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('testonaut', __DIR__ . '/../lib/');
 $loader->add('mafflerbach', __DIR__ . '/../lib/');
@@ -20,6 +21,7 @@ require_once('../lib/testonaut/Page/Provider/Gobalconfig.php');
 
 $config = \testonaut\Config::getInstance();
 $config->define('Path', dirname(__DIR__));
+$config->define('debug', false);
 
 
 $globalConf = new \testonaut\Page\Provider\Base();
@@ -87,6 +89,7 @@ $debug = new \testonaut\Debug\Provider();
 $debug->observe('\mafflerbach\Routing');
 
 $routing = new \mafflerbach\Routing();
+
 
 $routing->push('(login)', new \testonaut\Page\Provider\Login());
 $routing->push('(logout)', new \testonaut\Page\Provider\Logout());

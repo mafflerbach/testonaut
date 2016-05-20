@@ -175,12 +175,40 @@ class Compare {
     $result = $stm->execute();
 
     $return = array();
+
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+
+      $imageArray = json_decode($row['images'], true);
+      $imageWebArray = json_decode($row['webpath'], true);
+
+      $imageAbsolutePath = array();
+      $imageRelativPath = array();
+
+      for($i = 0; $i < count($imageArray); $i++) {
+        switch ($i) {
+          case 0:
+            $type = 'src';
+            break;
+          case 1:
+            $type = 'ref';
+            break;
+          case 2:
+            $type = 'comp';
+            break;
+        }
+
+        if(!file_exists($imageArray[$i])){
+          unset($imageArray[$i]);
+        } else {
+          $imageAbsolutePath[$type] = $imageArray[$i];
+          $imageRelativPath[$type] = $imageWebArray[$i];
+        }
+      }
+
       $return[] = array(
-        'result' => $row['result'], 'images' => json_decode($row['images'], true), 'webpath' => json_decode($row['webpath'], true), 'imageName' => $row['imageName'], 'profile' => $row['profile'], 'path' => $row['path']
+        'result' => $row['result'], 'images' => $imageAbsolutePath, 'webpath' => $imageRelativPath, 'imageName' => $row['imageName'], 'profile' => $row['profile'], 'path' => $row['path']
       );
     }
-
 
     return $return;
   }

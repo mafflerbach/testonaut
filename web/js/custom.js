@@ -412,7 +412,6 @@ function initScreenshots() {
     $('.button.ok').click(function () {
       closeDialog();
       $(this).unbind('click');
-      console.log(href);
       handelAjax(href);
     })
   }
