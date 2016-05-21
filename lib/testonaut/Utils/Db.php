@@ -74,7 +74,7 @@ class Db {
     $user ='CREATE TABLE "User" (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "email" TEXT NOT NULL,
-            "password" TEXT NOT NULL
+            "password" TEXT NOT NULL,
             "displayName" TEXT NOT NULL
         );';
 
