@@ -199,11 +199,11 @@ class Menu {
       $k++;
     }
 
+    
     foreach ($browsers['custom'] as $node) {
       $push[] = array(
-        'badge' => 'platform',
-        'version' => 'version',
-        'label' => $node['browser'],
+        'label' => $node['name'],
+        'badge' => $node['browser'],
         'path' => 'run/' . $this->path . '/' . $node['name']
       );
     }

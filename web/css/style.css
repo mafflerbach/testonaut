@@ -58,3 +58,52 @@ a.active {
 .window .window-content{
     height:auto !important;
 }
+
+
+.badge-default {
+    background-color: #777;
+}
+.badge-primary {
+    background-color: #337ab7;
+}
+.badge-success {
+    background-color: #5cb85c;
+}
+.badge-info {
+    background-color: #5bc0de;
+}
+.badge-warning {
+    background-color: #f0ad4e;
+}
+.badge-danger {
+    background-color: #d9534f;
+}
+
+
+.badge {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+
+
+.d-menu li a {
+    color: #727272;
+    display: block;
+    padding: .75rem 4rem .75rem 1.5rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    min-width: 12.5rem;
+    border: none;
+    position: relative;
+}

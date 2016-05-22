@@ -29,7 +29,7 @@ $configuration = $globalConf->getConfig();
 
 $db = new testonaut\Utils\Db('../index.db');
 
-
+  
 $seleniumAddress = "http://localhost:4444";
 if (isset($configuration['cache'])) {
   $config->define('Cache', $configuration['cache']);

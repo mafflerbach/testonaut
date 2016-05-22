@@ -71,8 +71,13 @@
   <xsl:template name="panel">
     <xsl:param name="title"/>
     <xsl:param name="content"/>
+    <xsl:param name="colabse" select="false()"/>
 
     <div class="panel">
+      <xsl:if test="$colabse">
+        <xsl:attribute name="class">panel collapsed</xsl:attribute>
+        <xsl:attribute name="data-role">panel</xsl:attribute>
+      </xsl:if>
       <div class="heading">
         <span class="title">
           <xsl:value-of select="$title"/>
@@ -105,21 +110,90 @@
   <xsl:template name="browser-panel-list">
     <xsl:if test="/data/browser">
       <xsl:call-template name="panel">
+        <xsl:with-param name="colabse" select="true()"/>
         <xsl:with-param name="title" select="'Test Urls'"/>
         <xsl:with-param name="content">
           <xsl:for-each select="/data/browser/item">
-            <xsl:call-template name="browser-panel">
-              <xsl:with-param name="browsername" select="browserName"/>
-              <xsl:with-param name="url" select="url"/>
-              <xsl:with-param name="os" select="platform"/>
-              <xsl:with-param name="version" select="version"/>
-              <xsl:with-param name="active" select="active"/>
-            </xsl:call-template>
+
+            <xsl:choose>
+              <xsl:when test="browser">
+                <xsl:call-template name="profile-panel">
+                  <xsl:with-param name="profilename" select="name"/>
+                  <xsl:with-param name="basis" select="browser"/>
+                  <xsl:with-param name="url" select="url"/>
+                  <xsl:with-param name="active" select="active"/>
+                  <xsl:with-param name="driverOptions" select="driverOptions"/>
+                  <xsl:with-param name="arguments" select="arguments"/>
+                  <xsl:with-param name="capabilities" select="capabilities"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="browser-panel">
+                  <xsl:with-param name="browsername" select="browserName"/>
+                  <xsl:with-param name="url" select="url"/>
+                  <xsl:with-param name="os" select="platform"/>
+                  <xsl:with-param name="version" select="version"/>
+                  <xsl:with-param name="active" select="active"/>
+                </xsl:call-template>
+              </xsl:otherwise>
+            </xsl:choose>
+
+
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
+
+  <xsl:template name="profile-panel">
+    <xsl:param name="profilename"/>
+    <xsl:param name="basis"/>
+    <xsl:param name="url"/>
+    <xsl:param name="driverOptions"/>
+    <xsl:param name="arguments"/>
+    <xsl:param name="capabilities"/>
+    <xsl:param name="active"/>
+
+    <div class="panel">
+      <div class="heading">
+        <xsl:call-template name="browser-icon">
+          <xsl:with-param name="browser" select="$basis"/>
+        </xsl:call-template>
+        <span class="title">
+          <xsl:value-of select="$profilename"/><xsl:text> </xsl:text>
+        </span>
+
+      </div>
+      <div class="content padding10">
+        <div class="input-control text">
+          <input type="text" placeholder="Testsystem Url"
+                 name="browser[{$profilename}]{$profilename}_Url">
+            <xsl:attribute name="value">
+              <xsl:value-of select="$url"/>
+            </xsl:attribute>
+          </input>
+        </div>
+        <label class="input-control checkbox small-check">
+          <xsl:choose>
+            <xsl:when test="$active">
+              <input type="checkbox" name="active[]{$profilename}"
+                     value="{$profilename}" checked="checked"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <input type="checkbox" name="active[]{$profilename}"
+                     value="{$profilename}"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <span class="check"></span>
+        </label>
+        <br/>
+        Driver Options: <xsl:value-of select="$driverOptions"/><br/>
+        Arguments: <xsl:value-of select="$arguments"/><br/>
+        Capabilities: <xsl:value-of select="$capabilities"/><xsl:text> </xsl:text>
+      </div>
+    </div>
+  </xsl:template>
+
 
   <xsl:template name="browser-panel">
     <xsl:param name="browsername"/>
@@ -173,7 +247,8 @@
     <xsl:variable name="imageUrl">
       <xsl:choose>
         <xsl:when test="$browser = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
-        <xsl:when test="$browser = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
+        <xsl:when test="$browser = 'internet explorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
+        <xsl:when test="$browser = 'MicrosoftEdge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
         <xsl:when test="$browser = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
         <xsl:when test="$browser = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
         <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png</xsl:otherwise>

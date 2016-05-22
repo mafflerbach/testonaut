@@ -17,7 +17,7 @@
           </div>
 
           <div class="row">
-            <div class="cell colspan12">
+            <div class="cell colspan12 padding20">
               <xsl:call-template name="content"/>
             </div>
           </div>
@@ -128,7 +128,7 @@
       <div class="input-control select">
         <select name="browser" id="browsers">
           <option value="">basis browser</option>
-          <xsl:for-each select="/data/profiles/all/item">
+          <xsl:for-each select="/data/profiles/grid/item">
             <xsl:choose>
               <xsl:when test="version = ''">
                 <option name="{browserName}_default_{platform}">
@@ -266,15 +266,33 @@
     <xsl:for-each select="/data/profiles/custom/item">
       <div class="panel">
         <div class="heading">
+          <xsl:call-template name="browser-icon">
+            <xsl:with-param name="browser" select="browser"/>
+          </xsl:call-template>
           <span class="title"><xsl:value-of select="name"/></span>
         </div>
         <div class="content">
-          Type: <xsl:value-of select="browser"/><br/>
           Driver options: <xsl:value-of select="driverOptions"/><br/>
           Arguments: <xsl:value-of select="arguments"/>
+          Capabilities: <xsl:value-of select="capabilities"/>
         </div>
       </div>
     </xsl:for-each>
+  </xsl:template>
+
+
+  <xsl:template name="browser-icon">
+    <xsl:param name="browser"/>
+    <xsl:variable name="imageUrl">
+      <xsl:choose>
+        <xsl:when test="$browser = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
+        <xsl:when test="$browser = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
+        <xsl:when test="$browser = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
+        <xsl:when test="$browser = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
+        <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <img class="icon" src="{$imageUrl}"/>
   </xsl:template>
 
 

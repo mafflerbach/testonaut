@@ -129,6 +129,8 @@
                   <xsl:for-each select="item">
                     <xsl:call-template name="application-bar-item">
                       <xsl:with-param name="label" select="label"/>
+                      <xsl:with-param name="badge" select="badge"/>
+                      <xsl:with-param name="version" select="version"/>
                       <xsl:with-param name="path" select="path"/>
                     </xsl:call-template>
                   </xsl:for-each>
@@ -152,10 +154,28 @@
   <xsl:template name="application-bar-item">
     <xsl:param name="label"/>
     <xsl:param name="path"/>
+    <xsl:param name="badge" select="''"/>
+    <xsl:param name="version" select="''"/>
+
+
+
     <li>
-      <a href="{/data/system/baseUrl}{$path}">
-        <xsl:value-of select="$label"/>
-      </a>
+        <xsl:choose>
+          <xsl:when test="$badge != ''">
+
+            <a href="{/data/system/baseUrl}{$path}" style="">
+            <xsl:value-of select="$label"/>
+            <xsl:value-of select="$version"/>
+              <xsl:text> </xsl:text>
+              <span class="badge badge-default"><xsl:value-of select="$badge"/></span>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{/data/system/baseUrl}{$path}">
+            <xsl:value-of select="$label"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
     </li>
   </xsl:template>
 
