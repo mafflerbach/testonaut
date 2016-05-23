@@ -142,6 +142,7 @@
           </span>
         </div>
         <div class="content">
+
           <xsl:call-template name="page">
             <xsl:with-param name="page" select="$browser/*"/>
           </xsl:call-template>
@@ -152,28 +153,26 @@
 
   <xsl:template name="page">
     <xsl:param name="page"/>
-    <xsl:for-each select="$page">
-      <div class="panel collapsed" style="padding:0 10px;" data-role="panel">
-        <div class="heading">
-          <span class="title">
-            <xsl:choose>
-              <xsl:when test="@name">
-                <xsl:value-of select="@name"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="name(.)"/>
-              </xsl:otherwise>
-            </xsl:choose>
+    <div class="panel collapsed" style="padding:0 10px;" data-role="panel">
+      <div class="heading">
+        <span class="title">
+          <xsl:choose>
+            <xsl:when test="$page/@name">
+              <xsl:value-of select="$page/@name"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="name($page)"/>
+            </xsl:otherwise>
+          </xsl:choose>
 
-          </span>
-        </div>
-        <div class="content">
-          <xsl:call-template name="runs">
-            <xsl:with-param name="run" select="item"/>
-          </xsl:call-template>
-        </div>
+        </span>
       </div>
-    </xsl:for-each>
+      <div class="content">
+        <xsl:call-template name="runs">
+          <xsl:with-param name="run" select="$page/item"/>
+        </xsl:call-template>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template name="runs">
@@ -181,7 +180,7 @@
     <xsl:for-each select="$run">
       <xsl:variable name="cssClass">
         <xsl:choose>
-          <xsl:when test="$run/result = '1'">success</xsl:when>
+          <xsl:when test="result = '1'">success</xsl:when>
           <xsl:otherwise>alert</xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -189,6 +188,7 @@
       <div class="panel collapsed {$cssClass}" data-role="panel">
         <div class="heading">
           <span class="title">
+
             <xsl:value-of select="date"/><xsl:text> </xsl:text>
             <xsl:value-of select="time"/>
           </span>

@@ -199,7 +199,7 @@ class Menu {
       $k++;
     }
 
-    
+
     foreach ($browsers['custom'] as $node) {
       $push[] = array(
         'label' => $node['name'],
@@ -207,7 +207,7 @@ class Menu {
         'path' => 'run/' . $this->path . '/' . $node['name']
       );
     }
-    array(
+    $push[] = array(
       'label' => 'ALL',
       'path' => 'run/' . $this->path . '/all',
     );

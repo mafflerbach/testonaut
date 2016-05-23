@@ -21,7 +21,7 @@ require_once('../lib/testonaut/Page/Provider/Gobalconfig.php');
 
 $config = \testonaut\Config::getInstance();
 $config->define('Path', dirname(__DIR__));
-$config->define('debug', false);
+$config->define('debug', true);
 
 
 $globalConf = new \testonaut\Page\Provider\Base();
@@ -100,6 +100,7 @@ $routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('history/.*', new \testonaut\Page\Provider\History());
 $routing->push('screenshot/.*', new \testonaut\Page\Provider\Screenshot());
 $routing->push('(globalconfig)', new \testonaut\Page\Provider\Globalconfig());
+$routing->push('run/.*', new \testonaut\Page\Provider\Run());
 $routing->push('.*$', new \testonaut\Page\Provider\Start());
 $routing->before($security);
 $routing->after($debug);

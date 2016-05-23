@@ -17,6 +17,8 @@ namespace testonaut\Page\Provider;
 use mafflerbach\Page\ProviderInterface;
 use mafflerbach\Routing;
 use testonaut\Generate;
+use testonaut\Matrix;
+use testonaut\Settings\Profile;
 
 
 class Start extends Base implements ProviderInterface {
@@ -54,10 +56,16 @@ class Start extends Base implements ProviderInterface {
 
   private function getContent($path) {
     $page = new \testonaut\Page($path);
+    $browserSettings = new Profile();
+    $browsers = $browserSettings->get();
+
+    $matrix = new Matrix($page, $browsers);
+    $lastRun = $matrix->read();
 
     return array(
       'content' => html_entity_decode($page->getCompiledPage()),
-      'config' => $page->config()
+      'config' => $page->config(),
+      'lastresult' => $lastRun
     );
   }
 }

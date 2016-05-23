@@ -28,6 +28,7 @@ class Base {
     $system['globalconfig'] = $this->getConfig();
     $system['toc'] = $this->getToc($this->getRequestUri());
     $system['breadcrumb'] = $this->getBreadcrumb($this->getRequestUri());
+    $system['servername'] = $_SERVER['SERVER_NAME'];
     return $system;
   }
 

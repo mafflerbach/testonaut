@@ -6,7 +6,9 @@
  * Time: 20:22
  */
 
+
 $file = "../tmp/".$_REQUEST['path'];
+
 if (file_exists($file)) {
   print(file_get_contents($file));
 }

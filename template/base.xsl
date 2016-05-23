@@ -39,6 +39,7 @@
 
     <script type="text/javascript">
       var baseUrl = '<xsl:value-of select="/data/system/baseUrl"/>';
+      var path = '<xsl:value-of select="/data/system/requestUri"/>';
     </script>
 
   </xsl:template>

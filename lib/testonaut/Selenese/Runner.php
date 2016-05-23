@@ -76,21 +76,17 @@ class Runner {
 
     $bSettings = new Browser($this->page->getPath());
 
-    for ($k = 0; $k < count($this->profiles); $k++) {
-      for ($i = 0; $i < count($tests); $i++) {
-        if (isset($this->profiles[$i]['name'])) {
-          $name = str_replace(' ', '_', $this->profiles[$i]['name']).'_'
-            .str_replace(' ', '_', $this->profiles[$i]['browser']);
+    for ($i = 0; $i < count($tests); $i++) {
+      for ($k = 0; $k < count($this->profiles); $k++) {
+        if (isset($this->profiles[$k]['name'])) {
+          $name = str_replace(' ', '_', $this->profiles[$k]['name']) . '_' . str_replace(' ', '_', $this->profiles[$k]['browser']);
         } else {
-          $name = str_replace(' ', '_', $this->profiles[$i]['platform'])
-            .str_replace(' ', '_', $this->profiles[$i]['browser'])
-            .$this->profiles[$i]['version'];
+          $name = str_replace(' ', '_', $this->profiles[$k]['platform']) . str_replace(' ', '_', $this->profiles[$k]['browser']) . $this->profiles[$k]['version'];
         }
 
         $test = new Test();
 
-        if (isset($bSettings->settings['browser']['active']) &&
-            in_array($name, $bSettings->settings['browser']['active'])) {
+        if (isset($bSettings->settings['browser']['active']) && in_array($name, $bSettings->settings['browser']['active'])) {
           $url = $bSettings->settings['browser']['urls'][$name];
           $test->setBaseUrl($url);
         }
@@ -100,7 +96,11 @@ class Runner {
           continue;
         }
 
-        $result[] = $this->_run($test, $this->profiles[$k], $tests[$i]);
+        $tmp = array(
+          'result' => $this->_run($test, $this->profiles[$k], $tests[$i]),
+          'path' => $test->getPath()
+        );
+        $result[] = $tmp;
       }
     }
     return $result;
@@ -128,7 +128,7 @@ class Runner {
    * @param Page $page
    * @return array
    */
-  protected function _run( $test, $profile, Page $page) {
+  protected function _run($test, $profile, Page $page) {
     $this->imageDir = $page->getImagePath();
     $pageConf = $page->config();
     $res = array();
@@ -137,7 +137,7 @@ class Runner {
     $hub = Config::getInstance()->seleniumHub;
     $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
 
-    $pollFile = Config::getInstance()->Path."/tmp/".$this->page->getPath();
+    $pollFile = Config::getInstance()->Path . "/tmp/" . $this->page->getPath();
 
     $webDriver = $this->setDriverOption($webDriver, $profile);
     $i = 0;
@@ -147,24 +147,27 @@ class Runner {
       $commandStr = str_replace(' ', '', $commandStr);
       try {
         if ($commandStr == 'captureEntirePageScreenshot') {
+
           $srcImage = $this->getPath($profile) . "/" . $command->arg1;
-          $this->takeScreenshot($profile, $webDriver, $srcImage);
+          $res[] = $this->takeScreenshot($profile, $webDriver, $srcImage);
 
           $compareObj = new Compare();
-          $compare = $compareObj->compare($profile, $command->arg1, $page->getPath(), $this->imageDir );
+          $compare = $compareObj->compare($profile, $command->arg1, $page->getPath(), $this->imageDir);
           $res = $compareObj->compareResult($compare, $res, $command->arg1);
+
+          continue;
         } else {
           $commandResult = $command->runWebDriver($webDriver);
         }
 
         if ($pageConf['screenshots'] == 'step') {
-          $imageName = "step_".$i.".png";
-          $srcImage = $this->getPath($profile) .'/'. $imageName;
+          $imageName = "step_" . $i . ".png";
+          $srcImage = $this->getPath($profile) . '/' . $imageName;
           $this->takeScreenshot($profile, $webDriver, $srcImage);
 
           $compareObj = new Compare();
           $compare = $compareObj->compare($profile, $imageName, $page->getPath(), $this->imageDir);
-          $res = $compareObj->compareResult($compare, $res, "step_".$i.".png");
+          $res = $compareObj->compareResult($compare, $res, "step_" . $i . ".png");
         }
 
       } catch (\Exception $e) {
@@ -172,14 +175,24 @@ class Runner {
       }
 
       if ($commandResult->success) {
-        $res[] = array(TRUE, $commandResult->message, $commandStr);
+        $res[] = array(
+          TRUE,
+          $commandResult->message,
+          $commandStr
+        );
       } else {
-        $res[] = array(FALSE, $commandResult->message, $commandStr);
+        $res[] = array(
+          FALSE,
+          $commandResult->message,
+          $commandStr
+        );
         $browserResult = FALSE;
       }
 
-      error_log($test->getPath());
-      $this->polling($pollFile, array($test->getPath(), $res));
+      $this->polling($pollFile, array(
+        $test->getPath(),
+        $res
+      ));
 
       if ($commandResult->continue === FALSE) {
         break;
@@ -226,6 +239,12 @@ class Runner {
       $screenCommand->runWebDriver($webDriver);
       sleep(2);
     }
+
+    return array(
+      TRUE,
+      'Take Screenshot ' . $srcImage,
+      'captureEntirePageScreenshot'
+    );
   }
 
   protected function getProfileName($profile) {
@@ -293,17 +312,18 @@ class Runner {
       if ($browserName == 'chrome') {
         $options = new \ChromeOptions();
         $options->addArguments(array(
-            '--disable-web-security',
-          ));
+          '--disable-web-security',
+        ));
         $options->addArguments(array(
-            '--user-data-dir='.sys_get_temp_dir(),
-          ));
+          '--user-data-dir=' . sys_get_temp_dir(),
+        ));
 
         $options = $this->setExperimentalOption($profile, $options);
         $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
       }
 
-      if ($browserName == "MicrosoftEdge") {}
+      if ($browserName == "MicrosoftEdge") {
+      }
 
       if ($browserName == 'firefox') {
 

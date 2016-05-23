@@ -14,6 +14,8 @@
 namespace testonaut\Page\Provider;
 ini_set('max_execution_time', 0);
 
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use testonaut\Capabilities;
 use testonaut\Matrix;
 use testonaut\Page;
@@ -26,7 +28,7 @@ use testonaut\Selenese\Runner;
 use testonaut\Settings\Browser;
 use testonaut\Settings\Profile;
 
-class Run implements ControllerProviderInterface {
+class Run extends Base implements ProviderInterface {
 
   private $basePath;
 
@@ -38,7 +40,78 @@ class Run implements ControllerProviderInterface {
   private $dirArray = array();
   private $path;
   private $browser = '';
+  private $profile = '';
 
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+    $this->routing->route('.*/(.*)/(.*)/(.*)/(.*)', function ($path, $browser, $version, $platform) {
+
+      $this->path = urldecode($path);
+
+      $this->page = new \testonaut\Page($path);
+      $this->basePath = $this->page->transCodePath();
+      $this->imagePath = $this->page->getImagePath();
+
+      $this->browser = $browser;
+      $this->version = $version;
+      $this->platform = $platform;
+
+      $conf = $this->page->config();
+
+      if ($conf['type'] == 'suite') {
+        $result = $this->runSuite($this->page);
+      } else {
+        $result = $this->run($this->page);
+      }
+
+      $this->response['result'] = $result;
+
+      $this->routing->response($this->response);
+      $this->routing->render('run.xsl');
+    });
+
+    $this->routing->route('.*/(.*)/all', function ($path) {
+
+      $this->browser = 'all';
+
+      $this->page = new \testonaut\Page($path);
+      $conf = $this->page->config();
+
+      if ($conf['type'] == 'suite') {
+        $result = $this->runSuite($this->page);
+      } else {
+        $result = $this->run($this->page);
+      }
+
+      $this->response['result'] = $result;
+      $this->routing->response($this->response);
+      $this->routing->render('run.xsl');
+    });
+
+    $this->routing->route('.*/(.*)/(.*)', function ($path, $profile) {
+      $this->path = urldecode($path);
+
+      $this->profile = $profile;
+      $this->page = new \testonaut\Page($path);
+      $conf = $this->page->config();
+
+      if ($conf['type'] == 'suite') {
+        $result = $this->runSuite($this->page);
+      } else {
+        $result = $this->run($this->page);
+      }
+
+      $this->response['result'] = $result;
+      $this->routing->response($this->response);
+      $this->routing->render('run.xsl');
+    });
+  }
+
+  /*
   public function connect(Application $app) {
 
     $edit = $app['controllers_factory'];
@@ -107,6 +180,7 @@ class Run implements ControllerProviderInterface {
     return $edit;
   }
 
+  */
 
 
   /**
@@ -194,6 +268,7 @@ class Run implements ControllerProviderInterface {
   private function _run(array $tests) {
     try {
 
+
       $profile = new Profile();
 
       if ($this->profile == '') {
@@ -201,26 +276,25 @@ class Run implements ControllerProviderInterface {
       } else {
         $profiles = $profile->getByName($this->profile);
       }
-      
+
       $runner = new Runner($profiles, $this->page);
       $result = $runner->run($tests);
 
       $browserResult = TRUE;
       for($i = 0; $i < count($result); $i++) {
-        for($k = 0; $k < count($result[$i]); $k++) {
-          if($result[$i][$k][0] == false) {
+        for($k = 0; $k < count($result[$i]['result']); $k++) {
+          if($result[$i]['result'][$k][0] == false) {
             $browserResult = FALSE;
           }
         }
+        $result[$i]['browserResult'] = $browserResult;
       }
-      
-      return array(
-        'run' => $result,
-        'browserResult' => $browserResult,
-        'path' => $tests
-      );
+
+      return $result;
+
 
     } catch (\Exception $e) {
+
       return array(array(
           'run' => array(array(FALSE, $e->getMessage(), "open connection")),
           'browserResult' => FALSE,
@@ -271,6 +345,7 @@ class Run implements ControllerProviderInterface {
   private function getCapabilities() {
     $profile = array();
 
+
     if ($this->browser == 'all') {
 
       $profileObj = new Profile();
@@ -279,14 +354,15 @@ class Run implements ControllerProviderInterface {
 
       $capabilities = array();
 
-
       for ($i = 0; $i < count($list); $i++) {
         if (isset($list[$i]['browserName'])) {
           $browserName = $this->normalizeBrowserName($list[$i]['browserName']);
         } else {
           $browserName = $this->normalizeBrowserName($list[$i]['browser']);
+          $profile['capabilities'] = $list[$i]['capabilities'];
+          $profile['arguments'] = $list[$i]['arguments'];
+          $profile['driverOptions'] = $list[$i]['driverOptions'];
         }
-
         $profile['browser'] = $this->normalizeBrowserName($browserName);
         if (isset($list[$i]['version'])) {
           $profile['version'] = $list[$i]['version'];

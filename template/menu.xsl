@@ -162,8 +162,7 @@
     <li>
         <xsl:choose>
           <xsl:when test="$badge != ''">
-
-            <a href="{/data/system/baseUrl}{$path}" style="">
+            <a href="{/data/system/baseUrl}{$path}" class="run-test" data-browser="{$label}" data-path="{$path}" style="">
             <xsl:value-of select="$label"/>
             <xsl:value-of select="$version"/>
               <xsl:text> </xsl:text>

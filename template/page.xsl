@@ -33,6 +33,13 @@
 
   <xsl:template name="content">
     <xsl:value-of select="/data/page/content" disable-output-escaping="yes"/>
+
+    <div class="pulsarbox">
+    </div>
+    <div class="result">
+    </div>
+
+
   </xsl:template>
 
 

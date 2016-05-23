@@ -37,6 +37,50 @@ $(document).ready(function () {
     invokePulsar(browser);
   });
 
+  function poll() {
+    $.ajax({
+      url: baseUrl + "polling.php",
+      type: "GET",
+      data: {
+        path: path
+      },
+      dataType: "json",
+      success: function (data) {
+        $(".result").empty();
+
+
+        var content = '<div class="notify">' +
+          '<span class="notify-title">' + data[0] + '</span>';
+        content += '<span class="notify-text">';
+        for (var i = 0; i < data[1].length; i++) {
+          var style = "";
+          if (data[1][i][0] == true) {
+            var style = "bg-emerald";
+          } else {
+            var style = "bg-darkRed";
+          }
+
+          content += '<span class="' + style + '">';
+          content += '<span>' + data[1][i][1] + '</span>';
+          content += '<span>' + data[1][i][2] + '</span>';
+          content += '</span><br/>';
+
+        }
+        content += '</span>';
+        content += '</div>';
+
+        console.log(content);
+
+        $(".result").append(content);
+      },
+      complete: setTimeout(function () {
+        poll()
+      }, 2000),
+      timeout: 1000
+    })
+  }
+
+
   $("a[data-action='run']").click(function (e) {
     e.preventDefault();
     $(this).toggleClass('active')
@@ -502,7 +546,7 @@ function initGlobalconfig() {
 
   $('#browsers').change(function () {
     val = $('#browsers').val();
-    
+
     if (val.indexOf('chrome') > -1) {
       $('#devices').show();
       $('#dimension').show();

@@ -15,19 +15,32 @@ class Compare {
   }
 
   public function compareResult($compare, $res, $imageName) {
-    if ($compare) {
-      $res[] = array(
-        TRUE,
-        'Compare Image ' . $imageName,
-        'Compare Success'
-      );
-    } else {
-      $res[] = array(
-        FALSE,
-        'Compare Image ' . $imageName,
-        'Compare Fail'
-      );
+    switch ($compare) {
+      case 3;
+        $res[] = array(
+          TRUE,
+          'Reference Image ' . $imageName . 'does not exist',
+          'Comparison impossible'
+        );
+        break;
+      case FALSE;
+        $res[] = array(
+          FALSE,
+          'Compare Image ' . $imageName,
+          'Compare Fail'
+        );
+        break;
+      case TRUE;
+        $res[] = array(
+          TRUE,
+          'Compare Image ' . $imageName,
+          'Compare Success'
+        );
+        break;
+
+
     }
+
     return $res;
   }
 
@@ -59,8 +72,7 @@ class Compare {
         $result = FALSE;
       }
     } else {
-      // no compared needet
-      $result = TRUE;
+      $result = 3;
     }
 
     $this->writeCompareToDb($pagePath, $path, $pathref, $comp, $result, $web, $imgName, $profileName);
@@ -222,7 +234,6 @@ class Compare {
 
 
   protected function buildCompare() {
-
 
 
   }

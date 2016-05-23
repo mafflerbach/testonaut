@@ -107,3 +107,152 @@ a.active {
     border: none;
     position: relative;
 }
+
+@keyframes pulsar {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes pulsar {
+    0% {
+        -webkit-transform: scale(0);
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.pulsarbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.pulsar {
+    width: 40px;
+    height: 40px;
+    margin: 0px auto;
+    position: relative;
+}
+
+.result {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    z-index: 2;
+    box-shadow: 0px 0px 30px -5px black;
+}
+
+.result table {
+    float: left;
+}
+
+tr.success td {
+    background: rgb(201, 222, 150); /* Old browsers */
+    text-shadow: none;
+}
+
+tr.failed td {
+    background: rgb(254, 187, 187); /* Old browsers */
+    text-shadow: none;
+}
+
+.box {
+    border-bottom: #d1d1d1 1px solid;
+    margin: 0em 0em;
+}
+
+.box > div {
+}
+
+.box.hide div {
+    display: none;
+}
+
+.box .pageContent {
+    box-shadow: 0px 1px 4px -1px #000;
+
+}
+
+.box h5 {
+    padding: 1em;
+    margin: 0;
+    position: relative;
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+.suiteResult {
+    clear: both;
+    margin: 0 -1em;
+}
+
+.suiteResult .panel-body  {
+    display: none;
+}
+.box h5 a {
+
+    top: 2px;
+    position: relative;
+}
+
+.pulsar .ring {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 80, 0, 0.5);
+    box-shadow: inset 0 0 10px 0 rgba(0, 180, 0, 0.5);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    margin-top: -50%;
+    margin-left: -50%;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+.pulsar .ring:nth-child(1) {
+    -webkit-animation: pulsar 2s 0s linear infinite;
+    animation: pulsar 2s 0s linear infinite;
+}
+
+.pulsar .ring:nth-child(2) {
+    -webkit-animation: pulsar 2s .5s linear infinite;
+    animation: pulsar 2s .5s linear infinite;
+}
+
+.pulsar .ring:nth-child(3) {
+    -webkit-animation: pulsar 2s 1s linear infinite;
+    animation: pulsar 2s 1s linear infinite;
+}
+
+.pulsar .ring:nth-child(4) {
+    -webkit-animation: pulsar 2s 1.5s linear infinite;
+    animation: pulsar 2s 1.5s linear infinite;
+}
+
+
+.result .notify {
+    margin:0;
+}
+
+.result .notify .notify-text span{
+    margin:0;
+    display: inline-block;
+    margin: 0.2em;
+}
