@@ -3,12 +3,13 @@ $(document).ready(function () {
   $('div.box.hide h5').click(function () {
     $(this).parent('div').toggleClass('hide');
     $(this).parent('div').toggleClass('show');
-  })
+  });
 
   $('div.box.show h5').click(function () {
     $(this).parent('div').toggleClass('hide');
     $(this).parent('div').toggleClass('show');
-  })
+  });
+
 
   $("form[name='compForm']").submit(function (e) {
     var content;
@@ -68,8 +69,6 @@ $(document).ready(function () {
         }
         content += '</span>';
         content += '</div>';
-
-        console.log(content);
 
         $(".result").append(content);
       },
@@ -374,9 +373,74 @@ function initEditor() {
 function initConfig() {
   $('input[type="checkbox"]').click(function () {
     if ($(this).prop("checked") == false) {
-      console.log($(this).parent().parent().find('input[type="text"]').val(''))
+      $(this).parent().parent().find('input[type="text"]').val('');
     }
   });
+
+  $("a[data-action='delete']").click(function (e) {
+    e.preventDefault();
+
+    var href = $(this).attr('href')
+
+    $.ajax({
+        method: "get",
+        url: href,
+        dataType: 'json'
+      })
+      .done(function (data) {
+        openDialog(data.question.title, data.question.content, href)
+      });
+
+  });
+
+
+  function closeDialog() {
+    $('.window').hide()
+    $('.window-caption-title').text('');
+    $('.window-content .message').text('');
+  }
+
+  function openDialog(messageTitle, message, href) {
+    $('.window-caption-title').text(messageTitle);
+    $('.window-content .message').html(message);
+
+    $('.window').center();
+    $('.window').show();
+
+    $('.btn-close, .cancel').click(function () {
+      closeDialog();
+      $(this).unbind('click');
+    })
+
+    $('.button.ok').click(function () {
+      closeDialog();
+      $(this).unbind('click');
+
+      $.ajax({
+        method: "get",
+        url: href+'/do',
+        dataType: 'json'
+      }).done(function (data) {
+        var type = 'success';
+        if (data.result != 'success') {
+          type = 'alert';
+        }
+
+        $.Notify({
+          caption: data.messageTitle,
+          content: data.message,
+          type: type
+        });
+
+        window.setTimeout(function () {
+          window.location.href = baseUrl;
+        }, 1500);
+      });
+
+    })
+  }
+
+
 }
 
 function initCompare() {
@@ -419,7 +483,6 @@ function initCompare() {
         dataType: 'json'
 
       }).done(function (data) {
-        console.log(data);
         $('#dialog-content').empty().append(data[0].content);
         var dialog = $('#dialog').data('dialog');
         dialog.open();
@@ -593,7 +656,7 @@ function initGlobalconfig() {
       method: "get",
       url: href
     }).done(function (data) {
-      console.log(data);
+
       $('#profileName').val(data.name);
 
       if (data.driverOptions.dimensions != undefined) {

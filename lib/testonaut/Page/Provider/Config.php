@@ -56,11 +56,13 @@ class Config extends Base implements ProviderInterface {
       $this->routing->response($this->response);
       $this->routing->render('config.xsl');
     });
+    
+    
+    
   }
 
 
   protected function handelPostData($path, Request $request) {
-
 
     if ($request->post['pagesettings'] == 'project' || $request->post['pagesettings'] == 'suite') {
       if (isset($request->post['browser']) && isset($request->post['active'])) {

@@ -148,65 +148,85 @@
                         data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   </span>
                 </a>
+                <a target="_blank" style="position: relative; z-index: 3"
+                   href="{$image/src}">
+                  <span class="delete mif-link mif-4x">
+                  </span>
+                </a>
 
               </div>
             </div>
           </div>
 
           <div class="cell size4">
-            <div class="image-container image-format-square" style="width: 100%;">
-              <div class="frame">
-                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/ref}'); background-size: cover; background-repeat: no-repeat;"></div>
-              </div>
-              <div class="image-overlay op-green">
+            <xsl:if test="$image/ref">
+              <div class="image-container image-format-square" style="width: 100%;">
+                <div class="frame">
+                  <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/ref}'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="image-overlay op-green">
 
-                <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{name(../..)}">
-                  <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{name(../..)}">
-                  </span>
-                </a>
+                  <a class="deleteImage" style="position: relative; z-index: 3"
+                     href="{/data/system/baseUrl}screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                    <span class="delete mif-cross mif-4x"
+                          data-link="{/data/system/baseUrl}/screenshot/delete/ref/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                    </span>
+                  </a>
+                  <a target="_blank" style="position: relative; z-index: 3"
+                     href="{$image/ref}">
+                    <span class="delete mif-link mif-4x">
+                    </span>
+                  </a>
+                </div>
               </div>
-            </div>
+            </xsl:if>
           </div>
-
           <div class="cell size4" style="margin-left:10px; margin-right:-10px;">
-            <div class="image-container image-format-square" style="width: 100%;">
-              <div class="frame">
-                <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/comp}'); background-size: cover; background-repeat: no-repeat;"></div>
+            <xsl:if test="$image/comp">
+              <div class="image-container image-format-square" style="width: 100%;">
+                <div class="frame">
+                  <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/comp}'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="image-overlay op-green">
+                  <a class="deleteImage" style="position: relative; z-index: 3"
+                     href="{/data/system/baseUrl}screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                    <span class="delete mif-cross mif-4x"
+                          data-link="{/data/system/baseUrl}/screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                    </span>
+                  </a>
+                  <a target="_blank" style="position: relative; z-index: 3"
+                     href="{$image/comp}">
+                    <span class="delete mif-link mif-4x">
+                    </span>
+                  </a>
+                </div>
               </div>
-              <div class="image-overlay op-green">
-                <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{name(../..)}">
-                  <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}/screenshot/delete/comp/{name(../../..)}/{$image/imageName}/{name(../..)}">
-                  </span>
-                </a>
-              </div>
-            </div>
+
+            </xsl:if>
           </div>
+
         </div>
       </div>
     </div>
   </xsl:template>
-<xsl:template name="window-dialog">
-  <div class="window">
-    <div class="window-caption">
-      <span class="window-caption-icon"></span>
-      <span class="window-caption-title"></span>
-      <span class="btn-close"></span>
-    </div>
-    <div class="window-content" style="height: 100px">
-      <div class="message padding10">
+  <xsl:template name="window-dialog">
+    <div class="window">
+      <div class="window-caption">
+        <span class="window-caption-icon"></span>
+        <span class="window-caption-title"></span>
+        <span class="btn-close"></span>
       </div>
-      <div class="window-buttons padding10">
-        <button class="button primary ok">OK</button><xsl:text> </xsl:text>
-        <button class="button cancel">Cancel</button>
+      <div class="window-content" style="height: 100px">
+        <div class="message padding10">
+        </div>
+        <div class="window-buttons padding10">
+          <button class="button primary ok">OK</button>
+          <xsl:text> </xsl:text>
+          <button class="button cancel">Cancel</button>
+        </div>
       </div>
     </div>
-  </div>
-</xsl:template>
-
+  </xsl:template>
 
 
 </xsl:stylesheet>

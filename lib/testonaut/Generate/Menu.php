@@ -97,7 +97,7 @@ class Menu {
         $recources['screenshots'],
         $recources['import'],
         $recources['config'],
-        $recources['delete'],
+       // $recources['delete'],
       );
     } else {
       $priv = array(
@@ -106,7 +106,7 @@ class Menu {
         $recources['edit'],
         $recources['history'],
         $recources['config'],
-        $recources['delete'],
+       // $recources['delete'],
       );
     }
 

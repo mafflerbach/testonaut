@@ -157,8 +157,6 @@
     <xsl:param name="badge" select="''"/>
     <xsl:param name="version" select="''"/>
 
-
-
     <li>
         <xsl:choose>
           <xsl:when test="$badge != ''">

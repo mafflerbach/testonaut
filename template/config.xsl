@@ -17,6 +17,7 @@
           </div>
           <div class="row">
             <xsl:call-template name="breadcrumb"/>
+            <a href="{/data/system/baseUrl}delete/{/data/page/path}" class="button danger" data-action="delete">Delete</a>
           </div>
           <div class="row auto-size ">
             <div class="cell size-p100 padding20">
@@ -24,6 +25,7 @@
             </div>
           </div>
         </div>
+        <xsl:call-template name="window-dialog"/>
         <script type="text/javascript">
           initConfig();
         </script>
@@ -213,7 +215,6 @@
           <xsl:value-of select="$version"/><xsl:text> </xsl:text>
           (<xsl:value-of select="$os"/>)
         </span>
-
       </div>
       <div class="content padding10">
         <div class="input-control text">
@@ -281,5 +282,26 @@
       <br/>
     </xsl:for-each>
   </xsl:template>
+
+
+  <xsl:template name="window-dialog">
+    <div class="window">
+      <div class="window-caption">
+        <span class="window-caption-icon"></span>
+        <span class="window-caption-title"></span>
+        <span class="btn-close"></span>
+      </div>
+      <div class="window-content" style="height: 100px">
+        <div class="message padding10">
+        </div>
+        <div class="window-buttons padding10">
+          <button class="button primary ok">OK</button>
+          <xsl:text> </xsl:text>
+          <button class="button cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </xsl:template>
+
 
 </xsl:stylesheet>

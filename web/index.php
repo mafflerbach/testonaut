@@ -95,6 +95,7 @@ $routing->push('(login)', new \testonaut\Page\Provider\Login());
 $routing->push('(logout)', new \testonaut\Page\Provider\Logout());
 $routing->push('(reset)', new \testonaut\Page\Provider\Reset());
 $routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
+$routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
 $routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
 $routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('history/.*', new \testonaut\Page\Provider\History());
