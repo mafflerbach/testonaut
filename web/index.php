@@ -99,6 +99,7 @@ $routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
 $routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
 $routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('history/.*', new \testonaut\Page\Provider\History());
+$routing->push('import/.*', new \testonaut\Page\Provider\Import());
 $routing->push('screenshot/.*', new \testonaut\Page\Provider\Screenshot());
 $routing->push('(globalconfig)', new \testonaut\Page\Provider\Globalconfig());
 $routing->push('run/.*', new \testonaut\Page\Provider\Run());

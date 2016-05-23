@@ -281,7 +281,7 @@ class Page {
    * @return bool
    */
   protected function _delete($dir) {
-    return true;
+    
     $files = array_diff(scandir($dir), array(
       '.',
       '..'

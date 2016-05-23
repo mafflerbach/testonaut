@@ -17,7 +17,8 @@
           </div>
           <div class="row">
             <xsl:call-template name="breadcrumb"/>
-            <a href="{/data/system/baseUrl}delete/{/data/page/path}" class="button danger" data-action="delete">Delete</a>
+            <a href="{/data/system/baseUrl}import/{/data/page/path}" class="button danger " style="margin:.15625rem 1.25rem .15625rem 0;" data-action="import">Import</a>
+            <a href="{/data/system/baseUrl}delete/{/data/page/path}" class="button danger " style="margin:.15625rem 1.25rem .15625rem 0;" data-action="delete">Delete</a>
           </div>
           <div class="row auto-size ">
             <div class="cell size-p100 padding20">
@@ -26,6 +27,7 @@
           </div>
         </div>
         <xsl:call-template name="window-dialog"/>
+        <div id="editform"></div>
         <script type="text/javascript">
           initConfig();
         </script>

@@ -58,22 +58,17 @@ class Delete extends Base implements ProviderInterface {
       $path = urldecode($path);
       $request = new Request();
 
-      if (!empty($request->post)) {
-        $this->handelPostData($path, $request);
-      } else {
-
-        $message = array(
-          'question' => array(
-            'content' => 'Are you sure that you want to delete <strong>' . $path . '</strong>? 
+      $message = array(
+        'question' => array(
+          'content' => 'Are you sure that you want to delete <strong>' . $path . '</strong>? 
             This also applies to all subdirectories',
-            'title' => 'Delete Page'
-          )
-        );
+          'title' => 'Delete Page'
+        )
+      );
 
-        $this->response = $message;
-        $this->response['path'] = $path;
-        $this->response;
-      }
+      $this->response = $message;
+      $this->response['path'] = $path;
+      $this->response;
       print(json_encode($this->response));
       die;
     });

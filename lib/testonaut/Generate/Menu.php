@@ -95,9 +95,7 @@ class Menu {
         $recources['edit'],
         $recources['history'],
         $recources['screenshots'],
-        $recources['import'],
-        $recources['config'],
-       // $recources['delete'],
+        $recources['config']
       );
     } else {
       $priv = array(
@@ -105,8 +103,7 @@ class Menu {
         $recources['globalconfig'],
         $recources['edit'],
         $recources['history'],
-        $recources['config'],
-       // $recources['delete'],
+        $recources['config']
       );
     }
 

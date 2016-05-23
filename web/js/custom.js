@@ -393,6 +393,87 @@ function initConfig() {
 
   });
 
+  $("a[data-action='import']").click(function (e) {
+    e.preventDefault();
+
+    uploadFrame();
+
+  });
+
+
+  function uploadFrame() {
+
+    var frame = '    <div data-role="dialog" class="upload dialog"  data-close-button="true" data-width="400px">' +
+      '<form action="' + baseUrl + 'import/' + pagePath + '" method="post" enctype="multipart/form-data" id="uploadfileForm">' +
+      '<div class="panel">' +
+      '<div class="heading">' +
+      '<span class="title">Fileupload</span>' +
+      '</div>' +
+      '<div class="content padding30">' +
+      '<div class="flex-grid">' +
+      '<div class="row">' +
+      '<div class="input-control file full-size" data-role="input">' +
+      '<input type="file" name="files" multiple="multiple" id="fileupload"/>' +
+      '<button class="button"><span class="mif-folder"></span></button>' +
+      '</div>' +
+      '</div>' +
+      '<div class="row">' +
+      '<div class="progress small" data-role="progress"></div>' +
+      '</div>' +
+      '<div class="row" id="filelist"></div>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<input type="hidden" value="upload" name="action"/>' +
+      '</form>' +
+      '</div>';
+
+
+    $('#editform').append(frame);
+    fileupload(baseUrl + 'import/' + pagePath);
+    window.setTimeout(function () {
+      var dialog = $('.upload').data('dialog');
+      dialog.open();
+
+      $('.dialog-close-button').click(function () {
+        $('#fileupload').fileupload('destroy');
+        $('#editform').empty();
+      })
+    }, 500);
+  }
+
+  function fileupload(url) {
+
+    $('#fileupload').fileupload({
+      url: url,
+      dataType: 'json',
+      sequentialUploads: true,
+      done: function (e, data) {
+        var dialog = $('.upload').data('dialog');
+        dialog.close();
+
+        $('#editform').empty();
+        $.Notify({
+          caption: data.result.message,
+          content: data.result.file,
+          keepOpen: true,
+          type: 'success'
+        });
+
+        window.setTimeout(function () {
+          window.location.href = baseUrl + pagePath;
+        }, 1500);
+
+      },
+      progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('.bar.default').css(
+          'width',
+          progress + '%'
+        );
+      }
+    })
+  }
 
   function closeDialog() {
     $('.window').hide()
@@ -418,7 +499,7 @@ function initConfig() {
 
       $.ajax({
         method: "get",
-        url: href+'/do',
+        url: href + '/do',
         dataType: 'json'
       }).done(function (data) {
         var type = 'success';
@@ -673,7 +754,6 @@ function initGlobalconfig() {
       }
     });
   });
-
 
 }
 
