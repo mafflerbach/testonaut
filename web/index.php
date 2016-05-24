@@ -102,6 +102,7 @@ $routing->push('history/.*', new \testonaut\Page\Provider\History());
 $routing->push('import/.*', new \testonaut\Page\Provider\Import());
 $routing->push('screenshot/.*', new \testonaut\Page\Provider\Screenshot());
 $routing->push('(globalconfig)', new \testonaut\Page\Provider\Globalconfig());
+$routing->push('(user)', new \testonaut\Page\Provider\User());
 $routing->push('run/.*', new \testonaut\Page\Provider\Run());
 $routing->push('.*$', new \testonaut\Page\Provider\Start());
 $routing->before($security);

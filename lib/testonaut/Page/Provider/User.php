@@ -13,9 +13,9 @@
 
 namespace testonaut\Page\Provider;
 
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use Toyota\Component\Ldap\Core\Manager;
 use Toyota\Component\Ldap\Platform\Native\Driver;
 use Toyota\Component\Ldap\Platform\Native\Search;
@@ -24,13 +24,78 @@ use Toyota\Component\Ldap\Platform\Native\Search;
  * Class User
  * @package testonaut\Page\Provider
  */
-class User implements ControllerProviderInterface {
-  public function connect(Application $app) {
+class User extends Base implements ProviderInterface {
+
+
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+
+    $this->routing->route('.*/(\d)/edit', function ($id) {
+      $this->response['menu'] = $this->getMenu('');
+      $foo = $this->editUser($this->response, $id);
+
+      $this->response['mode'] = 'edit';
+
+      $this->routing->response($this->response);
+      $this->routing->render('user.xsl');
+    });
+
+
+    $this->routing->route('.*/(\d)/inactivate', function ($id) {
+
+      $foo = $this->setStatus($id, false);
+      $this->response['mode'] = 'inactivate';
+
+      $this->routing->response($this->response);
+      $this->routing->render('user.xsl');
+    });
+
+
+    $this->routing->route('.*/(\d)/delete', function ($id) {
+
+      $foo = $this->deleteUser($id);
+
+      $this->routing->response($this->response);
+      $this->routing->render('user.xsl');
+    });
+    $this->routing->route('.*/(\d)/activate', function ($id) {
+
+      $foo = $this->setStatus($id, true);
+      $this->response['mode'] = 'activate';
+
+      $this->routing->response($this->response);
+      $this->routing->render('user.xsl');
+    });
+    $this->routing->route('.*/(\d)/register', function ($id) {
+
+      $foo = $this->register();
+      $this->response['mode'] = 'register';
+
+      $this->routing->response($this->response);
+      $this->routing->render('user.xsl');
+    });
+
+    $this->routing->route('', function () {
+      $this->response['menu'] = $this->getMenu('');
+      $this->response['mode'] = 'list';
+
+      $this->response['user'] = $this->getUserList();
+
+      $this->routing->response($this->response);
+      $this->routing->render('user.xsl');
+    });
+
+
+  }
+
+
+  /*public function connect(Application $app) {
 
     $page = $app['controllers_factory'];
-    /**
-     * List User
-     */
 
     $page->get('/', function (Request $request) use ($app) {
       if (!isset($_SESSION['testonaut']['userId'])) {
@@ -87,115 +152,108 @@ class User implements ControllerProviderInterface {
     return $page;
   }
 
-  protected function getUserList($request, $app) {
+
+  */
+
+  protected function getUserList() {
     $user = new \testonaut\User();
-
-    $app['request'] = array(
-      'baseUrl' => $request->getBaseUrl(),
-      'mode' => 'show',
-      'content' => '',
-      'userList' => $user->getAll()
-    );
-
-    return $app['twig']->render('userList.twig');
+    return $user->getAll();
   }
 
-  protected function editUser($request, $app, $id) {
-
+  protected function editUser(&$response, $id) {
     $user = new \testonaut\User();
     $userData = $user->get($id);
 
-    $data = array(
+    $response['userdata'] = array(
       'email' => $userData['email'],
       'displayName' => $userData['displayName'],
       'password' => $userData['password'],
     );
 
-    $form = $app['form.factory']->createBuilder('form', $data)
-      ->add('email')
-      ->add('displayName')
-      ->add('password', 'password')
-      ->getForm();
+    $messageBody = "";
 
-    $form->handleRequest($request);
+    $request = new Request();
+    if (!empty($request->post)) {
 
-    $message = "";
-    if ($request->isMethod('POST')) {
-      $data = $form->getData();
-      
       $user = new \testonaut\User();
 
-      if ($user->save($data['email'], $data['password'], $data['displayName'], $userData['id'])) {
-        $message = "Edit User";
+      if ($user->save($request->post['email'], $request->post['password'], $request->post['displayname'], $id)) {
+        $messageBody = "Edit User";
+        $result = 'success';
       } else {
-        $message = "Can't edit User.";
+        $messageBody = "Can't edit User.";
+        $result = 'fail';
       }
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Save'
+      );
+
+      print(json_encode($message));
+      die;
     }
 
-    $app['request'] = array(
-      'message' => $message,
-      'baseUrl' => $request->getBaseUrl(),
-      'mode' => 'edit'
-    );
-
-    return $app['twig']->render('user.twig', array('form' => $form->createView()));
   }
 
-
-  protected function deleteUser($request, $app, $id) {
+  protected function deleteUser($id) {
 
     $user = new \testonaut\User();
-    $userData = $user->get($id);
+    $request = new Request();
+    $messageBody = "";
+    $result = 'fail';
 
-    $message = "";
-    if ($request->isMethod('POST')) {
+    if (!empty($request->post)) {
       if ($user->delete($id)) {
-        $message = "Delete User";
+        $messageBody = "Delete User";
+        $result = 'success';
       } else {
-        $message = "Can't delete User.";
+        $messageBody = "Can't delete User";
+        $result = 'fail';
       }
     }
 
-    $app['request'] = array(
-      'message' => $message,
-      'baseUrl' => $request->getBaseUrl(),
-      'mode' => 'delete',
-      'displayName' => $userData['displayName']
+    $message = array(
+      'result' => $result,
+      'message' => $messageBody,
+      'messageTitle' => 'Save'
     );
 
-    return $app['twig']->render('user.twig');
-  }
-  protected function setStatus($request, $app, $id, $bool) {
+    print(json_encode($message));
+    die;
 
+  }
+
+  protected function setStatus($id, $bool) {
     $user = new \testonaut\User();
-    $userData = $user->get($id);
 
-    $message = "";
-    if ($request->isMethod('POST')) {
+    $request = new Request();
+    $messageBody = "";
+    $result = 'fail';
+
+    if (!empty($request->post)) {
       if ($user->changeStatus($id, $bool)) {
-        $message = "Change User status ";
+        $messageBody = "Change User status ";
+        $result = 'success';
       } else {
-        $message = "Can't change User status";
+        $messageBody = "Can't change User status";
+        $result = 'fail';
       }
     }
 
-    if ($bool) {
-      $mode = 'activate';
-    } else {
-      $mode = 'inactivate';
-    }
-    $app['request'] = array(
-      'message' => $message,
-      'baseUrl' => $request->getBaseUrl(),
-      'mode' => $mode,
-      'displayName' => $userData['displayName']
+    $message = array(
+      'result' => $result,
+      'message' => $messageBody,
+      'messageTitle' => 'Save'
     );
 
-    return $app['twig']->render('user.twig');
+    print(json_encode($message));
+    die;
+
   }
 
 
-  protected function register($request, $app) {
+  protected function register(&$response) {
     $data = array(
       'email' => 'Your email',
       'password' => 'Your password',
@@ -231,5 +289,5 @@ class User implements ControllerProviderInterface {
 
     return $app['twig']->render('register.twig', array('form' => $form->createView()));
   }
-  
+
 }

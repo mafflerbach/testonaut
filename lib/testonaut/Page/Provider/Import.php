@@ -46,68 +46,6 @@ class Import extends Base implements ProviderInterface {
 
   }
 
-
-  /* public function connect(Application $app) {
-
-     $app->register(new FormServiceProvider());
-     $app->register(new LocaleServiceProvider());
-     $app->register(new TranslationServiceProvider(), array(
-       'locale_fallbacks' => array('en'),
-     ))
-     ;
-     $file = $app['controllers_factory'];
-     $file->match('/', function (Request $request, $path) use ($app) {
-       if (!isset($_SESSION['testonaut']['userId'])) {
-         return $app->redirect($request->getBaseUrl() . '/login/');
-       }
-
-       $page = new Page($path);
-       $this->request = $request;
-       $form = $app['form.factory']->createBuilder('form')
-         ->add('FileUpload', 'file')
-         ->getForm()
-       ;
-
-       $message = 'Upload a file';
-       if (isset($app['request'])) {
-         $request = $app['request'];
-       } else {
-       }
-       if ($request->isMethod('POST')) {
-         $form->handleRequest($request);
-         if ($form->isValid()) {
-
-           $files = $request->files->get($form->getName());
-           $fileMimeType = $files['FileUpload']->getMimeType();
-           if ($fileMimeType == 'application/zip') {
-             $message = $this->importFile($files, $page);
-           } else {
-             $message = "File wasn't uploaded! It was not a Zip file ";
-           }
-         }
-       }
-       $crumb = new Page\Breadcrumb($path);
-       $app['crumb'] = $crumb->getBreadcrumb();
-
-       $app['request'] = array(
-         'content' => '',
-         'path'    => $path,
-         'baseUrl' => $request->getBaseUrl(),
-       );
-
-       $response = $app['twig']->render('import.twig', array(
-         'message' => $message,
-         'form'    => $form->createView(),
-         'path'    => $path,
-         'baseUrl' => $request->getBaseUrl(),
-       ));
-
-       return $response;
-     }, 'GET|POST');
-
-     return $file;
-   }
- */
   protected function importFile($files, $page) {
 
     $fileDir = \testonaut\Config::getInstance()->Path;

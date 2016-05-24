@@ -754,6 +754,88 @@ function initGlobalconfig() {
       }
     });
   });
+}
+
+function initEdituser() {
+  $("#editForm").submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: $("#editForm").attr('action'),
+      data: $("#editForm").serialize(),
+      dataType: 'json',
+      success: function (data) {
+        var type = 'success';
+        if (data.result != 'success') {
+          type = 'alert';
+        }
+        $.Notify({
+          caption: data.messageTitle,
+          content: data.message,
+          type: type
+        });
+      }
+    });
+  });
+
+  function statusDialog(href, message, title) {
+    $('#dialog p').empty();
+    $('#dialog h4').empty();
+
+    $('#dialog p').text(message)
+    $('#dialog h4').text(title)
+    var dialog = $('#dialog').data('dialog');
+    dialog.open();
+
+    $('#dialogButton').click(function () {
+      dialog.close()
+
+      $.ajax({
+        type: "POST",
+        url: href,
+        dataType: 'json',
+        data: {safe: true},
+        success: function (data) {
+          var type = 'success';
+          if (data.result != 'success') {
+            type = 'alert';
+          }
+          $.Notify({
+            caption: data.messageTitle,
+            content: data.message,
+            type: type
+          });
+
+          window.setTimeout(function () {
+              window.location.href = baseUrl + path;
+            },
+            1500)
+        }
+      });
+      $('#dialogButton').unbind('click');
+    })
+  }
+
+  $('.inactive').click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    statusDialog(href, 'Would you like deactivate User', 'Deaktivate User');
+
+  })
+
+  $('.activate').click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    statusDialog(href, 'Would you like activate User', 'Activate User');
+
+  })
+
+  $('.delete').click(function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    statusDialog(href, 'Would you like delete User', 'Delete User');
+  })
+
 
 }
 

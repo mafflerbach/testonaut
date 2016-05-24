@@ -24,6 +24,8 @@ class Routing {
   private $before = array();
   private $after = array();
   private $content = '';
+  private $activProvider = '';
+  private $response = array();
 
   private function __clone() {
   }
@@ -50,7 +52,6 @@ class Routing {
       $requestUri = str_replace('&xml=true', '', $requestUri);
     }
 
-
     $paramQuery = str_replace($basePath, '', $requestUri);
 
     foreach ($this->provider as $route => $provider) {
@@ -61,11 +62,13 @@ class Routing {
       $routepattern = '/' . str_replace('/', '\/', $route) . '/';
 
       if (preg_match($routepattern, $mee, $result)) {
+
         $response = $provider->connect();
 
         foreach (self::$routes as $pattern => $callback) {
 
           if (preg_match($pattern, $mee, $params)) {
+            $this->activProvider = get_class($provider);
             array_shift($params);
             return call_user_func_array($callback, array_values($params));
           }
@@ -91,14 +94,17 @@ class Routing {
   }
 
   public function response(array $response) {
+    $this->response = $response;
+
     $dom = new Util('1.0', 'utf-8');
     $dom->formatOutput = true;
-    $dom->node_create($response, null, false, 'data');
+    $dom->node_create($this->response, null, false, 'data');
 
     $this->content = $dom->saveXML();
   }
 
   public function render($file) {
+
     $requestUri = $_SERVER['REQUEST_URI'];
 
     $this->cacheHeader();
