@@ -22,8 +22,10 @@
             </div>
           </div>
         </div>
+        <xsl:call-template name="dialog"/>
         <script type="text/javascript">
           initGlobalconfig()
+          initEdituser()
         </script>
 
       </body>
@@ -32,10 +34,82 @@
 
   <xsl:template name="content">
 
-    <xsl:call-template name="base-settings"/>
-    <xsl:call-template name="profile-settings"/>
-    <xsl:call-template name="custom-browser-list"/>
+    <div class="tabcontrol2" data-role="tabcontrol">
+      <ul class="tabs">
+        <li><a href="#profiles">Profiles</a></li>
+        <li><a href="#basic">Basis</a></li>
+        <li><a href="#user">user</a></li>
+      </ul>
+      <div class="frames">
+        <div class="frame" id="profiles">
+          <xsl:call-template name="profile-settings"/>
+          <xsl:call-template name="custom-browser-list"/>
+        </div>
+
+        <div class="frame" id="user">
+          <xsl:call-template name="user-settings"/>
+        </div>
+
+        <div class="frame" id="basic">
+          <xsl:call-template name="base-settings"/>
+        </div>
+      </div>
+    </div>
   </xsl:template>
+
+  <xsl:template name="user-settings">
+
+    <table class="table">
+      <xsl:for-each select="/data/user/item">
+        <xsl:variable name="cssClass">
+          <xsl:choose>
+            <xsl:when test="active='1'">
+              success
+            </xsl:when>
+            <xsl:otherwise>
+              error
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <tr class="{$cssClass}">
+          <td>
+            <xsl:value-of select="displayName"/>
+          </td>
+          <td>
+            <xsl:value-of select="email"/>
+          </td>
+          <td>
+            <a href="{/data/system/baseUrl}user/{id}/edit">
+              <span class="mif-pencil"></span>
+            </a>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+              <xsl:when test="active='1'">
+                <a href="{/data/system/baseUrl}user/{id}/inactivate" class="inactive">
+                  <span class="mif-blocked"></span>
+                </a>
+                <xsl:text> </xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{/data/system/baseUrl}user/{id}/activate"  class="activate">
+                  <span class="mif-checkmark"></span>
+                </a>
+                <xsl:text> </xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+            <a href="{/data/system/baseUrl}user/{id}/delete" class="delete">
+              <span class="mif-cross"></span>
+            </a>
+
+          </td>
+        </tr>
+
+      </xsl:for-each>
+    </table>
+
+  </xsl:template>
+
 
   <xsl:template name="base-settings">
     <form action="" method="post">
@@ -264,14 +338,14 @@
   <xsl:template name="custom-browser-list">
 
     <xsl:for-each select="/data/profiles/custom/item">
-      <div class="panel">
+      <div class="panel" style="margin:0.75rem 0;">
         <div class="heading">
           <xsl:call-template name="browser-icon">
             <xsl:with-param name="browser" select="browser"/>
           </xsl:call-template>
           <span class="title"><xsl:value-of select="name"/></span>
         </div>
-        <div class="content">
+        <div class="content padding10">
           Driver options: <xsl:value-of select="driverOptions"/><br/>
           Arguments: <xsl:value-of select="arguments"/>
           Capabilities: <xsl:value-of select="capabilities"/>
@@ -295,5 +369,11 @@
     <img class="icon" src="{$imageUrl}"/>
   </xsl:template>
 
-
+  <xsl:template name="dialog">
+    <div data-role="dialog" id="dialog" class="padding20">
+      <h4 class="dialogTitle"></h4>
+      <p class="dialogContent"></p>
+      <button class="button primary" id="dialogButton">Ok</button>
+    </div>
+  </xsl:template>
 </xsl:stylesheet>

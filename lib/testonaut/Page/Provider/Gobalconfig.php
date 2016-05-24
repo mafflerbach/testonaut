@@ -68,6 +68,9 @@ class Globalconfig extends Base implements ProviderInterface {
       $this->response['devices'] = $devices;
       $this->response['profiles'] = $profileList;
 
+      $user = new \testonaut\User();
+      $this->response['user'] = $user->getAll();
+
       $this->routing->response($this->response);
       $this->routing->render('globalconfig.xsl');
     });

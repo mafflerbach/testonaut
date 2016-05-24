@@ -124,7 +124,7 @@ class Menu {
       ),
       'globalconfig' => array(
         'label' => 'Globalconfig',
-        'path' => 'globalconfig/'
+        'path' => 'globalconfig'
       ),
       'run' => $run,
       'edit' => array(

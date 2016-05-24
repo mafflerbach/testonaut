@@ -136,7 +136,7 @@
       <input type="hidden" name="action" value="edit"/>
       <button type="submit" class="button primary" id="saveUser">Save</button>
       <xsl:text> </xsl:text>
-      <a href="{/data/system/baseUrl}user" class="button">Back</a>
+      <a href="{/data/system/baseUrl}globalconfig" class="button">Back</a>
     </form>
 
   </xsl:template>
