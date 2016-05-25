@@ -48,13 +48,48 @@ class Globalconfig extends Base implements ProviderInterface {
       'system' => $this->system()
     );
 
+    $this->routing->route('.*/(.+)$', function ($profilename) {
+      $request = new Request();
+      $messageBody = "";
+      $result = 'fail';
+
+      if (!empty($request->post)) {
+        if ($this->deleteProfile($profilename) !== FALSE) {
+          $messageBody = "Delete Profile";
+          $result = 'success';
+        } else {
+          $messageBody = "Can't delete Profile";
+          $result = 'fail';
+        }
+
+        $message = array(
+          'result' => $result,
+          'message' => $messageBody,
+          'messageTitle' => 'Delete'
+        );
+
+        print(json_encode($message));
+        die;
+      } else {
+        $profile = new Profile();
+        $profileList = $profile->getByName($profilename);
+        $me = json_decode($profileList[ 0]['capabilities'], true);
+
+        $profileList[0]['capabilities'] = $me;
+
+        print(json_encode($profileList));
+
+      }
+
+
+
+    });
 
     $this->routing->route('', function () {
       $request = new Request();
       if (!empty($request->post)) {
         $this->handelPostData($request);
       }
-
 
       $conf = $this->getConfig();
       $this->response['menu'] = $this->getMenu('');
@@ -76,6 +111,11 @@ class Globalconfig extends Base implements ProviderInterface {
     });
   }
 
+  protected function deleteProfile($profilename) {
+    $profile = new Profile();
+    return $profile->delete($profilename);
+  }
+
   protected function handelPostData($request) {
     if ($request->post['action'] == 'savebase') {
       $this->saveConfigForm($request->post);
@@ -85,99 +125,6 @@ class Globalconfig extends Base implements ProviderInterface {
     }
   }
 
-
-  /*  public function connect(Application $app) {
-      $edit = $app['controllers_factory'];
-      $edit->get('/', function (Request $request) use ($app) {
-        if (!isset($_SESSION['testonaut']['userId'])) {
-          return $app->redirect($request->getBaseUrl() . '/login/');
-        }
-
-        $conf = $this->getConfig();
-
-        $profile = new Profile();
-        $profileList = $profile->get();
-
-        $emulator = new Emulator();
-        $devices = $emulator->getDevices();
-
-        $app['request'] = array(
-          'baseUrl' => $request->getBaseUrl(),
-          'mode' => 'edit',
-          'settings' => $conf,
-          'themes' => $this->getThemes(),
-          'profiles' => $profileList,
-          'devices' => $devices
-        );
-
-        return $app['twig']->render('globalconfig.twig');
-      });
-
-      $edit->get('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-
-        $app['request'] = array(
-          'baseUrl' => $request->getBaseUrl(),
-          'mode' => 'edit',
-          'profileName' => $browserProfile
-        );
-
-        return $app['twig']->render('globalconfig.twig');
-      });
-
-      $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-        $profile = new Profile();
-        $profile->delete($browserProfile);
-
-        $app['request'] = array(
-          'baseUrl' => $request->getBaseUrl(),
-          'mode' => 'edit',
-          'message' => 'deleted'
-        );
-        return $app['twig']->render('globalconfig.twig');
-      });
-
-      $edit->get('/editProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-
-        $profile = new Profile();
-        $profileList = $profile->getByName($browserProfile);
-
-        $data = array(
-          'browser' => $profileList[0]['browser'],
-          'name' => $profileList[0]['name'],
-          'arguments' => ($profileList[0]['arguments'] == '') ? '' : json_decode($profileList[0]['arguments'], true),
-          'driverOptions' => ($profileList[0]['driverOptions'] == '') ? '' : json_decode($profileList[0]['driverOptions'], true),
-          'capabilities' => ($profileList[0]['capabilities'] == '') ? '' : json_decode($profileList[0]['capabilities'], true),
-        );
-
-        return $app->json($data);
-      });
-
-      $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-        $profile = new Profile();
-        $profile->delete($browserProfile);
-
-        $app['request'] = array(
-          'baseUrl' => $request->getBaseUrl(),
-          'mode' => 'edit',
-          'message' => 'deleted'
-        );
-        return $app['twig']->render('globalconfig.twig');
-      });
-
-      $edit->post('/', function (Request $request) use ($app) {
-
-        if ($request->request->get('save') == 'profile') {
-          $this->saveProfile($request);
-        } else {
-          $this->saveConfigForm($request);
-
-        }
-
-        return $app->redirect($request->getBaseUrl() . '/globalconfig/');
-      });
-      return $edit;
-    }
-  */
   /**
    * @param $request
    */
@@ -191,7 +138,6 @@ class Globalconfig extends Base implements ProviderInterface {
       $browser = 'chrome';
     }
 
-    var_dump($request['browser']);
     if(strpos($request['browser'], 'firefox') !== FALSE) {
       $browser = 'firefox';
     }
@@ -237,7 +183,7 @@ class Globalconfig extends Base implements ProviderInterface {
       $arguments = '';
     }
 
-    $data['browser'] = $browser;
+    $data['browser'] = $request['browser'];
     $data['name'] = $name;
     $data['driverOptions'] = $driverOptions;
     $data['arguments'] = $arguments;

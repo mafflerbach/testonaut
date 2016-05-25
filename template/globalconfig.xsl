@@ -188,7 +188,7 @@
       <select name="device">
         <option value="">Device</option>
         <xsl:for-each select="/data/devices/*">
-          <option name="name(.)">
+          <option value="{name(.)}">
             <xsl:value-of select="."/>
           </option>
         </xsl:for-each>
@@ -205,14 +205,14 @@
           <xsl:for-each select="/data/profiles/grid/item">
             <xsl:choose>
               <xsl:when test="version = ''">
-                <option name="{browserName}_default_{platform}">
+                <option value="{browserName}_default_{platform}">
                   <xsl:value-of select="browserName"/><xsl:text> </xsl:text>
                   <xsl:value-of select="default"/><xsl:text> </xsl:text>
                   <xsl:value-of select="platform"/>
                 </option>
               </xsl:when>
               <xsl:otherwise>
-                <option name="{browserName}_{version}_{platform}">
+                <option value="{browserName}_{version}_{platform}">
                   <xsl:value-of select="browserName"/><xsl:text> </xsl:text>
                   <xsl:value-of select="version"/><xsl:text> </xsl:text>
                   <xsl:value-of select="platform"/>
@@ -343,7 +343,15 @@
           <xsl:call-template name="browser-icon">
             <xsl:with-param name="browser" select="browser"/>
           </xsl:call-template>
-          <span class="title"><xsl:value-of select="name"/></span>
+          <span class="title" >
+            <xsl:value-of select="name"/>
+            <a href="" data-profilename="{name}" data-action="deleteProfile" style="float:right; color:#fff; margin-right:0.75rem;">
+              <span class="mif-cross"></span>
+            </a>
+            <a href="" data-profilename="{name}" data-action="editProfile" style="float:right; color:#fff; margin-right:0.75rem;">
+              <span class="mif-pencil"></span>
+            </a>
+          </span>
         </div>
         <div class="content padding10">
           Driver options: <xsl:value-of select="driverOptions"/><br/>
@@ -357,12 +365,14 @@
 
   <xsl:template name="browser-icon">
     <xsl:param name="browser"/>
+    <xsl:variable name="browserBase" select="substring-before($browser,'_')" />
+
     <xsl:variable name="imageUrl">
       <xsl:choose>
-        <xsl:when test="$browser = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
-        <xsl:when test="$browser = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
-        <xsl:when test="$browser = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
-        <xsl:when test="$browser = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
+        <xsl:when test="$browserBase = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
+        <xsl:when test="$browserBase = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
+        <xsl:when test="$browserBase = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
+        <xsl:when test="$browserBase = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
         <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -373,7 +383,8 @@
     <div data-role="dialog" id="dialog" class="padding20">
       <h4 class="dialogTitle"></h4>
       <p class="dialogContent"></p>
-      <button class="button primary" id="dialogButton">Ok</button>
+      <button class="button primary" id="dialogButton">Ok</button><xsl:text> </xsl:text>
+      <a href="" class="button" id="dialogButtonClose">Cancel</a>
     </div>
   </xsl:template>
 </xsl:stylesheet>

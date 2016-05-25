@@ -51,13 +51,13 @@ class Routing {
       $requestUri = str_replace('?xml=true', '', $requestUri);
       $requestUri = str_replace('&xml=true', '', $requestUri);
     }
-
     $paramQuery = str_replace($basePath, '', $requestUri);
 
     foreach ($this->provider as $route => $provider) {
       /**
        * @var $provider ProviderInterface
        */
+
       $mee = str_replace($route, '/', $paramQuery);
       $routepattern = '/' . str_replace('/', '\/', $route) . '/';
 

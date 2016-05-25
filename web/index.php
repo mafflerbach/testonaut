@@ -80,7 +80,7 @@ $rules = array (
     'edit/', 'image/', 'files/', 'import/', 'globalconfig/', 'config/', 'delete/', 'logout/', 'user/', 'image/'
   ),
   'fallback' => 'login/'
-);
+);#
 
 $security = new \testonaut\Security\Provider();
 $security->setFirewall($rules);
@@ -97,11 +97,11 @@ $routing->push('(reset)', new \testonaut\Page\Provider\Reset());
 $routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
 $routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
 $routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
+$routing->push('(globalconfig)', new \testonaut\Page\Provider\Globalconfig());
 $routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('history/.*', new \testonaut\Page\Provider\History());
 $routing->push('import/.*', new \testonaut\Page\Provider\Import());
 $routing->push('screenshot/.*', new \testonaut\Page\Provider\Screenshot());
-$routing->push('(globalconfig)', new \testonaut\Page\Provider\Globalconfig());
 $routing->push('(user)', new \testonaut\Page\Provider\User());
 $routing->push('run/.*', new \testonaut\Page\Provider\Run());
 $routing->push('.*$', new \testonaut\Page\Provider\Start());

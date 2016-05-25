@@ -683,6 +683,54 @@ function initGlobalconfig() {
 
   });
 
+  $("a[data-action='editProfile']").click(function (e) {
+    e.preventDefault();
+
+    var profilename = $(this).data('profilename');
+    var href = baseUrl + path + '/' + profilename;
+
+    $.ajax({
+      type: "POST",
+      url: href,
+      dataType: 'json',
+      success: function (data) {
+        $('#profileName').val(data[0].name);
+        $('#browsers').val(data[0].browser);
+        $('#browsers').trigger("change");
+
+        if (data[0].capabilities != null && data[0].capabilities.experimental != undefined) {
+          var value = data[0].capabilities.experimental.mobileEmulation.deviceName.replace(/ /g, '_');
+          $("select[name='device']").val(value);
+          $('#devices select').trigger("change");
+        } else {
+          $("select[name='device']").val('');
+        }
+
+        if (data[0].driverOptions != '') {
+          var option = jQuery.parseJSON(data[0].driverOptions);
+          console.log(option.dimensions);
+          $("#height").val(option.dimensions.height);
+          $("#width").val(option.dimensions.width);
+          $("#width").trigger('blur');
+        }
+
+
+      }
+    });
+
+
+  });
+
+  $("a[data-action='deleteProfile']").click(function (e) {
+    e.preventDefault();
+
+    var profilename = $(this).data('profilename');
+
+    var href = baseUrl + path + '/' + profilename;
+    statusDialog(href, 'would you like delete the Profile', 'Delete Profile');
+
+  });
+
 
   $('#addProfile').click(function () {
     $('#addProfile-form').slideDown();
@@ -698,7 +746,6 @@ function initGlobalconfig() {
       $('#dimension').show();
       $('#devices').hide();
     }
-
   });
 
   $('#devices select').change(function () {
@@ -778,43 +825,6 @@ function initEdituser() {
     });
   });
 
-  function statusDialog(href, message, title) {
-    $('#dialog p').empty();
-    $('#dialog h4').empty();
-
-    $('#dialog p').text(message)
-    $('#dialog h4').text(title)
-    var dialog = $('#dialog').data('dialog');
-    dialog.open();
-
-    $('#dialogButton').click(function () {
-      dialog.close()
-
-      $.ajax({
-        type: "POST",
-        url: href,
-        dataType: 'json',
-        data: {safe: true},
-        success: function (data) {
-          var type = 'success';
-          if (data.result != 'success') {
-            type = 'alert';
-          }
-          $.Notify({
-            caption: data.messageTitle,
-            content: data.message,
-            type: type
-          });
-
-          window.setTimeout(function () {
-              window.location.href = baseUrl + path;
-            },
-            1500)
-        }
-      });
-      $('#dialogButton').unbind('click');
-    })
-  }
 
   $('.inactive').click(function (e) {
     e.preventDefault();
@@ -847,4 +857,46 @@ jQuery.fn.center = function () {
   this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
       $(window).scrollLeft()) + "px");
   return this;
+}
+
+function statusDialog(href, message, title) {
+  $('#dialog p').empty();
+  $('#dialog h4').empty();
+
+  $('#dialog p').text(message)
+  $('#dialog h4').text(title)
+  var dialog = $('#dialog').data('dialog');
+  dialog.open();
+
+  $('#dialogButtonClose').click(function () {
+    dialog.close()
+  });
+  $('#dialogButton').click(function () {
+    dialog.close()
+
+    $.ajax({
+      type: "POST",
+      url: href,
+      dataType: 'json',
+      data: {safe: true},
+      success: function (data) {
+        var type = 'success';
+        if (data.result != 'success') {
+          type = 'alert';
+        }
+        $.Notify({
+          caption: data.messageTitle,
+          content: data.message,
+          type: type
+        });
+
+        window.setTimeout(function () {
+            window.location.href = baseUrl + path;
+          },
+          1500)
+      }
+    });
+    $('#dialogButton').unbind('click');
+    $('#dialogButtonClose').unbind('click');
+  })
 }
