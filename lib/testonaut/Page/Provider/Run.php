@@ -35,7 +35,7 @@ class Run extends Base implements ProviderInterface {
   /**
    * @var \testonaut\Page $page
    */
-  private  $page;
+  private $page;
   private $imagePath;
   private $dirArray = array();
   private $path;
@@ -110,78 +110,6 @@ class Run extends Base implements ProviderInterface {
       $this->routing->render('run.xsl');
     });
   }
-
-  /*
-  public function connect(Application $app) {
-
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request, $path) use ($app) {
-
-      $this->path = $path;
-
-      $this->page = new \testonaut\Page($path);
-      $this->basePath = $this->page->transCodePath();
-      $this->imagePath = $this->page->getImagePath();
-
-      $capabilities = array();
-
-      $this->browser = $request->query->get('browser');
-      if ($this->browser == '') {
-        $this->browser = 'all';
-      }
-
-      $this->version = $request->query->get('version');
-      if ($this->version == '') {
-        $this->version = '';
-      }
-
-      $this->platform = $request->query->get('platform');
-      if ($this->platform == '') {
-        $this->platform = '';
-      }
-
-      $this->profile = $request->query->get('profile');
-      if ($this->profile == '') {
-        $this->profile = '';
-      }
-
-      if ($request->query->get('suite') == 'true') {
-        $result = $this->runSuite($this->page);
-      } else {
-        $result = $this->run($this->page);
-      }
-
-      if ($this->profile != '') {
-        $profiles = new Profile();
-        $profile = $profiles->getByName($this->profile);
-        $capabilities = $profile[0];
-        $capabilities['browser'] = $profile[0]['name'].'_'.$profile[0]['browser'];
-        $capabilities['version'] = $this->version;
-        $capabilities['platform'] = $this->platform;
-      } else {
-        $capabilities['browser'] = $this->browser;
-        $capabilities['version'] = $this->version;
-        $capabilities['platform'] = $this->platform;
-      }
-
-      $app['request'] = array(
-        'path' => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'host' => $request->getHost(),
-        'mode' => 'edit'
-      );
-      $crumb = new Breadcrumb($path);
-      $app['crumb'] = $crumb->getBreadcrumb();
-      $app['result'] = $result;
-
-      return $app['twig']->render('run.twig');
-    });
-
-    return $edit;
-  }
-
-  */
-
 
   /**
    * @param $content
@@ -267,8 +195,6 @@ class Run extends Base implements ProviderInterface {
    */
   private function _run(array $tests) {
     try {
-
-
       $profile = new Profile();
 
       if ($this->profile == '') {
@@ -281,9 +207,9 @@ class Run extends Base implements ProviderInterface {
       $result = $runner->run($tests);
 
       $browserResult = TRUE;
-      for($i = 0; $i < count($result); $i++) {
-        for($k = 0; $k < count($result[$i]['result']); $k++) {
-          if($result[$i]['result'][$k][0] == false) {
+      for ($i = 0; $i < count($result); $i++) {
+        for ($k = 0; $k < count($result[$i]['result']); $k++) {
+          if ($result[$i]['result'][$k][0] == false) {
             $browserResult = FALSE;
           }
         }
@@ -294,12 +220,20 @@ class Run extends Base implements ProviderInterface {
 
 
     } catch (\Exception $e) {
-
-      return array(array(
-          'run' => array(array(FALSE, $e->getMessage(), "open connection")),
+      var_dump($e);
+      return array(
+        array(
+          'run' => array(
+            array(
+              FALSE,
+              $e->getMessage(),
+              "open connection"
+            )
+          ),
           'browserResult' => FALSE,
           'path' => $tests[0]->getPath()
-      ));
+        )
+      );
     }
   }
 
@@ -364,6 +298,8 @@ class Run extends Base implements ProviderInterface {
           $profile['driverOptions'] = $list[$i]['driverOptions'];
         }
         $profile['browser'] = $this->normalizeBrowserName($browserName);
+
+
         if (isset($list[$i]['version'])) {
           $profile['version'] = $list[$i]['version'];
         }
@@ -374,15 +310,21 @@ class Run extends Base implements ProviderInterface {
       }
 
     } else {
-
       $profile['browser'] = $this->normalizeBrowserName($this->browser);
-      $profile['version'] = $this->version;
-      $profile['platform'] = $this->platform;
+      if ($this->version != 'default') {
+        $profile['version'] = $this->version;
+      } else {
+        $profile['version'] = '';
+      }
+      if ($this->version != 'default') {
+        $profile['platform'] = $this->version;
+      } else {
+        $profile['platform'] = '';
+      }
 
       $capabilities[] = $profile;
 
     }
-
     return $capabilities;
   }
 

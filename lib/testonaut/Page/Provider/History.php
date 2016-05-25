@@ -45,8 +45,28 @@ class History extends Base implements ProviderInterface {
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
 
-      $this->deleteHistory($path, 'all', '');
-      $request->redirect('history/' . $path);
+      $messageBody = "";
+      $result = 'fail';
+      if (!empty($request->post)) {
+        if ($this->deleteHistory($path, 'all', '') !== FALSE) {
+          $messageBody = "Delete complete history";
+          $result = 'success';
+        } else {
+          $messageBody = "Can't delete history";
+          $result = 'fail';
+        }
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Save'
+      );
+
+      print(json_encode($message));
+      die;
+
+
     });
 
     $this->routing->route('.*/(.+)/delete/(\w+)/(\d+)$', function ($path, $browser, $limit) {
@@ -56,8 +76,27 @@ class History extends Base implements ProviderInterface {
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
 
-      $this->deleteHistory($path, $limit, $browser);
-      $request->redirect('history/' . $path);
+
+      $messageBody = "";
+      $result = 'fail';
+      if (!empty($request->post)) {
+        if ($this->deleteHistory($path, $limit, $browser) !== FALSE) {
+          $messageBody = "Delete oldest entry";
+          $result = 'success';
+        } else {
+          $messageBody = "Can't entry";
+          $result = 'fail';
+        }
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Save'
+      );
+
+      print(json_encode($message));
+      die;
 
     });
 
@@ -99,7 +138,7 @@ class History extends Base implements ProviderInterface {
     $page = new Page(urldecode($path));
     $git = new Git($page->getProjectRoot());
     $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
-    
+
     print($log);
     die;
   }

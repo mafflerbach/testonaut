@@ -565,7 +565,7 @@ function initCompare() {
 
       }).done(function (data) {
         $('#dialog-content').empty().append(data[0].content);
-        var dialog = $('#dialog').data('dialog');
+        var dialog = $('#gitdialog').data('dialog');
         dialog.open();
       });
     }
@@ -573,6 +573,17 @@ function initCompare() {
     $('#myModal').on('hidden.bs.modal', function (e) {
       $('a[data-compare].active').toggleClass('active');
     })
+  })
+
+
+  $('#deleteCompleteHistory').click(function (e) {
+    e.preventDefault();
+    statusDialog($(this).attr('href'), 'Would you like delete complete history', 'Delete history');
+  })
+
+  $('.deleteLastEntry').click(function (e) {
+    e.preventDefault();
+    statusDialog($(this).attr('href'), 'Would you like delete oldest entry', 'Delete history');
   })
 
 }
@@ -611,6 +622,7 @@ function initScreenshots() {
       url: href,
       dataType: 'json'
     }).done(function (data) {
+      console.log(data)
       var type = 'success';
       if (data.result != 'success') {
         type = 'alert';
@@ -889,7 +901,7 @@ function statusDialog(href, message, title) {
           content: data.message,
           type: type
         });
-
+        
         window.setTimeout(function () {
             window.location.href = baseUrl + path;
           },

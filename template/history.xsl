@@ -30,6 +30,7 @@
         </script>
 
         <xsl:call-template name="dialog"/>
+        <xsl:call-template name="dialog-verify"/>
 
       </body>
     </html>
@@ -49,7 +50,8 @@
       </ul>
       <div class="frames">
         <div class="frame" id="history">
-          <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/all" class="button danger">Delete Complete
+          <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/all" class="button danger"
+             id="deleteCompleteHistory">Delete Complete
             History
           </a>
           <xsl:call-template name="browser">
@@ -65,14 +67,27 @@
   </xsl:template>
 
   <xsl:template name="dialog">
-    <div data-role="dialog" id="dialog" class="padding20 dialog" data-close-button="true" data-overlay="true"
+    <div data-role="dialog" id="gitdialog" class="padding20 dialog" data-close-button="true" data-overlay="true"
          data-overlay-color="op-dark" data-windows-style="true"
          style="left: 0px; right: 0px; width: auto; height: auto; visibility: visible; top: 213px;">
-      <h3>Diff</h3>
+      <h4>Diff</h4>
       <div id="dialog-content">
       </div>
     </div>
   </xsl:template>
+
+
+  <xsl:template name="dialog-verify">
+
+    <div data-role="dialog" id="dialog" class="padding20">
+      <h4 class="dialogTitle"></h4>
+      <p class="dialogContent"></p>
+      <button class="button primary" id="dialogButton">Ok</button>
+      <xsl:text> </xsl:text>
+      <a href="" class="button" id="dialogButtonClose">Cancel</a>
+    </div>
+  </xsl:template>
+
 
   <xsl:template name="git-history">
     <table class="table border bordered">
@@ -135,7 +150,7 @@
           <span class="title">
             <xsl:value-of select="name($browser)"/>
             <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{name($browser)}/10"
-               class="button danger mini-button"
+               class="button danger mini-button deleteLastEntry"
                style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
               delete 10 oldest entries
             </a>

@@ -28,9 +28,8 @@ $globalConf = new \testonaut\Page\Provider\Base();
 $configuration = $globalConf->getConfig();
 
 $db = new testonaut\Utils\Db('../index.db');
-
   
-$seleniumAddress = "http://localhost:4444";
+$seleniumAddress = $configuration['seleniumAddress'];
 if (isset($configuration['cache'])) {
   $config->define('Cache', $configuration['cache']);
 } else {
@@ -95,15 +94,15 @@ $routing->push('(login)', new \testonaut\Page\Provider\Login());
 $routing->push('(logout)', new \testonaut\Page\Provider\Logout());
 $routing->push('(reset)', new \testonaut\Page\Provider\Reset());
 $routing->push('edit/.*', new \testonaut\Page\Provider\Edit());
-$routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
+$routing->push('screenshot/.*', new \testonaut\Page\Provider\Screenshot());
 $routing->push('search/.*', new \testonaut\Page\Provider\Ajax());
 $routing->push('(globalconfig)', new \testonaut\Page\Provider\Globalconfig());
 $routing->push('config/.*', new \testonaut\Page\Provider\Config());
 $routing->push('history/.*', new \testonaut\Page\Provider\History());
 $routing->push('import/.*', new \testonaut\Page\Provider\Import());
-$routing->push('screenshot/.*', new \testonaut\Page\Provider\Screenshot());
 $routing->push('(user)', new \testonaut\Page\Provider\User());
 $routing->push('run/.*', new \testonaut\Page\Provider\Run());
+$routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
 $routing->push('.*$', new \testonaut\Page\Provider\Start());
 $routing->before($security);
 $routing->after($debug);

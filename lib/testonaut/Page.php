@@ -76,9 +76,8 @@ class Page {
     }
     if ($content == NULL && $save === NULL) {
 
-      $dom = new \DOMDocument();
-      $dom->loadHTMLFile($file);
-
+      $dom = new \DOMDocument("1.0", "UTF-8");
+      $dom->loadHTML('<?xml encoding="utf-8" ?>' . file_get_contents($file));
       $pageContent = $dom->saveXML();
 
       return $pageContent;

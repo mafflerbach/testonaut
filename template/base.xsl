@@ -4,11 +4,10 @@
 >
 
   <xsl:import href="menu.xsl"/>
-
-
   <xsl:output method="html"/>
   <xsl:template name="head">
     <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <xsl:call-template name="stylesheet"/>
       <xsl:call-template name="javascript"/>
     </head>
