@@ -119,7 +119,7 @@ class History extends Base implements ProviderInterface {
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
 
-      $this->response['menu'] = $this->getMenu($path);
+      $this->response['menu'] = $this->getMenu($path, 'history');
       $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
 
       $this->response['history'] = $this->getHistoryList();

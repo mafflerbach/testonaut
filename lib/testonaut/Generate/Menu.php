@@ -23,14 +23,15 @@ use testonaut\User;
 class Menu {
   private $page;
   private $path;
+  private $context;
 
   public function __construct($page) {
     $this->page = new Page($page);
     $this->path = $page;
   }
 
-  public function getMenu() {
-
+  public function getMenu($context) {
+    $this->context = $context;
     $user = new User();
 
     $request = new Request();
@@ -61,24 +62,33 @@ class Menu {
     $request = new Request();
     $config = $this->page->config();
 
-    $recources = $this->resources();
+    $resources = $this->resources();
 
     if ($config['type'] != 'static' && $config['type'] != 'none') {
       $pub = array(
-        $recources['root'],
-        $recources['run'],
-        $recources['history'],
-        $recources['screenshots'],
-        $recources['login'],
+        $resources['root'],
       );
+      if ($this->context != 'run') {
+        $pub[] = $resources['run'];
+      }
+      if ($this->context != 'history') {
+        $pub[] = $resources['history'];
+      }
+      if ($this->context != 'screenshots') {
+        $pub[] = $resources['screenshots'];
+      }
     } else {
       $pub = array(
-        $recources['root'],
-        $recources['history'],
-        $recources['login']
+        $resources['root'],
       );
+      if ($this->context != 'history') {
+        $pub[] = $resources['history'];
+      }
+      if ($this->context != 'screenshots') {
+        $pub[] = $resources['screenshots'];
+      }
     }
-    $priv[] = $recources['login'];
+    $pub[] = $resources['login'];
     return $pub;
   }
 
@@ -86,29 +96,51 @@ class Menu {
     $request = new Request();
     $config = $this->page->config();
 
-    $recources = $this->resources();
+    $resources = $this->resources();
 
     if ($config['type'] != 'static' && $config['type'] != 'none') {
-      $priv = array(
-        $recources['root'],
-        $recources['run'],
-        $recources['edit'],
-        $recources['history'],
-        $recources['screenshots'],
-        $recources['config']
+      $private = array(
+        $resources['root'],
       );
+
+      if ($this->context != 'edit') {
+        $private[] = $resources['edit'];
+      }
+      if ($this->context != 'run') {
+        $private[] = $resources['run'];
+      }
+      if ($this->context != 'history') {
+        $private[] = $resources['history'];
+      }
+      if ($this->context != 'screenshots') {
+        $private[] = $resources['screenshots'];
+      }
+      if ($this->context != 'config') {
+        $private[] = $resources['config'];
+      }
+
+
     } else {
-      $priv = array(
-        $recources['root'],
-        $recources['globalconfig'],
-        $recources['edit'],
-        $recources['history'],
-        $recources['config']
+      $private = array(
+        $resources['root'],
       );
+
+      if ($this->context != 'globalconfig') {
+        $private[] = $resources['globalconfig'];
+      }
+      if ($this->context != 'edit') {
+        $private[] = $resources['edit'];
+      }
+      if ($this->context != 'history') {
+        $private[] = $resources['history'];
+      }
+      if ($this->context != 'config') {
+        $private[] = $resources['config'];
+      }
     }
 
-    $priv[] = $recources['logout'];
-    return $priv;
+    $private[] = $resources['logout'];
+    return $private;
   }
 
   private function resources() {
@@ -195,7 +227,6 @@ class Menu {
       }
       $k++;
     }
-
 
     foreach ($browsers['custom'] as $node) {
       $push[] = array(

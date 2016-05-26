@@ -32,9 +32,9 @@ class Base {
     return $system;
   }
 
-  public function getMenu($page) {
+  public function getMenu($page, $context) {
     $menu = new Menu($page);
-    return $menu->getMenu();
+    return $menu->getMenu($context);
   }
 
 

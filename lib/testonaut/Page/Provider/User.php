@@ -32,10 +32,10 @@ class User extends Base implements ProviderInterface {
     $this->response = array(
       'system' => $this->system()
     );
+    $this->response['menu'] = $this->getMenu('', 'user');
 
 
     $this->routing->route('.*/(\d)/edit', function ($id) {
-      $this->response['menu'] = $this->getMenu('');
       $foo = $this->editUser($this->response, $id);
 
       $this->response['mode'] = 'edit';
@@ -80,7 +80,7 @@ class User extends Base implements ProviderInterface {
     });
 
     $this->routing->route('', function () {
-      $this->response['menu'] = $this->getMenu('');
+
       $this->response['mode'] = 'list';
 
       $this->response['user'] = $this->getUserList();

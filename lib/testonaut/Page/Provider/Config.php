@@ -29,36 +29,43 @@ class Config extends Base implements ProviderInterface {
     );
 
     $this->routing->route('.*/(.+(?:\..+)*)', function ($path) {
-      $this->path = urldecode($path);
-
-      $path = urldecode($path);
-      $request = new Request();
-
-      if (!empty($request->post)) {
-        $this->handelPostData($path, $request);
-      }
-
-      $this->response['page'] = $this->getContent($path);
-      $this->response['menu'] = $this->getMenu($path);
-      $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
-
-      $settings = $this->pageSettings();
-      $this->response['pagesettings'] = $settings;
-
-      $screenshotSettings = $this->screenshotSettings();
-      $this->response['screenshotsettings'] = $screenshotSettings;
-
-      if ($settings['suite'] || $settings['project']) {
-        $this->response['browser'] = $this->browserSettings();
-        $this->response['originUrl'] = $this->originUrl();
-      }
-
-      $this->routing->response($this->response);
-      $this->routing->render('config.xsl');
+      $this->response($path);
     });
-    
-    
-    
+
+    $this->routing->route('', function () {
+      $this->response('');
+    });
+
+  }
+
+  protected function response($path) {
+
+    $this->path = urldecode($path);
+
+    $path = urldecode($path);
+    $request = new Request();
+
+    if (!empty($request->post)) {
+      $this->handelPostData($path, $request);
+    }
+
+    $this->response['page'] = $this->getContent($path);
+    $this->response['menu'] = $this->getMenu($path, 'config');
+    $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
+
+    $settings = $this->pageSettings();
+    $this->response['pagesettings'] = $settings;
+
+    $screenshotSettings = $this->screenshotSettings();
+    $this->response['screenshotsettings'] = $screenshotSettings;
+
+    if ($settings['suite'] || $settings['project']) {
+      $this->response['browser'] = $this->browserSettings();
+      $this->response['originUrl'] = $this->originUrl();
+    }
+
+    $this->routing->response($this->response);
+    $this->routing->render('config.xsl');
   }
 
 

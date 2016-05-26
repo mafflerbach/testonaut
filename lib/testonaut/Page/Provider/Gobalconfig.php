@@ -92,7 +92,7 @@ class Globalconfig extends Base implements ProviderInterface {
       }
 
       $conf = $this->getConfig();
-      $this->response['menu'] = $this->getMenu('');
+      $this->response['menu'] = $this->getMenu('', 'globalconfig');
 
       $profile = new Profile();
       $profileList = $profile->get();

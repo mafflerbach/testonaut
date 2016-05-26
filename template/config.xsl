@@ -17,7 +17,11 @@
           </div>
           <div class="row">
             <xsl:call-template name="breadcrumb"/>
-            <a href="{/data/system/baseUrl}import/{/data/page/path}" class="button danger " style="margin:.15625rem 1.25rem .15625rem 0;" data-action="import">Import</a>
+
+            <xsl:if test="/data/pagesettings/project = '1' or /data/pagesettings/suite = '1'">
+              <a href="{/data/system/baseUrl}import/{/data/page/path}" class="button danger " style="margin:.15625rem 1.25rem .15625rem 0;" data-action="import">Import</a>
+            </xsl:if>
+
             <a href="{/data/system/baseUrl}delete/{/data/page/path}" class="button danger " style="margin:.15625rem 1.25rem .15625rem 0;" data-action="delete">Delete</a>
           </div>
           <div class="row auto-size ">

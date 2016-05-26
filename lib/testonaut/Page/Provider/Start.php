@@ -37,7 +37,7 @@ class Start extends Base implements ProviderInterface {
       $path = urldecode($path);
 
       $this->response['page'] = $this->getContent($path);
-      $this->response['menu'] = $this->getMenu($path);
+      $this->response['menu'] = $this->getMenu($path, '');
 
       $this->routing->response($this->response);
       $this->routing->render('page.xsl');
@@ -47,7 +47,7 @@ class Start extends Base implements ProviderInterface {
     $this->routing->route('', function () {
 
       $this->response['page'] = $this->getContent('');
-      $this->response['menu'] = $this->getMenu('');
+      $this->response['menu'] = $this->getMenu('' , '');
 
       $this->routing->response($this->response);
       $this->routing->render('page.xsl');

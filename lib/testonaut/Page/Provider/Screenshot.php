@@ -114,7 +114,7 @@ class Screenshot extends Base implements ProviderInterface {
 
       $root = \testonaut\Config::getInstance()->Path;
 
-      $this->response['menu'] = $this->getMenu($path);
+      $this->response['menu'] = $this->getMenu($path, 'screenshots');
       $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
       $this->response['path'] = $path;
       $this->response['images'] = $images;

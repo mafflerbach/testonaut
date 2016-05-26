@@ -61,7 +61,7 @@ class Edit extends Base implements ProviderInterface {
     }
 
     $this->response['page'] = $this->getContent($path);
-    $this->response['menu'] = $this->getMenu($path);
+    $this->response['menu'] = $this->getMenu($path, 'edit');
     $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
 
     $this->routing->response($this->response);

@@ -23,7 +23,6 @@ class Provider implements ProviderInterface {
   private $rules = array();
 
   public function connect() {
-
     $this->checkUserSession();
   }
 
@@ -33,16 +32,13 @@ class Provider implements ProviderInterface {
 
   private function checkUserSession() {
     $user = new User();
-
     $request = new Request();
-
-    if (!empty($this->rules) && in_array($request->getPath(), $this->rules['private'])) {
-
+    $explode = explode('/', $request->getPath());
+    if (!empty($this->rules) && in_array($explode[0] . '/', $this->rules['private'])) {
       if (!$user->checkUser()) {
         $request = new Request();
         $request->redirect('login/');
       }
     }
-
   }
 }
