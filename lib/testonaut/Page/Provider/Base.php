@@ -21,6 +21,9 @@ use testonaut\Generate\Toc;
 use testonaut\Page\Breadcrumb;
 
 class Base {
+  public $response;
+  private $mee = array();
+
 
   public function system() {
     $system['baseUrl'] = $this->getBaseUrl();
@@ -75,7 +78,6 @@ class Base {
 
   public function getConfig() {
 
-
     $config = \testonaut\Config::getInstance()->Path . '/config';
     if (file_exists($config)) {
       $configuration = json_decode(file_get_contents($config), true);
@@ -95,6 +97,12 @@ class Base {
       $this->writeToFile($config, json_encode($configuration));
     }
     return $configuration;
+  }
+
+
+  protected function pushResponse($key, $val) {
+
+    $this->mee[$key] = $val;
   }
 
 

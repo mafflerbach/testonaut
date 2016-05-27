@@ -28,7 +28,6 @@ use testonaut\Page;
 class Screenshot extends Base implements ProviderInterface {
 
   private $routing;
-  private $response;
   protected $path = '';
 
   public function connect() {

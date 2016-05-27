@@ -24,7 +24,6 @@ use testonaut\Settings\Profile;
 class Start extends Base implements ProviderInterface {
 
   private $routing;
-  private $response;
 
   public function connect() {
     $this->routing = new Routing();

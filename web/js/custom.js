@@ -674,6 +674,11 @@ function initScreenshots() {
 
 function initGlobalconfig() {
 
+
+  if(window.location.hash != '') {
+    $("a[href='"+window.location.hash+"']").trigger('click');
+  }
+
   $('#addProfile-form form').submit(function (e) {
     e.preventDefault();
 
@@ -901,7 +906,7 @@ function statusDialog(href, message, title) {
           content: data.message,
           type: type
         });
-        
+
         window.setTimeout(function () {
             window.location.href = baseUrl + path;
           },

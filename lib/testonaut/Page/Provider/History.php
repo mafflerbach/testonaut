@@ -24,7 +24,7 @@ use testonaut\Utils\Git;
 class History extends Base implements ProviderInterface {
 
   private $routing;
-  private $response;
+  
   protected $path = '';
   /**
    * @var null| Git

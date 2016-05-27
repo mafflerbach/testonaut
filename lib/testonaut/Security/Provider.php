@@ -17,11 +17,12 @@ namespace testonaut\Security;
 
 use mafflerbach\Http\Request;
 use mafflerbach\Page\ProviderInterface;
+use testonaut\Page\Provider\Base;
 use testonaut\User;
 
-class Provider implements ProviderInterface {
+class Provider extends Base implements ProviderInterface {
   private $rules = array();
-
+  
   public function connect() {
     $this->checkUserSession();
   }
@@ -40,5 +41,7 @@ class Provider implements ProviderInterface {
         $request->redirect('login/');
       }
     }
+
+    return true;
   }
 }

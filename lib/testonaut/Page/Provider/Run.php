@@ -16,14 +16,8 @@ ini_set('max_execution_time', 0);
 
 use mafflerbach\Page\ProviderInterface;
 use mafflerbach\Routing;
-use testonaut\Capabilities;
 use testonaut\Matrix;
 use testonaut\Page;
-use testonaut\Page\Breadcrumb;
-use testonaut\Selenium\Api;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
 use testonaut\Selenese\Runner;
 use testonaut\Settings\Browser;
 use testonaut\Settings\Profile;

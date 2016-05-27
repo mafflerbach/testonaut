@@ -65,6 +65,14 @@ class User {
     return FALSE;
   }
 
+  public function isAdmin() {
+    $user = $this->get($_SESSION['testonaut']['userId']);
+    if ($user['group'] == '1') {
+      return true;
+    }
+    return false;
+  }
+
 
   protected function ldapValidate($name, $password) {
     $globalConf = new Globalconfig();
@@ -91,13 +99,14 @@ class User {
 
   }
 
-  public function save($name, $password, $displayName, $id) {
-    $sql = 'update user set email= :email, password= :password, displayName= :displayName where id=:id';
+  public function save($name, $password, $displayName, $group, $id) {
+    $sql = 'update user set email= :email, password= :password, displayName= :displayName, `group` = :group where id=:id';
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':email', $name);
     $stm->bindParam(':displayName', $displayName);
     $password = password_hash($password, PASSWORD_DEFAULT);
     $stm->bindParam(':password', $password);
+    $stm->bindParam(':group', $group);
     $stm->bindValue(':id', $id);
 
     $result = $stm->execute();

@@ -70,6 +70,7 @@ class Globalconfig extends Base implements ProviderInterface {
 
         print(json_encode($message));
         die;
+
       } else {
         $profile = new Profile();
         $profileList = $profile->getByName($profilename);
@@ -78,10 +79,8 @@ class Globalconfig extends Base implements ProviderInterface {
         $profileList[0]['capabilities'] = $me;
 
         print(json_encode($profileList));
-
+        die;
       }
-
-
 
     });
 

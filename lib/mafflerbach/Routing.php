@@ -17,6 +17,7 @@ namespace mafflerbach;
 use mafflerbach\Page\ProviderInterface;
 use mafflerbach\Xml\Util;
 use testonaut\Config;
+use testonaut\User;
 
 class Routing {
   private static $routes = array();
@@ -25,7 +26,7 @@ class Routing {
   private $after = array();
   private $content = '';
   private $activProvider = '';
-  private $response = array();
+  public $response = array();
 
   private function __clone() {
   }
@@ -44,6 +45,7 @@ class Routing {
   }
 
   private function attachSiteProvider() {
+
     $basePath = str_replace('index.php', '', $_SERVER['PHP_SELF']);
     $requestUri = $_SERVER['REQUEST_URI'];
 
@@ -63,14 +65,14 @@ class Routing {
 
       if (preg_match($routepattern, $mee, $result)) {
 
-        $response = $provider->connect();
+        $provider->connect();
 
         foreach (self::$routes as $pattern => $callback) {
 
           if (preg_match($pattern, $mee, $params)) {
             $this->activProvider = get_class($provider);
             array_shift($params);
-            return call_user_func_array($callback, array_values($params));
+            call_user_func_array($callback, array_values($params));
           }
         }
         break;
@@ -94,7 +96,12 @@ class Routing {
   }
 
   public function response(array $response) {
+    $user = new User();
+
     $this->response = $response;
+
+    $this->response['system']['login']['status'] = $user->checkUser();
+    $this->response['system']['login']['group'] = $user->isAdmin();
 
     $dom = new Util('1.0', 'utf-8');
     $dom->formatOutput = true;
@@ -152,7 +159,6 @@ class Routing {
        * @var $provider ProviderInterface
        */
       $provider->connect();
-
     }
   }
 

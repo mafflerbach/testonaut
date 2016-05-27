@@ -36,9 +36,18 @@
 
     <div class="tabcontrol2" data-role="tabcontrol">
       <ul class="tabs">
-        <li><a href="#profiles">Profiles</a></li>
-        <li><a href="#basic">Basis</a></li>
-        <li><a href="#user">user</a></li>
+        <li>
+          <a href="#profiles">Profiles</a>
+        </li>
+        <xsl:if test="/data/system/login/group = '1'">
+          <li>
+            <a href="#basic">Basis</a>
+          </li>
+          <li>
+            <a href="#user">User</a>
+          </li>
+        </xsl:if>
+
       </ul>
       <div class="frames">
         <div class="frame" id="profiles">
@@ -46,13 +55,15 @@
           <xsl:call-template name="custom-browser-list"/>
         </div>
 
-        <div class="frame" id="user">
-          <xsl:call-template name="user-settings"/>
-        </div>
+        <xsl:if test="/data/system/login/group = '1'">
+          <div class="frame" id="user">
+            <xsl:call-template name="user-settings"/>
+          </div>
 
-        <div class="frame" id="basic">
-          <xsl:call-template name="base-settings"/>
-        </div>
+          <div class="frame" id="basic">
+            <xsl:call-template name="base-settings"/>
+          </div>
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
@@ -92,7 +103,7 @@
                 <xsl:text> </xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{/data/system/baseUrl}user/{id}/activate"  class="activate">
+                <a href="{/data/system/baseUrl}user/{id}/activate" class="activate">
                   <span class="mif-checkmark"></span>
                 </a>
                 <xsl:text> </xsl:text>
@@ -343,20 +354,26 @@
           <xsl:call-template name="browser-icon">
             <xsl:with-param name="browser" select="browser"/>
           </xsl:call-template>
-          <span class="title" >
+          <span class="title">
             <xsl:value-of select="name"/>
-            <a href="" data-profilename="{name}" data-action="deleteProfile" style="float:right; color:#fff; margin-right:0.75rem;">
+            <a href="" data-profilename="{name}" data-action="deleteProfile"
+               style="float:right; color:#fff; margin-right:0.75rem;">
               <span class="mif-cross"></span>
             </a>
-            <a href="" data-profilename="{name}" data-action="editProfile" style="float:right; color:#fff; margin-right:0.75rem;">
+            <a href="" data-profilename="{name}" data-action="editProfile"
+               style="float:right; color:#fff; margin-right:0.75rem;">
               <span class="mif-pencil"></span>
             </a>
           </span>
         </div>
         <div class="content padding10">
-          Driver options: <xsl:value-of select="driverOptions"/><br/>
-          Arguments: <xsl:value-of select="arguments"/>
-          Capabilities: <xsl:value-of select="capabilities"/>
+          Driver options:
+          <xsl:value-of select="driverOptions"/>
+          <br/>
+          Arguments:
+          <xsl:value-of select="arguments"/>
+          Capabilities:
+          <xsl:value-of select="capabilities"/>
         </div>
       </div>
     </xsl:for-each>

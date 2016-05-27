@@ -14,9 +14,7 @@ use \mafflerbach\Http\Request;
 use mafflerbach\Routing;
 
 class Reset extends Base implements ProviderInterface {
-
   private $routing;
-  private $response;
 
   public function connect() {
     $this->routing = new Routing();

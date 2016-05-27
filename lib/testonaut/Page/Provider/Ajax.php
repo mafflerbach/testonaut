@@ -22,7 +22,6 @@ use testonaut\Search\File;
 class Ajax extends Base implements ProviderInterface {
 
   private $routing;
-  private $response;
   protected $path = '';
   /**
    * @var null| Git

@@ -25,7 +25,7 @@ use testonaut\Utils\Git;
 class Edit extends Base implements ProviderInterface {
 
   private $routing;
-  private $response;
+
   protected $path = '';
   /**
    * @var null| Git
@@ -42,6 +42,7 @@ class Edit extends Base implements ProviderInterface {
       $path = urldecode($path);
       $request = new Request();
       $this->setResponse($path, $request);
+
     });
 
     $this->routing->route('', function () {

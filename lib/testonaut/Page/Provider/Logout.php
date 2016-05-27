@@ -19,7 +19,6 @@ class Logout extends Base implements ProviderInterface {
 
 
   private $routing;
-  private $response;
 
   public function connect() {
     $this->routing = new Routing();

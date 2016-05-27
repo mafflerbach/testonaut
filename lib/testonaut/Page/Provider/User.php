@@ -105,16 +105,22 @@ class User extends Base implements ProviderInterface {
       'email' => $userData['email'],
       'displayName' => $userData['displayName'],
       'password' => $userData['password'],
+      'group' => $userData['group'],
     );
 
     $messageBody = "";
-
     $request = new Request();
     if (!empty($request->post)) {
 
       $user = new \testonaut\User();
 
-      if ($user->save($request->post['email'], $request->post['password'], $request->post['displayname'], $id)) {
+      if (isset($request->post['group'])) {
+        $group = 1;
+      } else {
+        $group = 0;
+      }
+
+      if ($user->save($request->post['email'], $request->post['password'], $request->post['displayname'], $group , $id)) {
         $messageBody = "Edit User";
         $result = 'success';
       } else {

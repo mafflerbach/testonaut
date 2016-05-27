@@ -81,7 +81,7 @@
                 <xsl:text> </xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{/data/system/baseUrl}{/data/system/requestUri}/{id}/activate"  class="activate">
+                <a href="{/data/system/baseUrl}{/data/system/requestUri}/{id}/activate" class="activate">
                   <span class="mif-checkmark"></span>
                 </a>
                 <xsl:text> </xsl:text>
@@ -130,13 +130,37 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="cell">
+
+
+            <label class="input-control checkbox small-check">
+              <span class="caption">Admin</span>
+
+              <xsl:choose>
+                <xsl:when test="/data/userdata/group ='1'">
+                  <input type="checkbox" name="group"
+                         value="1" checked="checked"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="checkbox" name="group"
+                         value="1"/>
+                </xsl:otherwise>
+              </xsl:choose>
+
+              <span class="check"></span>
+            </label>
+
+          </div>
+        </div>
       </div>
 
 
       <input type="hidden" name="action" value="edit"/>
       <button type="submit" class="button primary" id="saveUser">Save</button>
       <xsl:text> </xsl:text>
-      <a href="{/data/system/baseUrl}globalconfig" class="button">Back</a>
+      <a href="{/data/system/baseUrl}globalconfig#user" class="button">Back</a>
     </form>
 
   </xsl:template>
