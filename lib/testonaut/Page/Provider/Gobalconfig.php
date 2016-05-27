@@ -99,6 +99,7 @@ class Globalconfig extends Base implements ProviderInterface {
       $emulator = new Emulator();
       $devices = $emulator->getDevices();
 
+      
       $this->response['devices'] = $devices;
       $this->response['profiles'] = $profileList;
 

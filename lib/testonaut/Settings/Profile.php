@@ -46,9 +46,15 @@ class Profile {
 
     $foo = array();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-      $foo[] = $row;
-    }
+      $foo[] = array(
+        'browser' => $row['browser'],
+        'name' => $row['name'],
+        'driverOptions' => json_decode($row['driverOptions'], true),
+        'arguments' => json_decode($row['arguments'], true),
+        'capabilities' => json_decode($row['capabilities'], true),
+      );
 
+    }
     return $foo ;
   }
 

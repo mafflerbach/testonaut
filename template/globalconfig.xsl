@@ -349,7 +349,7 @@
   <xsl:template name="custom-browser-list">
 
     <xsl:for-each select="/data/profiles/custom/item">
-      <div class="panel" style="margin:0.75rem 0;">
+      <div class="panel collapsed" style="margin:0.75rem 0;" data-role="panel">
         <div class="heading">
           <xsl:call-template name="browser-icon">
             <xsl:with-param name="browser" select="browser"/>
@@ -357,7 +357,7 @@
           <span class="title">
             <xsl:value-of select="name"/>
             <a href="" data-profilename="{name}" data-action="deleteProfile"
-               style="float:right; color:#fff; margin-right:0.75rem;">
+               style="float:right; color:#fff; margin-right:2.50rem;">
               <span class="mif-cross"></span>
             </a>
             <a href="" data-profilename="{name}" data-action="editProfile"
@@ -367,13 +367,40 @@
           </span>
         </div>
         <div class="content padding10">
-          Driver options:
-          <xsl:value-of select="driverOptions"/>
-          <br/>
-          Arguments:
-          <xsl:value-of select="arguments"/>
-          Capabilities:
-          <xsl:value-of select="capabilities"/>
+          <xsl:if test="driverOptions/dimensions">
+            <h5>Window settings:</h5>
+            Width= <xsl:value-of select="driverOptions/dimensions/width"/> px<br/>
+            Height= <xsl:value-of select="driverOptions/dimensions/height"/> px<br/>
+            <hr/>
+          </xsl:if>
+
+          <xsl:if test="arguments/*">
+            <h5>Browser Arguments:</h5>
+            <ul class="simple-list">
+            <xsl:for-each select="arguments/*">
+              <li><xsl:value-of select="name(.)"/></li>
+            </xsl:for-each>
+            </ul>
+            <hr/>
+          </xsl:if>
+
+          <xsl:if test="capabilities/*">
+            <h5>Capabilities:</h5>
+              Arguments:<br/>
+            <ul class="simple-list">
+            <xsl:for-each select="capabilities/arguments/item">
+              <li><xsl:value-of select="."/></li>
+            </xsl:for-each>
+            </ul>
+            <hr/>
+            <xsl:if test="capabilities/experimental/mobileEmulation/deviceName">
+              <h5>Device:</h5>
+              <xsl:value-of select="capabilities/experimental/mobileEmulation/deviceName"/>
+            </xsl:if>
+
+
+          </xsl:if>
+
         </div>
       </div>
     </xsl:for-each>
