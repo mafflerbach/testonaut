@@ -70,13 +70,13 @@ class User extends Base implements ProviderInterface {
       $this->routing->response($this->response);
       $this->routing->render('user.xsl');
     });
-    $this->routing->route('.*/(\d)/register', function ($id) {
+    $this->routing->route('register', function () {
 
-      $foo = $this->register();
+      $foo = $this->register($this->response);
       $this->response['mode'] = 'register';
 
       $this->routing->response($this->response);
-      $this->routing->render('user.xsl');
+      $this->routing->render('register.xsl');
     });
 
     $this->routing->route('', function () {
@@ -120,7 +120,7 @@ class User extends Base implements ProviderInterface {
         $group = 0;
       }
 
-      if ($user->save($request->post['email'], $request->post['password'], $request->post['displayname'], $group , $id)) {
+      if ($user->save($request->post['email'], $request->post['password'], $request->post['displayname'], $group, $id)) {
         $messageBody = "Edit User";
         $result = 'success';
       } else {
@@ -197,40 +197,31 @@ class User extends Base implements ProviderInterface {
 
 
   protected function register(&$response) {
-    $data = array(
-      'email' => 'Your email',
-      'password' => 'Your password',
-      'displayName' => '',
-    );
 
-    $form = $app['form.factory']->createBuilder('form', $data)
-      ->add('email')
-      ->add('displayName')
-      ->add('password', 'password')
-      ->getForm();
+    $request = new Request();
+    $messageBody = "";
+    $result = 'fail';
 
-    $form->handleRequest($request);
-
-    $message = "";
-    if ($request->isMethod('POST')) {
-      $data = $form->getData();
-
+    if (!empty($request->post)) {
       $user = new \testonaut\User();
 
-      if (!$user->exist($data['email'])) {
-        $user->add($data['email'], $data['password'], $data['displayName']);
-        $message = "Add User";
+      if (!$user->exist($request->post['email'])) {
+        $user->add($request->post['email'], $request->post['password'], $request->post['displayName']);
+        $messageBody = "Add User";
+        $result = 'success';
       } else {
-        $message = "Can't create User. User exists";
+        $messageBody = "Can't create User. User exists";
+        $result = 'fail';
       }
+
+      $response['message'] = $messageBody;
+
+      $this->routing->response($response);
+      $this->routing->render('register.xsl');
+
     }
 
-    $app['request'] = array(
-      'baseUrl' => $request->getBaseUrl(),
-      'message' => $message,
-    );
 
-    return $app['twig']->render('register.twig', array('form' => $form->createView()));
   }
 
 }

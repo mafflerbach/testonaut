@@ -725,17 +725,12 @@ function initGlobalconfig() {
 
         if (data[0].driverOptions != '') {
           var option = jQuery.parseJSON(data[0].driverOptions);
-          console.log(option.dimensions);
           $("#height").val(option.dimensions.height);
           $("#width").val(option.dimensions.width);
           $("#width").trigger('blur');
         }
-
-
       }
     });
-
-
   });
 
   $("a[data-action='deleteProfile']").click(function (e) {
@@ -846,21 +841,21 @@ function initEdituser() {
   $('.inactive').click(function (e) {
     e.preventDefault();
     var href = $(this).attr('href');
-    statusDialog(href, 'Would you like deactivate User', 'Deaktivate User');
+    statusDialog(href, 'Would you like deactivate User', 'Deaktivate User', '#user');
 
   })
 
   $('.activate').click(function (e) {
     e.preventDefault();
     var href = $(this).attr('href');
-    statusDialog(href, 'Would you like activate User', 'Activate User');
+    statusDialog(href, 'Would you like activate User', 'Activate User', '#user');
 
   })
 
   $('.delete').click(function (e) {
     e.preventDefault();
     var href = $(this).attr('href');
-    statusDialog(href, 'Would you like delete User', 'Delete User');
+    statusDialog(href, 'Would you like delete User', 'Delete User', '#user');
   })
 
 
@@ -876,7 +871,12 @@ jQuery.fn.center = function () {
   return this;
 }
 
-function statusDialog(href, message, title) {
+function statusDialog(href, message, title, hash) {
+
+  if (hash == undefined) {
+    hash = '';
+  }
+
   $('#dialog p').empty();
   $('#dialog h4').empty();
 
@@ -908,7 +908,9 @@ function statusDialog(href, message, title) {
         });
 
         window.setTimeout(function () {
-            window.location.href = baseUrl + path;
+          window.location.href = baseUrl + path + hash;
+          window.location.reload(true);
+
           },
           1500)
       }

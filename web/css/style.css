@@ -1,4 +1,4 @@
-.login-form, .reset-form {
+.login-form, .reset-form, .register-form {
     width: 25rem;
     height: 18.75rem;
     position: fixed;
@@ -12,7 +12,7 @@
     transform: scale(.8);
 }
 
-.reset-form {
+.reset-form, .register-form {
     height: inherit;
 }
 
@@ -255,4 +255,15 @@ tr.failed td {
     margin:0;
     display: inline-block;
     margin: 0.2em;
+}
+
+#form-message {
+    width: 50%;
+    position: absolute;
+    margin: 25%;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #444;
+    box-shadow: 0px 0px 10px -2px;
+    padding: 1rem;
 }

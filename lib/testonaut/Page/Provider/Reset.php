@@ -47,6 +47,9 @@ class Reset extends Base implements ProviderInterface {
 
       if ($reset['result']) {
         $message = "Your new password: " . $reset['password'];
+        mail($name, 'password reset', $message);
+        $message = "Your new password is send to Address";
+
       } else {
         $message = "Can't reset password.";
       }
