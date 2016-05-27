@@ -50,7 +50,6 @@
             <xsl:when test="/data/system/requestUri/text() != ''">
               <xsl:call-template name="link">
                 <xsl:with-param name="link">
-                  <xsl:value-of select="/data/system/requestUri"/>
                   <xsl:value-of select="$link"/>
                 </xsl:with-param>
                 <xsl:with-param name="label" select="$label"/>
