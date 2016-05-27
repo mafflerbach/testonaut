@@ -45,7 +45,7 @@
 
     <xsl:choose>
       <xsl:when test="item">
-        <li class="node">
+        <li class="node collapsed">
           <xsl:choose>
             <xsl:when test="/data/system/requestUri/text() != ''">
               <xsl:call-template name="link">
