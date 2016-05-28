@@ -62,9 +62,6 @@ $rules = array (
 $security = new \testonaut\Security\Provider();
 $security->setFirewall($rules);
 
-$debug = new \testonaut\Debug\Provider();
-$debug->observe('\mafflerbach\Routing');
-
 $routing = new \mafflerbach\Routing();
 
 

@@ -24,6 +24,9 @@ class Menu {
   private $page;
   private $path;
   private $context;
+  private $test = false;
+  private $type = '';
+
 
   public function __construct($page) {
     $this->page = new Page($page);
@@ -38,7 +41,7 @@ class Menu {
 
     $list = $this->listing();
 
-    if ($user->checkUser()) {
+    if ($user->checkUser() || $this->test) {
       return $list['private'];
     } else {
       return $list['public'];
@@ -47,7 +50,6 @@ class Menu {
 
   protected function listing() {
     $request = new Request();
-    $config = $this->page->config();
 
     $rules = array(
       'public' => $this->getPublic(),
@@ -57,10 +59,19 @@ class Menu {
     return $rules;
   }
 
+  protected function config($config = NULL) {
+    if ($config != NULL) {
+      return $config;
+    }else {
+      return $this->page->config();
+    }
+  }
+
 
   private function getPublic() {
     $request = new Request();
-    $config = $this->page->config();
+
+    $config = $this->config();
 
     $resources = $this->resources();
 
@@ -94,7 +105,7 @@ class Menu {
 
   private function getPrivate() {
     $request = new Request();
-    $config = $this->page->config();
+    $config = $this->config();
 
     $resources = $this->resources();
 
@@ -241,6 +252,13 @@ class Menu {
     );
 
     return $push;
-
   }
+
+  protected function test($value) {
+    $this->test = $value;
+  }
+  protected function type($value) {
+    $this->test = $value;
+  }
+
 }

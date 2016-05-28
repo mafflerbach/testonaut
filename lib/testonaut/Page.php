@@ -246,11 +246,13 @@ class Page {
   public function config($config = array()) {
 
     $file = $this->transCodePath() . '/config';
+
     if (empty($config)) {
       if (!file_exists($file) && is_dir($this->transCodePath())) {
         file_put_contents($file, '{"type":"static","browser":[]}');
       }
       if (file_exists($file)) {
+
         return json_decode(file_get_contents($file), TRUE);
       }
     } else {

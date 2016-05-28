@@ -65,6 +65,7 @@ class Page {
   public function getType() {
 
     $settings = $this->page->config();
+    
     for ($i = 0; $i < count($this->types); $i++) {
       if ($settings['type'] == $this->types[$i]) {
         return $this->types[$i];

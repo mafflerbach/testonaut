@@ -105,7 +105,7 @@ class Routing {
 
     $dom = new Util('1.0', 'utf-8');
     $dom->formatOutput = true;
-    $dom->node_create($this->response, null, false, 'data');
+    $dom->nodeCreate($this->response, null, false, 'data');
 
     $this->content = $dom->saveXML();
   }

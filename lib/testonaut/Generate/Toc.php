@@ -86,7 +86,7 @@ class Toc {
 
     $util = new Util();
     $util->formatOutput = true;
-    $util->node_create($r, null, true, 'toc');
+    $util->nodeCreate($r, null, true, 'toc');
 
     return $util;
   }

@@ -45,9 +45,6 @@ class Javascript {
   }
 
 
-  /**
-   * @TODO replace jquery with nanoajax
-   */
   public function invokeNanoajax() {
     $js = "
       setTimeout(function () {

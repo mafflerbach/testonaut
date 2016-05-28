@@ -14,9 +14,6 @@
 
 namespace mafflerbach\Page;
 
-
-use mafflerbach\Application;
-
 interface ProviderInterface {
 
   public function connect();

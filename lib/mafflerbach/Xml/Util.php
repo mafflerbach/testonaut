@@ -22,7 +22,7 @@ class Util extends \DOMDocument {
     parent::__construct();
   }
 
-  public function node_create($arr, $items = null, $useAttributes = false, $rootName = 'items') {
+  public function nodeCreate($arr, $items = null, $useAttributes = false, $rootName = 'items') {
     $name = '';
     if (is_null($items)) {
       $items = $this->appendChild($this->createElement($rootName));
@@ -63,7 +63,7 @@ class Util extends \DOMDocument {
       $items->appendChild($fragment);
 
       if (is_array($value)) {
-        self::node_create($value, $fragment, $useAttributes);
+        self::nodeCreate($value, $fragment, $useAttributes);
       }
     }
   }
