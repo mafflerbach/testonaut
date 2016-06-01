@@ -84,10 +84,14 @@ class Profile {
    * @return array
    */
   public function getByName($name) {
+    $name = urldecode($name);
+
     $sql = "select * from profile where name = :name";
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':name', $name);
     $result = $stm->execute();
+
+
 
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $profile[] = $row;

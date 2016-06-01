@@ -243,7 +243,7 @@ class Menu {
       $push[] = array(
         'label' => $node['name'],
         'badge' => $node['browser'],
-        'path' => 'run/' . $this->path . '/' . $node['name']
+        'path' => 'run/' . $this->path . '' . $node['name']
       );
     }
     $push[] = array(

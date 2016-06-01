@@ -26,7 +26,7 @@ class TocTest extends \PHPUnit_Framework_TestCase {
 
   public function testRunDir() {
     $toc = new Toc('..\..\..\root');
-    $toc = $toc->runDir()->saveXML();
+    $toc = $toc->runDir();
     $expected = '<?xml version="1.0"?>
 <toc>
   <item name="File">

@@ -14,15 +14,12 @@
 
 namespace testonaut\Selenese;
 
-use testonaut\Capabilities;
-use testonaut\Selenese\Test;
 use testonaut\Compare;
-use testonaut\Image;
 use testonaut\Matrix;
 use testonaut\Page;
 use testonaut\Selenese\Command\captureEntirePageScreenshot;
-use testonaut\Selenese\Command\Pause;
 use testonaut\Config;
+use testonaut\Selenium\Webdriver\Setup;
 use testonaut\Settings\Browser;
 use testonaut\Utils\Javascript;
 
@@ -108,21 +105,6 @@ class Runner {
 
 
   /**
-   * @param \RemoteWebDriver $driver
-   * @return \RemoteWebDriver
-   */
-  private function setDriverOption(\RemoteWebDriver $driver, $profile) {
-    if (isset($profile['driverOptions'])) {
-      $option = json_decode($profile['driverOptions'], true);
-      if (isset($option['dimensions'])) {
-        $d = new \WebDriverDimension((int)$option['dimensions']['width'], (int)$option['dimensions']['height']);
-        $driver->manage()->window()->setSize($d);
-      }
-    }
-    return $driver;
-  }
-
-  /**
    * @param $test
    * @param $profile
    * @param Page $page
@@ -132,14 +114,12 @@ class Runner {
     $this->imageDir = $page->getImagePath();
     $pageConf = $page->config();
     $res = array();
-    $capabilities = $this->getCapabilities($profile);
 
-    $hub = Config::getInstance()->seleniumHub;
-    $webDriver = \RemoteWebDriver::create($hub, $capabilities, 5000);
+    $webdriverSetup = new Setup($profile);
+    $webDriver = $webdriverSetup->init();
 
     $pollFile = Config::getInstance()->Path . "/tmp/" . $this->page->getPath();
 
-    $webDriver = $this->setDriverOption($webDriver, $profile);
     $i = 0;
     foreach ($test->commands as $command) {
 
@@ -147,14 +127,7 @@ class Runner {
       $commandStr = str_replace(' ', '', $commandStr);
       try {
         if ($commandStr == 'captureEntirePageScreenshot') {
-
-          $srcImage = $this->getPath($profile) . "/" . $command->arg1;
-          $res[] = $this->takeScreenshot($profile, $webDriver, $srcImage);
-
-          $compareObj = new Compare();
-          $compare = $compareObj->compare($profile, $command->arg1, $page->getPath(), $this->imageDir);
-          $res = $compareObj->compareResult($compare, $res, $command->arg1);
-
+          $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $command->arg1);
           continue;
         } else {
           $commandResult = $command->runWebDriver($webDriver);
@@ -162,12 +135,7 @@ class Runner {
 
         if ($pageConf['screenshots'] == 'step') {
           $imageName = "step_" . $i . ".png";
-          $srcImage = $this->getPath($profile) . '/' . $imageName;
-          $this->takeScreenshot($profile, $webDriver, $srcImage);
-
-          $compareObj = new Compare();
-          $compare = $compareObj->compare($profile, $imageName, $page->getPath(), $this->imageDir);
-          $res = $compareObj->compareResult($compare, $res, "step_" . $i . ".png");
+          $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $imageName);
         }
 
       } catch (\Exception $e) {
@@ -201,12 +169,7 @@ class Runner {
     }
 
     if ($pageConf['screenshots'] == 'test') {
-      $srcImage = $this->getPath($profile) . "/afterTest.png";
-      $this->takeScreenshot($profile, $webDriver, $srcImage);
-
-      $compareObj = new Compare();
-      $compare = $compareObj->compare($profile, 'afterTest.png', $page->getPath(), $this->imageDir);
-      $res = $compareObj->compareResult($compare, $res, 'afterTest.png');
+      $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $imageName);
       $this->polling($pollFile, $res);
     }
 
@@ -221,6 +184,16 @@ class Runner {
 
   private function polling($pollFile, $res) {
     file_put_contents($pollFile, json_encode($res));
+  }
+
+
+  private function captureEntirePageScreenshot($profile, $webDriver, $page, $imagename) {
+    $srcImage = $this->getPath($profile) . "/" . $imagename;
+    $res[] = $this->takeScreenshot($profile, $webDriver, $srcImage);
+
+    $compareObj = new Compare();
+    $compare = $compareObj->compare($profile, $imagename, $page->getPath(), $this->imageDir);
+    return $compareObj->compareResult($compare, $res, $imagename);
   }
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
@@ -247,16 +220,6 @@ class Runner {
     );
   }
 
-  protected function getProfileName($profile) {
-    if (isset($profile['browser'])) {
-      if (isset($profile['name'])) {
-        $profileName = $profile['name'] . '_' . $profile['browser'];
-      } else {
-        $profileName = $profile['browser'] . '_default';
-      }
-    }
-    return $profileName;
-  }
 
   private function getPath($profile) {
 
@@ -284,82 +247,16 @@ class Runner {
     return $this->imageDir . '/' . $profileName . "/src";
   }
 
-  private function setExperimentalOption($profile, \ChromeOptions $options) {
-    if (isset($profile['capabilities'])) {
-      $capabilities = json_decode($profile['capabilities'], true);
-
-      if (isset($capabilities['experimental']) && isset($capabilities['experimental']['mobileEmulation'])) {
-        $options = $options->setExperimentalOption("mobileEmulation", $capabilities['experimental']['mobileEmulation']);
-      }
-    }
-
-    return $options;
-  }
-
-  private function getCapabilities($profile) {
-
-    $DesiredCapabilities = new Capabilities();
-
+  protected function getProfileName($profile) {
     if (isset($profile['browser'])) {
-      $browserName = $this->normalizeBrowserName($profile['browser']);
-    } else {
-      $browserName = $this->normalizeBrowserName($profile['browserName']);
-    }
-
-    if (method_exists($DesiredCapabilities, $browserName)) {
-      $capabilities = $DesiredCapabilities::$browserName();
-
-      if ($browserName == 'chrome') {
-        $options = new \ChromeOptions();
-        $options->addArguments(array(
-          '--disable-web-security',
-        ));
-        $options->addArguments(array(
-          '--user-data-dir=' . sys_get_temp_dir(),
-        ));
-
-        $options = $this->setExperimentalOption($profile, $options);
-        $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
-      }
-
-      if ($browserName == "MicrosoftEdge") {
-      }
-
-      if ($browserName == 'firefox') {
-
-        $options = new \FirefoxProfile();
-        $options->setPreference('security.fileuri.strict_origin_policy', FALSE);
-        $options->setPreference('network.http.referer.XOriginPolicy', 1);
-
-        $capabilities->setCapability(\FirefoxDriver::PROFILE, $options);
-      }
-
-      if (isset($profile['version'])) {
-        $capabilities->setVersion($profile['version']);
-      }
-      if (isset($profile['platform'])) {
-        $capabilities->setPlatform($profile['platform']);
+      if (isset($profile['name'])) {
+        $profileName = $profile['name'] . '_' . $profile['browser'];
+      } else {
+        $profileName = $profile['browser'] . '_default';
       }
     }
-
-    return $capabilities;
+    return $profileName;
   }
 
-
-  private function normalizeBrowserName($browserString) {
-
-    $browserString = str_replace('*', '', $browserString);
-
-    if (strpos($browserString, ' ') > 0) {
-      $expl = explode(' ', $browserString);
-      $browserName = $expl[0] . ucfirst($expl[1]);
-    } else if (strpos($browserString, '_') > 0) {
-      $expl = explode('_', $browserString);
-      $browserName = $expl[0] . ucfirst($expl[1]);
-    } else {
-      $browserName = $browserString;
-    }
-    return $browserName;
-  }
 
 }

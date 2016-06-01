@@ -198,9 +198,12 @@
     <div class="input-control select">
       <select name="device">
         <option value="">Device</option>
-        <xsl:for-each select="/data/devices/*">
-          <option value="{name(.)}">
-            <xsl:value-of select="."/>
+        <xsl:for-each select="/data/devices/item">
+          <option value="{value}_portrait">
+            <xsl:value-of select="title"/> Portrait
+          </option>
+          <option value="{value}_landscape">
+            <xsl:value-of select="title"/> Landscape
           </option>
         </xsl:for-each>
       </select>

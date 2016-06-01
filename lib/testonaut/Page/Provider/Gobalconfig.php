@@ -74,7 +74,7 @@ class Globalconfig extends Base implements ProviderInterface {
       } else {
         $profile = new Profile();
         $profileList = $profile->getByName($profilename);
-        $me = json_decode($profileList[ 0]['capabilities'], true);
+        $me = json_decode($profileList[0]['capabilities'], true);
 
         $profileList[0]['capabilities'] = $me;
 
@@ -164,6 +164,7 @@ class Globalconfig extends Base implements ProviderInterface {
       );
 
       if ($request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
+
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
             "deviceName" => $request['device']

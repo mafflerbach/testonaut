@@ -65,6 +65,8 @@ $security->setFirewall($rules);
 $routing = new \mafflerbach\Routing();
 
 
+
+
 $routing->before($security);
 //$routing->after($debug);
 $routing->push('(login)', new \testonaut\Page\Provider\Login());
@@ -83,3 +85,4 @@ $routing->push('run/.*', new \testonaut\Page\Provider\Run());
 $routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
 $routing->push('.*$', new \testonaut\Page\Provider\Start());
 $routing->execute();
+
