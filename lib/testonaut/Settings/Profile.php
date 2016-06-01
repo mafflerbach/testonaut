@@ -9,6 +9,7 @@ class Profile {
 
   private $profile;
   private $db;
+
   public function __construct() {
     $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
     $this->db = $db->getInstance();
@@ -55,7 +56,7 @@ class Profile {
       );
 
     }
-    return $foo ;
+    return $foo;
   }
 
   /**
@@ -71,10 +72,11 @@ class Profile {
 
     $foo = $this->getCustomProfiles();
 
-    $browserProfiles = array('all' => $browsers,
+    $browserProfiles = array(
+      'all' => $browsers,
       'grid' => $grid,
       'custom' => $foo
-      );
+    );
     return $browserProfiles;
 
   }
@@ -91,26 +93,24 @@ class Profile {
     $stm->bindParam(':name', $name);
     $result = $stm->execute();
 
-
-
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
       $profile[] = $row;
     }
 
     return $profile;
-
   }
 
   /**
    * @param $name
    */
   public function delete($name) {
+    $name = urldecode($name);
 
     $sql = "delete from profile where `name` = :name";
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':name', $name);
 
-    $stm->execute();
+    return $stm->execute();
 
   }
 

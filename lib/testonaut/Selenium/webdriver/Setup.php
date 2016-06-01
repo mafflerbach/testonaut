@@ -17,12 +17,15 @@ namespace testonaut\Selenium\Webdriver;
 
 use testonaut\Capabilities;
 use testonaut\Config;
+use testonaut\Settings\Emulator\Devices;
+
 
 class Setup {
 
   private $hub = '';
   private $profile = '';
   private $deviceData = '';
+  private $type = '';
 
   public function __construct($profile) {
 
@@ -35,8 +38,9 @@ class Setup {
   public function init() {
     $capabilities = $this->getCapabilities();
     $webDriver = \RemoteWebDriver::create($this->hub, $capabilities, 5000);
-    return $this->setDriverOption($webDriver);
+    $webDriver = $this->setDriverOption($webDriver);
 
+    return $webDriver;
   }
 
   /**
@@ -44,11 +48,20 @@ class Setup {
    * @return \RemoteWebDriver
    */
   public function setDriverOption(\RemoteWebDriver $driver) {
+
+    if ($this->deviceData != '') {
+
+      $d = new \WebDriverDimension(
+        (int)$this->deviceData['screen'][$this->type]['width'],
+        (int)$this->deviceData['screen'][$this->type]['height']
+      );
+      $driver->manage()->window()->setSize($d);
+    }
+
     if (isset($this->profile['driverOptions'])) {
       $option = json_decode($this->profile['driverOptions'], true);
       if (isset($option['dimensions'])) {
         $d = new \WebDriverDimension((int)$option['dimensions']['width'], (int)$option['dimensions']['height']);
-
         $driver->manage()->window()->setSize($d);
       }
     }
@@ -90,8 +103,12 @@ class Setup {
         $options->addArguments(array(
           '--user-data-dir=' . sys_get_temp_dir(),
         ));
+        if ($this->deviceData != '') {
+          $options->addArguments(array(
+            '--user-agent=' . $this->deviceData['user-agent'],
+          ));
+        }
 
-        $options = $this->setExperimentalOption($options);
         $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
       }
 
@@ -142,6 +159,13 @@ class Setup {
     if (isset($deviceName['experimental'])) {
       $deviceName = $deviceName['experimental']['mobileEmulation']['deviceName'];
 
+      if (strpos($deviceName, 'portrait') !== FALSE) {
+        $this->type = 'vertical';
+      }
+      if (strpos($deviceName, 'landscape') !== FALSE) {
+        $this->type = 'horizontal';
+      }
+
       $devices = new Devices();
       $name = str_replace('_portrait', '', $deviceName);
       $name = str_replace('_landscape', '', $name);
@@ -149,6 +173,10 @@ class Setup {
 
       return $this->deviceData = $devices->getDevicesByName($name);
     }
-
   }
+
+  public function getPixelRatio() {
+    return $this->deviceData['screen']['device-pixel-ratio'];
+  }
+
 }
