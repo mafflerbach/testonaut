@@ -125,12 +125,23 @@ class Runner {
 
       $commandStr = str_replace('testonaut\Selenese\Command\\', '', get_class($command));
       $commandStr = str_replace(' ', '', $commandStr);
+
       try {
         if ($commandStr == 'captureEntirePageScreenshot') {
           $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $command->arg1);
           continue;
         } else {
+          
           $commandResult = $command->runWebDriver($webDriver);
+          if($commandStr == 'Open' ||
+            $commandStr == 'Click' ||
+            $commandStr == 'ClickAndWait'
+          ){
+            $ratio = $webdriverSetup->getPixelRatio();
+            $js = new Javascript($webDriver);
+            $js->setPixelRatio($ratio);
+          }
+
         }
 
         if ($pageConf['screenshots'] == 'step') {

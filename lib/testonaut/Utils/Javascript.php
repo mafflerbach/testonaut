@@ -88,4 +88,13 @@ class Javascript {
     return $this->webDriver;
   }
 
+  public function setPixelRatio($ratio){
+
+    $js = '
+      console.log(window.devicePixelRatio='.$ratio.')  
+    ';
+    $this->webDriver->executeScript($js, array());
+    return $this->webDriver;
+  }
+
 }
