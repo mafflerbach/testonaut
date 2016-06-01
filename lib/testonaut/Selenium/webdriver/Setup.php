@@ -176,7 +176,10 @@ class Setup {
   }
 
   public function getPixelRatio() {
-    return $this->deviceData['screen']['device-pixel-ratio'];
+    if ($this->deviceData != '') {
+      return $this->deviceData['screen']['device-pixel-ratio'];
+    }
+    return 1;
   }
 
 }
