@@ -54,9 +54,12 @@
              id="deleteCompleteHistory">Delete Complete
             History
           </a>
-          <xsl:call-template name="browser">
-            <xsl:with-param name="browser" select="/data/history/*"/>
-          </xsl:call-template>
+          <xsl:for-each select="/data/history/*">
+
+            <xsl:call-template name="browser">
+              <xsl:with-param name="browser" select="."/>
+            </xsl:call-template>
+          </xsl:for-each>
         </div>
         <div class="frame" id="githistory">
           <xsl:call-template name="git-history"/>
@@ -144,16 +147,29 @@
   <xsl:template name="browser">
     <xsl:param name="browser"/>
 
-    <xsl:for-each select="$browser">
       <div class="panel" data-role="panel">
         <div class="heading">
           <span class="title">
-            <xsl:value-of select="name($browser)"/>
-            <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{name($browser)}/10"
-               class="button danger mini-button deleteLastEntry"
-               style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
-              delete 10 oldest entries
-            </a>
+            <xsl:choose>
+              <xsl:when test="$browser/@name">
+                <xsl:value-of select="$browser/@name"/>
+                <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{$browser/@name}/10"
+                   class="button danger mini-button deleteLastEntry"
+                   style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
+                  delete 10 oldest entries
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="name($browser)"/>
+                <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{name($browser)}/10"
+                   class="button danger mini-button deleteLastEntry"
+                   style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
+                  delete 10 oldest entries
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
+
+
           </span>
         </div>
         <div class="content">
@@ -163,7 +179,7 @@
           </xsl:call-template>
         </div>
       </div>
-    </xsl:for-each>
+
   </xsl:template>
 
   <xsl:template name="page">

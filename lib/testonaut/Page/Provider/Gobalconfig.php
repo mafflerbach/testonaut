@@ -73,6 +73,7 @@ class Globalconfig extends Base implements ProviderInterface {
 
       } else {
         $profile = new Profile();
+
         $profileList = $profile->getByName($profilename);
         $me = json_decode($profileList[0]['capabilities'], true);
 

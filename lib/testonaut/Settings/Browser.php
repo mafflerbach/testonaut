@@ -53,11 +53,11 @@ class Browser {
       if (isset($list[$i]['browserName'])) {
         $browserName .= '_'.$list[$i]['browserName'];
       } else {
-        $browserName .= "_".$list[$i]['name'];
-        $browserName .= "_".$list[$i]['browser'];
+        $browserName .= " ".$list[$i]['name'];
+        $browserName .= " ".$list[$i]['browser'];
       }
       if (isset($list[$i]['version'])) {
-        $browserName .= "_".$list[$i]['version'];
+        $browserName .= " ".$list[$i]['version'];
       }
 
       if (isset($settings['browser']['active'])) {

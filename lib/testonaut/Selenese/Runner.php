@@ -128,25 +128,21 @@ class Runner {
 
       try {
         if ($commandStr == 'captureEntirePageScreenshot') {
-          $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $command->arg1);
+          $this->captureEntirePageScreenshot($profile, $webDriver, $page, $command->arg1, $res);
           continue;
         } else {
-          
+
           $commandResult = $command->runWebDriver($webDriver);
-          if($commandStr == 'Open' ||
-            $commandStr == 'Click' ||
-            $commandStr == 'ClickAndWait'
-          ){
+          if ($commandStr == 'Open' || $commandStr == 'Click' || $commandStr == 'ClickAndWait') {
             $ratio = $webdriverSetup->getPixelRatio();
             $js = new Javascript($webDriver);
             $js->setPixelRatio($ratio);
           }
-
         }
 
         if ($pageConf['screenshots'] == 'step') {
           $imageName = "step_" . $i . ".png";
-          $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $imageName);
+          $this->captureEntirePageScreenshot($profile, $webDriver, $page, $imageName, $res);
         }
 
       } catch (\Exception $e) {
@@ -173,6 +169,8 @@ class Runner {
         $res
       ));
 
+
+
       if ($commandResult->continue === FALSE) {
         break;
       }
@@ -180,7 +178,8 @@ class Runner {
     }
 
     if ($pageConf['screenshots'] == 'test') {
-      $res = $this->captureEntirePageScreenshot($profile, $webDriver, $page, $imageName);
+      $imageName = 'afterTest.png';
+      $this->captureEntirePageScreenshot($profile, $webDriver, $page, $imageName, $res);
       $this->polling($pollFile, $res);
     }
 
@@ -189,7 +188,6 @@ class Runner {
     $matrix->writeResult($res, $profile);
 
     unlink($pollFile);
-
     return $res;
   }
 
@@ -198,7 +196,7 @@ class Runner {
   }
 
 
-  private function captureEntirePageScreenshot($profile, $webDriver, $page, $imagename) {
+  private function captureEntirePageScreenshot($profile, $webDriver, $page, $imagename, &$res) {
     $srcImage = $this->getPath($profile) . "/" . $imagename;
     $res[] = $this->takeScreenshot($profile, $webDriver, $srcImage);
 
@@ -209,13 +207,13 @@ class Runner {
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
 
-    if ($profile['browser'] == "chrome") {
+    if (strpos($profile['browser'], 'chrome') !== FALSE) {
       $javascript = new Javascript($webDriver);
       $javascript->invokeHtml2Canvas();
       $javascript->invokeNanoajax();
-      sleep(3);
+      sleep(2);
       $javascript->invokeTakeScreenshot($srcImage);
-      sleep(5);
+      sleep(2);
 
     } else {
       $screenCommand = new CaptureEntirePageScreenshot();
@@ -261,9 +259,9 @@ class Runner {
   protected function getProfileName($profile) {
     if (isset($profile['browser'])) {
       if (isset($profile['name'])) {
-        $profileName = $profile['name'] . '_' . $profile['browser'];
+        $profileName = $profile['name'] . ' ' . $profile['browser'];
       } else {
-        $profileName = $profile['browser'] . '_default';
+        $profileName = $profile['browser'] . ' default';
       }
     }
     return $profileName;

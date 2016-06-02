@@ -68,14 +68,15 @@ class Screenshot extends Base implements ProviderInterface {
       print(json_encode($message));
       die;
     });
-    $this->routing->route('.*/copy/(\w+)/(.*)/(.*)$', function ($browser, $imageName, $path) {
+    $this->routing->route('.*/copy/(.*)/(.*)/(.*)$', function ($browser, $imageName, $path) {
 
       $this->path = urldecode($path);
+      $browser = urldecode($browser);
 
       $src = $this->getImagePath() . '/' . $browser . '/src/' . $imageName;
       $ref = $this->getImagePath() . '/' . $browser . '/ref/' . $imageName;
-
-      if (@copy($src, $ref)) {
+      
+      if (copy($src, $ref)) {
         $result = 'success';
         $messageBody = 'copied';
       } else {

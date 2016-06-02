@@ -12,7 +12,6 @@
  */
 
 
-
 namespace testonaut;
 
 
@@ -46,9 +45,9 @@ class Page {
   /**
    * @throws \Exception
    */
-  public function getCompiledPage(){
-      $compiler = new Page\Compiler($this);
-      return $compiler->getContent();
+  public function getCompiledPage() {
+    $compiler = new Page\Compiler($this);
+    return $compiler->getContent();
   }
 
   /**
@@ -74,10 +73,12 @@ class Page {
     if (!file_exists($file) && $save === NULL) {
       return '';
     }
-    if ($content == NULL && $save === NULL) {
+    if ($content === NULL && $save === NULL) {
 
       $dom = new \DOMDocument("1.0", "UTF-8");
-      $dom->loadHTML('<?xml encoding="utf-8" ?>' . file_get_contents($file));
+      $dom->formatOutput = true;
+      $dom->loadHTML(file_get_contents($file));
+
       $pageContent = $dom->saveXML();
 
       return $pageContent;
@@ -88,7 +89,11 @@ class Page {
           throw new \Exception();
         }
       }
-      file_put_contents($filename, $content);
+      $dom = new \DOMDocument();
+      $dom->formatOutput = true;
+      $dom->loadHTML($content);
+
+      file_put_contents($filename, $dom->saveHTML());
     }
   }
 
@@ -134,7 +139,7 @@ class Page {
   public function getLinkedFiles() {
 
     $files = array(
-      'images'    => array(),
+      'images' => array(),
       'documents' => array()
     );
     $linkDir = $this->getFilePath();
@@ -177,9 +182,9 @@ class Page {
 
     for ($i = 0; $i < count($browser); $i++) {
       if (isset($browser[$i]['browserName'])) {
-        $name = str_replace(' ', '_', $browser[$i]['browserName']).'_default';
+        $name = str_replace(' ', '_', $browser[$i]['browserName']) . '_default';
       } else {
-        $name = str_replace(' ', '_', $browser[$i]['name']).'_'.$browser[$i]['browser'];
+        $name = str_replace(' ', '_', $browser[$i]['name']) . '_' . $browser[$i]['browser'];
       }
 
       if (file_exists($imageDir . "/" . $name . "/src/")) {
@@ -221,8 +226,9 @@ class Page {
    */
   public function getProjectRoot() {
     $explode = explode(".", $this->path);
-    return $this->root ."/".$explode[0];
+    return $this->root . "/" . $explode[0];
   }
+
   /**
    * @return mixed
    */
@@ -282,7 +288,7 @@ class Page {
    * @return bool
    */
   protected function _delete($dir) {
-    
+
     $files = array_diff(scandir($dir), array(
       '.',
       '..'

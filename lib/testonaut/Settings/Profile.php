@@ -97,6 +97,7 @@ class Profile {
       $profile[] = $row;
     }
 
+
     return $profile;
   }
 

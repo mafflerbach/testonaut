@@ -78,22 +78,25 @@ class Matrix {
   public function writeResult($content, $capabilities) {
 
     if (isset($capabilities['platform'])) {
-      $browser = $capabilities['platform'] ."_";
+      $browser = $capabilities['platform'] ." ";
     } else {
       $browser = "";
     }
 
     if (isset($capabilities['browserName'])) {
-      $browser .= $capabilities['name'].'_'.$capabilities['browserName'] ;
+      $browser .= $capabilities['browserName'] ;
     } else {
       $browser .= $capabilities['browser'] ;
     }
 
     if (isset($capabilities['version'])) {
-      $browser .= "_".$capabilities['version'];
+      $browser .= " ".$capabilities['version'];
     }
 
-    
+    if (isset($capabilities['name'])) {
+      $browser .= " ".$capabilities['name'];
+    }
+
     $db = \testonaut\Config::getInstance()->db;
     $dbInst = $db->getInstance();
     $sql = 'insert into history (browser, date, run, path, filename, result) '

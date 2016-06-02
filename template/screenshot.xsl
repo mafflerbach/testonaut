@@ -68,7 +68,15 @@
     <div class="panel collapsible" data-role="panel">
       <div class="heading">
         <span class="title">
-          <xsl:value-of select="name($browser)"/>
+          <xsl:choose>
+            <xsl:when test="@name">
+              <xsl:value-of select="@name"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="name($browser)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+
         </span>
       </div>
       <div class="content padding10">
@@ -135,15 +143,25 @@
                 <div style="width: 100%; height: 300px; border-radius: 0px; background-image: url('{$image/src}'); background-size: cover; background-repeat: no-repeat;"></div>
               </div>
               <div class="image-overlay op-green">
+                <xsl:variable name="path">
+                  <xsl:choose>
+                    <xsl:when test="../../../@name">
+                      <xsl:value-of select="../../../@name"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="name(../../..)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
 
                 <a class="copyImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                   href="{/data/system/baseUrl}screenshot/copy/{$path}/{$image/imageName}/{name(../..)}">
                   <span class="copy mif-checkmark mif-4x"
-                        data-link="{/data/system/baseUrl}screenshot/copy/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                        data-link="{/data/system/baseUrl}screenshot/copy/{$path}/{$image/imageName}/{name(../..)}">
                   </span>
                 </a>
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                   href="{/data/system/baseUrl}screenshot/delete/src/{name($path)}/{$image/imageName}/{name(../..)}">
                   <span class="delete mif-cross mif-4x"
                         data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{name(../..)}">
                   </span>

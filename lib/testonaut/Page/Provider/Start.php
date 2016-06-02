@@ -62,7 +62,7 @@ class Start extends Base implements ProviderInterface {
     $lastRun = $matrix->read();
 
     return array(
-      'content' => html_entity_decode($page->getCompiledPage()),
+      'content' => $page->getCompiledPage(),
       'config' => $page->config(),
       'lastresult' => $lastRun
     );

@@ -316,6 +316,8 @@ class Run extends Base implements ProviderInterface {
         $profile['platform'] = '';
       }
 
+      $profile['name'] = 'default';
+
       $capabilities[] = $profile;
 
     }

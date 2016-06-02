@@ -20,7 +20,7 @@ class Compare {
         $res[] = array(
           TRUE,
           'Reference Image ' . $imageName . 'does not exist',
-          'Comparison impossible'
+          ' Comparison impossible'
         );
         break;
       case FALSE;
@@ -111,9 +111,9 @@ class Compare {
   protected function getProfileName($profile) {
     if (isset($profile['browser'])) {
       if (isset($profile['name'])) {
-        $profileName = $profile['name'] . '_' . $profile['browser'];
+        $profileName = $profile['name'] . ' ' . $profile['browser'];
       } else {
-        $profileName = $profile['browser'] . '_default';
+        $profileName = $profile['browser'] . ' default';
       }
     }
     return $profileName;

@@ -158,6 +158,7 @@ class History extends Base implements ProviderInterface {
   }
 
   protected function deleteHistory($path, $param, $browser) {
+
     $db = \testonaut\Config::getInstance()->db;
     $dbIns = $db->getInstance();
     $sql = '';
@@ -205,7 +206,6 @@ class History extends Base implements ProviderInterface {
 
       $date = new \DateTime($result['date']);
 
-
       $foo[$result['browser']][$result['path']][] = array(
         'date' => $date->format('m.d.Y'),
         'time' => $date->format('H:i:s'),
@@ -213,6 +213,9 @@ class History extends Base implements ProviderInterface {
         'result' => $result['result']
       );
     }
+
+    
+
 
     return $foo;
   }

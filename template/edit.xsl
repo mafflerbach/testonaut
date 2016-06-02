@@ -208,7 +208,7 @@
 
       <textarea id="textarea" name="pageContent"
                 placeholder="Enter text ...">
-        <xsl:value-of select="/data/page/content"/>
+        <xsl:value-of select="/data/page/content" disable-output-escaping="yes"/>
       </textarea>
       <br/>
       <br/>
