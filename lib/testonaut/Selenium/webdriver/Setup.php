@@ -50,37 +50,20 @@ class Setup {
   public function setDriverOption(\RemoteWebDriver $driver) {
 
     if ($this->deviceData != '') {
-
-      $d = new \WebDriverDimension(
-        (int)$this->deviceData['screen'][$this->type]['width'],
-        (int)$this->deviceData['screen'][$this->type]['height']
-      );
+      $d = new \WebDriverDimension((int)$this->deviceData['screen'][$this->type]['width'], (int)$this->deviceData['screen'][$this->type]['height']);
       $driver->manage()->window()->setSize($d);
-    }
-
-    if (isset($this->profile['driverOptions'])) {
+    } else if (isset($this->profile['driverOptions'])) {
       $option = json_decode($this->profile['driverOptions'], true);
+
       if (isset($option['dimensions'])) {
         $d = new \WebDriverDimension((int)$option['dimensions']['width'], (int)$option['dimensions']['height']);
         $driver->manage()->window()->setSize($d);
       }
+    } else {
+      $driver->manage()->window()->maximize();
     }
     return $driver;
   }
-
-
-  private function setExperimentalOption(\ChromeOptions $options) {
-    if (isset($this->profile['capabilities'])) {
-      $capabilities = json_decode($this->profile['capabilities'], true);
-
-      if (isset($capabilities['experimental']) && isset($capabilities['experimental']['mobileEmulation'])) {
-        $options = $options->setExperimentalOption("mobileEmulation", $capabilities['experimental']['mobileEmulation']);
-      }
-    }
-
-    return $options;
-  }
-
 
   public function getCapabilities() {
 
@@ -155,23 +138,26 @@ class Setup {
 
   private function getDeviceData() {
 
-    $deviceName = json_decode($this->profile['capabilities'], true);
-    if (isset($deviceName['experimental'])) {
-      $deviceName = $deviceName['experimental']['mobileEmulation']['deviceName'];
+    if (isset($this->profile['capabilities'])) {
 
-      if (strpos($deviceName, 'portrait') !== FALSE) {
-        $this->type = 'vertical';
+      $deviceName = json_decode($this->profile['capabilities'], true);
+      if (isset($deviceName['experimental'])) {
+        $deviceName = $deviceName['experimental']['mobileEmulation']['deviceName'];
+
+        if (strpos($deviceName, 'portrait') !== FALSE) {
+          $this->type = 'vertical';
+        }
+        if (strpos($deviceName, 'landscape') !== FALSE) {
+          $this->type = 'horizontal';
+        }
+
+        $devices = new Devices();
+        $name = str_replace('_portrait', '', $deviceName);
+        $name = str_replace('_landscape', '', $name);
+        $name = str_replace('_', ' ', $name);
+
+        return $this->deviceData = $devices->getDevicesByName($name);
       }
-      if (strpos($deviceName, 'landscape') !== FALSE) {
-        $this->type = 'horizontal';
-      }
-
-      $devices = new Devices();
-      $name = str_replace('_portrait', '', $deviceName);
-      $name = str_replace('_landscape', '', $name);
-      $name = str_replace('_', ' ', $name);
-
-      return $this->deviceData = $devices->getDevicesByName($name);
     }
   }
 
