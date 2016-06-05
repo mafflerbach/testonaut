@@ -218,20 +218,28 @@ class Menu {
     $k = 0;
 
     foreach ($browsers['grid'] as $node) {
+
+
       $push[$k] = array(
-        'badge' => $node['platform'],
-        'version' => $node['version'],
         'label' => $node['browserName'],
         'path' => 'run/' . $this->path . '/' . $node['browserName'],
       );
 
-      if ($node['version'] != '') {
+      if (isset($node['platform'])) {
+        $push[$k]['badge'] = $node['platform'];
+      }
+
+      if (isset($node['version'])) {
+        $push[$k]['version'] = $node['version'];
+      }
+
+      if (isset($node['version']) && $node['version'] != '') {
         $push[$k]['path'] .= '/' . $node['version'];
       } else {
         $push[$k]['path'] .= '/default';
       }
 
-      if ($node['platform'] != '') {
+      if (isset($node['platform']) && $node['platform'] != '') {
         $push[$k]['path'] .= '/' . $node['platform'];
       } else {
         $push[$k]['path'] .= '/default';

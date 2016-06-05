@@ -125,7 +125,15 @@ class Globalconfig extends Base implements ProviderInterface {
       $this->saveProfile($request->post);
     }
   }
-
+  private function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+  }
   /**
    * @param $request
    */
@@ -161,7 +169,7 @@ class Globalconfig extends Base implements ProviderInterface {
     if ($browser == 'chrome') {
       $capabilities['arguments'] = array(
         "--disable-web-security",
-        "--user-data-dir=" . sys_get_temp_dir()
+        "--user-data-dir=" . sys_get_temp_dir().'/chromeinstances/'.$this->generateRandomString()
       );
 
       if ($request['device'] != '' && $request['width'] == '' && $request['height'] == '') {

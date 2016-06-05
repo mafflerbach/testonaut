@@ -43,6 +43,7 @@ class User {
     } else {
       return $this->internValidate($name, $password);
     }
+    session_write_close();
   }
 
   protected function internValidate($name, $password) {

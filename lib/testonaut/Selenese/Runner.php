@@ -169,8 +169,6 @@ class Runner {
         $res
       ));
 
-
-
       if ($commandResult->continue === FALSE) {
         break;
       }
@@ -188,8 +186,31 @@ class Runner {
     $matrix->writeResult($res, $profile);
 
     unlink($pollFile);
+    $this->cleanupTempFiles();
     return $res;
   }
+
+  private function cleanupTempFiles() {
+    if (file_exists(sys_get_temp_dir().'/chromeinstances')) {
+      $this->delete(sys_get_temp_dir().'/chromeinstances');
+    }
+  }
+
+  /**
+   * @param $dir
+   * @return bool
+   */
+  protected function delete($dir) {
+    $files = array_diff(scandir($dir), array(
+      '.',
+      '..'
+    ));
+    foreach ($files as $file) {
+      (is_dir("$dir/$file")) ? $this->delete("$dir/$file") : unlink("$dir/$file");
+    }
+    return rmdir($dir);
+  }
+
 
   private function polling($pollFile, $res) {
     file_put_contents($pollFile, json_encode($res));

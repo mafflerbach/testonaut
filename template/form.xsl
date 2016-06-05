@@ -32,7 +32,7 @@
           <button type="submit" class="button primary">Login to</button>
           <a href="{/data/system/baseUrl}" class="button link">Cancel</a>
           <a href="{/data/system/baseUrl}reset/" style="position: absolute; right: 5px; top: 5px;">Forget Password?</a>
-          <a href="{/data/system/baseUrl}user/register" style="position: absolute; right: 5px; top: 23px;">Register?</a>
+          <a href="{/data/system/baseUrl}register" style="position: absolute; right: 5px; top: 23px;">Register?</a>
         </div>
       </form>
     </div>

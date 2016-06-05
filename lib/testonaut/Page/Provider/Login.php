@@ -42,7 +42,6 @@ class Login extends Base implements ProviderInterface {
         if ($user->validate($data['username'], $data['password'])) {
           $request->redirect('');
         } else {
-
           $this->response['message'] = 'User not valid';
         }
       }

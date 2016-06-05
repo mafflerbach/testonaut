@@ -214,7 +214,6 @@ class Run extends Base implements ProviderInterface {
 
 
     } catch (\Exception $e) {
-      var_dump($e);
       return array(
         array(
           'run' => array(
@@ -297,6 +296,7 @@ class Run extends Base implements ProviderInterface {
         if (isset($list[$i]['version'])) {
           $profile['version'] = $list[$i]['version'];
         }
+
         if (isset($list[$i]['platform'])) {
           $profile['platform'] = $list[$i]['platform'];
         }
@@ -307,13 +307,12 @@ class Run extends Base implements ProviderInterface {
       $profile['browser'] = $this->normalizeBrowserName($this->browser);
       if ($this->version != 'default') {
         $profile['version'] = $this->version;
-      } else {
-        $profile['version'] = '';
       }
-      if ($this->version != 'default') {
-        $profile['platform'] = $this->version;
+
+      if ($this->platform != 'default') {
+        $profile['platform'] = $this->platform;
       } else {
-        $profile['platform'] = '';
+        $profile['platform'] = 'ANY';
       }
 
       $profile['name'] = 'default';
