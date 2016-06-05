@@ -50,6 +50,7 @@ class Setup {
     $webDriver = $this->setDriverOption($webDriver);
     return $webDriver;
   }
+
   /**
    * @param \RemoteWebDriver $driver
    * @return \RemoteWebDriver
