@@ -17,6 +17,7 @@ namespace testonaut\Selenium\Webdriver;
 
 use testonaut\Capabilities;
 use testonaut\Config;
+use testonaut\Foo;
 use testonaut\Settings\Emulator\Devices;
 
 
@@ -36,13 +37,19 @@ class Setup {
   }
 
   public function init() {
-    $capabilities = $this->getCapabilities();
-    $webDriver = \RemoteWebDriver::create($this->hub, $capabilities, 5000);
-    $webDriver = $this->setDriverOption($webDriver);
+    $config = \testonaut\Config::getInstance()->Path . '/config';
+    $configuration = json_decode(file_get_contents($config), true);
+    if ($configuration['access_key'] != '') {
+      $hubAddre = $configuration['saucelabs_username'] . ":" . $configuration['access_key'] . '@'.$configuration['seleniumAddress'].'/wd/hub';
+    } else {
+      $hubAddre = $this->hub;
+    }
 
+    $capabilities = $this->getCapabilities();
+    $webDriver = \RemoteWebDriver::create($hubAddre, $capabilities, 5000);
+    $webDriver = $this->setDriverOption($webDriver);
     return $webDriver;
   }
-
   /**
    * @param \RemoteWebDriver $driver
    * @return \RemoteWebDriver
@@ -65,6 +72,17 @@ class Setup {
     return $driver;
   }
 
+  private function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+  }
+
+
   public function getCapabilities() {
 
     $DesiredCapabilities = new Capabilities();
@@ -84,7 +102,7 @@ class Setup {
           '--disable-web-security',
         ));
         $options->addArguments(array(
-          '--user-data-dir=' . sys_get_temp_dir(),
+          '--user-data-dir=' . sys_get_temp_dir() . '/chromeinstances/' . $this->generateRandomString(),
         ));
         if ($this->deviceData != '') {
           $options->addArguments(array(
@@ -97,6 +115,7 @@ class Setup {
 
       if ($browserName == "MicrosoftEdge") {
       }
+
 
       if ($browserName == 'firefox') {
 
@@ -167,5 +186,6 @@ class Setup {
     }
     return 1;
   }
+
 
 }
