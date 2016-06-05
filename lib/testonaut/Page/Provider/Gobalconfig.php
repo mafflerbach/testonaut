@@ -20,6 +20,7 @@ use mafflerbach\Routing;
 use testonaut\Generate;
 use testonaut\Settings\Emulator;
 use testonaut\Settings\Profile;
+use testonaut\Settings\Saucelabs;
 
 /**
  *
@@ -86,6 +87,11 @@ class Globalconfig extends Base implements ProviderInterface {
     });
 
     $this->routing->route('', function () {
+
+      $saucelabs = new Saucelabs();
+      $saucelabs->getSupportedSettings();
+
+
       $request = new Request();
       if (!empty($request->post)) {
         $this->handelPostData($request);
@@ -100,7 +106,7 @@ class Globalconfig extends Base implements ProviderInterface {
       $emulator = new Emulator();
       $devices = $emulator->getDevices();
 
-      
+
       $this->response['devices'] = $devices;
       $this->response['profiles'] = $profileList;
 
@@ -124,7 +130,21 @@ class Globalconfig extends Base implements ProviderInterface {
     if ($request->post['action'] == 'saveprofile') {
       $this->saveProfile($request->post);
     }
+    if ($request->post['action'] == 'save_saucelabs') {
+      $this->saveSauceLabs($request->post);
+    }
   }
+
+  private function saveSauceLabs($request) {
+    $conf = $this->getConfig();
+
+    $conf['saucelabs_username'] = $request['saucelabs_username'];
+    $conf['password'] = $request['password'];
+    $conf['access_key'] = $request['access_key'];
+    $this->saveConfig($conf);
+  }
+
+
   private function generateRandomString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -134,6 +154,7 @@ class Globalconfig extends Base implements ProviderInterface {
     }
     return $randomString;
   }
+
   /**
    * @param $request
    */
@@ -143,14 +164,14 @@ class Globalconfig extends Base implements ProviderInterface {
     $data = array();
 
     $browser = '';
-    if(strpos($request['browser'], 'chrome') !== FALSE) {
+    if (strpos($request['browser'], 'chrome') !== FALSE) {
       $browser = 'chrome';
     }
 
-    if(strpos($request['browser'], 'firefox') !== FALSE) {
+    if (strpos($request['browser'], 'firefox') !== FALSE) {
       $browser = 'firefox';
     }
-    if(strpos($request['browser'], 'explorer ') !== FALSE) {
+    if (strpos($request['browser'], 'explorer ') !== FALSE) {
       $browser = 'internet explorer';
     }
 
@@ -169,7 +190,7 @@ class Globalconfig extends Base implements ProviderInterface {
     if ($browser == 'chrome') {
       $capabilities['arguments'] = array(
         "--disable-web-security",
-        "--user-data-dir=" . sys_get_temp_dir().'/chromeinstances/'.$this->generateRandomString()
+        "--user-data-dir=" . sys_get_temp_dir() . '/chromeinstances/' . $this->generateRandomString()
       );
 
       if ($request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
@@ -208,10 +229,9 @@ class Globalconfig extends Base implements ProviderInterface {
   }
 
   protected function saveConfigForm($request) {
+    $configuration = $this->getConfig();
     $address = $request['seleniumAddress'];
-   // $cache = $request['cache'];
     $appPath = $request['appPath'];
-   // $theme = $request['theme'];
     $ldapHostname = $request['ldapHostname'];
     $ldapBaseDn = $request['ldapBaseDn'];
     $ldapCn = $request['ldapCn'];
@@ -223,17 +243,14 @@ class Globalconfig extends Base implements ProviderInterface {
       $useLdap = false;
     }
 
-    $configuration = array(
-      'appPath' => $appPath,
-    //  'cache' => $cache,
-   //   'theme' => $theme,
-      'seleniumAddress' => $address,
-      'ldapHostname' => $ldapHostname,
-      'ldapBaseDn' => $ldapBaseDn,
-      'ldapCn' => $ldapCn,
-      'ldapPassword' => $ldapPassword,
-      'useLdap' => $useLdap
-    );
+    $configuration['appPath'] = $appPath;
+    $configuration['seleniumAddress'] = $address;
+    $configuration['ldapHostname'] = $ldapHostname;
+    $configuration['ldapBaseDn'] = $ldapBaseDn;
+    $configuration['ldapCn'] = $ldapCn;
+    $configuration['ldapPassword'] = $ldapPassword;
+    $configuration['useLdap'] = $useLdap;
+
 
     $this->saveConfig($configuration);
   }

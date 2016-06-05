@@ -46,6 +46,9 @@
           <li>
             <a href="#user">User</a>
           </li>
+          <li>
+            <a href="#saucelabs">Saucelabs</a>
+          </li>
         </xsl:if>
 
       </ul>
@@ -63,9 +66,55 @@
           <div class="frame" id="basic">
             <xsl:call-template name="base-settings"/>
           </div>
+          <div class="frame" id="saucelabs">
+            <xsl:call-template name="saucelabs-settings"/>
+          </div>
         </xsl:if>
       </div>
     </div>
+  </xsl:template>
+
+
+  <xsl:template name="saucelabs-settings">
+    <form action="" method="post">
+      <div class="grid">
+        <div class="row">
+
+          <div class="input-control text">
+            <label for="saucelabs_username">Username:</label>
+            <input type="text"
+                   class="form-control input-sm"
+                   placeholder="Username"
+                   value="{/data/system/globalconfig/saucelabs_username}"
+                   name="saucelabs_username"
+                   id="saucelabs_username"
+            />
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-control password" data-role="input">
+            <label for="user_password">password:</label>
+            <input type="password" name="password" id="saucelabs_password"/>
+            <button class="button helper-button reveal">
+              <span class="mif-looks"></span>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-control password" data-role="input">
+            <label for="access_key">access key:</label>
+            <input type="access_key" name="access_key" value="{/data/system/globalconfig/access_key}" id="access_key"/>
+            <button class="button helper-button reveal">
+              <span class="mif-looks"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <input type="submit" name="save" value="Save" class="button primary"/>
+      <input type="hidden" name="action" value="save_saucelabs"/>
+    </form>
   </xsl:template>
 
   <xsl:template name="user-settings">
@@ -246,7 +295,7 @@
     <div class="grid">
       <div class="row">
         <div class="input-control text">
-
+          <label for="hostname">Ldap Hostname:</label>
           <input type="text"
                  class="form-control input-sm"
                  placeholder="Ldap Hostname"
@@ -259,7 +308,7 @@
       </div>
       <div class="row">
         <div class="input-control text">
-
+          <label for="ldapBaseDn">base Dn:</label>
           <input type="text"
                  class="form-control input-sm"
                  placeholder="base Dn"
@@ -271,8 +320,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="input-control text">
 
+        <div class="input-control text">
+          <label for="ldapPassword">LDAP CN:</label>
           <input type="text"
                  class="form-control input-sm"
                  placeholder="ldap cn"
@@ -286,21 +336,19 @@
       <div class="row">
 
         <div class="input-control text">
-
-          <input type="text"
-                 class="form-control input-sm"
-                 placeholder="Ldap Password"
-                 aria-describedby="basic-addon2"
-                 value="{/data/system/globalconfig/ldapPassword}"
-                 name="ldapPassword"
-                 id="ldapPassword"
-          />
+          <label for="ldapPassword">LDAP password:</label>
+          <div class="input-control password full-size" data-role="input">
+            <input type="password" name="ldapPassword" id="ldapPassword"/>
+            <button class="button helper-button reveal">
+              <span class="mif-looks"></span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="row">
 
         <label class="input-control checkbox">
-
+          <label for="useLdap">Use LDAP:</label>
           <input type="checkbox"
                  value="true"
                  name="useLdap"
@@ -311,7 +359,6 @@
             </xsl:if>
           </input>
           <span class="check"></span>
-          <span class="caption">Use ldap</span>
         </label>
       </div>
     </div>
@@ -323,7 +370,7 @@
     <div class="grid">
       <div class="row">
         <div class="input-control text">
-
+          <label for="appPath">App Path:</label>
           <input type="text"
                  class="form-control input-sm"
                  placeholder="App Path"
@@ -337,6 +384,7 @@
       </div>
       <div class="row">
         <div class="input-control text">
+          <label for="selAddr">Selenium Hub:</label>
           <input type="text"
                  class="form-control input-sm"
                  placeholder="Selenium Hub: http://xxx.xxx.xxx.xxx:4444"
@@ -372,28 +420,37 @@
         <div class="content padding10">
           <xsl:if test="driverOptions/dimensions">
             <h5>Window settings:</h5>
-            Width= <xsl:value-of select="driverOptions/dimensions/width"/> px<br/>
-            Height= <xsl:value-of select="driverOptions/dimensions/height"/> px<br/>
+            Width=
+            <xsl:value-of select="driverOptions/dimensions/width"/> px
+            <br/>
+            Height=
+            <xsl:value-of select="driverOptions/dimensions/height"/> px
+            <br/>
             <hr/>
           </xsl:if>
 
           <xsl:if test="arguments/*">
             <h5>Browser Arguments:</h5>
             <ul class="simple-list">
-            <xsl:for-each select="arguments/*">
-              <li><xsl:value-of select="name(.)"/></li>
-            </xsl:for-each>
+              <xsl:for-each select="arguments/*">
+                <li>
+                  <xsl:value-of select="name(.)"/>
+                </li>
+              </xsl:for-each>
             </ul>
             <hr/>
           </xsl:if>
 
           <xsl:if test="capabilities/*">
             <h5>Capabilities:</h5>
-              Arguments:<br/>
+            Arguments:
+            <br/>
             <ul class="simple-list">
-            <xsl:for-each select="capabilities/arguments/item">
-              <li><xsl:value-of select="."/></li>
-            </xsl:for-each>
+              <xsl:for-each select="capabilities/arguments/item">
+                <li>
+                  <xsl:value-of select="."/>
+                </li>
+              </xsl:for-each>
             </ul>
             <hr/>
             <xsl:if test="capabilities/experimental/mobileEmulation/deviceName">
@@ -412,15 +469,20 @@
 
   <xsl:template name="browser-icon">
     <xsl:param name="browser"/>
-    <xsl:variable name="browserBase" select="substring-before($browser,'_')" />
+    <xsl:variable name="browserBase" select="substring-before($browser,'_')"/>
 
     <xsl:variable name="imageUrl">
       <xsl:choose>
-        <xsl:when test="$browserBase = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
-        <xsl:when test="$browserBase = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
-        <xsl:when test="$browserBase = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
-        <xsl:when test="$browserBase = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
-        <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png</xsl:otherwise>
+        <xsl:when test="$browserBase = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png
+        </xsl:when>
+        <xsl:when test="$browserBase = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png
+        </xsl:when>
+        <xsl:when test="$browserBase = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png
+        </xsl:when>
+        <xsl:when test="$browserBase = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png
+        </xsl:when>
+        <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <img class="icon" src="{$imageUrl}"/>
@@ -430,7 +492,8 @@
     <div data-role="dialog" id="dialog" class="padding20">
       <h4 class="dialogTitle"></h4>
       <p class="dialogContent"></p>
-      <button class="button primary" id="dialogButton">Ok</button><xsl:text> </xsl:text>
+      <button class="button primary" id="dialogButton">Ok</button>
+      <xsl:text> </xsl:text>
       <a href="" class="button" id="dialogButtonClose">Cancel</a>
     </div>
   </xsl:template>

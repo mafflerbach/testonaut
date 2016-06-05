@@ -54,7 +54,7 @@ $rules = array (
     '/', 'history/', 'run/', 'screenshot/', 'register/'
   ),
   'private' => array(
-    'edit/', 'image/', 'files/', 'import/', 'globalconfig/', 'config/', 'delete/', 'logout/', 'user/', 'image/'
+    'edit/', 'image/', 'files/', 'import/', 'globalconfig/', 'config/', 'delete/', 'logout/', 'user/', 'image/', 'saucelabs'
   ),
   'fallback' => 'login/'
 );#
@@ -83,6 +83,7 @@ $routing->push('(user)', new \testonaut\Page\Provider\User());
 $routing->push('(register)', new \testonaut\Page\Provider\User());
 $routing->push('run/.*', new \testonaut\Page\Provider\Run());
 $routing->push('delete/.*', new \testonaut\Page\Provider\Delete());
+$routing->push('(saucelabs)', new \testonaut\Page\Provider\Saucelabs());
 $routing->push('.*$', new \testonaut\Page\Provider\Start());
 $routing->execute();
 

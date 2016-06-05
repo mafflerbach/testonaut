@@ -919,3 +919,7 @@ function statusDialog(href, message, title, hash) {
     $('#dialogButtonClose').unbind('click');
   })
 }
+
+function initSaucelabs() {
+
+}
