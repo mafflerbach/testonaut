@@ -62,7 +62,7 @@ class Menu {
   protected function config($config = NULL) {
     if ($config != NULL) {
       return $config;
-    }else {
+    } else {
       return $this->page->config();
     }
   }
@@ -254,6 +254,24 @@ class Menu {
         'path' => 'run/' . $this->path . '/' . $node['name']
       );
     }
+
+    if(isset($browsers['saucelabs'])) {
+      foreach ($browsers['saucelabs'] as $key => $browser) {
+
+        foreach ($browser as $browserName => $versions) {
+
+          for ($i = 0, $j = count($versions); $i < $j; $i++) {
+            $push[] = array(
+              'version' => $browserName.' '.$versions[$i],
+              'badge' => $key,
+              'path' => 'run/' . $this->path . '/' . $browserName . '/' .$versions[$i] . '/' . urldecode($key)
+            );
+          }
+
+        }
+      }
+    }
+
     $push[] = array(
       'label' => 'ALL',
       'path' => 'run/' . $this->path . '/all',
@@ -265,6 +283,7 @@ class Menu {
   protected function test($value) {
     $this->test = $value;
   }
+
   protected function type($value) {
     $this->test = $value;
   }

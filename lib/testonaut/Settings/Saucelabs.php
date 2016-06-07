@@ -23,14 +23,19 @@ class Saucelabs {
 
   public function __construct() {
     $cacheFile = Config::getInstance()->Path . '/saucelabsPlatforms.json';
-    //file_put_contents($cacheFile, file_get_contents('http://saucelabs.com/rest/v1/info/platforms/webdriver'));
+
+    $time = filemtime($cacheFile);
+    $timeplus1w = $time+604800;
+    $date = new \DateTime();
+    if ($timeplus1w <= $date->getTimestamp()) {
+      file_put_contents($cacheFile, file_get_contents('http://saucelabs.com/rest/v1/info/platforms/webdriver'));
+    }
 
     $this->platforms = json_decode(file_get_contents($cacheFile), true);
   }
 
   public function getSupportedSettings() {
     return $this->prepSuportedSettings();
-
   }
 
 
@@ -39,8 +44,11 @@ class Saucelabs {
     $array = array();
 
     for ($i = 0, $j = count($this->platforms); $i < $j; $i++) {
-
-      $array[$this->platforms[$i]['os']][$this->platforms[$i]['api_name']][] = $this->platforms[$i]['short_version'];
+      if ($this->platforms[$i]['api_name'] == 'android') {
+        $array[$this->platforms[$i]['os']][$this->platforms[$i]['api_name']][$this->platforms[$i]['long_name']][] = $this->platforms[$i]['long_version'];
+      } else {
+        $array[$this->platforms[$i]['os']][$this->platforms[$i]['api_name']][] = $this->platforms[$i]['short_version'];
+      }
 
     }
 

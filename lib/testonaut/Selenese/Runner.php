@@ -33,6 +33,10 @@ class Runner {
   protected $config;
   protected $configFile;
   protected $imageDir = NULL;
+  /**
+   * @var Setup
+   */
+  protected $webdriverSetup = NULL;
 
   protected $profiles;
 
@@ -115,8 +119,8 @@ class Runner {
     $pageConf = $page->config();
     $res = array();
 
-    $webdriverSetup = new Setup($profile);
-    $webDriver = $webdriverSetup->init();
+    $this->webdriverSetup = new Setup($profile);
+    $webDriver = $this->webdriverSetup->init();
 
     $pollFile = Config::getInstance()->Path . "/tmp/" . $this->page->getPath();
 
@@ -134,7 +138,7 @@ class Runner {
 
           $commandResult = $command->runWebDriver($webDriver);
           if ($commandStr == 'Open' || $commandStr == 'Click' || $commandStr == 'ClickAndWait') {
-            $ratio = $webdriverSetup->getPixelRatio();
+            $ratio = $this->webdriverSetup->getPixelRatio();
             $js = new Javascript($webDriver);
             $js->setPixelRatio($ratio);
           }
@@ -218,6 +222,7 @@ class Runner {
 
 
   private function captureEntirePageScreenshot($profile, $webDriver, $page, $imagename, &$res) {
+
     $srcImage = $this->getPath($profile) . "/" . $imagename;
     $res[] = $this->takeScreenshot($profile, $webDriver, $srcImage);
 
@@ -228,7 +233,7 @@ class Runner {
 
   private function takeScreenshot($profile, $webDriver, $srcImage) {
 
-    if (strpos($profile['browser'], 'chrome') !== FALSE) {
+    if (strpos($profile['browser'], 'chrome') !== FALSE && $this->webdriverSetup->local === TRUE) {
       $javascript = new Javascript($webDriver);
       $javascript->invokeHtml2Canvas();
       $javascript->invokeNanoajax();

@@ -18,6 +18,7 @@ namespace testonaut\Page\Provider;
 use mafflerbach\Page\ProviderInterface;
 use mafflerbach\Routing;
 
+
 class Saucelabs extends Base implements ProviderInterface {
 
   private $routing;
@@ -32,18 +33,36 @@ class Saucelabs extends Base implements ProviderInterface {
       $request = new \mafflerbach\Http\Request();
 
       $labs = new \testonaut\Settings\Saucelabs();
+
       $this->response['settings'] = $labs->getSupportedSettings();
+      $this->response['active'] = $this->getActiveBrowsers();
       $this->response['menu'] = $this->getMenu('', '');
-      
+
       if (!empty($request->post)) {
-        print_r($request->post); die;
-
+        $this->setActiveBrowsers($request->post);
       }
-
-
 
       $this->routing->response($this->response);
       $this->routing->render('saucelabs.xsl');
     });
   }
+
+  private function setActiveBrowsers($request) {
+    $file = \testonaut\Config::getInstance()->Path . '/saucelabsInstances.json';
+
+    if (isset($request['version'])) {
+      file_put_contents($file, json_encode($request['version']));
+    } else {
+      file_put_contents($file, '');
+    }
+  }
+
+  private function getActiveBrowsers() {
+
+    $file = \testonaut\Config::getInstance()->Path . '/saucelabsInstances.json';
+    if (file_exists($file)) {
+      return json_decode(file_get_contents($file), true);
+    }
+  }
+
 }

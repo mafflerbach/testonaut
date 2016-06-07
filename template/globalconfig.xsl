@@ -89,7 +89,6 @@
                    name="saucelabs_username"
                    id="saucelabs_username"
             />
-
           </div>
         </div>
         <div class="row">
@@ -110,11 +109,13 @@
             </button>
           </div>
         </div>
-
       </div>
       <input type="submit" name="save" value="Save" class="button primary"/>
       <input type="hidden" name="action" value="save_saucelabs"/>
     </form>
+
+    <a href="{/data/system/baseUrl}saucelabs">Configure Browser</a>
+
   </xsl:template>
 
   <xsl:template name="user-settings">

@@ -27,6 +27,7 @@ class Setup {
   private $profile = '';
   private $deviceData = '';
   private $type = '';
+  public $local = TRUE;
 
   public function __construct($profile) {
 
@@ -40,7 +41,8 @@ class Setup {
     $config = \testonaut\Config::getInstance()->Path . '/config';
     $configuration = json_decode(file_get_contents($config), true);
     if ($configuration['access_key'] != '') {
-      $hubAddre = $configuration['saucelabs_username'] . ":" . $configuration['access_key'] . '@'.$configuration['seleniumAddress'].'/wd/hub';
+      $hubAddre = $configuration['saucelabs_username'] . ":" . $configuration['access_key'] . '@' . $configuration['seleniumAddress'] . '/wd/hub';
+      $this->local = FALSE;
     } else {
       $hubAddre = $this->hub;
     }

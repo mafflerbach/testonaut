@@ -50,9 +50,9 @@ class Run extends Base implements ProviderInterface {
       $this->basePath = $this->page->transCodePath();
       $this->imagePath = $this->page->getImagePath();
 
-      $this->browser = $browser;
-      $this->version = $version;
-      $this->platform = $platform;
+      $this->browser = urldecode($browser);
+      $this->version = urldecode($version);
+      $this->platform = urldecode($platform);
 
       $conf = $this->page->config();
 

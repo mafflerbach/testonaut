@@ -69,16 +69,26 @@ class Profile {
 
     $api = new Api();
     $grid = $api->getBrowserList();
-
     $foo = $this->getCustomProfiles();
+    $saucelabs = $this->getSaucelabsBrowsers();
+
 
     $browserProfiles = array(
       'all' => $browsers,
       'grid' => $grid,
-      'custom' => $foo
+      'custom' => $foo,
+      'saucelabs' => $saucelabs
     );
     return $browserProfiles;
 
+  }
+
+  private function getSaucelabsBrowsers() {
+
+    $file = \testonaut\Config::getInstance()->Path . '/saucelabsInstances.json';
+    if (file_exists($file)) {
+      return json_decode(file_get_contents($file), true);
+    }
   }
 
   /**
