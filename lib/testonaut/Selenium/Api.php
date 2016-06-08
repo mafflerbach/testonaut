@@ -34,6 +34,7 @@ class Api {
     $cacheFile = Config::getInstance()->Path . '/hubCache';
 
     if (!file_exists($cacheFile) || filemtime($cacheFile) >= time() + 60 * 15) {
+      var_dump(Config::getInstance()->seleniumConsole);
       $hub = @\file_get_contents(Config::getInstance()->seleniumConsole);
       if (Config::getInstance()->Cache) {
         file_put_contents($cacheFile, $hub);

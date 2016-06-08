@@ -98,53 +98,51 @@
                             <div class="heading">
                               <span class="title">
                                 <xsl:value-of select="@name"/>
+                                <xsl:choose>
+                                  <xsl:when test="@name">
+                                    <xsl:value-of select="@name"/>
+                                  </xsl:when>
+                                  <xsl:otherwise>
+                                    <xsl:value-of select="name(.)"/>
+                                  </xsl:otherwise>
+                                </xsl:choose>
                               </span>
                             </div>
                             <div class="content padding10">
                               <xsl:for-each select="item">
-                                <label class="input-control checkbox small-check">
-                                  <input type="checkbox" name="version[{$platform}][{$browser}][{../@name}][]" value="{.}">
-                                    <xsl:if test="/data/active/item[@name=$platform]/*[name()=$browser]/item=.">
-                                      <xsl:attribute name="checked">checked</xsl:attribute>
-                                    </xsl:if>
-                                    <xsl:if test="/data/active/*[name()=$platform]/*[name()=$browser]/item=.">
-                                      <xsl:attribute name="checked">checked</xsl:attribute>
-                                    </xsl:if>
-                                  </input>
-                                  <span class="check"></span>
-                                  <span class="caption">
-                                    <xsl:value-of select="."/>
-                                  </span>
-                                </label>
+                                <xsl:choose>
+                                  <xsl:when test="../@name">
+                                    <xsl:call-template name="input">
+                                      <xsl:with-param name="browser" select="$browser"/>
+                                      <xsl:with-param name="platform" select="$platform"/>
+                                      <xsl:with-param name="name" select="../@name"/>
+                                    </xsl:call-template>
+                                  </xsl:when>
+                                  <xsl:otherwise>
+                                    <xsl:call-template name="input">
+                                      <xsl:with-param name="browser" select="$browser"/>
+                                      <xsl:with-param name="platform" select="$platform"/>
+                                      <xsl:with-param name="name" select="name(..)"/>
+                                    </xsl:call-template>
+                                  </xsl:otherwise>
+                                </xsl:choose>
+
                               </xsl:for-each>
                             </div>
                           </div>
 
                         </xsl:when>
                         <xsl:otherwise>
-
                           <xsl:text> </xsl:text>
-                          <label class="input-control checkbox small-check">
-                            <input type="checkbox" name="version[{$platform}][{$browser}][]" value="{.}">
-                              <xsl:if test="/data/active/item[@name=$platform]/*[name()=$browser]/item=.">
-                                <xsl:attribute name="checked">checked</xsl:attribute>
-                              </xsl:if>
-                              <xsl:if test="/data/active/*[name()=$platform]/*[name()=$browser]/item=.">
-                                <xsl:attribute name="checked">checked</xsl:attribute>
-                              </xsl:if>
-                            </input>
-                            <span class="check"></span>
-                            <span class="caption">
-                              <xsl:value-of select="."/>
-                            </span>
-                          </label>
+                          <xsl:call-template name="input">
+                            <xsl:with-param name="browser" select="$browser"/>
+                            <xsl:with-param name="platform" select="$platform"/>
+                            <xsl:with-param name="name"/>
+                          </xsl:call-template>
                           <xsl:text> </xsl:text>
                         </xsl:otherwise>
                       </xsl:choose>
-
                     </xsl:for-each>
-
-
                   </div>
                 </div>
               </xsl:for-each>
@@ -156,8 +154,55 @@
 
       <input type="submit" name="save" value="Save" class="button primary"/>
       <input type="hidden" name="action" value="save_saucelabs_browser"/>
-
     </form>
+
+  </xsl:template>
+
+  <xsl:template name="input">
+    <xsl:param name="browser"/>
+    <xsl:param name="platform"/>
+    <xsl:param name="name"/>
+
+    <xsl:choose>
+      <xsl:when test="$name != ''">
+
+        <label class="input-control checkbox small-check">
+          <input type="checkbox" name="version[{$platform}][{$browser}][{$name}][]"
+                 value="{.}">
+            <xsl:if test="/data/active/item[@name=$platform]/*[name()=$browser]/item=.">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="/data/active/*[name()=$platform]/*[name()=$browser]/item=.">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <span class="check"></span>
+          <span class="caption">
+            <xsl:value-of select="."/>
+          </span>
+        </label>
+
+      </xsl:when>
+      <xsl:otherwise>
+        <label class="input-control checkbox small-check">
+          <input type="checkbox" name="version[{$platform}][{$browser}][]" value="{.}">
+            <xsl:if test="/data/active/item[@name=$platform]/*[name()=$browser]/item=.">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="/data/active/*[name()=$platform]/*[name()=$browser]/item=.">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <span class="check"></span>
+          <span class="caption">
+            <xsl:value-of select="."/>
+          </span>
+        </label>
+
+
+      </xsl:otherwise>
+    </xsl:choose>
+
 
   </xsl:template>
 

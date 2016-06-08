@@ -184,18 +184,32 @@
   <xsl:template name="profile-settings">
     <div id="addProfile-form">
 
-      <form action="" method="post">
-        <div class="grid">
-          <div class="row cells4">
-            <xsl:call-template name="profile-form"/>
-          </div>
 
+      <div class="grid">
+        <div class="row cells4">
+          <xsl:choose>
+            <xsl:when test="/data/profiles/grid/*">
+              <form action="" method="post">
+                <xsl:call-template name="profile-form"/>
+
+                <input type="submit" name="save" value="Save" class="button primary"/>
+                <input type="hidden" name="action" value="saveprofile"/>
+              </form>
+            </xsl:when>
+            <xsl:otherwise>
+
+              <form action="" method="post" id="saucelabsprofile">
+                <xsl:call-template name="saucelabs-profile"/>
+                <input type="submit" name="save" value="Save" class="button primary" id="savesaucelabsprofile"/>
+                <input type="hidden" name="action" value="savesaucelabsprofile"/>
+              </form>
+            </xsl:otherwise>
+          </xsl:choose>
         </div>
 
+      </div>
 
-        <input type="submit" name="save" value="Save" class="button primary"/>
-        <input type="hidden" name="action" value="saveprofile"/>
-      </form>
+
     </div>
   </xsl:template>
 
@@ -283,7 +297,6 @@
                 </option>
               </xsl:otherwise>
             </xsl:choose>
-
           </xsl:for-each>
         </select>
       </div>
@@ -458,8 +471,6 @@
               <h5>Device:</h5>
               <xsl:value-of select="capabilities/experimental/mobileEmulation/deviceName"/>
             </xsl:if>
-
-
           </xsl:if>
 
         </div>
@@ -467,23 +478,120 @@
     </xsl:for-each>
   </xsl:template>
 
+  <xsl:template name="saucelabs-profile">
+
+    <div class="input-control text">
+
+      <input type="text"
+             class="form-control input-sm"
+             value=""
+             id="profileName"
+             name="height"
+             placeholder="Profile Name"
+      />
+    </div>
+
+    <div class="input-control select">
+      <select id="platforms" name="platform">
+        <option>Platform</option>
+        <xsl:for-each select="/data/profiles/saucelabs/*">
+          <xsl:sort select="@name"/>
+          <xsl:choose>
+            <xsl:when test="@name">
+              <option data-id="{position()}" value="{@name}">
+                <xsl:value-of select="@name"/>
+              </option>
+            </xsl:when>
+            <xsl:otherwise>
+              <option data-id="{position()}" value="{name()}">
+                <xsl:value-of select="name()"/>
+              </option>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </select>
+    </div>
+
+
+    <xsl:for-each select="/data/profiles/saucelabs/*">
+      <xsl:sort select="@name"/>
+      <div class="input-control select" style="display:none;">
+        <select name="browser">
+          <xsl:attribute name="id">os_<xsl:value-of select="position()"></xsl:value-of>
+          </xsl:attribute>
+          <option>Browser</option>
+          <xsl:for-each select="./*">
+            <xsl:choose>
+              <xsl:when test="@name">
+                <option data-id="{position()}" value="{@name}">
+                  <xsl:value-of select="@name"/>
+                </option>
+              </xsl:when>
+              <xsl:otherwise>
+                <option data-id="{position()}" value="{name()}">
+                  <xsl:value-of select="name()"/>
+                </option>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </select>
+      </div>
+    </xsl:for-each>
+
+    <xsl:for-each select="/data/profiles/saucelabs/*">
+      <xsl:sort select="@name"/>
+      <xsl:variable name="position" select="position()"/>
+
+      <xsl:for-each select="./*">
+        <div class="input-control select" style="display:none;">
+          <select data-id="browser{position()}" data-os="{$position}" name="version">
+            <option>version</option>
+            <xsl:for-each select="./*">
+              <option value="{.}">
+                <xsl:value-of select="."/>
+              </option>
+            </xsl:for-each>
+          </select>
+        </div>
+      </xsl:for-each>
+    </xsl:for-each>
+
+    <div class="input-control text">
+
+      <input type="text"
+             class="form-control input-sm"
+             value=""
+             id="saucelabsheight"
+             name="height"
+             placeholder="height"
+      />
+    </div>
+    <div class="input-control text">
+
+      <input type="text"
+             class="form-control input-sm"
+             value=""
+             id="saucelabswidth"
+             name="width"
+             placeholder="width"
+      />
+    </div>
+  </xsl:template>
+
 
   <xsl:template name="browser-icon">
     <xsl:param name="browser"/>
     <xsl:variable name="browserBase" select="substring-before($browser,'_')"/>
 
+    <xsl:value-of select="$browserBase"/>
+
     <xsl:variable name="imageUrl">
       <xsl:choose>
-        <xsl:when test="$browserBase = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png
-        </xsl:when>
-        <xsl:when test="$browserBase = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png
-        </xsl:when>
-        <xsl:when test="$browserBase = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png
-        </xsl:when>
-        <xsl:when test="$browserBase = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png
-        </xsl:when>
-        <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png
-        </xsl:otherwise>
+        <xsl:when test="$browserBase = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
+        <xsl:when test="$browserBase = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
+        <xsl:when test="$browserBase = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
+        <xsl:when test="$browserBase = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
+        <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <img class="icon" src="{$imageUrl}"/>

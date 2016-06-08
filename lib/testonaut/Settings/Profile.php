@@ -71,8 +71,7 @@ class Profile {
     $grid = $api->getBrowserList();
     $foo = $this->getCustomProfiles();
     $saucelabs = $this->getSaucelabsBrowsers();
-
-
+    
     $browserProfiles = array(
       'all' => $browsers,
       'grid' => $grid,
@@ -85,10 +84,22 @@ class Profile {
 
   private function getSaucelabsBrowsers() {
 
-    $file = \testonaut\Config::getInstance()->Path . '/saucelabsInstances.json';
+    $file = \testonaut\Config::getInstance()->Path . '/saucelabsPlatforms.json';
+    $oses = array();
     if (file_exists($file)) {
-      return json_decode(file_get_contents($file), true);
+      $platforms = json_decode(file_get_contents($file), true);
+
+      for($i = 0; $i < count($platforms); $i++) {
+        if (isset($platforms[$i]['device'])) {
+          continue;
+        }
+        if (!@in_array($platforms[$i]['api_name'], $oses[$platforms[$i]['os']]['browser'])) {
+          $oses[$platforms[$i]['os']][$platforms[$i]['api_name']][] = $platforms[$i]['short_version'];
+        }
+      }
     }
+
+    return $oses;
   }
 
   /**

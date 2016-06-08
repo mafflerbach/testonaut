@@ -38,15 +38,12 @@ class Saucelabs {
     return $this->prepSuportedSettings();
   }
 
-
   private function prepSuportedSettings() {
 
     $array = array();
 
     for ($i = 0, $j = count($this->platforms); $i < $j; $i++) {
-      if ($this->platforms[$i]['api_name'] == 'android') {
-        $array[$this->platforms[$i]['os']][$this->platforms[$i]['api_name']][$this->platforms[$i]['long_name']][] = $this->platforms[$i]['long_version'];
-      } else {
+      if (!isset($this->platforms[$i]['device'])) {
         $array[$this->platforms[$i]['os']][$this->platforms[$i]['api_name']][] = $this->platforms[$i]['short_version'];
       }
 

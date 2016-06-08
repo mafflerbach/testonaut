@@ -675,8 +675,8 @@ function initScreenshots() {
 function initGlobalconfig() {
 
 
-  if(window.location.hash != '') {
-    $("a[href='"+window.location.hash+"']").trigger('click');
+  if (window.location.hash != '') {
+    $("a[href='" + window.location.hash + "']").trigger('click');
   }
 
   $('#addProfile-form form').submit(function (e) {
@@ -813,6 +813,75 @@ function initGlobalconfig() {
       }
     });
   });
+
+  $('#platforms').change(function () {
+    var id = '#os_' + $('#platforms option:selected').attr('data-id');
+    var platformid = $('#platforms option:selected').attr('data-id');
+
+    $("select[name='browser']").parent().hide();
+    $(id).parent().show();
+
+    $(id).change(function () {
+      var muId = $(id + ' option:selected').attr('data-id');
+      $("select[name='version']").parent().hide();
+      var selector = "select[data-os='" + platformid + "'][data-id='browser" + muId + "']";
+      $(selector).parent().show();
+    })
+  })
+
+  $('input#savesaucelabsprofile').click(function (e) {
+    e.preventDefault();
+
+    var id = $("#saucelabsprofile #platforms option[value]:selected").data('id');
+    var browserId = $("#saucelabsprofile #os_"+id+" option[value]:selected").data('id');
+
+    var osVal = $("#saucelabsprofile #platforms option[value]:selected").val();
+    var browserVal = $("#saucelabsprofile #os_"+id+" option[value]:selected").val();
+    var version = $("select[data-id='browser"+browserId+"'][data-os='"+id+"'] option[value]:selected").val();
+    var width = $("#saucelabswidth").val();
+    var height = $("#saucelabsheight").val();
+    var name = $("#profileName").val();
+
+
+
+    $.ajax({
+      type: "POST",
+      data: {
+        'profileName' : name,
+        'width' : width,
+        'height' : height,
+        'version' : version,
+        'browser' : browserVal,
+        'os' : osVal,
+        'action' : 'savesaucelabsprofile'
+      },
+      dataType: 'json',
+      success: function (data) {
+
+
+        /*
+        var type = 'success';
+        if (data.result != 'success') {
+          type = 'alert';
+        }
+        $.Notify({
+          caption: data.messageTitle,
+          content: data.message,
+          type: type
+        });*/
+      }
+    });
+
+
+
+    console.log(osVal);
+    console.log(browserVal);
+    console.log(version);
+
+
+  });
+
+
 }
 
 function initEdituser() {
@@ -908,8 +977,8 @@ function statusDialog(href, message, title, hash) {
         });
 
         window.setTimeout(function () {
-          window.location.href = baseUrl + path + hash;
-          window.location.reload(true);
+            window.location.href = baseUrl + path + hash;
+            window.location.reload(true);
 
           },
           1500)

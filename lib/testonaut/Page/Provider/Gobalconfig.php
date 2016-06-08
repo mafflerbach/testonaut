@@ -106,7 +106,6 @@ class Globalconfig extends Base implements ProviderInterface {
       $emulator = new Emulator();
       $devices = $emulator->getDevices();
 
-
       $this->response['devices'] = $devices;
       $this->response['profiles'] = $profileList;
 
@@ -124,15 +123,25 @@ class Globalconfig extends Base implements ProviderInterface {
   }
 
   protected function handelPostData($request) {
+
+
     if ($request->post['action'] == 'savebase') {
       $this->saveConfigForm($request->post);
     }
     if ($request->post['action'] == 'saveprofile') {
       $this->saveProfile($request->post);
     }
+    if ($request->post['action'] == 'savesaucelabsprofile') {
+      $this->saveSaucelabsProfile($request->post);
+    }
     if ($request->post['action'] == 'save_saucelabs') {
       $this->saveSauceLabs($request->post);
     }
+  }
+
+
+  private function saveSaucelabsProfile($request) {
+    $this->saveProfile($request);
   }
 
   private function saveSauceLabs($request) {
@@ -175,6 +184,10 @@ class Globalconfig extends Base implements ProviderInterface {
       $browser = 'internet explorer';
     }
 
+    if (strpos($request['browser'], 'microsoftedge') !== FALSE) {
+      $browser = 'microsoftedge';
+    }
+
     $name = $request['profileName'];
     $driverOptions = '';
     if ($request['width'] != '' && $request['height'] != '') {
@@ -194,7 +207,6 @@ class Globalconfig extends Base implements ProviderInterface {
       );
 
       if ($request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
-
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
             "deviceName" => $request['device']
@@ -216,6 +228,7 @@ class Globalconfig extends Base implements ProviderInterface {
 
     $data['browser'] = $request['browser'];
     $data['name'] = $name;
+    $data['version'] = $request['version'];
     $data['driverOptions'] = $driverOptions;
     $data['arguments'] = $arguments;
 

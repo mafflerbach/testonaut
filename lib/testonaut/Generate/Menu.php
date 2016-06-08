@@ -255,11 +255,9 @@ class Menu {
       );
     }
 
-    if(isset($browsers['saucelabs'])) {
+    if (isset($browsers['saucelabs'])) {
       foreach ($browsers['saucelabs'] as $key => $browser) {
-
         foreach ($browser as $browserName => $versions) {
-
           for ($i = 0, $j = count($versions); $i < $j; $i++) {
             $push[] = array(
               'version' => $browserName.' '.$versions[$i],
@@ -267,7 +265,6 @@ class Menu {
               'path' => 'run/' . $this->path . '/' . $browserName . '/' .$versions[$i] . '/' . urldecode($key)
             );
           }
-
         }
       }
     }
