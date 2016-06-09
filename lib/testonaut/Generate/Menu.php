@@ -218,8 +218,7 @@ class Menu {
     $k = 0;
 
     foreach ($browsers['grid'] as $node) {
-
-
+      
       $push[$k] = array(
         'label' => $node['browserName'],
         'path' => 'run/' . $this->path . '/' . $node['browserName'],
@@ -254,6 +253,7 @@ class Menu {
         'path' => 'run/' . $this->path . '/' . $node['name']
       );
     }
+
 
     if (isset($browsers['saucelabs'])) {
       foreach ($browsers['saucelabs'] as $key => $browser) {

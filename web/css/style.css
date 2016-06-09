@@ -267,3 +267,8 @@ tr.failed td {
     box-shadow: 0px 0px 10px -2px;
     padding: 1rem;
 }
+
+
+.flex-grid .row .cell {
+    display:inline-block;
+}

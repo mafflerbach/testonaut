@@ -109,6 +109,19 @@
             </button>
           </div>
         </div>
+
+        <div class="row">
+          <div class="input-control text">
+            <label for="selAddr">Selenium Hub:</label>
+            <input type="text"
+                   class="form-control input-sm"
+                   placeholder="ondemand.saucelabs.com:80"
+                   value="{/data/system/globalconfig/saucelabs_seleniumAddress}"
+                   name="saucelabs_seleniumAddress"
+                   id="selAddr"
+            />
+          </div>
+        </div>
       </div>
       <input type="submit" name="save" value="Save" class="button primary"/>
       <input type="hidden" name="action" value="save_saucelabs"/>
@@ -183,33 +196,25 @@
 
   <xsl:template name="profile-settings">
     <div id="addProfile-form">
-
-
       <div class="grid">
+        <h4>local profiles</h4>
         <div class="row cells4">
-          <xsl:choose>
-            <xsl:when test="/data/profiles/grid/*">
-              <form action="" method="post">
-                <xsl:call-template name="profile-form"/>
+          <form action="" method="post">
+            <xsl:call-template name="profile-form"/>
+            <input type="submit" name="save" value="Save" class="button primary"/>
+            <input type="hidden" name="action" value="saveprofile"/>
+          </form>
 
-                <input type="submit" name="save" value="Save" class="button primary"/>
-                <input type="hidden" name="action" value="saveprofile"/>
-              </form>
-            </xsl:when>
-            <xsl:otherwise>
-
-              <form action="" method="post" id="saucelabsprofile">
-                <xsl:call-template name="saucelabs-profile"/>
-                <input type="submit" name="save" value="Save" class="button primary" id="savesaucelabsprofile"/>
-                <input type="hidden" name="action" value="savesaucelabsprofile"/>
-              </form>
-            </xsl:otherwise>
-          </xsl:choose>
         </div>
-
+        <h4>saucelabs profiles</h4>
+        <div class="row cells4">
+          <form action="" method="post" id="saucelabsprofile">
+            <xsl:call-template name="saucelabs-profile"/>
+            <input type="submit" name="save" value="Save" class="button primary" id="savesaucelabsprofile"/>
+            <input type="hidden" name="action" value="savesaucelabsprofile"/>
+          </form>
+        </div>
       </div>
-
-
     </div>
   </xsl:template>
 
@@ -486,7 +491,7 @@
              class="form-control input-sm"
              value=""
              id="profileName"
-             name="height"
+             name="saucelabs_profileName"
              placeholder="Profile Name"
       />
     </div>
@@ -583,14 +588,24 @@
     <xsl:param name="browser"/>
     <xsl:variable name="browserBase" select="substring-before($browser,'_')"/>
 
-    <xsl:value-of select="$browserBase"/>
+    <xsl:variable name="browserName">
+      <xsl:choose>
+        <xsl:when test="$browserBase = ''">
+          <xsl:value-of select="$browser"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$browserBase"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <xsl:variable name="imageUrl">
       <xsl:choose>
-        <xsl:when test="$browserBase = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
-        <xsl:when test="$browserBase = 'edge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
-        <xsl:when test="$browserBase = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
-        <xsl:when test="$browserBase = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
+        <xsl:when test="$browserName = 'internetExplorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
+        <xsl:when test="$browserName = 'microsoftedge'"><xsl:value-of select="/data/system/baseUrl"/>css/images/edge.png</xsl:when>
+        <xsl:when test="$browserName = 'internet explorer'"><xsl:value-of select="/data/system/baseUrl"/>css/images/ie.png</xsl:when>
+        <xsl:when test="$browserName = 'chrome'"><xsl:value-of select="/data/system/baseUrl"/>css/images/chrome.png</xsl:when>
+        <xsl:when test="$browserName = 'firefox'"><xsl:value-of select="/data/system/baseUrl"/>css/images/firefox.png</xsl:when>
         <xsl:otherwise><xsl:value-of select="/data/system/baseUrl"/>css/images/browser.png</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

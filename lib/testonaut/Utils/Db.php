@@ -60,7 +60,9 @@ class Db {
         "name" TEXT PRIMARY KEY NOT NULL,
         "driverOptions" TEXT,
         "arguments" TEXT,
-        "capabilities" TEXT );';
+        "capabilities" TEXT,
+        "os" TEXT,
+        "version" TEXT );';
 
     $imageCompare = 'CREATE TABLE "imageCompare" (
         "date" TEXT,

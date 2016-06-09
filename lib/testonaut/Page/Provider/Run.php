@@ -214,6 +214,7 @@ class Run extends Base implements ProviderInterface {
 
 
     } catch (\Exception $e) {
+      var_dump($e);
       return array(
         array(
           'run' => array(

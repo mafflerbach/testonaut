@@ -141,7 +141,7 @@ class Globalconfig extends Base implements ProviderInterface {
 
 
   private function saveSaucelabsProfile($request) {
-    $this->saveProfile($request);
+    $this->saveProfile($request, FALSE);
   }
 
   private function saveSauceLabs($request) {
@@ -150,6 +150,7 @@ class Globalconfig extends Base implements ProviderInterface {
     $conf['saucelabs_username'] = $request['saucelabs_username'];
     $conf['password'] = $request['password'];
     $conf['access_key'] = $request['access_key'];
+    $conf['saucelabs_seleniumAddress'] = $request['saucelabs_seleniumAddress'];
     $this->saveConfig($conf);
   }
 
@@ -168,27 +169,40 @@ class Globalconfig extends Base implements ProviderInterface {
    * @param $request
    */
 
-  protected function saveProfile($request) {
+  protected function saveProfile($request, $local = TRUE) {
+
+
     $profile = new Profile();
     $data = array();
 
-    $browser = '';
-    if (strpos($request['browser'], 'chrome') !== FALSE) {
-      $browser = 'chrome';
+    $browserSettings = explode('_', $request['browser']);
+    $data['local'] = $local;
+
+
+    if (count($browserSettings) > 1) {
+      $data['name'] = $request['profileName'];
+      $browser = $browserSettings[0];
+      $data['os'] = $browserSettings[2];
+      $data['version'] = $browserSettings[1];
+    } else {
+      $browser = $request['browser'];
+      $data['os'] = $request['os'];
+      $data['version'] = $request['version'];
+      $data['name'] = $request['profileName'];
     }
 
-    if (strpos($request['browser'], 'firefox') !== FALSE) {
-      $browser = 'firefox';
-    }
-    if (strpos($request['browser'], 'explorer ') !== FALSE) {
-      $browser = 'internet explorer';
+    $data['browser'] = $browser;
+
+    if ($data['version'] == 'default') {
+      $data['version'] = 'ANY';
     }
 
-    if (strpos($request['browser'], 'microsoftedge') !== FALSE) {
-      $browser = 'microsoftedge';
+    if (isset($request['version'])) {
+      $data['version'] = $request['version'];
     }
 
-    $name = $request['profileName'];
+
+
     $driverOptions = '';
     if ($request['width'] != '' && $request['height'] != '') {
       $driverOptions = json_encode(array(
@@ -206,7 +220,7 @@ class Globalconfig extends Base implements ProviderInterface {
         "--user-data-dir=" . sys_get_temp_dir() . '/chromeinstances/' . $this->generateRandomString()
       );
 
-      if ($request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
+      if (isset($request['device']) && $request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
             "deviceName" => $request['device']
@@ -226,9 +240,6 @@ class Globalconfig extends Base implements ProviderInterface {
       $arguments = '';
     }
 
-    $data['browser'] = $request['browser'];
-    $data['name'] = $name;
-    $data['version'] = $request['version'];
     $data['driverOptions'] = $driverOptions;
     $data['arguments'] = $arguments;
 
@@ -237,6 +248,9 @@ class Globalconfig extends Base implements ProviderInterface {
     } else {
       $data['capabilities'] = '';
     }
+
+    var_dump($data);
+
 
     $profile->write($data);
   }

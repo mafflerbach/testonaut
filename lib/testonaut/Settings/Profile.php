@@ -53,6 +53,9 @@ class Profile {
         'driverOptions' => json_decode($row['driverOptions'], true),
         'arguments' => json_decode($row['arguments'], true),
         'capabilities' => json_decode($row['capabilities'], true),
+        'os' => $row['os'],
+        'version' => $row['version'],
+        'local' => $row['local'],
       );
 
     }
@@ -70,8 +73,8 @@ class Profile {
     $api = new Api();
     $grid = $api->getBrowserList();
     $foo = $this->getCustomProfiles();
-    $saucelabs = $this->getSaucelabsBrowsers();
-    
+    $saucelabs = $this->getActiveSaucelabsBrowsers();
+
     $browserProfiles = array(
       'all' => $browsers,
       'grid' => $grid,
@@ -81,6 +84,17 @@ class Profile {
     return $browserProfiles;
 
   }
+
+
+  private function getActiveSaucelabsBrowsers() {
+
+    $file = \testonaut\Config::getInstance()->Path . '/saucelabsInstances.json';
+    if (file_exists($file)) {
+      $platforms = json_decode(file_get_contents($file), true);
+      return $platforms;
+    }
+  }
+
 
   private function getSaucelabsBrowsers() {
 
@@ -140,19 +154,25 @@ class Profile {
    * @param $data
    */
   protected function update($data) {
+
     $browser = $data['browser'];
     $name = $data['name'];
     $driverOptions = $data['driverOptions'];
     $arguments = $data['arguments'];
     $capabilities = $data['capabilities'];
-
+    $os = $data['os'];
+    $version = $data['version'];
+    $local = ($data['local']) ? 1 : 0;
 
     $sql = "update profile set
         `name` = :name,
         browser = :browser,
         driverOptions = :driverOptions,
         arguments = :arguments,
-        capabilities = :capabilities
+        capabilities = :capabilities,
+        os = :os,
+        version = :version,
+        local = :local
         where `name` = :name
       ";
     $stm = $this->db->prepare($sql);
@@ -162,6 +182,9 @@ class Profile {
     $stm->bindParam(':driverOptions', $driverOptions);
     $stm->bindParam(':arguments', $arguments);
     $stm->bindParam(':capabilities', $capabilities);
+    $stm->bindParam(':os', $os);
+    $stm->bindParam(':version', $version);
+    $stm->bindParam(':local', $local);
 
     $stm->execute();
   }
@@ -170,14 +193,19 @@ class Profile {
    * @param $data
    */
   protected function insert($data) {
+
     $browser = $data['browser'];
     $name = $data['name'];
     $driverOptions = $data['driverOptions'];
     $arguments = $data['arguments'];
     $capabilities = $data['capabilities'];
+    $os = $data['os'];
+    $version = $data['version'];
+    $local = ($data['local']) ? 1 : 0;
 
-    $sql = "insert into profile (browser, name, driverOptions, arguments, capabilities)
-            VALUES (:browser, :name, :driverOptions, :arguments, :capabilities)";
+
+    $sql = "insert into profile (browser, name, driverOptions, arguments, capabilities, os, version, local)
+            VALUES (:browser, :name, :driverOptions, :arguments, :capabilities, :os, :version, :local)";
     $stm = $this->db->prepare($sql);
 
     $stm->bindParam(':browser', $browser);
@@ -185,6 +213,10 @@ class Profile {
     $stm->bindParam(':driverOptions', $driverOptions);
     $stm->bindParam(':arguments', $arguments);
     $stm->bindParam(':capabilities', $capabilities);
+    $stm->bindParam(':os', $os);
+    $stm->bindParam(':version', $version);
+    $stm->bindParam(':local', $local);
+
 
     $stm->execute();
   }

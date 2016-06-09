@@ -840,7 +840,7 @@ function initGlobalconfig() {
     var version = $("select[data-id='browser"+browserId+"'][data-os='"+id+"'] option[value]:selected").val();
     var width = $("#saucelabswidth").val();
     var height = $("#saucelabsheight").val();
-    var name = $("#profileName").val();
+    var name = $("input[name='saucelabs_profileName']").val();
 
 
 
@@ -857,8 +857,7 @@ function initGlobalconfig() {
       },
       dataType: 'json',
       success: function (data) {
-
-
+        
         /*
         var type = 'success';
         if (data.result != 'success') {
