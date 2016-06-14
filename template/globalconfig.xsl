@@ -93,15 +93,6 @@
         </div>
         <div class="row">
           <div class="input-control password" data-role="input">
-            <label for="user_password">password:</label>
-            <input type="password" name="password" id="saucelabs_password"/>
-            <button class="button helper-button reveal">
-              <span class="mif-looks"></span>
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-control password" data-role="input">
             <label for="access_key">access key:</label>
             <input type="access_key" name="access_key" value="{/data/system/globalconfig/access_key}" id="access_key"/>
             <button class="button helper-button reveal">
@@ -122,6 +113,24 @@
             />
           </div>
         </div>
+
+        <div class="row">
+
+          <label class="input-control checkbox">
+            <label for="useLdap">Use Saucelabs:</label>
+            <input type="checkbox"
+                   value="true"
+                   name="useSaucelabs"
+                   id="useSaucelabs"
+            >
+              <xsl:if test="/data/system/globalconfig/useSaucelabs= '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <span class="check"></span>
+          </label>
+        </div>
+
       </div>
       <input type="submit" name="save" value="Save" class="button primary"/>
       <input type="hidden" name="action" value="save_saucelabs"/>
@@ -206,14 +215,16 @@
           </form>
 
         </div>
-        <h4>saucelabs profiles</h4>
-        <div class="row cells4">
-          <form action="" method="post" id="saucelabsprofile">
-            <xsl:call-template name="saucelabs-profile"/>
-            <input type="submit" name="save" value="Save" class="button primary" id="savesaucelabsprofile"/>
-            <input type="hidden" name="action" value="savesaucelabsprofile"/>
-          </form>
-        </div>
+        <xsl:if test="/data/system/globalconfig/useSaucelabs='1'">
+          <h4>saucelabs profiles</h4>
+          <div class="row cells4">
+            <form action="" method="post" id="saucelabsprofile">
+              <xsl:call-template name="saucelabs-profile"/>
+              <input type="submit" name="save" value="Save" class="button primary" id="savesaucelabsprofile"/>
+              <input type="hidden" name="action" value="savesaucelabsprofile"/>
+            </form>
+          </div>
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
@@ -416,71 +427,96 @@
     </div>
   </xsl:template>
 
+  <xsl:template name="profile-panel">
+    <xsl:param name="node"/>
+    <div class="panel collapsed" style="margin:0.75rem 0;" data-role="panel">
+      <div class="heading">
+        <xsl:call-template name="browser-icon">
+          <xsl:with-param name="browser" select="$node/browser"/>
+        </xsl:call-template>
+        <span class="title">
+          <xsl:value-of select="$node/name"/>
+          <a href="" data-profilename="{$node/name}" data-action="deleteProfile"
+             style="float:right; color:#fff; margin-right:2.50rem;">
+            <span class="mif-cross"></span>
+          </a>
+          <a href="" data-profilename="{$node/name}" data-action="editProfile"
+             style="float:right; color:#fff; margin-right:0.75rem;">
+            <span class="mif-pencil"></span>
+          </a>
+        </span>
+      </div>
+      <div class="content padding10">
+        <xsl:if test="$node/driverOptions/dimensions">
+          <h5>Window settings:</h5>
+          Width=
+          <xsl:value-of select="$node/driverOptions/dimensions/width"/> px
+          <br/>
+          Height=
+          <xsl:value-of select="$node/driverOptions/dimensions/height"/> px
+          <br/>
+          <hr/>
+        </xsl:if>
+
+        <xsl:if test="$node/arguments/*">
+          <h5>Browser Arguments:</h5>
+          <ul class="simple-list">
+            <xsl:for-each select="$node/arguments/*">
+              <li>
+                <xsl:value-of select="name($node)"/>
+              </li>
+            </xsl:for-each>
+          </ul>
+          <hr/>
+        </xsl:if>
+
+        <xsl:if test="$node/capabilities/*">
+          <h5>Capabilities:</h5>
+          Arguments:
+          <br/>
+          <ul class="simple-list">
+            <xsl:for-each select="$node/capabilities/arguments/item">
+              <li>
+                <xsl:value-of select="."/>
+              </li>
+            </xsl:for-each>
+          </ul>
+          <hr/>
+          <xsl:if test="$node/capabilities/experimental/mobileEmulation/deviceName">
+            <h5>Device:</h5>
+            <xsl:value-of select="$node/capabilities/experimental/mobileEmulation/deviceName"/>
+          </xsl:if>
+        </xsl:if>
+
+      </div>
+    </div>
+
+  </xsl:template>
+
+
   <xsl:template name="custom-browser-list">
 
-    <xsl:for-each select="/data/profiles/custom/item">
-      <div class="panel collapsed" style="margin:0.75rem 0;" data-role="panel">
-        <div class="heading">
-          <xsl:call-template name="browser-icon">
-            <xsl:with-param name="browser" select="browser"/>
+    <xsl:choose>
+      <xsl:when test="/data/system/globalconfig/useSaucelabs ='1'">
+        <xsl:for-each select="/data/profiles/custom/item">
+          <xsl:call-template name="profile-panel">
+            <xsl:with-param name="node" select="."/>
           </xsl:call-template>
-          <span class="title">
-            <xsl:value-of select="name"/>
-            <a href="" data-profilename="{name}" data-action="deleteProfile"
-               style="float:right; color:#fff; margin-right:2.50rem;">
-              <span class="mif-cross"></span>
-            </a>
-            <a href="" data-profilename="{name}" data-action="editProfile"
-               style="float:right; color:#fff; margin-right:0.75rem;">
-              <span class="mif-pencil"></span>
-            </a>
-          </span>
-        </div>
-        <div class="content padding10">
-          <xsl:if test="driverOptions/dimensions">
-            <h5>Window settings:</h5>
-            Width=
-            <xsl:value-of select="driverOptions/dimensions/width"/> px
-            <br/>
-            Height=
-            <xsl:value-of select="driverOptions/dimensions/height"/> px
-            <br/>
-            <hr/>
-          </xsl:if>
+        </xsl:for-each>
 
-          <xsl:if test="arguments/*">
-            <h5>Browser Arguments:</h5>
-            <ul class="simple-list">
-              <xsl:for-each select="arguments/*">
-                <li>
-                  <xsl:value-of select="name(.)"/>
-                </li>
-              </xsl:for-each>
-            </ul>
-            <hr/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:for-each select="/data/profiles/custom/item">
+          <xsl:if test="local='1'">
+            <xsl:call-template name="profile-panel">
+              <xsl:with-param name="node" select="."/>
+            </xsl:call-template>
           </xsl:if>
+        </xsl:for-each>
+      </xsl:otherwise>
 
-          <xsl:if test="capabilities/*">
-            <h5>Capabilities:</h5>
-            Arguments:
-            <br/>
-            <ul class="simple-list">
-              <xsl:for-each select="capabilities/arguments/item">
-                <li>
-                  <xsl:value-of select="."/>
-                </li>
-              </xsl:for-each>
-            </ul>
-            <hr/>
-            <xsl:if test="capabilities/experimental/mobileEmulation/deviceName">
-              <h5>Device:</h5>
-              <xsl:value-of select="capabilities/experimental/mobileEmulation/deviceName"/>
-            </xsl:if>
-          </xsl:if>
+    </xsl:choose>
 
-        </div>
-      </div>
-    </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="saucelabs-profile">

@@ -207,6 +207,8 @@ class Menu {
 
   private function getProfiles() {
 
+    $base = new Page\Provider\Base();
+    $globalConf = $base->getConfig();
     $browserSettings = new Profile();
     $browsers = $browserSettings->get();
     $request = new Request();
@@ -247,15 +249,23 @@ class Menu {
     }
 
     foreach ($browsers['custom'] as $node) {
-      $push[] = array(
-        'label' => $node['name'],
-        'badge' => $node['browser'],
-        'path' => 'run/' . $this->path . '/' . $node['name']
-      );
+      var_dump($node['local']);
+      if ($globalConf['useSaucelabs'] == 0 && $node['local'] == 1) {
+        $push[] = array(
+          'label' => $node['name'],
+          'badge' => $node['browser'],
+          'path' => 'run/' . $this->path . '/' . $node['name']
+        );
+      } else if($globalConf['useSaucelabs'] == 1) {
+        $push[] = array(
+          'label' => $node['name'],
+          'badge' => $node['browser'],
+          'path' => 'run/' . $this->path . '/' . $node['name']
+        );
+      }
     }
-
-
-    if (isset($browsers['saucelabs'])) {
+    
+    if (isset($browsers['saucelabs']) && $globalConf['useSaucelabs'] == 1) {
       foreach ($browsers['saucelabs'] as $key => $browser) {
         foreach ($browser as $browserName => $versions) {
           for ($i = 0, $j = count($versions); $i < $j; $i++) {

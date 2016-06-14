@@ -148,9 +148,14 @@ class Globalconfig extends Base implements ProviderInterface {
     $conf = $this->getConfig();
 
     $conf['saucelabs_username'] = $request['saucelabs_username'];
-    $conf['password'] = $request['password'];
     $conf['access_key'] = $request['access_key'];
     $conf['saucelabs_seleniumAddress'] = $request['saucelabs_seleniumAddress'];
+    if(isset($request['useSaucelabs'])) {
+      $conf['useSaucelabs'] = 1;
+    } else {
+      $conf['useSaucelabs'] = 0;
+    }
+
     $this->saveConfig($conf);
   }
 

@@ -40,11 +40,12 @@ class Setup {
   public function init() {
     $config = \testonaut\Config::getInstance()->Path . '/config';
     $configuration = json_decode(file_get_contents($config), true);
-    if ($configuration['access_key'] != '') {
-      $hubAddre = $configuration['saucelabs_username'] . ":" . $configuration['access_key'] . '@' . $configuration['seleniumAddress'] . '/wd/hub';
-      $this->local = FALSE;
-    } else {
+
+    if(!isset($this->profile['local']) ||  $this->profile['local'] == 1 ) {
       $hubAddre = $this->hub;
+    } else {
+      $hubAddre = $configuration['saucelabs_username'] . ":" . $configuration['access_key'] . '@' . $configuration['saucelabs_seleniumAddress'] . '/wd/hub';
+      $this->local = FALSE;
     }
 
     $capabilities = $this->getCapabilities();
@@ -132,8 +133,9 @@ class Setup {
       if (isset($this->profile['version'])) {
         $capabilities->setVersion($this->profile['version']);
       }
-      if (isset($this->profile['platform'])) {
-        $capabilities->setPlatform($this->profile['platform']);
+
+      if (isset($this->profile['os'])) {
+        $capabilities->setPlatform($this->profile['os']);
       }
     }
 

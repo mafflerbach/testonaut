@@ -43,6 +43,6 @@ class TocTest extends \PHPUnit_Framework_TestCase {
     <item name="testSetSettings"/>
   </item>
 </toc>';
-    $this->assertXmlStringEqualsXmlString($expected, $toc);
+    $this->assertXmlStringEqualsXmlString($expected, $toc->saveXML());
   }
 }
