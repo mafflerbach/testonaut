@@ -249,7 +249,7 @@ class Menu {
     }
 
     foreach ($browsers['custom'] as $node) {
-      var_dump($node['local']);
+
       if ($globalConf['useSaucelabs'] == 0 && $node['local'] == 1) {
         $push[] = array(
           'label' => $node['name'],
@@ -264,7 +264,7 @@ class Menu {
         );
       }
     }
-    
+
     if (isset($browsers['saucelabs']) && $globalConf['useSaucelabs'] == 1) {
       foreach ($browsers['saucelabs'] as $key => $browser) {
         foreach ($browser as $browserName => $versions) {
