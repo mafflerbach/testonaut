@@ -73,8 +73,15 @@ a:hover {
 .page-header {
     color: #fff;
     text-align: center;
-    background-color: #159957;
-    background-image: linear-gradient(120deg, #155799, #159957);
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f1e767+0,feb645+100;Yellow+3D */
+    background: rgb(0, 57, 115); /* Old browsers */
+    background: -moz-linear-gradient(45deg, rgb(229, 229, 190) 0%, rgb(0, 57, 115) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, rgb(229, 229, 190) 0%, rgb(0, 57, 115) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, rgb(229, 229, 190) 0%, rgb(0, 57, 115) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
 }
 
 @media screen and (min-width: 64em) {
@@ -152,9 +159,51 @@ a:hover {
 
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
     margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
     font-weight: normal;
-    color: #159957;
+    color: #003973;
+}
+
+.main-content h2 {
+    font-size: 1.1em;
+}
+
+.main-content h3 {
+    font-size: 1em;
+}
+
+.main-content div {
+
+    background: #efefef; /* Old browsers */
+    background: -moz-linear-gradient(top, #efefef 0%, #ffffff 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #efefef 0%, #ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #efefef 0%, #ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#ffffff', GradientType=0); /* IE6-9 */
+
+    position: relative;
+    border-top: 1px solid #999;
+    padding: 1em;
+}
+
+.main-content div:before, .main-content div:after {
+    content: "";
+    position: absolute;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#999), to(transparent));
+    background-image: -webkit-linear-gradient(#999, transparent);
+    background-image: -moz-linear-gradient(#999, transparent);
+    background-image: -o-linear-gradient(#999, transparent);
+    background-image: linear-gradient(#999, transparent);
+    top: -1px;
+    bottom: -1px;
+    width: 1px;
+}
+
+.main-content div:before {
+    left: -2px;
+}
+
+.main-content div:after {
+    right: -2px;
 }
 
 .main-content p {

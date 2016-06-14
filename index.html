@@ -32,13 +32,15 @@
                                                                               class="octicon octicon-link"></span></a>In
     short:</h2>
 
-  <div>
     <p>Testonaut is a simple wiki, which you can running selenium test on every selenium node in your
       infrastructure.</p>
 
     <h2>
-      <a id="its-a-collaboration-tool" class="anchor" href="#its-a-collaboration-tool" aria-hidden="true"><span
-              aria-hidden="true" class="octicon octicon-link"></span></a>It's a Collaboration tool</h2>
+      <a id="its-a-collaboration-tool" class="anchor" href="#its-a-collaboration-tool" aria-hidden="true">
+        <span aria-hidden="true" class="octicon octicon-link"></span>
+      </a>It's a Collaboration tool</h2>
+  <div>
+
 
     <p>it has a very low entry and learning curve, which makes it an excellent tool to collaborate with, for example,
       business stakeholders.</p>
@@ -83,8 +85,11 @@
       <li>workaround for full capturing pages in chrome (<a
               href="https://bugs.chromium.org/p/chromedriver/issues/detail?id=294">https://bugs.chromium.org/p/chromedriver/issues/detail?id=294</a>)
       </li>
+      <li>
+        <a href="saucelabs.com">saucelabs</a> support.<br/>
+        <sup>for full capturing pages in chrome you run over tunnel (<a href="https://saucelabs.com/beta/tunnels">https://saucelabs.com/beta/tunnels</a>) </sup>
+      </li>
       <li>Different Browser profiles i.e:
-
         <ul>
           <li>using chrome mobile device emulator</li>
           <li>different window width and height</li>
@@ -93,7 +98,6 @@
       <li>different base url settings for every profile</li>
       <li>automated screenshot comparison</li>
       <li>screenshot overview over all tests in project or suite pages
-
         <ul>
           <li>screenshot filter (all | fail | success)</li>
         </ul>
@@ -112,17 +116,7 @@
     </ul>
   </div>
 </section>
-<section class="main-content">
 
-  <h2>
-    <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true"
-                                                                      class="octicon octicon-link"></span></a>TODO</h2>
-  <div>
-    <ul>
-      <li>implement pull to upstream git repo</li>
-    </ul>
-  </div>
-</section>
 <section class="main-content">
 
   <h2>
@@ -198,24 +192,21 @@ composer install
 
     <p>This is interesting for paralell test runs.</p>
 
-    <h2>
+    <h3>
       <a id="screenshot-settings" class="anchor" href="#screenshot-settings" aria-hidden="true"><span aria-hidden="true"
                                                                                                       class="octicon octicon-link"></span></a>Screenshot
-      settings</h2>
+      settings</h3>
 
     <p>Besides being able to use the command <em>captureEntirePageScreenshot</em> at any time, you have opportunity
       taking
       screenshot automatically.
       This can be defined after each test or after every single command.</p>
-  </div>
-</section>
-<section class="main-content">
 
-  <h2>
+  <h3>
     <a id="header-and-footer" class="anchor" href="#header-and-footer" aria-hidden="true"><span aria-hidden="true"
                                                                                                 class="octicon octicon-link"></span></a>Header
-    and Footer</h2>
-  <div>
+    and Footer</h3>
+
     <p>There are three types of header and footers.</p>
 
     <p>page header and footer, test header and footer and the last one, suite header and footer. pages with titles <em>pageHeader</em>
@@ -236,7 +227,7 @@ composer install
   <div>
     <p>If you have set your configuration right the single wiki page must be configurate as <em>test</em>,<em>suite</em>
       or <em>project page</em>.
-      After this settings change, you can use the run button on yout wikipage and select your browser flavour.</p>
+      After this settings change, you can use the run button on your wikipage and select your browser flavour.</p>
   </div>
 </section>
 <section class="main-content">
@@ -263,6 +254,13 @@ composer install
     <p>Chrome has the additional possibility to emulate different mobile devices. (<a
             href="Https://developer.chrome.com/devtools/docs/device-mode">Https://developer.chrome.com/devtools/docs/device-mode</a>)
       The list of supported devices can be selected via drop down menu.</p>
+
+    <h4>
+      Sucelabs Istances
+    </h4>
+    <p>
+      Under Globalconfig -> sauslabs -> Configure Browser you can activate your browser flavours for all supported OS - Browser variations.
+    </p>
   </div>
 </section>
 <section class="main-content">
@@ -315,59 +313,44 @@ composer install
 
   <h2>
     <a id="quicksetup" class="anchor" href="#quicksetup" aria-hidden="true"><span aria-hidden="true"
-                                                                                  class="octicon octicon-link"></span></a>"Quicksetup"
+                                                                                  class="octicon octicon-link"></span></a>Quicksetup from developer to developer
   </h2>
   <div>
-    <p>with a bunch of internet explorers on your machine:</p>
-
-    <p>Preset you need a virtualbox installation.
-      Get your modernIE maschine from <a href="http://www.modern.ie">www.modern.ie</a>
-      On your maschine download: <a
-              href="http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar">http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar</a>
+    <h3>Only firefox</h3>
+    <p>
+      Download the actual Selenium Standalon Server from <a href="http://www.seleniumhq.org/download/">http://www.seleniumhq.org/download/</a>
     </p>
 
-    <p>this is our hub. If you have downloaded start the hub with
-      java -jar path/to/jar/selenium-server-standalone-2.44.jar -role hub</p>
+    <p>
+      Start your hub with:
+<pre><code>
+java -jar path/to/jar/selenium-server.jar -role hub
+  </code>
+</pre>
+    register the your first node:
+<pre><code>
+java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid/register -browser browserName="firefox",platform="ANY",maxInstances=5
+   </code>
+</pre>
+    </p>
 
-    <p>You must install a java jdk. for the second time you download the selenium server in your VM.
-      You must download under <a href="http://selenium-release.storage.googleapis.com/index.html?path=2.44/">http://selenium-release.storage.googleapis.com/index.html?path=2.44/</a>
-      the IEDriverServer
-      after installation from Java and selenium go in your cmd in the jdk install dir e.g. ( cd "C:\Program
-      Files\Java\jdk1.8.0_25\bin")</p>
+    <p>
+      Now, you have a simple grid with yout firefox
+    </p>
 
-    <p>you should customize the version number, path and Hub ip ;)</p>
 
-    <ul>
-      <li>The IEDriverServer exectuable must be downloaded and placed in your PATH.</li>
-      <li>On IE 7 or higher on Windows Vista or Windows 7, you must set the Protected Mode settings for each zone to be
-        the same value. The value can be on or off, as long as it is the same for every zone. To set the Protected Mode
-        settings, choose "Internet Options..." from the Tools menu, and click on the Security tab. For each zone, there
-        will be a check box at the bottom of the tab labeled "Enable Protected Mode".
-      </li>
-      <li>Additionally, "Enhanced Protected Mode" must be disabled for IE 10 and higher. This option is found in the
-        Advanced tab of the Internet Options dialog.
-      </li>
-      <li>The browser zoom level must be set to 100% so that the native mouse events can be set to the correct
-        coordinates.
-      </li>
-      <li>For IE 11 only, you will need to set a registry entry on the target computer so that the driver can maintain a
-        connection to the instance of Internet Explorer it creates. For 32-bit Windows installations, the key you must
-        examine in the registry editor is HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet
-        Explorer\Main\FeatureControl\FEATURE_BFCACHE. For 64-bit Windows installations, the key is
-        HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BFCACHE. Please
-        note that the FEATURE_BFCACHE subkey may or may not be present, and should be created if it is not present.
-        Important: Inside this key, create a DWORD value named iexplore.exe with the value of 0.
-      </li>
-    </ul>
+    <h3>Add Chrome?</h3>
 
-    <p>After installation from Java and selenium</p>
+    <p>
+    You need to Download the chromedriver from <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads">https://sites.google.com/a/chromium.org/chromedriver/downloads</a>
+<pre>
+<code>
+java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid/register -port 5556 -Dwebdriver.chrome.driver="path/to/chromedriver" -browser browserName="chrome",platform="ANY",maxInstances=5
+</code>
+</pre>
+    </p>
 
-<pre><code>cd "path/to/jdk/install/dir/bin"
-java -jar path/to/selenium-server.jar -role node -hub {YOUR-HUB-IP}:4444/grid/register -Dwebdriver.ie.driver="path/to/IEDriverServer.exe" -browser browserName="iexplore",version={version},platform="WINDOWS",maxInstances=5
-</code></pre>
-
-    <p>you should customize the version number and Hub ip ;) </p>
-  </div>
+    </div>
 </section>
 <section class="main-content">
   <h2>
@@ -400,22 +383,25 @@ java -jar path/to/selenium-server.jar -role node -hub {YOUR-HUB-IP}:4444/grid/re
 </section>
 <section class="main-content">
 
+
+
+
   <h2>
-    <a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true"><span aria-hidden="true"
-                                                                                              class="octicon octicon-link"></span></a>planned
-    features....</h2>
+    <a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true">
+      <span aria-hidden="true" class="octicon octicon-link"></span></a>
+    planned features and Todos</h2>
+
+
   <div>
+    <h3>
+      <a id="modules" class="anchor" href="#modules" aria-hidden="true">
+        <span aria-hidden="true" class="octicon octicon-link"></span>
+      </a>Todos
+    </h3>
+
     <ul>
       <li>implementing variables</li>
       <li>Templates for pagepresets in editmode</li>
-    </ul>
-
-    <h2>
-      <a id="modules" class="anchor" href="#modules" aria-hidden="true"><span aria-hidden="true"
-                                                                              class="octicon octicon-link"></span></a>modules
-    </h2>
-
-    <ul>
       <li>Pagecrawler for generating a testing tree</li>
       <li>testgenerator for Equivalence classes analysis</li>
       <li>checklist for Accessibility (Bitv) (inkl Prio)</li>
