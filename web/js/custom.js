@@ -821,6 +821,13 @@ function initGlobalconfig() {
     $("select[name='browser']").parent().hide();
     $(id).parent().show();
 
+    $('#devices-saucelabs').show();
+
+    $('#devices-saucelabs').change(function() {
+      $('#saucelabsheight').hide();
+      $('#saucelabswidth').hide();
+    });
+
     $(id).change(function () {
       var muId = $(id + ' option:selected').attr('data-id');
       $("select[name='version']").parent().hide();
@@ -841,8 +848,7 @@ function initGlobalconfig() {
     var width = $("#saucelabswidth").val();
     var height = $("#saucelabsheight").val();
     var name = $("input[name='saucelabs_profileName']").val();
-
-
+    var device = $("#saucelabsprofile select[name='device'] option[value]:selected").val();
 
     $.ajax({
       type: "POST",
@@ -852,6 +858,7 @@ function initGlobalconfig() {
         'height' : height,
         'version' : version,
         'browser' : browserVal,
+        'device' : device ,
         'os' : osVal,
         'action' : 'savesaucelabsprofile'
       },

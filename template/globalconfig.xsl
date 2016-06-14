@@ -596,6 +596,9 @@
         </div>
       </xsl:for-each>
     </xsl:for-each>
+    <div class="cell" style="display: none;" id="devices-saucelabs">
+      <xsl:call-template name="devices"/>
+    </div>
 
     <div class="input-control text">
 

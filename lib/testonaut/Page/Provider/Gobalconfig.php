@@ -192,7 +192,11 @@ class Globalconfig extends Base implements ProviderInterface {
     } else {
       $browser = $request['browser'];
       $data['os'] = $request['os'];
-      $data['version'] = $request['version'];
+      if (isset($request['version'])) {
+        $data['version'] = $request['version'];
+      } else {
+        $data['version'] = 'default';
+      }
       $data['name'] = $request['profileName'];
     }
 
@@ -224,7 +228,7 @@ class Globalconfig extends Base implements ProviderInterface {
         "--disable-web-security",
         "--user-data-dir=" . sys_get_temp_dir() . '/chromeinstances/' . $this->generateRandomString()
       );
-
+      
       if (isset($request['device']) && $request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
@@ -253,9 +257,6 @@ class Globalconfig extends Base implements ProviderInterface {
     } else {
       $data['capabilities'] = '';
     }
-
-    var_dump($data);
-
 
     $profile->write($data);
   }
