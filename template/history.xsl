@@ -147,40 +147,39 @@
   <xsl:template name="browser">
     <xsl:param name="browser"/>
 
-      <div class="panel" data-role="panel">
-        <div class="heading">
-          <span class="title">
-            <xsl:choose>
-              <xsl:when test="$browser/@name">
-                <xsl:value-of select="$browser/@name"/>
-                <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{$browser/@name}/10"
-                   class="button danger mini-button deleteLastEntry"
-                   style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
-                  delete 10 oldest entries
-                </a>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="name($browser)"/>
-                <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{name($browser)}/10"
-                   class="button danger mini-button deleteLastEntry"
-                   style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
-                  delete 10 oldest entries
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
+    <div class="panel" data-role="panel">
+      <div class="heading">
+        <span class="title">
+          <xsl:choose>
+            <xsl:when test="$browser/@name">
+              <xsl:value-of select="$browser/@name"/>
+              <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{$browser/@name}/10"
+                 class="button danger mini-button deleteLastEntry"
+                 style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
+                delete 10 oldest entries
+              </a>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="name($browser)"/>
+              <a href="{/data/system/baseUrl}{/data/system/requestUri}/delete/{name($browser)}/10"
+                 class="button danger mini-button deleteLastEntry"
+                 style=" margin: 0 53px; position: absolute; right: 0; padding: 6px">
+                delete 10 oldest entries
+              </a>
+            </xsl:otherwise>
+          </xsl:choose>
 
 
-          </span>
-        </div>
-        <div class="content">
-
-          <xsl:for-each select="$browser/*">
-            <xsl:call-template name="page">
-              <xsl:with-param name="page" select="."/>
-            </xsl:call-template>
-          </xsl:for-each>
-        </div>
+        </span>
       </div>
+      <div class="content">
+        <xsl:for-each select="$browser/*">
+          <xsl:call-template name="page">
+            <xsl:with-param name="page" select="."/>
+          </xsl:call-template>
+        </xsl:for-each>
+      </div>
+    </div>
 
   </xsl:template>
 
