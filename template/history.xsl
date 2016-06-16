@@ -174,9 +174,11 @@
         </div>
         <div class="content">
 
-          <xsl:call-template name="page">
-            <xsl:with-param name="page" select="$browser/*"/>
-          </xsl:call-template>
+          <xsl:for-each select="$browser/*">
+            <xsl:call-template name="page">
+              <xsl:with-param name="page" select="."/>
+            </xsl:call-template>
+          </xsl:for-each>
         </div>
       </div>
 
@@ -195,7 +197,6 @@
               <xsl:value-of select="name($page)"/>
             </xsl:otherwise>
           </xsl:choose>
-
         </span>
       </div>
       <div class="content">
@@ -219,7 +220,6 @@
       <div class="panel collapsed {$cssClass}" data-role="panel">
         <div class="heading">
           <span class="title">
-
             <xsl:value-of select="date"/><xsl:text> </xsl:text>
             <xsl:value-of select="time"/>
           </span>

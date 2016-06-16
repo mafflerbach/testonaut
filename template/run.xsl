@@ -19,18 +19,17 @@
     <xsl:for-each select="/data/result/item">
       <table>
         <xsl:for-each select="result/item">
+
           <xsl:call-template name="row">
+            <xsl:with-param name="result" select="item[1]"/>
             <xsl:with-param name="action" select="item[2]"/>
             <xsl:with-param name="command" select="item[3]"/>
           </xsl:call-template>
         </xsl:for-each>
       </table>
-
+      <hr/>
       <xsl:choose>
-        <xsl:when test="browserResult = '1'">
-          <p>Build: Success</p>
-        </xsl:when>
-        <xsl:otherwise>
+        <xsl:when test="browserResult = ''">
           <p>Build: Failed
             <br/>
             In Test
@@ -39,16 +38,34 @@
                       select="path"/>
             </a>
           </p>
-        </xsl:otherwise>
+        </xsl:when>
       </xsl:choose>
     </xsl:for-each>
+    <hr/>
+
+
+    <xsl:choose>
+      <xsl:when test="/data/result/suiteResult = 1">
+        <p>Build: Success</p>
+      </xsl:when>
+    </xsl:choose>
+
   </xsl:template>
 
 
   <xsl:template name="row">
+    <xsl:param name="result"/>
     <xsl:param name="command"/>
     <xsl:param name="action"/>
-    <tr>
+    <xsl:variable name="css">
+
+      <xsl:choose>
+        <xsl:when test="$result = ''">
+          background-color:red;
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <tr style="{$css}">
       <td>
         <xsl:value-of select="$command"/>
       </td>

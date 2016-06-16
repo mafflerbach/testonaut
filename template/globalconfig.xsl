@@ -523,7 +523,6 @@
           </xsl:if>
         </xsl:for-each>
       </xsl:otherwise>
-
     </xsl:choose>
 
   </xsl:template>

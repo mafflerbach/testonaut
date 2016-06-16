@@ -56,7 +56,7 @@ class Run extends Base implements ProviderInterface {
 
       $conf = $this->page->config();
 
-      if ($conf['type'] == 'suite') {
+      if ($conf['type'] == 'suite' || $conf['type'] == 'project') {
         $result = $this->runSuite($this->page);
       } else {
         $result = $this->run($this->page);
@@ -132,6 +132,15 @@ class Run extends Base implements ProviderInterface {
     }
 
     $result = $this->_run($testCollect);
+
+    $suiteRun = 1;
+    for($i = 0; $i < count($result); $i++) {
+      if ($result[$i]['browserResult'] == false) {
+        $suiteRun = 0;
+      }
+    }
+
+    $result['suiteResult'] = $suiteRun;
 
     return $result;
   }
@@ -211,8 +220,6 @@ class Run extends Base implements ProviderInterface {
       }
 
       return $result;
-
-
     } catch (\Exception $e) {
       var_dump($e);
       return array(
