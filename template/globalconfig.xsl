@@ -462,8 +462,17 @@
           <h5>Browser Arguments:</h5>
           <ul class="simple-list">
             <xsl:for-each select="$node/arguments/*">
+
               <li>
-                <xsl:value-of select="name($node)"/>
+                <xsl:value-of select="name(.)"/> =
+                <xsl:choose>
+                  <xsl:when test=". = 1">
+                    True
+                  </xsl:when>
+                  <xsl:otherwise>
+                    False
+                  </xsl:otherwise>
+                </xsl:choose>
               </li>
             </xsl:for-each>
           </ul>
@@ -499,11 +508,11 @@
     <xsl:choose>
       <xsl:when test="/data/system/globalconfig/useSaucelabs ='1'">
         <xsl:for-each select="/data/profiles/custom/item">
+          <xsl:sort select="name"/>
           <xsl:call-template name="profile-panel">
             <xsl:with-param name="node" select="."/>
           </xsl:call-template>
         </xsl:for-each>
-
       </xsl:when>
       <xsl:otherwise>
         <xsl:for-each select="/data/profiles/custom/item">

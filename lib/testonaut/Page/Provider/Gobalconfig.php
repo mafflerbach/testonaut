@@ -142,6 +142,14 @@ class Globalconfig extends Base implements ProviderInterface {
 
   private function saveSaucelabsProfile($request) {
     $this->saveProfile($request, FALSE);
+    $message = array(
+      'result' => true,
+      'message' => 'profile saved',
+      'messageTitle' => 'Save'
+    );
+
+    print(json_encode($message));
+    die;
   }
 
   private function saveSauceLabs($request) {
@@ -228,7 +236,7 @@ class Globalconfig extends Base implements ProviderInterface {
         "--disable-web-security",
         "--user-data-dir=" . sys_get_temp_dir() . '/chromeinstances/' . $this->generateRandomString()
       );
-      
+
       if (isset($request['device']) && $request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
