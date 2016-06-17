@@ -2,14 +2,14 @@
 /**
  *
  * GNU GENERAL PUBLIC LICENSE testonautterm Copyright (C) 2016 Afflerbach
- * This program is free software: you can redistribute it and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation, 
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation,
  * either version 3 of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- */ 
+ */
 
 namespace testonaut\Command\Line;
 
@@ -18,9 +18,11 @@ use testonaut\Capabilities;
 use testonaut\Command\Line;
 use testonaut\Selenese\Command\CaptureEntirePageScreenshot;
 use testonaut\Selenese\CommandResult;
+use testonaut\Utils\Javascript;
 
 class Runner {
 
+  protected $args;
   protected $tests;
   protected $platform;
   protected $browser;
@@ -44,6 +46,8 @@ class Runner {
       $this->configFile = $args['c'];
     }
 
+    $this->args = $args;
+
     $this->config = $config;
 
   }
@@ -52,11 +56,11 @@ class Runner {
     $paths = array();
 
     $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($outerDir), \RecursiveIteratorIterator::SELF_FIRST);
-    foreach($objects as $name => $object){
+    foreach ($objects as $name => $object) {
       /**
        * @var \SplFileInfo $object
        */
-      if(!$object->isDir() && $name != NULL ) {
+      if (!$object->isDir() && $name != NULL) {
         $paths[] = $object;
       }
     }
@@ -66,9 +70,9 @@ class Runner {
 
   public function run() {
 
-    for($i = 0; $i < count($this->tests); $i++) {
+    for ($i = 0; $i < count($this->tests); $i++) {
       /**
-       * @var \SplFileInfo $this->tests
+       * @var \SplFileInfo $this ->tests
        */
       $test = new \testonaut\Command\Line\Test();
       $test->loadFromSeleneseHtml($this->tests[$i]);
@@ -86,15 +90,24 @@ class Runner {
    */
   private function setDriverOption(\RemoteWebDriver $driver) {
 
-    //$d = new \WebDriverDimension(300, 700);
-    //$driver->manage()->window()->setSize($d);
+    if (isset($this->config['dimension'])) {
+      $d = new \WebDriverDimension((int)$this->config['dimension']['width'], (int)$this->config['dimension']['height']);
+      $driver->manage()->window()->setSize($d);
+    }
+
+    if(isset($this->config['fullscreen']) && $this->config['fullscreen']  == true) {
+      $driver->manage()->window()->maximize();
+    }
 
     return $driver;
   }
 
   protected function _run(Test $test) {
+
     $capabilities = $this->getCapabilities();
-    $webDriver = \RemoteWebDriver::create("http://localhost:4444/wd/hub", $capabilities, 5000);
+    $webDriver = \RemoteWebDriver::create($this->args['s'], $capabilities, 5000);
+
+    $webDriver = $this->setDriverOption($webDriver);
 
     foreach ($test->commands as $command) {
 
@@ -107,23 +120,35 @@ class Runner {
       }
 
       if ($commandResult->success) {
-        $res[] = array(true, $commandResult->message, $commandStr);
+        $res[] = array(
+          true,
+          $commandResult->message,
+          $commandStr
+        );
         print(".");
       } else {
-        $res[] = array(false, $commandResult->message, $commandStr);
+        $res[] = array(
+          false,
+          $commandResult->message,
+          $commandStr
+        );
         $browserResult = FALSE;
         print("F");
       }
 
       if ($commandStr == 'CaptureEntirePageScreenshot') {
-        $srcImage = $this->getPath($test) . "/" .$command->arg1;
+        $srcImage = $this->getPath($test) . "/" . $command->arg1;
 
-        if ($this->config['name'] == "internet explorer") {
+        if ($this->config['name'] != "chrome") {
           $screenCommand = new CaptureEntirePageScreenshot();
           $screenCommand->arg1 = $srcImage;
           $screenCommand->runWebDriver($webDriver);
         } else {
-          $webDriver->executeScript($this->getJs($srcImage), array());
+          $javascript = new Javascript($webDriver);
+          $javascript->invokeHtml2Canvas();
+          $javascript->invokeNanoajax();
+          sleep(2);
+          $javascript->invokeTakeScreenshot($srcImage, $webDriver);
         }
       }
 
@@ -134,9 +159,36 @@ class Runner {
     $webDriver->quit();
   }
 
+  public function invokeTakeScreenshot($srcImage,$webDriver) {
+    if (DIRECTORY_SEPARATOR == '\\') {
+      $srcImage = str_replace('\\', '\\\\', $srcImage);
+      $srcImage = str_replace('/', '\\\\', $srcImage);
+    } else {
+      $srcImage = str_replace(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, $srcImage);
+    }
+
+    $js = "
+      setTimeout(function () {
+        html2canvas(document.html, {
+          onrendered: function(canvas) {
+          qwest.post('https://" . $_SERVER['SERVER_NAME'] . "/testonaut/server.php', {
+              canvas: canvas.toDataURL('image/png'),
+              path:'" . $srcImage . "'
+              }).then(function(xhr, response) {})
+          }
+        })
+      }, 1500);";
+
+    $webDriver->executeScript($js, array());
+    sleep(5);
+    return $this->webDriver;
+  }
+
+
+
   private function getPath(Test $test) {
     if ($this->imageDir != NULL) {
-      $path = $this->imageDir. '/'. $test->file->getPath();
+      $path = $this->imageDir . '/' . $test->file->getPath();
       if (!file_exists($path)) {
         mkdir($path, 0777, true);
       }
@@ -150,46 +202,56 @@ class Runner {
   private function getCapabilities() {
 
     $DesiredCapabilities = new Capabilities();
+    $mobileEmulation = '';
 
+    if (isset($this->config['deviceName'])) {
+      $browserName = 'chrome';
+    } else {
       $browserName = $this->normalizeBrowserName($this->config['name']);
-      if (method_exists($DesiredCapabilities, $browserName)) {
-        $capabilities = $DesiredCapabilities::$browserName();
-        if ($this->config['name'] == 'chrome') {
-          $options = new \ChromeOptions();
-          $options->addArguments(array(
-            '--disable-web-security',
-          ));
-          $options->addArguments(array(
-            '--user-data-dir='.sys_get_temp_dir(),
-          ));
+    }
+
+    if (method_exists($DesiredCapabilities, $browserName)) {
+      $capabilities = $DesiredCapabilities::$browserName();
+      if ($this->config['name'] == 'chrome') {
+        $options = new \ChromeOptions();
+        $options->addArguments(array(
+          '--disable-web-security',
+        ));
+        $options->addArguments(array(
+          '--user-data-dir=' . sys_get_temp_dir(),
+        ));
 
 
-          $mobileEmulation = ["deviceName" => "Google Nexus 5"];
-
+        if (isset($this->config['deviceName'])) {
+          $mobileEmulation = array("deviceName" => $this->config['deviceName']);
           $options->setExperimentalOption("mobileEmulation", $mobileEmulation);
-          $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
+        } else {
+          $browserName = $this->normalizeBrowserName($this->config['name']);
         }
 
-        if ($this->config['name'] == "MicrosoftEdge") {
-
-        }
-
-        if ($this->config['name'] == 'firefox') {
-
-          $options = new \FirefoxProfile();
-          $options->setPreference('security.fileuri.strict_origin_policy', false);
-          $options->setPreference('network.http.referer.XOriginPolicy', 1);
-
-          $capabilities->setCapability(\FirefoxDriver::PROFILE, $options);
-        }
-
-        if (isset($this->config['version'])) {
-          $capabilities->setVersion($this->config['version']);
-        }
-        if (isset($this->config['platform'])) {
-          $capabilities->setPlatform($this->config['platform']);
-        }
+        $capabilities->setCapability(\ChromeOptions::CAPABILITY, $options);
       }
+
+      if ($this->config['name'] == "MicrosoftEdge") {
+
+      }
+
+      if ($this->config['name'] == 'firefox') {
+
+        $options = new \FirefoxProfile();
+        $options->setPreference('security.fileuri.strict_origin_policy', false);
+        $options->setPreference('network.http.referer.XOriginPolicy', 1);
+
+        $capabilities->setCapability(\FirefoxDriver::PROFILE, $options);
+      }
+
+      if (isset($this->config['version'])) {
+        $capabilities->setVersion($this->config['version']);
+      }
+      if (isset($this->config['platform'])) {
+        $capabilities->setPlatform($this->config['platform']);
+      }
+    }
 
     return $capabilities;
   }
@@ -210,44 +272,6 @@ class Runner {
     }
 
     return $browserName;
-  }
-
-  private function getJs($srcImage) {
-
-    $srcImage = str_replace('\\', '\\\\', $srcImage);
-    $js ="
-      setTimeout(function () {
-          var d = document;
-          var script = d.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://localhost/testonaut/html2canvas.js';
-          d.getElementsByTagName('head')[0].appendChild(script);
-      }, 100);
-
-      setTimeout(function () {
-          var d = document;
-          var script = d.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js';
-          d.getElementsByTagName('head')[0].appendChild(script);
-      }, 100);
-      setTimeout(function () {
-        html2canvas(document.html, {
-          onrendered: function(canvas) {
-
-            $.ajax({
-                method: 'POST',
-                url: 'https://localhost/testonaut/server.php',
-                xhrFields: {
-                    withCredentials: true
-                },
-                data: { canvas: canvas.toDataURL('image/png'), path:'".$srcImage."'}
-            })
-            .done(function( msg ) {
-
-            });
-          }})}, 500);";
-    return $js;
   }
 
 
