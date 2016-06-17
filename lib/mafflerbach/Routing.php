@@ -131,6 +131,8 @@ class Routing {
     $templateDir = Config::getInstance()->templates;
     $xslDoc->load($templateDir . $file);
     $xmlDoc = new \DOMDocument();
+
+
     $xmlDoc->loadXML($content);
 
     $proc = new \XSLTProcessor();

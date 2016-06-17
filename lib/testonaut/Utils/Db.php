@@ -81,11 +81,14 @@ class Db {
             "group" INTEGER
         );';
 
+    $addRoot = 'insert into "User" (email, password, displayName, active , "group") values (\'root\',\'$2y$10$m/DbEBFPqPMYRLNVWpCTPuoQvCaYbBXs4heL7GzCSBvKHtsKp.uaS\', \'root\', 1, 1)';
+
     $this->dbInstance->query($files);
     $this->dbInstance->query($profile);
     $this->dbInstance->query($history);
     $this->dbInstance->query($imageCompare);
     $this->dbInstance->query($user);
+    $this->dbInstance->query($addRoot);
   }
   
   public function getInstance() {
