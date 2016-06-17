@@ -1,3 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
 <h1>Welcome to Testonaut</h1>
 
 testonaut is a simple wiki, which you can running selenium test on every selenium node in your infrastructure.
+<br>
+For actual Documentation read under <a rel="nofollow" target="_blank" href="http://mafflerbach.github.io/testonaut/">http://mafflerbach.github.io/testonaut/</a><br>
+</body></html>
