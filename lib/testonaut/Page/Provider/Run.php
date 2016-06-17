@@ -46,6 +46,7 @@ class Run extends Base implements ProviderInterface {
 
       $this->path = urldecode($path);
 
+
       $this->page = new \testonaut\Page($path);
       $this->basePath = $this->page->transCodePath();
       $this->imagePath = $this->page->getImagePath();
@@ -69,6 +70,7 @@ class Run extends Base implements ProviderInterface {
     });
 
     $this->routing->route('.*/(.*)/all', function ($path) {
+      $this->path = urldecode($path);
 
       $this->browser = 'all';
 
@@ -150,7 +152,6 @@ class Run extends Base implements ProviderInterface {
    * @return array
    */
   protected function run(Page $path) {
-
     $testCollect[] = $path;
     return $this->_run($testCollect);
   }

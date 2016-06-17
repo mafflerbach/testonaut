@@ -109,7 +109,7 @@ class Menu {
 
     $resources = $this->resources();
 
-    if ($config['type'] != 'static' && $config['type'] != 'none') {
+    if ($config['type'] != 'static' && $config['type'] != 'none' && $config['type'] != null) {
       $private = array(
         $resources['root'],
       );
@@ -220,7 +220,7 @@ class Menu {
     $k = 0;
 
     foreach ($browsers['grid'] as $node) {
-      
+
       $push[$k] = array(
         'label' => $node['browserName'],
         'path' => 'run/' . $this->path . '/' . $node['browserName'],
@@ -256,7 +256,7 @@ class Menu {
           'badge' => $node['browser'],
           'path' => 'run/' . $this->path . '/' . $node['name']
         );
-      } else if($globalConf['useSaucelabs'] == 1) {
+      } else if ($globalConf['useSaucelabs'] == 1) {
         $push[] = array(
           'label' => $node['name'],
           'badge' => $node['browser'],
@@ -270,9 +270,9 @@ class Menu {
         foreach ($browser as $browserName => $versions) {
           for ($i = 0, $j = count($versions); $i < $j; $i++) {
             $push[] = array(
-              'version' => $browserName.' '.$versions[$i],
+              'version' => $browserName . ' ' . $versions[$i],
               'badge' => $key,
-              'path' => 'run/' . $this->path . '/' . $browserName . '/' .$versions[$i] . '/' . urldecode($key)
+              'path' => 'run/' . $this->path . '/' . $browserName . '/' . $versions[$i] . '/' . urldecode($key)
             );
           }
         }

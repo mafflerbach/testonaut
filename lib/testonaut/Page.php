@@ -37,8 +37,7 @@ class Page {
    * @param $path
    */
   public function __construct($path) {
-
-    $this->path = $path;
+    $this->path = urldecode($path);
     $this->root = Config::getInstance()->wikiPath;
   }
 

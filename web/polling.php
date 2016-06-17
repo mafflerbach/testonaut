@@ -7,7 +7,7 @@
  */
 
 
-$file = "../tmp/".$_REQUEST['path'];
+$file = "../tmp/".urldecode($_REQUEST['path']);
 
 if (file_exists($file)) {
   print(file_get_contents($file));
