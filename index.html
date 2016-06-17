@@ -363,35 +363,96 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
 
     <p>and also the HTML Publisher Plugin: <a href="https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin">https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin</a>
     </p>
+    <ul>
+      <li>Add a free style Job</li>
+      <li>Copy the run URL from your Test from testonaut</li>
+      <li>Add Build step "HTTP Request"</li>
+      <li>Paste the test URL</li>
+      <li>set the option "Response content expected" to "Build: Success"</li>
+      <li>set the option "Output response to file" to index.html</li>
+      <li>Add Post build action "Publish HTML reports"</li>
+      <li>Set option "Index page[s]" to index.html</li>
+    </ul>
 
-    <p>Add a free style Job</p>
+    <p>
+    For additional CSS support in html report set under Manage Jenkins->Script console
+<pre>
+<code>
+  System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
+</code>
+</pre>
+    </p>
 
-    <p>Copy the run URL from your Test from testonaut</p>
-
-    <p>Add Build step "HTTP Request"</p>
-
-    <p>Paste the test URL</p>
-
-    <p>set the option "Response content expected" to "Build: Success"</p>
-
-    <p>set the option "Output response to file" to index.html</p>
-
-    <p>Add Post build action "Publish HTML reports"</p>
-
-    <p>Set option "Index page[s]" to index.html</p>
   </div>
 </section>
 <section class="main-content">
 
+  <h2>
+    <a id="running-tests-comandline" class="anchor" href="#running-tests-comandline" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Running
+    tests in commandline</h2>
+  <div>
 
+    <p>
+      Start simple <code>pgp run.php -c [config.json]</code> your tests. You can overwrite your config file with follow additional parameters:
+    </p>
+    <ul>
+      <li>
+ -d [directory] <em>path to test directory</em>
+      </li>
+      <li>
+ -i [imagedirectory] <em>path to image directory vor captured screenshots</em>
+      </li>
+      <li>
+ -s [seleniumhub][http://localhost:4444/wd/hub] <em>reset the target selenium hub.</em>
+      </li>
+    </ul>
 
+    <p>Here is a example config file:</p>
+<pre>
+  <code>
+{
+  "testonaut": {
+    "browsers": [
+      {
+        "deviceName" : "Google Nexus 5",
+        "name" : "chrome",
+        "fullscreen" : "true",
+        "dimension" : {
+          "width" : "1024",
+          "height": "768"
+        }
+      },
+      {
+        "name" : "firefox",
+        "fullscreen" : "true",
+        "dimension" : {
+          "width" : "1024",
+          "height": "768"
+        }
+      }
+    ],
+    "config": {
+      "imageDir":"images",
+      "testDir": "root/test/test2",
+      "hub" : "http://localhost:4444/wd/hub"
+    }
+  }
+}
+  </code>
+</pre>
+    <p>
+      The Parameters <em>fullscreen</em> and <em>dimensional</em> are conflicting. If fullscreen is set,the dimension parameters are overwrite.
+    </p>
+  </div>
+</section>
+
+<section class="main-content">
 
   <h2>
     <a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true">
       <span aria-hidden="true" class="octicon octicon-link"></span></a>
     planned features and Todos</h2>
-
-
   <div>
     <h3>
       <a id="modules" class="anchor" href="#modules" aria-hidden="true">
@@ -408,6 +469,13 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
     </ul>
   </div>
 </section>
+<!--
+<section class="main-content">
+    <h2>
+    <a id="tutorials" class="anchor" href="tutorial" aria-hidden="true">
+      <span aria-hidden="true" class="octicon octicon-link"></span>tutorials</a></h2>
+</section> -->
+
 <section class="main-content">
 
   <footer class="site-footer">
@@ -418,9 +486,7 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
             href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a
             href="https://twitter.com/jasonlong">Jason Long</a>.</span>
   </footer>
-
 </section>
-
 
 </body>
 </html>
