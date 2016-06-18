@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>Testonaut by mafflerbach</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css" media="screen">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/github-light.css" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="../custom.js"></script>
+</head>
+<body>
+<section class="page-header">
+  <h1 class="project-name">Testonaut</h1>
+  <h2 class="project-tagline">Testonaut is a simple wiki, which you can running selenium test on every selenium node in
+    your infrastructure.</h2>
+  <a href="https://github.com/mafflerbach/testonaut" class="btn">View on GitHub</a>
+  <a href="https://github.com/mafflerbach/testonaut/zipball/master" class="btn">Download .zip</a>
+  <a href="https://github.com/mafflerbach/testonaut/tarball/master" class="btn">Download .tar.gz</a>
+</section>
+<section class="main-content">
+<h2>Create a new Page</h2>
+  <div>
+    <p>
+      After Login add to the url any string for naming your new Page.<br/>
+      <img src="doc/newPage01.png"/><br/>
+      After a click on [Edit], the Editor opens.<br/>
+      <img src="doc/editPage01.png"/><br/>
+      Click on [Save], then [Back] and you see your new Page.<br/>
+      <img src="doc/editPage02.png"/><br/>
+      Would you like add a selenese test, you must switch the editor to the source view.
+      <img src="doc/sourceView01.png"/><br/>
+      <img src="doc/sourceView02.png"/><br/>
+    </p>
+    <p>
+      For Hirachical navigations, seperate the pagename with dots. <br/>
+      <img src="doc/childPage01.png"/><br/>
+    </p>
+  </div>
+</section>
+<section class="main-content">
+<h2>Run a test</h2>
+  <div>
+    <p>
+      Testonaut have different types of Pages.
+      <ul>
+        <li>
+          static <small>This pages are ignored in a testrun</small>
+        </li>
+        <li>
+          suite <small>All children from a Suite are running as tests, exepted static pages</small>
+        </li>
+        <li>
+          test <small>A Single Test Page</small>
+        </li><li>
+          project <small>Should be the startpage for each running projects. All children are running as test, too</small>
+        </li>
+      </ul>
+
+    You can set the Type under [Config].
+    After Click on [Config] You can on the one hand set thy page type and on the other hand different screenshots settings.
+    <img src="doc/config01.png"><br/>
+    Under [Screenshot Settings] you can set automatical screenshots after every command btw step or after every Test.
+    <br></p><p>
+    If you have set your page type on <em>project</em>, <em>suite</em>, or <em>test</em>, you get a new Menupoint [Run]
+    <img src="doc/run01.png"/><br>
+  </p>
+    <p>
+      Now you can select under [Run] your selenium Node.
+    <img src="doc/run02.png"/>
+    <img src="doc/seleniumNodes01.png"/>
+    </p>
+    <p>
+      After click on your Node you get on the top right side a Notification about the test Run.
+      <img src="doc/run03.png"/>
+      <img src="doc/run04.png"/>
+      Under [History] you get all test results.
+    </p>
+  </div>
+</section>
+<section class="main-content">
+<h2>History</h2>
+  <div>
+    <h4>Build history</h4>
+    <p>
+      In the History Section you can overwatch all runs.
+      <img src="doc/history01.png"/>
+    </p>
+
+    <h5>Delete history</h5>
+    <p>
+      <img src="doc/history02.png">
+      <img src="doc/history03.png">
+    </p>
+
+    <h4>Git history</h4>
+    <p>
+      All pages are under version control. You have under the tab section [git history] an overview over your page history.
+      You can make a checkout (btw a rewert) to older versions, or you can check the different between different revisions.
+      <img src="doc/history04.png">
+    </p>
+    <h5>
+      Checkout a older revision
+    </h5>
+    <p></p>
+
+    <h5>
+      View a different
+    </h5>
+    <p></p>
+  </div>
+</section>
+<section class="main-content">
+<h2>Screenshot</h2>
+  <div>
+    <h4>Screenshot comparison</h4>
+    <p>
+
+      <img src="doc/screenshots01.png">
+      <img src="doc/screenshots02.png">
+      <img src="doc/screenshots03.png">
+      <img src="doc/screenshots04.png">
+
+    </p>
+
+  </div>
+</section>
+<section class="main-content">
+<h2>Globalconfig</h2>
+  <div>
+    <h4>Profiles</h4>
+    <p>
+
+      <img src="doc/globalconfig01.png">
+      <img src="doc/globalconfig01-01.png">
+      <img src="doc/profile01.png">
+      <img src="doc/profile02.png">
+      <img src="doc/profile03.png">
+      <img src="doc/profile04.png">
+
+    </p>
+    <h4>Basic</h4>
+    <p>
+      <img src="doc/globalconfig02.png">
+    </p>
+    <h4>User</h4>
+    <p>
+      <img src="doc/globalconfig03.png">
+      <img src="doc/useredit01.png">
+    </p>
+    <h4>Saucelabs</h4>
+    <p>
+      <img src="doc/globalconfig04.png">
+      <img src="doc/saucelabsbrowser01.png">
+    </p>
+  </div>
+</section>
+
+<section class="main-content">
+
+  <footer class="site-footer">
+    <span class="site-footer-owner"><a href="https://github.com/mafflerbach/testonaut">Testonaut</a> is maintained by <a
+            href="https://github.com/mafflerbach">mafflerbach</a>.</span>
+
+    <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a
+            href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a
+            href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+  </footer>
+</section>
+
+</body>
+</html>
