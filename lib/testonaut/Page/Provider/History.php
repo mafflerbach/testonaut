@@ -24,7 +24,7 @@ use testonaut\Utils\Git;
 class History extends Base implements ProviderInterface {
 
   private $routing;
-  
+
   protected $path = '';
   /**
    * @var null| Git
@@ -133,13 +133,15 @@ class History extends Base implements ProviderInterface {
 
   protected function revert($path, $version) {
     $user = new User();
-    $loadedUser = $user->get($_SESSION['testonaut']['userId']);
+    if (isset($_SESSION['testonaut'])) {
+      $loadedUser = $user->get($_SESSION['testonaut']['userId']);
+      
+      $page = new Page(urldecode($path));
+      $git = new Git($page->getProjectRoot());
+      $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
 
-    $page = new Page(urldecode($path));
-    $git = new Git($page->getProjectRoot());
-    $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
-
-    print($log);
+      print($log);
+    }
     die;
   }
 
@@ -213,8 +215,6 @@ class History extends Base implements ProviderInterface {
         'result' => $result['result']
       );
     }
-
-    
 
 
     return $foo;

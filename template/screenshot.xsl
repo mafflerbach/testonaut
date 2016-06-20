@@ -86,7 +86,14 @@
           <div class="panel collapsible" data-role="panel">
             <div class="heading">
               <span class="title">
-                <xsl:value-of select="name(.)"/>
+                <xsl:choose>
+                  <xsl:when test="@name">
+                    <xsl:value-of select="@name"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="name(.)"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </span>
             </div>
             <div class="content padding10">
@@ -153,17 +160,27 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
+                <xsl:variable name="page">
+                  <xsl:choose>
+                    <xsl:when test="../../@name">
+                      <xsl:value-of select="../../@name"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="name(../..)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
 
                 <a class="copyImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/copy/{$path}/{$image/imageName}/{name(../..)}">
+                   href="{/data/system/baseUrl}screenshot/copy/{$path}/{$image/imageName}/{$page}">
                   <span class="copy mif-checkmark mif-4x"
-                        data-link="{/data/system/baseUrl}screenshot/copy/{$path}/{$image/imageName}/{name(../..)}">
+                        data-link="{/data/system/baseUrl}screenshot/copy/{$path}/{$image/imageName}/{$page}">
                   </span>
                 </a>
                 <a class="deleteImage" style="position: relative; z-index: 3"
-                   href="{/data/system/baseUrl}screenshot/delete/src/{name($path)}/{$image/imageName}/{name(../..)}">
+                   href="{/data/system/baseUrl}screenshot/delete/src/{name($path)}/{$image/imageName}/{$page}">
                   <span class="delete mif-cross mif-4x"
-                        data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{name(../..)}">
+                        data-link="{/data/system/baseUrl}screenshot/delete/src/{name(../../..)}/{$image/imageName}/{$page}">
                   </span>
                 </a>
                 <a target="_blank" style="position: relative; z-index: 3"

@@ -123,17 +123,18 @@
               </span>
 
             </a>
-            <a href="{/data/system/baseUrl}{/data/system/requestUri}/revert/{item[1]}" data-revert="{item[1]}">
+            <xsl:if test="/data/system/login/group = '1'">
+              <a href="{/data/system/baseUrl}{/data/system/requestUri}/revert/{item[1]}" data-revert="{item[1]}">
+                <span data-role="hint"
+                      data-hint-background="bg-green"
+                      data-hint-color="fg-white"
+                      data-hint-mode="2"
+                      data-hint="revert to {item[1]}">
+                  <span class="mif-backward"></span>
+                </span>
+              </a>
+            </xsl:if>
 
-              <span data-role="hint"
-                    data-hint-background="bg-green"
-                    data-hint-color="fg-white"
-                    data-hint-mode="2"
-                    data-hint="revert to {item[1]}">
-                <span class="mif-backward"></span>
-              </span>
-
-            </a>
 
           </td>
         </tr>
