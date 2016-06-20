@@ -1,0 +1,52 @@
+<root>
+  <content id="runatest">
+    <p>
+      Testonaut have different types of Pages.
+      <ul>
+        <li>
+          static
+          <small>This pages are ignored in a testrun</small>
+        </li>
+        <li>
+          suite
+          <small>All children from a Suite are running as tests, exepted static pages</small>
+        </li>
+        <li>
+          test
+          <small>A Single Test Page</small>
+        </li>
+        <li>
+          project
+          <small>Should be the startpage for each running projects. All children are running as test, too</small>
+        </li>
+      </ul>
+
+      You can set the Type under [Config].
+      After Click on [Config] You can on the one hand set thy page type and on the other hand different screenshots
+      settings.
+      <img src="images/doc/config01.png">
+      <br/>
+      Under [Screenshot Settings] you can set automatical screenshots after every command btw step or after every Test.
+      <br/>
+    </p>
+    <p>
+      If you have set your page type on<em>project</em>,<em>suite</em>, or<em>test</em>, you get a new Menupoint [Run]
+      <img src="images/doc/run01.png"/>
+      <br/>
+    </p>
+    <p>
+      Now you can select under [Run] your selenium Node.
+      <img src="images/doc/run02.png"/>
+      <img src="images/doc/seleniumNodes01.png"/>
+    </p>
+    <p>
+      After click on your Node you get on the top right side a Notification about the test Run.
+      <img src="images/doc/run03.png"/>
+      <img src="images/doc/run04.png"/>
+      <br/>
+      Under [History] you get all test results.
+    </p>
+    <img src="images/doc/run02.png"/>
+
+  </content>
+</root>

@@ -1,0 +1,34 @@
+<root>
+  <content id="screenshot">
+    <p>comparisons are quite easy to implement, they are done almost automatically.
+      In selenium there is the command<em>captureEntirePageScreenshot</em>. The second parameter specifies the
+      imagefilename.
+      If a reference image exists, it will be automatically compared with the reference image.
+      You can find all Screenshot comparisons under the "screenshot" section.
+      The first column displays the recently captured image. The second column displays the reference image.
+      The third column displays the diff image, it will mark all differences in red
+    </p>
+
+    <p>By clicking on the X, the images will be<em>deleted</em>.
+      In the first picture there is also a checkmark. This action allows you to replace the current reference Image with
+      the image<em>recently captured</em>.
+    </p>
+    <img src="images/doc/screenshots04.png"/>
+
+    <p>
+      Screenshot comparison are automatic triggered, when a reference image and a actual screenshot exists.
+      Screenshots are taken by the <code>captureEntirePageScreenshot</code> selenese command .
+    </p>
+    <p>
+      When you hover over the images, you see some action buttons.
+      By clicking on the chain you open the image in a new window btw tab.<br/>
+      <img src="images/doc/screenshots05.png"/><br/>
+
+      By clicking on the checkmark, you copy the actual image as new reference image for the image comparison in the feature.<br/>
+      <img src="images/doc/screenshots02.png"/>
+      By clicking on the cross you delete the immage. <br/>
+      <img src="images/doc/screenshots06.png"/>
+    </p>
+  </content>
+
+</root>

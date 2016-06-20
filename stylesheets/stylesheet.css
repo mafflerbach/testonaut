@@ -337,8 +337,7 @@ a:hover {
 
 @media screen and (min-width: 64em) {
     .main-content {
-        max-width: 64rem;
-        padding: 0rem 6rem;
+        padding: 0rem;
         margin: 0 auto;
         font-size: 1.1rem;
     }
@@ -346,22 +345,33 @@ a:hover {
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
     .main-content {
-        padding: 0rem 4rem;
+        padding: 0rem;
         font-size: 1.1rem;
     }
 }
 
 @media screen and (max-width: 42em) {
     .main-content {
-        padding: 0rem 1rem;
+        padding: 0rem;
         font-size: 1rem;
     }
 }
 
 .site-footer {
-    padding-top: 2rem;
+    padding: 2rem;
     margin-top: 2rem;
     border-top: solid 1px #eff0f1;
+    color: #fff;
+    background: rgb(0, 57, 115); /* Old browsers */
+    background: -moz-linear-gradient(45deg, rgb(229, 229, 190) 0%, rgb(0, 57, 115) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, rgb(229, 229, 190) 0%, rgb(0, 57, 115) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, rgb(229, 229, 190) 0%, rgb(0, 57, 115) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    text-align: center;
+}
+.site-footer a{
+    color:#fff;
+    text-decoration: underline;
 }
 
 .site-footer-owner {
@@ -370,7 +380,7 @@ a:hover {
 }
 
 .site-footer-credits {
-    color: #819198;
+
 }
 
 @media screen and (min-width: 64em) {
@@ -394,4 +404,23 @@ a:hover {
 img {
     border:1px solid #777;
     box-shadow: 0px 0px 10px -1px #333;
+    text-align: left;
+    vertical-align: top;
+    margin: 0.5em;
+}
+
+.menu {
+    z-index: 2;
+}
+.menu ul {
+    margin: 0;
+    padding: 0;
+}
+.menu li {
+    list-style: none;
+    margin: 0;
+}
+.menu.fixed {
+    position: fixed;
+    top:0;
 }

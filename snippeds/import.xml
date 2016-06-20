@@ -1,0 +1,24 @@
+<root>
+  <content id="import">
+    <p>You can import your existing (html) selenium zip via zip File. Set Your Page as type 'Project'</p>
+    <p>You order your Files e.g</p>
+    <img src="images/doc/import01.png"/>
+    <img src="images/doc/import02.png"/>
+    <img src="images/doc/import03.png"/>
+<pre>
+<code>importTest
+  ├ foo.html
+  └ baa
+  └ fobaa.html
+</code>
+</pre>
+    <p>And you get in your wiki:</p>
+<pre>
+<code>importTest
+  ├ foo
+  └ baa
+  └ fobaa
+</code>
+</pre>
+  </content>
+</root>

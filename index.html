@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <title>Testonaut by mafflerbach</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
   <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/simplegrid.css" media="screen">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-  <script src="custom.js"></script>
 </head>
+
 <body>
-<section class="page-header">
+         <section class="page-header">
   <h1 class="project-name">Testonaut</h1>
   <h2 class="project-tagline">Testonaut is a simple wiki, which you can running selenium test on every selenium node in
     your infrastructure.</h2>
@@ -20,6 +22,14 @@
   <a href="https://github.com/mafflerbach/testonaut/zipball/master" class="btn">Download .zip</a>
   <a href="https://github.com/mafflerbach/testonaut/tarball/master" class="btn">Download .tar.gz</a>
 </section>
+<div class="grid grid-pad">
+  <div class="col-4-12" >
+       <div class="content" id="menu">
+       </div>
+    </div>
+  <div class="col-8-12">
+       <div class="content">
+
 
 <section class="main-content">
   <h1>
@@ -27,7 +37,7 @@
                                                                                                       class="octicon octicon-link"></span></a>Welcome
     by Testonaut</h1>
 
-  <h2>
+  <h2 id="inshort-header">
     <a id="in-short" class="anchor" href="#in-short" aria-hidden="true"><span aria-hidden="true"
                                                                               class="octicon octicon-link"></span></a>In
     short:</h2>
@@ -35,7 +45,7 @@
     <p>Testonaut is a simple wiki, which you can running selenium test on every selenium node in your
       infrastructure.</p>
 
-    <h2>
+    <h2 id="coalbtool-header">
       <a id="its-a-collaboration-tool" class="anchor" href="#its-a-collaboration-tool" aria-hidden="true">
         <span aria-hidden="true" class="octicon octicon-link"></span>
       </a>It's a Collaboration tool</h2>
@@ -48,9 +58,9 @@
 
 </section>
 <section class="main-content">
-  <h2>
-    <a id="its-a-test-tool" class="anchor" href="#its-a-test-tool" aria-hidden="true"><span aria-hidden="true"
-                                                                                            class="octicon octicon-link"></span></a>It's
+  <h2 id="test-tool-header">
+    <a id="its-a-test-tool" class="anchor" href="#its-a-test-tool" aria-hidden="true">
+      <span aria-hidden="true" class="octicon octicon-link"></span></a>It's
     a Test tool</h2>
   <div>
     <p>The wiki pages created in testonaut are run as tests. The specifications can be tested against the application
@@ -75,7 +85,7 @@
 </section>
 <section class="main-content">
 
-  <h2>
+  <h2 id="feature-header">
     <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true"
                                                                               class="octicon octicon-link"></span></a>Features
   </h2>
@@ -119,7 +129,7 @@
 
 <section class="main-content">
 
-  <h2>
+  <h2 id="installation-header">
     <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true"
                                                                                       class="octicon octicon-link"></span></a>Installation
 
@@ -137,7 +147,7 @@
 composer install
 </code></pre>
 
-    <p>Under <a href="http://youre.installation/*/globalconfig/">http://youre.installation/*/globalconfig/</a>
+    <p>Under <a href="http://youre.installation/*/globalconfig/">http://your.installation/*/globalconfig/</a>
       You can set your domain to your selenium hub.</p>
 
     <p>The definition of "app path" defining your subpath on your apache DOCUMENT_ROOT, if you don't like to use
@@ -149,11 +159,10 @@ composer install
 </section>
 <section class="main-content">
 
-  <h2>
+  <h2 id="getStarted-header">
     <a id="get-started" class="anchor" href="#get-started" aria-hidden="true">
       <span aria-hidden="true" class="octicon octicon-link"></span>
-    </a>Get
-    Started</h2>
+    </a>Get Started</h2>
   <div>
     <p>Testonaut needs a selenium infrastructure. You configure the selenium hub addresse and all tests can be run on
       your
@@ -175,146 +184,11 @@ composer install
     <p>After these steps, you can run your test on every selenium node.</p>
   </div>
 </section>
+
+
 <section class="main-content">
 
-  <h2>
-    <a id="pagesettings" class="anchor" href="#pagesettings" aria-hidden="true">
-      <span aria-hidden="true" class="octicon octicon-link"></span>
-    </a>Pagesettings
-  </h2>
-  <div>
-    <p>There are four types of page types. static, suite, test and project pages.</p>
-
-    <ul>
-      <li>static pages were skipped in test runs.</li>
-      <li><p>suite pages runs amount of test pages which runs automatically.
-        test pages contains all information about a test and the test itself.</p></li>
-      <li><p>project pages contains only some project informations, but they differently in the configuration.
-        In project and suite pages you can configure node specific base url for every selenium node.</p></li>
-    </ul>
-
-    <p>This is interesting for paralell test runs.</p>
-
-    <h3>
-      <a id="screenshot-settings" class="anchor" href="#screenshot-settings" aria-hidden="true"><span aria-hidden="true"
-                                                                                                      class="octicon octicon-link"></span></a>Screenshot
-      settings</h3>
-
-    <p>Besides being able to use the command <em>captureEntirePageScreenshot</em> at any time, you have opportunity
-      taking
-      screenshot automatically.
-      This can be defined after each test or after every single command.</p>
-
-  <h3>
-    <a id="header-and-footer" class="anchor" href="#header-and-footer" aria-hidden="true"><span aria-hidden="true"
-                                                                                                class="octicon octicon-link"></span></a>Header
-    and Footer</h3>
-
-    <p>There are three types of header and footers.</p>
-
-    <p>page header and footer, test header and footer and the last one, suite header and footer. pages with titles <em>pageHeader</em>
-      and <em>pageFooter</em> are include automaticaly in actual page context.
-      <em>setUp</em> and <em>tearDown</em> pages are only includes in pages from type <em>test</em>
-      <em>suiteSetUp</em> and <em>suitTearDown</em> are only includes in pages from type <em>Suite</em>
-      If the included pages have selenium testcases, so they will run as a normal test.
-      At this point you must look out at the "close command" in included files, otherwise all upcomming tests where
-      failing.</p>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2>
-    <a id="running-tests" class="anchor" href="#running-tests" aria-hidden="true"><span aria-hidden="true"
-                                                                                        class="octicon octicon-link"></span></a>Running
-    tests</h2>
-  <div>
-    <p>If you have set your configuration right the single wiki page must be configurate as <em>test</em>,<em>suite</em>
-      or <em>project page</em>.
-      After this settings change, you can use the run button on your wikipage and select your browser flavour.</p>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2>
-    <a id="working-with-browserprofiles" class="anchor" href="#working-with-browserprofiles" aria-hidden="true"><span
-            aria-hidden="true" class="octicon octicon-link"></span></a>Working with Browserprofiles</h2>
-  <div>
-    <p>Testronaut provides the possibility to apply different browser profile. So you can save different settings for
-      each
-      browser.</p>
-
-    <h4>
-      <a id="firefox--internet-explorer" class="anchor" href="#firefox--internet-explorer" aria-hidden="true"><span
-              aria-hidden="true" class="octicon octicon-link"></span></a>Firefox / Internet Explorer</h4>
-
-    <p>You can set different height and width of the browser window.</p>
-
-    <h4>
-      <a id="chrome" class="anchor" href="#chrome" aria-hidden="true"><span aria-hidden="true"
-                                                                            class="octicon octicon-link"></span></a>Chrome
-    </h4>
-
-    <p>Chrome has the additional possibility to emulate different mobile devices. (<a
-            href="Https://developer.chrome.com/devtools/docs/device-mode">Https://developer.chrome.com/devtools/docs/device-mode</a>)
-      The list of supported devices can be selected via drop down menu.</p>
-
-    <h4>
-      Sucelabs Istances
-    </h4>
-    <p>
-      Under Globalconfig -> sauslabs -> Configure Browser you can activate your browser flavours for all supported OS - Browser variations.
-    </p>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2>
-    <a id="import-your-tests" class="anchor" href="#import-your-tests" aria-hidden="true"><span aria-hidden="true"
-                                                                                                class="octicon octicon-link"></span></a>Import
-    your Tests</h2>
-  <div>
-    <p>You can import your existing (html) selenium zip via zip File. Set Your Page as type 'Project'</p>
-
-    <p>You order your Files e.g</p>
-
-<pre><code>importTest
-  ├ foo.html
-  └ baa
-    └ fobaa.html
-</code></pre>
-
-    <p>And you get in your wiki:</p>
-
-<pre><code>importTest
-  ├ foo
-  └ baa
-    └ fobaa
-</code></pre>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2>
-    <a id="screenshot" class="anchor" href="#screenshot" aria-hidden="true"><span aria-hidden="true"
-                                                                                  class="octicon octicon-link"></span></a>Screenshot
-  </h2>
-  <div>
-    <p>comparisons are quite easy to implement, they are done almost automatically.
-      In selenium there is the command <em>captureEntirePageScreenshot</em>. The second parameter specifies the
-      imagefilename.
-      If a reference image exists, it will be automatically compared with the reference image.
-      You can find all Screenshot comparisons under the "screenshot" section.
-      The first column displays the recently captured image. The second column displays the reference image.
-      The third column displays the diff image, it will mark all differences in red </p>
-
-    <p>By clicking on the X, the images will be <em>deleted</em>.
-      In the first picture there is also a checkmark. This action allows you to replace the current reference Image with
-      the image <em>recently captured</em>.</p>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2>
+  <h2 id="quicksetup-header">
     <a id="quicksetup" class="anchor" href="#quicksetup" aria-hidden="true"><span aria-hidden="true"
                                                                                   class="octicon octicon-link"></span></a>Quicksetup from developer to developer
   </h2>
@@ -356,7 +230,7 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
     </div>
 </section>
 <section class="main-content">
-  <h2>
+  <h2 id="jenkins-setup-header">
     <a id="jenkins-setup" class="anchor" href="#jenkins-setup" aria-hidden="true"><span aria-hidden="true"
                                                                                         class="octicon octicon-link"></span></a>Jenkins
     setup</h2>
@@ -388,71 +262,11 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
 
   </div>
 </section>
-<section class="main-content">
 
-  <h2>
-    <a id="running-tests-comandline" class="anchor" href="#running-tests-comandline" aria-hidden="true"><span
-            aria-hidden="true" class="octicon octicon-link"></span></a>Running
-    tests in commandline</h2>
-  <div>
-
-    <p>
-      Start simple <code>php run.php -c [config.json]</code> your tests. You can overwrite your config file with follow additional parameters:
-    </p>
-    <ul>
-      <li>
- -d [directory] <em>path to test directory</em>
-      </li>
-      <li>
- -i [imagedirectory] <em>path to image directory vor captured screenshots</em>
-      </li>
-      <li>
- -s [seleniumhub][http://localhost:4444/wd/hub] <em>reset the target selenium hub.</em>
-      </li>
-    </ul>
-
-    <p>Here is a example config file:</p>
-<pre>
-  <code>
-{
-  "testonaut": {
-    "browsers": [
-      {
-        "deviceName" : "Google Nexus 5",
-        "name" : "chrome",
-        "fullscreen" : "true",
-        "dimension" : {
-          "width" : "1024",
-          "height": "768"
-        }
-      },
-      {
-        "name" : "firefox",
-        "fullscreen" : "true",
-        "dimension" : {
-          "width" : "1024",
-          "height": "768"
-        }
-      }
-    ],
-    "config": {
-      "imageDir":"images",
-      "testDir": "root/test/test2",
-      "hub" : "http://localhost:4444/wd/hub"
-    }
-  }
-}
-  </code>
-</pre>
-    <p>
-      The Parameters <em>fullscreen</em> and <em>dimensional</em> are conflicting. If fullscreen is set,the dimension parameters are overwrite.
-    </p>
-  </div>
-</section>
 
 <section class="main-content">
 
-  <h2>
+  <h2 id="planning-header">
     <a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true">
       <span aria-hidden="true" class="octicon octicon-link"></span></a>
     planned features and Todos</h2>
@@ -474,10 +288,20 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
 </section>
 
 <section class="main-content">
-    <h2>
-    <a id="tutorials" class="anchor" href="tutorial" aria-hidden="true">
-      <span aria-hidden="true" class="octicon octicon-link"></span>tutorials</a></h2>
+    <h2 id="tutorial-header">
+    <a id="tutorials" class="anchor" href="tutorial.html" aria-hidden="true">
+      <span aria-hidden="true" class="octicon octicon-link"></span>Documentation</a></h2>
 </section>
+
+
+       </div>
+    </div>
+
+</div>
+
+
+
+
 
 <section class="main-content">
 
@@ -492,4 +316,6 @@ java -jar path/to/selenium-server.jar -role node -hub http://localhost:4444/grid
 </section>
 
 </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="custom.js"></script>
 </html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>Testonaut by mafflerbach</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/simplegrid.css" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<body>
+
+
+<section class="page-header">
+  <h1 class="project-name">Testonaut</h1>
+  <h2 class="project-tagline">Testonaut is a simple wiki, which you can running selenium test on every selenium node in
+    your infrastructure.</h2>
+  <a href="https://github.com/mafflerbach/testonaut" class="btn">View on GitHub</a>
+  <a href="https://github.com/mafflerbach/testonaut/zipball/master" class="btn">Download .zip</a>
+  <a href="https://github.com/mafflerbach/testonaut/tarball/master" class="btn">Download .tar.gz</a>
+</section>
+
+<div class="grid grid-pad">
+  <div class="col-4-12">
+       <div class="content" id="menu">
+
+       </div>
+    </div>
+
+  <div class="col-8-12">
+       <div class="content">
+         <section class="main-content">
+<h2 id="login-header">Login</h2>
+  <div>
+    <import href="snippeds/login.xml#login-content"/>
+  </div>
+</section>
+<section class="main-content">
+<h2 id="create-header">Create a new Page</h2>
+  <div>
+    <import href="snippeds/createPage.xml#create-page"/>
+  </div>
+</section>
+<section class="main-content">
+  <h2 id="oagesettings-header">
+    <a id="pagesettings" class="anchor" href="#pagesettings" aria-hidden="true">
+      <span aria-hidden="true" class="octicon octicon-link"></span>
+    </a>Pagesettings
+  </h2>
+  <div>
+    <import href="snippeds/pagetypes.xml#types"/>
+  </div>
+</section>
+<section class="main-content">
+<h2 id="run-header">Run a test</h2>
+  <div>
+    <import href="snippeds/runningTests.xml#runatest"/>
+  </div>
+</section>
+<section class="main-content">
+<h2 id="history-header">History</h2>
+  <div>
+    <h4>Build history</h4>
+    <p>
+      In the History Section you can overwatch all runs.
+      <img src="images/doc/history01.png"/>
+    </p>
+
+    <h5>Delete history</h5>
+    <p>
+      You can delete the oldest run result, or the complete history.
+      <img src="images/doc/history02.png">
+      <img src="images/doc/history03.png">
+    </p>
+
+    <h4>Git history</h4>
+    <p>
+      All pages are under version control. You have under the tab section [git history] an overview over your page history.
+      You can make a checkout (btw a rewert) to older versions, or you can check the different between different revisions.
+      <br/>
+      <img src="images/doc/githistory01.png">
+    </p>
+    <h5>
+      Checkout a older revision
+    </h5>
+    <p>
+      With a click on the rewind button you make a checkout to a specific version.
+      <img src="images/doc/githistory05.png">
+      <img src="images/doc/githistory04.png">
+    </p>
+
+    <h5>
+      View a different
+    </h5>
+    <p>
+      For a comparison you selected two versions with a click on the compare symbol. And you get a different between the selected versions.<br/>
+      <img src="images/doc/githistory06.png">
+      <img src="images/doc/githistory02.png">
+      <img src="images/doc/githistory03.png">
+    </p>
+  </div>
+</section>
+<section class="main-content">
+<h2 id="screenshot-header">Screenshot</h2>
+  <div>
+    <h4>Screenshot comparison</h4>
+    <import href="snippeds/screenshot.xml#screenshot"/>
+  </div>
+</section>
+<section class="main-content">
+<h2 id="globalconfig-header">Globalconfig</h2>
+  <div>
+    <h4>Basic</h4>
+    <p>
+      <img src="images/doc/globalconfig02.png">
+    </p>
+    <h4>User</h4>
+    <p>
+      <img src="images/doc/globalconfig03.png">
+      <img src="images/doc/useredit01.png">
+    </p>
+    <h4>Saucelabs</h4>
+    <p>
+      <img src="images/doc/globalconfig04.png">
+
+    </p>
+  </div>
+</section>
+<section class="main-content">
+
+  <h2 id="prowser-profiles-header">
+    <a id="working-with-browserprofiles" class="anchor" href="#working-with-browserprofiles" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Working with Browserprofiles</h2>
+  <div>
+    <import href="snippeds/browserprofiles.xml#working-with-browserprofiles-section"/>
+  </div>
+</section>
+<section class="main-content">
+  <h2 id="import-header">
+    <a id="import-your-tests" class="anchor" href="#import-your-tests" aria-hidden="true"><span aria-hidden="true"
+                                                                                                class="octicon octicon-link"></span></a>Import
+    your Tests</h2>
+  <div>
+    <import href="snippeds/import.xml#import"/>
+  </div>
+</section>
+
+<section class="main-content">
+<h2>Profiles</h2>
+  <div>
+    <import href="snippeds/browserprofiles.xml#working-with-browserprofiles-section"/>
+  </div>
+</section>
+<section class="main-content">
+
+  <h2 id="runn-commandline-header">
+    <a id="running-tests-comandline" class="anchor" href="#running-tests-comandline" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Running
+    tests in commandline</h2>
+  <div>
+
+    <import href="snippeds/runInTerminal.xml#runInTerm"/>
+  </div>
+</section>
+
+
+       </div>
+    </div>
+
+</div>
+
+
+<section class="main-content">
+
+  <footer class="site-footer">
+    <span class="site-footer-owner"><a href="https://github.com/mafflerbach/testonaut">Testonaut</a> is maintained by <a
+            href="https://github.com/mafflerbach">mafflerbach</a>.</span>
+
+    <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a
+            href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a
+            href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+  </footer>
+</section>
+  <script src="custom.js"></script>
+</head>
+</body>
+</html>

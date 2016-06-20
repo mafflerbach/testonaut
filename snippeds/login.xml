@@ -1,0 +1,8 @@
+<root>
+  <content id="login-content">
+    <p>
+      If you click on Login in the main menu you get the loginpage.
+    </p>
+    <img src="images/doc/login01.png"/>
+  </content>
+</root>

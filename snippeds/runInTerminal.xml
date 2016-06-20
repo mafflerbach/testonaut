@@ -1,0 +1,55 @@
+<root>
+  <content id="runInTerm">
+    <p>
+      Start simple <code>php run.php -c [config.json]</code> your tests. You can overwrite your config file with follow additional parameters:
+    </p>
+    <ul>
+      <li>
+        -d [directory] <em>path to test directory</em>
+      </li>
+      <li>
+        -i [imagedirectory] <em>path to image directory vor captured screenshots</em>
+      </li>
+      <li>
+        -s [seleniumhub][http://localhost:4444/wd/hub] <em>reset the target selenium hub.</em>
+      </li>
+    </ul>
+
+    <p>Here is a example config file:</p>
+<pre>
+<code>
+{
+  "testonaut": {
+    "browsers": [
+      {
+        "deviceName" : "Google Nexus 5",
+        "name" : "chrome",
+        "fullscreen" : "true",
+        "dimension" : {
+          "width" : "1024",
+          "height": "768"
+        }
+      },
+      {
+        "name" : "firefox",
+        "fullscreen" : "true",
+        "dimension" : {
+          "width" : "1024",
+          "height": "768"
+        }
+      }
+    ],
+    "config": {
+      "imageDir":"images",
+      "testDir": "root/test/test2",
+      "hub" : "http://localhost:4444/wd/hub"
+    }
+  }
+}
+</code>
+</pre>
+    <p>
+      The Parameters <em>fullscreen</em> and <em>dimensional</em> are conflicting. If fullscreen is set,the dimension parameters are overwrite.
+    </p>
+  </content>
+</root>
