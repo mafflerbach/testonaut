@@ -1,7 +1,7 @@
 <root>
   <content id="stylesheet">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900|Roboto' rel='stylesheet' type='text/css'/>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/simplegrid.css" media="screen"/>
@@ -9,6 +9,7 @@
 
   <content id="footer">
     <footer class="site-footer">
+      <div class="stars">
       <span class="site-footer-owner">
         <a href="https://github.com/mafflerbach/testonaut">Testonaut</a>
         is maintained by<a
@@ -24,11 +25,14 @@
         by<a
                 href="https://twitter.com/jasonlong">Jason Long</a>.
       </span>
+      </div>
     </footer>
   </content>
 
   <content id="header">
+
     <section class="page-header" id="top">
+      <div class="stars">
       <h1 class="project-name">Testonaut</h1>
       <h2 class="project-tagline">Testonaut is a simple wiki, which you can running selenium test on every selenium node
         in
@@ -37,6 +41,7 @@
       <a href="https://github.com/mafflerbach/testonaut" class="btn">View on GitHub</a>
       <a href="https://github.com/mafflerbach/testonaut/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/mafflerbach/testonaut/tarball/master" class="btn">Download .tar.gz</a>
+      </div>
     </section>
   </content>
 
