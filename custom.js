@@ -27,7 +27,7 @@ $(document).ready(function () {
 
   window.setTimeout(function() {
     $('body').fadeIn();
-  }, 200);
+  }, 300);
 })
 
 
