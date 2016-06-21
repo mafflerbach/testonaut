@@ -8,7 +8,9 @@
 
 
 $file = "../tmp/".urldecode($_REQUEST['path']);
-
+if (!file_exists('../tmp/')) {
+  mkdir('../tmp/', 0777);
+}
 if (file_exists($file)) {
   print(file_get_contents($file));
 }
