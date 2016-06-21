@@ -51,13 +51,13 @@ class Browser {
         $browserName .= $list[$i]['platform'];
       }
       if (isset($list[$i]['browserName'])) {
-        $browserName .= $list[$i]['browserName'] = str_replace(' ', '_', $list[$i]['browserName']);
+        $browserName .= '_'.$list[$i]['browserName'];
       } else {
-        $browserName .= $list[$i]['name'];
-        $browserName .= "_".$list[$i]['browser'] = str_replace(' ', '_', $list[$i]['browser']);
+        $browserName .= " ".$list[$i]['name'];
+        $browserName .= " ".$list[$i]['browser'];
       }
       if (isset($list[$i]['version'])) {
-        $browserName .= $list[$i]['version'];
+        $browserName .= " ".$list[$i]['version'];
       }
 
       if (isset($settings['browser']['active'])) {
@@ -86,7 +86,9 @@ class Browser {
    * @return bool
    */
   public function setSettings(array $browser) {
+    
     $this->setting['browser'] = $browser;
+
     return $this->page->config($this->setting);
   }
 }

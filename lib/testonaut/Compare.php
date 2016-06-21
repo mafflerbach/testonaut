@@ -15,11 +15,32 @@ class Compare {
   }
 
   public function compareResult($compare, $res, $imageName) {
-    if ($compare) {
-      $res[] = array(TRUE, 'Compare Image ' . $imageName, 'Compare Success');
-    } else {
-      $res[] = array(FALSE, 'Compare Image ' . $imageName, 'Compare Fail');
+    switch ($compare) {
+      case 3;
+        $res[] = array(
+          TRUE,
+          'Reference Image ' . $imageName . 'does not exist',
+          ' Comparison impossible'
+        );
+        break;
+      case FALSE;
+        $res[] = array(
+          FALSE,
+          'Compare Image ' . $imageName,
+          'Compare Fail'
+        );
+        break;
+      case TRUE;
+        $res[] = array(
+          TRUE,
+          'Compare Image ' . $imageName,
+          'Compare Success'
+        );
+        break;
+
+
     }
+
     return $res;
   }
 
@@ -34,7 +55,9 @@ class Compare {
 
     $dir = str_replace('.', '/', $pagePath);
     $web = array(
-      Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/src/" . $imgName, Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/ref/" . $imgName, Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/comp/" . $imgName,
+      Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/src/" . $imgName,
+      Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/ref/" . $imgName,
+      Config::getInstance()->appPath . '/web/images/' . $dir . '/' . $profileName . "/comp/" . $imgName,
     );
 
     if (file_exists($pathref)) {
@@ -49,8 +72,7 @@ class Compare {
         $result = FALSE;
       }
     } else {
-      // no compared needet
-      $result = TRUE;
+      $result = 3;
     }
 
     $this->writeCompareToDb($pagePath, $path, $pathref, $comp, $result, $web, $imgName, $profileName);
@@ -70,15 +92,28 @@ class Compare {
     $stm->bindParam(':profile', $profile);
     $stm->bindParam(':imageName', $imageName);
     $stm->execute();
+  }
 
+  public function updateComparison($profile, $path, $imageName) {
+
+    $db = new \testonaut\Utils\Db(Config::getInstance()->Path . '/index.db');
+    $this->db = $db->getInstance();
+
+    $sql = "update imageCompare set result = '' where profile = :profile and path = :path and imageName = :imageName";
+
+    $stm = $this->db->prepare($sql);
+    $stm->bindParam(':path', $path);
+    $stm->bindParam(':profile', $profile);
+    $stm->bindParam(':imageName', $imageName);
+    $stm->execute();
   }
 
   protected function getProfileName($profile) {
     if (isset($profile['browser'])) {
       if (isset($profile['name'])) {
-        $profileName = $profile['name'] . '_' . $profile['browser'];
+        $profileName = $profile['name'] . ' ' . $profile['browser'];
       } else {
-        $profileName = $profile['browser'] . '_default';
+        $profileName = $profile['browser'] . ' default';
       }
     }
     return $profileName;
@@ -90,7 +125,11 @@ class Compare {
 
     $date = new \DateTime();
     $isoDate = $date->format(\DateTime::ISO8601);
-    $images = json_encode(array($src, $pathref, $comp));
+    $images = json_encode(array(
+      $src,
+      $pathref,
+      $comp
+    ));
     $webpath = json_encode($web);
 
     if ($this->exist($imageName, $profile, $path)) {
@@ -163,14 +202,56 @@ class Compare {
     $result = $stm->execute();
 
     $return = array();
+
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+
+      $imageArray = json_decode($row['images'], true);
+      $imageWebArray = json_decode($row['webpath'], true);
+
+      $imageAbsolutePath = array();
+      $imageRelativPath = array();
+
+      for ($i = 0; $i < count($imageArray); $i++) {
+        $type = $this->getImageType($i);
+        if (file_exists($imageArray[$i])) {
+          $imageAbsolutePath[$type] = $imageArray[$i];
+          $imageRelativPath[$type] = $imageWebArray[$i];
+        }
+      }
+
       $return[] = array(
-        'result' => $row['result'], 'images' => json_decode($row['images'], true), 'webpath' => json_decode($row['webpath'], true), 'imageName' => $row['imageName'], 'profile' => $row['profile'], 'path' => $row['path']
+        'result' => $row['result'],
+        'images' => $imageAbsolutePath,
+        'webpath' => $imageRelativPath,
+        'imageName' => $row['imageName'],
+        'profile' => $row['profile'],
+        'path' => $row['path']
       );
     }
 
-
     return $return;
+  }
+
+
+  protected function buildCompare() {
+
+
+  }
+
+  protected function getImageType($i) {
+    switch ($i) {
+      case 0:
+        $type = 'src';
+        break;
+      case 1:
+        $type = 'ref';
+        break;
+      case 2:
+        $type = 'comp';
+        break;
+    }
+
+    return $type;
   }
 
 }

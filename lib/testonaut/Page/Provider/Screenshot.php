@@ -14,72 +14,120 @@
 
 namespace testonaut\Page\Provider;
 
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use testonaut\Compare;
-use testonaut\Page\Base;
-use testonaut\Page\Breadcrumb;
-use testonaut\Settings\Browser;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use testonaut\Page;
 
 /**
  * Class Config
  *
  * @package testonaut\Page\Provider
  */
-class Screenshot implements ControllerProviderInterface {
-  /**
-   * @private
-   */
-  private $path;
+class Screenshot extends Base implements ProviderInterface {
 
-  /**
-   * @param Application $app
-   * @return mixed
-   */
-  public function connect(Application $app) {
-    $config = $app['controllers_factory'];
-    $config->get('/', function (Request $request, $path) use ($app) {
+  private $routing;
+  protected $path = '';
 
-      $page = new \testonaut\Page($path);
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+
+    $this->routing->route('.*/delete/(\w+)/(\w+)/(.*)/(.*)$', function ($src, $browser, $imageName, $path) {
+
+      $this->path = urldecode($path);
+      $src = $this->getImagePath() . '/' . $browser . '/' . $src . '/' . $imageName;
 
       $compare = new Compare();
+      $compare->updateComparison($browser, $path, $imageName);
 
+      if (file_exists($src)) {
+        if (unlink($src)) {
+          $messageBody = 'deleted';
+          $result = 'success';
+
+        } else {
+          $result = 'fail';
+          $messageBody = 'can not delete';
+        }
+      } else {
+        $result = 'fail';
+        $messageBody = "can not delete, image doesn't exist";
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Delete'
+      );
+
+      print(json_encode($message));
+      die;
+    });
+    $this->routing->route('.*/copy/(.*)/(.*)/(.*)$', function ($browser, $imageName, $path) {
+
+      $this->path = urldecode($path);
+      $browser = urldecode($browser);
+
+      $src = $this->getImagePath() . '/' . $browser . '/src/' . $imageName;
+      $ref = $this->getImagePath() . '/' . $browser . '/ref/' . $imageName;
+      
+      if (copy($src, $ref)) {
+        $result = 'success';
+        $messageBody = 'copied';
+      } else {
+        $result = 'fail';
+        $messageBody = 'can not copy';
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Copy'
+      );
+
+      print(json_encode($message));
+      die;
+    });
+
+    $this->routing->route('.*/(.*)$', function ($path) {
+      $path = urldecode($path);
+      $request = new Request();
+
+      $this->page = new \testonaut\Page($path);
+      $this->path = $path;
+
+      $page = new \testonaut\Page($path);
+      $compare = new Compare();
       $conf = $page->config();
 
       if ($conf['type'] == 'project' || $conf['type'] == 'suite') {
         $images = $compare->getComparedImages($path, true);
-        $images = $this->prepareImageResult($images);
       } else {
         $images = $compare->getComparedImages($path);
-        $images = $this->prepareImageResult($images);
-
       }
+      $images = $this->prepareImageResult($images);
 
       $root = \testonaut\Config::getInstance()->Path;
-      $this->path = $path;
 
-      $app['request'] = array(
-        'mode' => 'show',
-        'baseUrl' => $request->getBaseUrl(),
-        'content' => '',
-        'images'     => $images,
-        'imagePath'  => \testonaut\Config::getInstance()->appPath . str_replace($root, '', $page->getImagePath()),
-        'path'       => $path,
-        'type'       => 'screenshot',
-        );
-      $crumb = new Breadcrumb($path);
-      $app['crumb'] = $crumb->getBreadcrumb();
+      $this->response['menu'] = $this->getMenu($path, 'screenshots');
+      $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
+      $this->response['path'] = $path;
+      $this->response['images'] = $images;
+      $this->response['imagePath'] = \testonaut\Config::getInstance()->appPath . str_replace($root, '', $page->getImagePath());
 
-      return $app['twig']->render('screenshot.twig');
+      $this->routing->response($this->response);
+      $this->routing->render('screenshot.xsl');
     });
-
-    return $config;
   }
 
   protected function prepareImageResult($images) {
     $me = array();
-    for($i = 0; $i  < count($images); $i++) {
+    for ($i = 0; $i < count($images); $i++) {
       $images[$i]['webpath']['result'] = $images[$i]['result'];
       $images[$i]['webpath']['imageName'] = $images[$i]['imageName'];
       $me[$images[$i]['profile']][$images[$i]['path']]['webpath'][] = $images[$i]['webpath'];
@@ -89,5 +137,12 @@ class Screenshot implements ControllerProviderInterface {
     return $me;
   }
 
+  public function getImagePath() {
+    return \testonaut\Config::getInstance()->imageRoot . "/" . $this->relativePath();
+  }
+
+  public function relativePath() {
+    return str_replace('.', '/', $this->path);
+  }
 
 }

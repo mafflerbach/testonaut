@@ -14,57 +14,63 @@
 
 namespace testonaut\Page\Provider;
 
-use testonaut\Page\Breadcrumb;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 
-class Delete implements ControllerProviderInterface {
-  public function connect(Application $app) {
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request, $path) use ($app) {
 
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
+class Delete extends Base implements ProviderInterface {
 
-      $app['request'] = array(
-        'path' => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'delete',
-      );
 
-      $crumb = new Breadcrumb($path);
-      $app['crumb'] = $crumb->getBreadcrumb();
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
 
-      $foo = $app['twig']->render('delete.twig');
-      return $foo;
-    });
 
-    $edit->post('/', function (Request $request, $path) use ($app) {
+    $this->routing->route('.*/(.*)/do$', function ($path) {
+      $path = urldecode($path);
 
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
-      
       $page = new \testonaut\Page($path);
-      $deleted= $page->delete();
+      $deleted = $page->delete();
 
       if ($deleted) {
-        $message = 'delete';
+        $result = 'success';
+        $messageBody = 'delete';
       } else {
-        $message = 'can not delete';
+        $result = 'fail';
+        $messageBody = 'can not delete';
       }
 
-      $app['request'] = array(
-        'path'    => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'message' => $message,
-        'mode'    => 'edit'
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Delete Page'
       );
 
-      return $app['twig']->render('delete.twig');
+      print(json_encode($message));
+      die;
+
     });
-    return $edit;
+
+    $this->routing->route('.*/(.*)$', function ($path) {
+      $path = urldecode($path);
+      $request = new Request();
+
+      $message = array(
+        'question' => array(
+          'content' => 'Are you sure that you want to delete <strong>' . $path . '</strong>? 
+            This also applies to all subdirectories',
+          'title' => 'Delete Page'
+        )
+      );
+
+      $this->response = $message;
+      $this->response['path'] = $path;
+      $this->response;
+      print(json_encode($this->response));
+      die;
+    });
   }
 }

@@ -26,6 +26,7 @@ class Import {
     $this->filename = $filename;
     $this->page = $page;
 
+
   }
 
   /**
@@ -53,9 +54,10 @@ class Import {
    */
   protected function unpackFile($path, $filename) {
 
-    $file = $path . '/zip/' . $filename;
+    $file = $path . '/' . $filename;
     $zip = new \ZipArchive();
     $res = $zip->open($file);
+
     if ($res === TRUE) {
       $zip->extractTo($path . '/unzip');
       $zip->close();

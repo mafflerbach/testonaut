@@ -29,14 +29,21 @@ class Breadcrumb {
     $foo = array();
     $b = '';
     $i = 0;
-    foreach ($crumbs as $crumb) {
-      if ($b != $crumb && $b != '') {
-        $b .= '.';
-      }
-      $foo[$crumb] = $b .= $crumb;
-      $i++;
-    }
 
+    if ($crumbs[0] != '') {
+      foreach ($crumbs as $crumb) {
+        if ($b != $crumb && $b != '') {
+          $b .= '.';
+        }
+
+        $foo[] = array('label' => $crumb,
+          'path' => $b .= $crumb
+        );
+
+        $i++;
+      }
+    }
+    
     return $foo;
   }
 }

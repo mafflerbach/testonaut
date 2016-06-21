@@ -65,6 +65,7 @@ class Variablestorage {
    * @return type
    */
   public function __get($key) {
+    // debug_print_backtrace();
     return $this->exists($key) ? $this->register[$key] : die('<h1>Error: Key \'<em>' . $key . '</em>\' not found in Registry!</h1>');
   }
   

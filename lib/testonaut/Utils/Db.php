@@ -60,7 +60,9 @@ class Db {
         "name" TEXT PRIMARY KEY NOT NULL,
         "driverOptions" TEXT,
         "arguments" TEXT,
-        "capabilities" TEXT );';
+        "capabilities" TEXT,
+        "os" TEXT,
+        "version" TEXT );';
 
     $imageCompare = 'CREATE TABLE "imageCompare" (
         "date" TEXT,
@@ -74,15 +76,19 @@ class Db {
     $user ='CREATE TABLE "User" (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "email" TEXT NOT NULL,
-            "password" TEXT NOT NULL
-            "displayName" TEXT NOT NULL
+            "password" TEXT NOT NULL,
+            "displayName" TEXT NOT NULL,
+            "group" INTEGER
         );';
+
+    $addRoot = 'insert into "User" (email, password, displayName, active , "group") values (\'root\',\'$2y$10$m/DbEBFPqPMYRLNVWpCTPuoQvCaYbBXs4heL7GzCSBvKHtsKp.uaS\', \'root\', 1, 1)';
 
     $this->dbInstance->query($files);
     $this->dbInstance->query($profile);
     $this->dbInstance->query($history);
     $this->dbInstance->query($imageCompare);
     $this->dbInstance->query($user);
+    $this->dbInstance->query($addRoot);
   }
   
   public function getInstance() {

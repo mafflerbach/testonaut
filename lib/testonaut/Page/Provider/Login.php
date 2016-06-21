@@ -13,60 +13,49 @@
 
 namespace testonaut\Page\Provider;
 
-use Silex\Provider\LocaleServiceProvider;
-use Silex\Provider\TranslationServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
-use Silex\Provider\FormServiceProvider;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 
 /**
  * Class Login
  * @package testonaut\Page\Provider
  */
-class Login implements ControllerProviderInterface {
-  public function connect(Application $app) {
-    $app->register(new FormServiceProvider());
-    $app->register(new LocaleServiceProvider());
-    $app->register(new TranslationServiceProvider(), array(
-      'locale_fallbacks' => array('en'),
-    ));
+class Login extends Base implements ProviderInterface {
 
-    $page = $app['controllers_factory'];
-    $page->match('/', function (Request $request) use ($app) {
+  private $routing;
 
-      $data = array(
-        'username' => '',
-        'password' => 'Your password',
-      );
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
 
-      $form = $app['form.factory']->createBuilder('form', $data)
-        ->add('username')
-        ->add('password', 'password')
-        ->getForm();
+    $this->routing->route('', function () {
+      $request = new \mafflerbach\Http\Request();
 
-      $form->handleRequest($request);
-      $message = '';
+      $this->response['form'] = $this->getForm();
 
-      if ($request->isMethod('POST')) {
-        $data = $form->getData();
+      $data = $request->request;
+      if (!empty($request->request) && isset($data['username']) && isset($data['password'])) {
         $user = new \testonaut\User();
 
-        if($user->validate($data['username'], $data['password'])) {
-          return $app->redirect($request->getBaseUrl());
+        if ($user->validate($data['username'], $data['password'])) {
+          $request->redirect('');
         } else {
-          $message = 'User not valid';
+          $this->response['message'] = 'User not valid';
         }
       }
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'message' => $message,
-      );
-
-      return $app['twig']->render('login.twig', array('form' => $form->createView()));
+      $this->routing->response($this->response);
+      $this->routing->render('login.xsl');
     });
-    return $page;
   }
+
+  private function getForm() {
+    return array(
+      'text' => array('label' => 'username'),
+      'password' => array('label' => 'password'),
+    );
+  }
+
 }

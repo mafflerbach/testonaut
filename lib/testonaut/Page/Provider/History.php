@@ -11,110 +11,147 @@
  *
  */
 
+
 namespace testonaut\Page\Provider;
 
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use testonaut\Page;
-use testonaut\Page\Breadcrumb;
-use testonaut\Settings\Browser;
 use testonaut\User;
 use testonaut\Utils\Git;
 
-/**
- * Description of History
- *
- * @author maren
- */
-class History implements ControllerProviderInterface {
+class History extends Base implements ProviderInterface {
 
+  private $routing;
+
+  protected $path = '';
   /**
-   * @var $page Page
+   * @var null| Git
    */
-  private $page;
-  private $browsers;
-  private $path;
+  protected $git = NULL;
 
-  public function connect(Application $app) {
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request, $path) use ($app) {
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+
+    $this->routing->route('.*/(.+)/delete/(\w+)$', function ($path) {
+      $path = urldecode($path);
+      $request = new Request();
+
       $this->page = new \testonaut\Page($path);
       $this->path = $path;
 
-      if ($request->query->get('delete')) {
-        if (isset($_SESSION['testonaut']['userId'])) {
-          $this->deleteHistory($request);
+      $messageBody = "";
+      $result = 'fail';
+      if (!empty($request->post)) {
+        if ($this->deleteHistory($path, 'all', '') !== FALSE) {
+          $messageBody = "Delete complete history";
+          $result = 'success';
+        } else {
+          $messageBody = "Can't delete history";
+          $result = 'fail';
         }
       }
 
-      $browserSettings = new Browser($path);
-      $this->browsers = $browserSettings->getSettings();
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Save'
+      );
 
-      $app['request'] = array(
-        'mode' => 'show',
-        'baseUrl' => $request->getBaseUrl(),
-        'path' => $path,
-        'content' => '',
-        'history' => $this->getHistoryList(),
-        'githistory' => $this->getGitHistory()
+      print(json_encode($message));
+      die;
 
-    );
-      $crumb = new Breadcrumb($path);
-      $app['crumb'] = $crumb->getBreadcrumb();
 
-      return $app['twig']->render('history.twig');
     });
 
-    $edit->post('/compare/{version}/{version2}', function (Request $request, $path, $version, $version2 ) use ($app) {
-      return $this->compare($app, $request, $path, $version, $version2);
-    });
-    $edit->get('/compare/{version}/{version2}', function (Request $request, $path, $version, $version2 ) use ($app) {
-      return $this->compare($app, $request, $path, $version, $version2);
+    $this->routing->route('.*/(.+)/delete/(\w+)/(\d+)$', function ($path, $browser, $limit) {
+      $path = urldecode($path);
+      $request = new Request();
+
+      $this->page = new \testonaut\Page($path);
+      $this->path = $path;
+
+
+      $messageBody = "";
+      $result = 'fail';
+      if (!empty($request->post)) {
+        if ($this->deleteHistory($path, $limit, $browser) !== FALSE) {
+          $messageBody = "Delete oldest entry";
+          $result = 'success';
+        } else {
+          $messageBody = "Can't entry";
+          $result = 'fail';
+        }
+      }
+
+      $message = array(
+        'result' => $result,
+        'message' => $messageBody,
+        'messageTitle' => 'Save'
+      );
+
+      print(json_encode($message));
+      die;
+
     });
 
-    $edit->get('/revert/{version}', function (Request $request, $path, $version) use ($app) {
+    $this->routing->route('.*/(.+)/compare/(\w+)/(\w+)$', function ($path, $version, $version2) {
 
-      $user = new User(); 
+      print(json_encode($this->compare($path, $version, $version2)));
+      die;
+
+    });
+
+    $this->routing->route('.*/(.+)/revert/(\w+)$', function ($path, $version) {
+      return $this->revert($path, $version);
+    });
+
+
+    $this->routing->route('.*/(.*)$', function ($path) {
+      $path = urldecode($path);
+      $request = new Request();
+
+      $this->page = new \testonaut\Page($path);
+      $this->path = $path;
+
+      $this->response['menu'] = $this->getMenu($path, 'history');
+      $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
+
+      $this->response['history'] = $this->getHistoryList();
+      $this->response['githistory'] = $this->getGitHistory();
+      $this->response['path'] = $path;
+
+      $this->routing->response($this->response);
+      $this->routing->render('history.xsl');
+    });
+  }
+
+  protected function revert($path, $version) {
+    $user = new User();
+    if (isset($_SESSION['testonaut'])) {
       $loadedUser = $user->get($_SESSION['testonaut']['userId']);
-
-      $page = new Page($path);
+      
+      $page = new Page(urldecode($path));
       $git = new Git($page->getProjectRoot());
       $log = $git->revert($version, $loadedUser['email'], $loadedUser['displayName']);
 
-      $app['request'] = array(
-        'mode' => 'revert',
-        'baseUrl' => $request->getBaseUrl(),
-        'content' => '',
-        'path' => $path,
-        'message' => $log
-      );
-
-
-      return $app['twig']->render('history.twig');
-    });
-
-    return $edit;
+      print($log);
+    }
+    die;
   }
 
-
-  protected function compare($app, $request, $path, $version, $version2) {
-    $page = new Page($path);
+  protected function compare($path, $version, $version2) {
+    $page = new Page(urldecode($path));
 
     $git = new Git($page->getProjectRoot());
     $log = $git->diff($version, $version2, $page->transCodePath());
-
-    $app['request'] = array(
-      'mode' => 'compare',
-      'baseUrl' => $request->getBaseUrl(),
-      'path' => $page->getProjectRootPage(),
-      'content' => '',
-      'compare' => $log
-    );
-
-    return $app['twig']->render('history.twig');
+    return $log;
   }
-
 
 
   protected function getGitHistory() {
@@ -122,30 +159,28 @@ class History implements ControllerProviderInterface {
     return $git->log();
   }
 
-  protected function deleteHistory($request) {
-    $db = \testonaut\Config::getInstance()->db;  
+  protected function deleteHistory($path, $param, $browser) {
+
+    $db = \testonaut\Config::getInstance()->db;
     $dbIns = $db->getInstance();
-    $sql = ''; 
-    if ($request->query->get('all')) {
+    $sql = '';
+    if ($param == 'all') {
       $sql = "delete from history where path=:path";
+
       $stm = $dbIns->prepare($sql);
       $stm->bindParam(':path', $this->path);
     }
-    if ($request->query->get('browser')) {
-      $browser = $request->query->get('browser');
-      $limit = ''; 
-      if ($request->query->get('count')) {
-        $limit = ' limit '.$request->query->get('count');
-      }
-      $sql = 'delete from history '
-        . 'where date in ('
-        . 'select date from history where browser=:browser and path=:path order by date '.$limit.''
-        . ')';
-      
+    if ($browser != '') {
+
+      $limit = ' limit ' . $param;
+
+      $sql = 'delete from history where date in (select date from history where browser=:browser and path=:path order by date ' . $limit . ')';
+
       $stm = $dbIns->prepare($sql);
       $stm->bindParam(':browser', $browser);
-      $stm->bindParam(':path', $this->path);
+      $stm->bindParam(':path', $path);
     }
+
     $stm->execute();
   }
 
@@ -157,23 +192,30 @@ class History implements ControllerProviderInterface {
     $dbIns = $db->getInstance();
 
     if ($conf['type'] == 'project' || $conf['type'] == 'suite') {
-      $sql = "select * from history where path like :path;";
-      $path = $this->path.'%';
+      $sql = "select * from history where path like :path  ORDER by date DESC;";
+      $path = $this->path . '%';
     } else {
-      $sql = "select * from history where path=:path";
+      $sql = "select * from history where path=:path ORDER by date DESC";
       $path = $this->path;
     }
 
     $stm = $dbIns->prepare($sql);
     $stm->bindParam(':path', $path);
     $res = $stm->execute();
-    
+
     $foo = array();
     while ($result = $res->fetchArray(SQLITE3_ASSOC)) {
+
       $date = new \DateTime($result['date']);
-      $foo[$result['browser']][$result['path']][$date->format('m.d.Y')][$date->format('H:i:s')]['run'] = json_decode($result['run'], true);
-      $foo[$result['browser']][$result['path']][$date->format('m.d.Y')][$date->format('H:i:s')]['result'] = $result['result'];
+
+      $foo[$result['browser']][$result['path']][] = array(
+        'date' => $date->format('m.d.Y'),
+        'time' => $date->format('H:i:s'),
+        'run' => json_decode($result['run'], true),
+        'result' => $result['result']
+      );
     }
+
 
     return $foo;
   }

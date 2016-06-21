@@ -13,6 +13,7 @@
 
 
 namespace testonaut\Settings;
+use testonaut\Utils\Git;
 
 /**
  * Class Page
@@ -64,6 +65,7 @@ class Page {
   public function getType() {
 
     $settings = $this->page->config();
+    
     for ($i = 0; $i < count($this->types); $i++) {
       if ($settings['type'] == $this->types[$i]) {
         return $this->types[$i];
@@ -111,7 +113,6 @@ class Page {
 
     $settings = $this->page->config();
     $return = array();
-
 
     if (isset($settings['screenshots'])) {
       for ($i = 0; $i < count($this->screenshots); $i++) {
@@ -163,4 +164,23 @@ class Page {
 
     return $this->page->config($this->setting);
   }
+
+  public function setOriginUrl($url) {
+    $this->setting['originUrl'] = $url;
+    $dir = $this->page->getProjectRoot();
+    $git = new Git($dir);
+    $git->setOriginUrl($url);
+
+    return $this->page->config($this->setting);
+
+  }
+
+  public function getOriginUrl() {
+    $settings = $this->page->config();
+    if (isset($settings['originUrl'])) {
+      return $settings['originUrl'];
+    }
+    return '';
+  }
+
 }

@@ -14,13 +14,13 @@
 
 namespace testonaut\Page\Provider;
 
-use testonaut\Ldap\Settings;
-use testonaut\Page\Breadcrumb;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
+use testonaut\Generate;
 use testonaut\Settings\Emulator;
 use testonaut\Settings\Profile;
+use testonaut\Settings\Saucelabs;
 
 /**
  *
@@ -40,16 +40,65 @@ use testonaut\Settings\Profile;
  *
  *
  */
-class Globalconfig implements ControllerProviderInterface {
+class Globalconfig extends Base implements ProviderInterface {
 
-  public function connect(Application $app) {
-    $edit = $app['controllers_factory'];
-    $edit->get('/', function (Request $request) use ($app) {
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
+
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+    $this->routing->route('.*/(.+)$', function ($profilename) {
+      $request = new Request();
+      $messageBody = "";
+      $result = 'fail';
+
+      if (!empty($request->post)) {
+        if ($this->deleteProfile($profilename) !== FALSE) {
+          $messageBody = "Delete Profile";
+          $result = 'success';
+        } else {
+          $messageBody = "Can't delete Profile";
+          $result = 'fail';
+        }
+
+        $message = array(
+          'result' => $result,
+          'message' => $messageBody,
+          'messageTitle' => 'Delete'
+        );
+
+        print(json_encode($message));
+        die;
+
+      } else {
+        $profile = new Profile();
+
+        $profileList = $profile->getByName($profilename);
+        $me = json_decode($profileList[0]['capabilities'], true);
+
+        $profileList[0]['capabilities'] = $me;
+
+        print(json_encode($profileList));
+        die;
+      }
+
+    });
+
+    $this->routing->route('', function () {
+
+      $saucelabs = new Saucelabs();
+      $saucelabs->getSupportedSettings();
+
+
+      $request = new Request();
+      if (!empty($request->post)) {
+        $this->handelPostData($request);
       }
 
       $conf = $this->getConfig();
+      $this->response['menu'] = $this->getMenu('', 'globalconfig');
 
       $profile = new Profile();
       $profileList = $profile->get();
@@ -57,112 +106,141 @@ class Globalconfig implements ControllerProviderInterface {
       $emulator = new Emulator();
       $devices = $emulator->getDevices();
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'settings' => $conf,
-        'themes' => $this->getThemes(),
-        'profiles' => $profileList,
-        'devices' => $devices
-      );
+      $this->response['devices'] = $devices;
+      $this->response['profiles'] = $profileList;
 
-      return $app['twig']->render('globalconfig.twig');
+      $user = new \testonaut\User();
+      $this->response['user'] = $user->getAll();
+
+      $this->routing->response($this->response);
+      $this->routing->render('globalconfig.xsl');
     });
+  }
 
-    $edit->get('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+  protected function deleteProfile($profilename) {
+    $profile = new Profile();
+    return $profile->delete($profilename);
+  }
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'profileName' => $browserProfile
-      );
+  protected function handelPostData($request) {
 
-      return $app['twig']->render('globalconfig.twig');
-    });
 
-    $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-      $profile = new Profile();
-      $profile->delete($browserProfile);
+    if ($request->post['action'] == 'savebase') {
+      $this->saveConfigForm($request->post);
+    }
+    if ($request->post['action'] == 'saveprofile') {
+      $this->saveProfile($request->post);
+    }
+    if ($request->post['action'] == 'savesaucelabsprofile') {
+      $this->saveSaucelabsProfile($request->post);
+    }
+    if ($request->post['action'] == 'save_saucelabs') {
+      $this->saveSauceLabs($request->post);
+    }
+  }
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'message' => 'deleted'
-      );
-      return $app['twig']->render('globalconfig.twig');
-    });
 
-    $edit->get('/editProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
+  private function saveSaucelabsProfile($request) {
+    $this->saveProfile($request, FALSE);
+    $message = array(
+      'result' => true,
+      'message' => 'profile saved',
+      'messageTitle' => 'Save'
+    );
 
-      $profile = new Profile();
-      $profileList = $profile->getByName($browserProfile);
+    print(json_encode($message));
+    die;
+  }
 
-      $data = array(
-        'browser' => $profileList[0]['browser'],
-        'name' => $profileList[0]['name'],
-        'arguments' => ($profileList[0]['arguments'] == '') ? '' : json_decode($profileList[0]['arguments'], true),
-        'driverOptions' => ($profileList[0]['driverOptions'] == '') ? '' : json_decode($profileList[0]['driverOptions'], true),
-        'capabilities' => ($profileList[0]['capabilities'] == '') ? '' : json_decode($profileList[0]['capabilities'], true),
-      );
+  private function saveSauceLabs($request) {
+    $conf = $this->getConfig();
 
-      return $app->json($data);
-    });
+    $conf['saucelabs_username'] = $request['saucelabs_username'];
+    $conf['access_key'] = $request['access_key'];
+    $conf['saucelabs_seleniumAddress'] = $request['saucelabs_seleniumAddress'];
+    if(isset($request['useSaucelabs'])) {
+      $conf['useSaucelabs'] = 1;
+    } else {
+      $conf['useSaucelabs'] = 0;
+    }
 
-    $edit->post('/deleteProfile/{browserProfile}', function (Request $request, $browserProfile) use ($app) {
-      $profile = new Profile();
-      $profile->delete($browserProfile);
+    $this->saveConfig($conf);
+  }
 
-      $app['request'] = array(
-        'baseUrl' => $request->getBaseUrl(),
-        'mode' => 'edit',
-        'message' => 'deleted'
-      );
-      return $app['twig']->render('globalconfig.twig');
-    });
 
-    $edit->post('/', function (Request $request) use ($app) {
-
-      if ($request->request->get('save') == 'profile') {
-        $this->saveProfile($request);
-      } else {
-        $this->saveConfigForm($request);
-
-      }
-
-      return $app->redirect($request->getBaseUrl() . '/globalconfig/');
-    });
-    return $edit;
+  private function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
   }
 
   /**
    * @param $request
    */
 
-  protected function saveProfile($request) {
+  protected function saveProfile($request, $local = TRUE) {
+
+
     $profile = new Profile();
     $data = array();
 
-    $browser = $request->request->get('browsers');
-    $name = $request->request->get('profileName');
+    $browserSettings = explode('_', $request['browser']);
+    $data['local'] = $local;
+
+
+    if (count($browserSettings) > 1) {
+      $data['name'] = $request['profileName'];
+      $browser = $browserSettings[0];
+      $data['os'] = $browserSettings[2];
+      $data['version'] = $browserSettings[1];
+    } else {
+      $browser = $request['browser'];
+      $data['os'] = $request['os'];
+      if (isset($request['version'])) {
+        $data['version'] = $request['version'];
+      } else {
+        $data['version'] = 'default';
+      }
+      $data['name'] = $request['profileName'];
+    }
+
+    $data['browser'] = $browser;
+
+    if ($data['version'] == 'default') {
+      $data['version'] = 'ANY';
+    }
+
+    if (isset($request['version'])) {
+      $data['version'] = $request['version'];
+    }
+
+
+
     $driverOptions = '';
-    if ($request->request->get('width') != '' && $request->request->get('height') != '') {
+    if ($request['width'] != '' && $request['height'] != '') {
       $driverOptions = json_encode(array(
         'dimensions' => array(
-          'width' => $request->request->get('width'),
-          "height" => $request->request->get('height')
+          'width' => $request['width'],
+          "height" => $request['height']
         )
       ));
     }
+
+    //@TODO add platform and version
     if ($browser == 'chrome') {
       $capabilities['arguments'] = array(
         "--disable-web-security",
-        "--user-data-dir=" . sys_get_temp_dir()
+        "--user-data-dir=" . sys_get_temp_dir() . '/chromeinstances/' . $this->generateRandomString()
       );
 
-      if ($request->request->get('device') != '' && $request->request->get('width') == '' && $request->request->get('height') == '') {
+      if (isset($request['device']) && $request['device'] != '' && $request['width'] == '' && $request['height'] == '') {
         $capabilities['experimental'] = array(
           'mobileEmulation' => array(
-            "deviceName" => $request->request->get('device')
+            "deviceName" => $request['device']
           )
         );
       }
@@ -179,8 +257,6 @@ class Globalconfig implements ControllerProviderInterface {
       $arguments = '';
     }
 
-    $data['browser'] = $browser;
-    $data['name'] = $name;
     $data['driverOptions'] = $driverOptions;
     $data['arguments'] = $arguments;
 
@@ -191,41 +267,33 @@ class Globalconfig implements ControllerProviderInterface {
     }
 
     $profile->write($data);
-
   }
 
   protected function saveConfigForm($request) {
-    $address = $request->request->get('seleniumAddress');
-    $cache = $request->request->get('cache');
-    $appPath = $request->request->get('appPath');
-    $theme = $request->request->get('theme');
-    $ldapHostname = $request->request->get('ldapHostname');
-    $ldapBaseDn = $request->request->get('ldapBaseDn');
-    $ldapCn = $request->request->get('ldapCn');
-    $ldapPassword = $request->request->get('ldapPassword');
-    $useLdap = $request->request->get('useLdap');
+    $configuration = $this->getConfig();
+    $address = $request['seleniumAddress'];
+    $appPath = $request['appPath'];
+    $ldapHostname = $request['ldapHostname'];
+    $ldapBaseDn = $request['ldapBaseDn'];
+    $ldapCn = $request['ldapCn'];
+    $ldapPassword = $request['ldapPassword'];
 
-    if ($cache != null) {
-      $cache = true;
+    if (isset($request['useLdap'])) {
+      $useLdap = true;
     } else {
-      $cache = false;
+      $useLdap = false;
     }
 
+    $configuration['appPath'] = $appPath;
+    $configuration['seleniumAddress'] = $address;
+    $configuration['ldapHostname'] = $ldapHostname;
+    $configuration['ldapBaseDn'] = $ldapBaseDn;
+    $configuration['ldapCn'] = $ldapCn;
+    $configuration['ldapPassword'] = $ldapPassword;
+    $configuration['useLdap'] = $useLdap;
 
-    $configuration = array(
-      'appPath' => $appPath,
-      'cache' => $cache,
-      'theme' => $theme,
-      'seleniumAddress' => $address,
-      'ldapHostname' => $ldapHostname,
-      'ldapBaseDn' => $ldapBaseDn,
-      'ldapCn' => $ldapCn,
-      'ldapPassword' => $ldapPassword,
-      'useLdap' => $useLdap
-    );
 
     $this->saveConfig($configuration);
-
   }
 
   protected function saveConfig($array) {

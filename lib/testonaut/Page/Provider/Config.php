@@ -14,109 +14,94 @@
 
 namespace testonaut\Page\Provider;
 
-use testonaut\Page\Base;
-use testonaut\Page\Breadcrumb;
+use mafflerbach\Http\Request;
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use testonaut\Settings\Browser;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use testonaut\Settings\Profile;
 
-/**
- * Class Config
- *
- * @package testonaut\Page\Provider
- */
-class Config implements ControllerProviderInterface {
-  /**
-   * @private
-   */
-  private $path;
 
-  /**
-   * @param Application $app
-   * @return mixed
-   */
-  public function connect(Application $app) {
-    $config = $app['controllers_factory'];
-    $config->get('/', function (Request $request, $path) use ($app) {
-      $this->path = $path;
-      $page = new \testonaut\Page($path);
-      $content = $page->content();
-      $crumb = new Breadcrumb($path);
-      $app['crumb'] = $crumb->getBreadcrumb();
-      $app['type'] = $this->pageSettings();
-      if ($app['type']['project'] || $app['type']['suite']) {
-        $app['browser'] = $this->browserSettings();
-      }
+class Config extends Base implements ProviderInterface {
 
-      $app['screenshots'] = $this->screenshotSettings();
-      $app['request'] = array(
-        'content' => $content,
-        'path'    => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'show'
-      );
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
 
-      return $app['twig']->render('config.twig');
+    $this->routing->route('.*/(.+(?:\..+)*)', function ($path) {
+      $this->response($path);
     });
 
-    $config->post('/', function (Request $request, $path) use ($app) {
-      $this->path = $path;
-      $page = new \testonaut\Page($path);
-      $content = $page->content();
-      $browserUrls = $request->request->get('browser');
-      $activeBrowser = $request->request->get('active');
+    $this->routing->route('', function () {
+      $this->response('');
+    });
 
-      $type = $request->request->get('type');
-      $browserSettings = array_merge(array('urls' => $browserUrls), array('active' => $activeBrowser));
-
-      if ($type == 'project' || $type == 'suite') {
-        if ($this->browserSettings($browserSettings)) {
-          $message = 'Saved';
-        } else {
-          $message = 'Can not save browser config';
-        }
-      }
-      $screenshot = $request->request->get('screenshot');
-      if ($this->screenshotSettings($screenshot)) {
-        $message = 'Saved';
-      } else {
-        $message = 'Can not save page config';
-      }
-      if ($this->pageSettings($type)) {
-        $message = 'Saved';
-      } else {
-        $message = 'Can not save page config';
-      }
-      $crumb = new Breadcrumb($path);
-      
-      $app['crumb'] = $crumb->getBreadcrumb();
-      $app['type'] = $this->pageSettings();
-      if ($app['type']['project'] || $app['type']['suite']) {
-        $app['browser'] = $this->browserSettings();
-      }
-
-      $app['screenshots'] = $this->screenshotSettings();
-      $app['request'] = array(
-        'content' => $content,
-        'path'    => $path,
-        'baseUrl' => $request->getBaseUrl(),
-        'mode'    => 'show',
-        'message' => $message,
-      );
-
-      return $app['twig']->render('config.twig');
-    })
-    ;
-
-    return $config;
   }
 
-  /**
-   * @param null $settings
-   * @return array|bool
-   */
+  protected function response($path) {
+
+    $this->path = urldecode($path);
+
+    $path = urldecode($path);
+    $request = new Request();
+
+    if (!empty($request->post)) {
+      $this->handelPostData($path, $request);
+    }
+
+    $this->response['page'] = $this->getContent($path);
+    $this->response['menu'] = $this->getMenu($path, 'config');
+    $this->response['system']['breadcrumb'] = $this->getBreadcrumb($path);
+
+    $settings = $this->pageSettings();
+    $this->response['pagesettings'] = $settings;
+
+    $screenshotSettings = $this->screenshotSettings();
+    $this->response['screenshotsettings'] = $screenshotSettings;
+
+    if ($settings['suite'] || $settings['project']) {
+      $this->response['browser'] = $this->browserSettings();
+      $this->response['originUrl'] = $this->originUrl();
+    }
+
+    $this->routing->response($this->response);
+    $this->routing->render('config.xsl');
+  }
+
+
+  protected function handelPostData($path, Request $request) {
+
+    if ($request->post['pagesettings'] == 'project' || $request->post['pagesettings'] == 'suite') {
+      if (isset($request->post['browser']) && isset($request->post['active'])) {
+        $browserSettings = array_merge(array('urls' => $request->post['browser']), array('active' => $request->post['active']));
+        $this->browserSettings($browserSettings);
+      } else {
+
+        $this->browserSettings(array(
+          array(
+            'urls' => array(),
+            array('active' => false)
+          )
+        ));
+      }
+    }
+
+    $this->pageSettings($request->post['pagesettings']);
+    $this->screenshotSettings($request->post['screenshotsettings']);
+
+    if (isset($request->post['originUrl'])) {
+      $this->originUrl($request->post['originUrl']);
+    }
+  }
+
+  protected function getContent($path) {
+    return array(
+      'content' => 'foo',
+      'path' => $path
+    );
+  }
+
+
   protected function browserSettings($settings = NULL) {
     $pathArray = explode('.', $this->path);
     $bSettings = new Browser($this->path);
@@ -128,12 +113,9 @@ class Config implements ControllerProviderInterface {
     }
   }
 
-  /**
-   * @param null $settings
-   * @return array|bool
-   * @throws \Exception
-   */
   protected function pageSettings($settings = NULL) {
+
+
     $pSettings = new \testonaut\Settings\Page($this->path);
     if ($settings != NULL) {
       return $pSettings->setSettings($settings);
@@ -142,17 +124,21 @@ class Config implements ControllerProviderInterface {
     }
   }
 
-  /**
-   * @param null $settings
-   * @return array|bool
-   * @throws \Exception
-   */
   protected function screenshotSettings($settings = NULL) {
     $pSettings = new \testonaut\Settings\Page($this->path);
     if ($settings != NULL) {
       return $pSettings->setScreenshotSettings($settings);
     } else {
       return $pSettings->getScreenshotSettings();
+    }
+  }
+
+  protected function originUrl($originUrl = NULL) {
+    $settings = new \testonaut\Settings\Page($this->path);
+    if ($originUrl != NULL) {
+      return $settings->setOriginUrl($originUrl);
+    } else {
+      return $settings->getOriginUrl();
     }
   }
 }

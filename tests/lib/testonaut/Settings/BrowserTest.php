@@ -15,7 +15,7 @@ class BrowserTest extends PHPUnit_Framework_TestCase {
 
     $config = \testonaut\Config::getInstance();
     $seleniumAddress = 'http://localhost:4444';
-    $config->define('wikiPath', 'E:/xampp/htdocs/testonaut/tests/root');
+    $config->define('wikiPath', 'C:/xampp/htdocs/testonaut/tests/root');
     $config->define('seleniumAddress', $seleniumAddress);
     $config->define('Path', dirname(dirname(__FILE__)));
     $config->define('seleniumConsole', $seleniumAddress . '/grid/console');
@@ -37,8 +37,6 @@ class BrowserTest extends PHPUnit_Framework_TestCase {
         'browserName'      => 'firefox',
         'maxInstances'     => 5,
         'version'          => '',
-        'active'           => 'firefox',
-        'url'              => 'www.google.com',
       ),
       array(
         'platform'         => 'VISTA',
@@ -46,35 +44,27 @@ class BrowserTest extends PHPUnit_Framework_TestCase {
         'browserName'      => 'chrome',
         'maxInstances'     => 5,
         'version'          => '',
-        'active'           => 'chrome',
-        'url'              => 'www.google.es',
       ),
       array(
         'platform'         => 'VISTA',
         'seleniumProtocol' => 'WebDriver',
-        'browserName'      => 'internet_explorer',
+        'browserName'      => 'internet explorer',
         'maxInstances'     => 5,
         'version'          => 10,
-        'active'           => 'internet_explorer',
-        'url'              => ''
       ),
       array(
         'platform'         => 'VISTA',
         'seleniumProtocol' => 'WebDriver',
-        'browserName'      => 'internet_explorer',
+        'browserName'      => 'internet explorer',
         'maxInstances'     => 5,
         'version'          => 9,
-        'active'           => 'internet_explorer',
-        'url'              => ''
       ),
       array(
         'platform'         => 'VISTA',
         'seleniumProtocol' => 'WebDriver',
-        'browserName'      => 'internet_explorer',
+        'browserName'      => 'internet explorer',
         'maxInstances'     => 5,
         'version'          => 11,
-        'active'           => 'internet_explorer',
-        'url'              => '',
       )
 
     );

@@ -17,35 +17,19 @@ $loader->add('testonaut', __DIR__ . '/lib/');
 /**
  * arguments -d [directory]
  *           -i [imagedirectory]
- *           -c [configFile][testonaut.xml]
+ *           -c [configFile][testonaut.json]
  *           -s [seleniumhub][http://localhost:4444/wd/hub]
  *
  */
 
-$yaml ='{
-  "testonaut": {
-    "browsers": [
-      {
-      "name": "chrome"
-      }
-    ],
-    "config": {
-      "imageDir":"images",
-      "testDir": "tests2",
-      "hub" : "http://localhost:4444/wd/hub"
-    }
-  }
-}
-';
 
 $args = testonaut\Command\Line::parseArgs($_SERVER['argv']);
 
 if (isset($args['c'])) {
   $conf = json_decode(file_get_contents($args['c']), true);
 } else {
-  $conf = json_decode($yaml, true);
+  print('need a config File'); die;
 }
-
 
 $browsers =  $conf['testonaut']['browsers'];
 
@@ -57,9 +41,10 @@ if (!isset($args['d'])) {
   $args['d'] = $conf['testonaut']['config']['testDir'];
 }
 
-if (isset($args['s'])) {
+if (!isset($args['s'])) {
   $args['s'] = $conf['testonaut']['config']['hub'];
 }
+
 
 for($i = 0; $i < count($browsers); $i++) {
   $runner = new \testonaut\Command\Line\Runner($args, $browsers[$i]);

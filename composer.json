@@ -10,18 +10,7 @@
     }
   ],
   "require": {
-    "silex/silex": "2.0.x-dev",
-    "twig/twig": ">=1.10,<2.0-dev",
-    "symfony/twig-bridge": "<3.0-dev",
     "facebook/webdriver": "dev-master",
-    "symfony/translation": "~2.6",
-    "symfony/locale": "~2.6",
-    "symfony/config": "~2.6",
-    "symfony/yaml": "~2.6",
-    "symfony/form": "~2.6",
-
-    "symfony/finder": "3.0.x-dev",
-    "symfony/security": "2.6.x-dev",
     "tiesa/ldap": "dev-master"
   }
 }

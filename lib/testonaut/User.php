@@ -14,7 +14,6 @@
 
 namespace testonaut;
 
-use testonaut\Page\Provider\Globalconfig;
 use Toyota\Component\Ldap\Core\Manager;
 use Toyota\Component\Ldap\Platform\Native\Driver;
 use Toyota\Component\Ldap\Platform\Native\Search;
@@ -36,7 +35,7 @@ class User {
   }
 
   public function validate($name, $password) {
-    $globalConf = new Globalconfig();
+    $globalConf = new State();
     $configuration = $globalConf->getConfig();
 
     if ($configuration['useLdap']) {
@@ -44,6 +43,7 @@ class User {
     } else {
       return $this->internValidate($name, $password);
     }
+    session_write_close();
   }
 
   protected function internValidate($name, $password) {
@@ -58,6 +58,25 @@ class User {
     }
     return false;
   }
+
+  public function checkUser(){
+    if (isset($_SESSION['testonaut']['userId'])) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  public function isAdmin() {
+    if(isset($_SESSION['testonaut']['userId'])) {
+      $user = $this->get($_SESSION['testonaut']['userId']);
+      if ($user['group'] == '1') {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 
   protected function ldapValidate($name, $password) {
     $globalConf = new Globalconfig();
@@ -84,13 +103,23 @@ class User {
 
   }
 
-  public function save($name, $password, $displayName, $id) {
-    $sql = 'update user set email= :email, password= :password, displayName= :displayName where id=:id';
+  public function save($name, $password, $displayName, $group, $id) {
+
+    if ($password != '') {
+      $sql = 'update user set email= :email, password= :password, displayName= :displayName, `group` = :group where id=:id';
+    } else {
+      $sql = 'update user set email= :email, displayName= :displayName, `group` = :group where id=:id';
+    }
+
     $stm = $this->db->prepare($sql);
     $stm->bindParam(':email', $name);
     $stm->bindParam(':displayName', $displayName);
-    $password = password_hash($password, PASSWORD_DEFAULT);
-    $stm->bindParam(':password', $password);
+    if ($password != '') {
+      $password = password_hash($password, PASSWORD_DEFAULT);
+      $stm->bindParam(':password', $password);
+    }
+
+    $stm->bindParam(':group', $group);
     $stm->bindValue(':id', $id);
 
     $result = $stm->execute();
@@ -178,7 +207,7 @@ class User {
 
 
   public function get($id) {
-    $globalConf = new Globalconfig();
+    $globalConf = new State();
     $configuration = $globalConf->getConfig();
 
     if ($configuration['useLdap']) {

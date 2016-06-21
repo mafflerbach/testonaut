@@ -34,6 +34,7 @@ class Api {
     $cacheFile = Config::getInstance()->Path . '/hubCache';
 
     if (!file_exists($cacheFile) || filemtime($cacheFile) >= time() + 60 * 15) {
+
       $hub = @\file_get_contents(Config::getInstance()->seleniumConsole);
       if (Config::getInstance()->Cache) {
         file_put_contents($cacheFile, $hub);
@@ -76,11 +77,9 @@ class Api {
   }
 
   private function getData($endpoints) {
-
+    // @TODO implement caching;
     $apiString = $this->seleniumAddress . "/" . $endpoints;
-
     $content = file_get_contents($apiString);
-
     return json_decode($content, TRUE);
   }
 }

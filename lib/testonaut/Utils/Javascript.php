@@ -33,7 +33,7 @@ class Javascript {
           var d = document;
           var script = d.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/html2canvas.js';
+          script.src = 'https://" . $_SERVER['SERVER_NAME'] . "/testonaut/html2canvas.js';
           d.getElementsByTagName('head')[0].appendChild(script);
           console.log('invoke canvas' + script.src);
       }, 1000);
@@ -45,16 +45,13 @@ class Javascript {
   }
 
 
-  /**
-   * @TODO replace jquery with nanoajax
-   */
   public function invokeNanoajax() {
     $js = "
       setTimeout(function () {
           var d = document;
           var script = d.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/qwest.min.js';
+          script.src = 'https://" . $_SERVER['SERVER_NAME'] . "/testonaut/qwest.min.js';
           d.getElementsByTagName('head')[0].appendChild(script);
           console.log('invoke nano');
       }, 1000);
@@ -78,7 +75,7 @@ class Javascript {
       setTimeout(function () {
         html2canvas(document.html, {
           onrendered: function(canvas) {
-          qwest.post('https://" . $_SERVER['SERVER_ADDR'] . "/testonaut/server.php', {
+          qwest.post('https://" . $_SERVER['SERVER_NAME'] . "/testonaut/server.php', {
               canvas: canvas.toDataURL('image/png'),
               path:'" . $srcImage . "'
               }).then(function(xhr, response) {})
@@ -88,6 +85,12 @@ class Javascript {
 
     $this->webDriver->executeScript($js, array());
     sleep(5);
+    return $this->webDriver;
+  }
+
+  public function setPixelRatio($ratio){
+    $js = 'window.devicePixelRatio='.$ratio;
+    $this->webDriver->executeScript($js, array());
     return $this->webDriver;
   }
 

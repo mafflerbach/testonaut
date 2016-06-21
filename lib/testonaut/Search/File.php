@@ -85,7 +85,6 @@ class File {
       $stm = $this->dbInstance->prepare($sql);
       $stm->execute();
     }
-
   }
 
   private function clearIndex() {
@@ -99,14 +98,15 @@ class File {
 
   private function clearVirtualTable() {
 
-    if ($this->exitsTable(".$this->tableName." . 'Search')) {
-      $sql = 'DROP TABLE ' . ".$this->tableName." . 'Search';
+    if ($this->exitsTable($this->tableName . 'Search')) {
+      $sql = 'drop Table ' . $this->tableName . 'Search';
       $stm = $this->dbInstance->prepare($sql);
       $stm->execute();
     }
   }
 
   public function updateIndex() {
+
 
     $this->clearIndex();
     $this->clearVirtualTable();
@@ -142,6 +142,8 @@ class File {
   public function search($term) {
 
     $sql = "SELECT * FROM " . $this->tableName . "Search WHERE " . $this->tableName . "Search.filename MATCH :term";
+
+    $term .= '*';
     $stm = $this->dbInstance->prepare($sql);
     $stm->bindParam(':term', $term);
     $result = $stm->execute();

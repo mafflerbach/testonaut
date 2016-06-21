@@ -12,10 +12,9 @@
  */
 
 
-
 namespace testonaut;
 
-use testonaut\Selenium\Api;
+
 use testonaut\Settings\Profile;
 
 /**
@@ -38,17 +37,16 @@ class Page {
    * @param $path
    */
   public function __construct($path) {
-
-    $this->path = $path;
+    $this->path = urldecode($path);
     $this->root = Config::getInstance()->wikiPath;
   }
 
   /**
    * @throws \Exception
    */
-  public function getCompiledPage(){
-      $compiler = new Page\Compiler($this);
-      return $compiler->getContent();
+  public function getCompiledPage() {
+    $compiler = new Page\Compiler($this);
+    return $compiler->getContent();
   }
 
   /**
@@ -74,8 +72,13 @@ class Page {
     if (!file_exists($file) && $save === NULL) {
       return '';
     }
-    if ($content == NULL && $save === NULL) {
-      $pageContent = file_get_contents($file);
+    if ($content === NULL && $save === NULL) {
+
+      $dom = new \DOMDocument("1.0", "UTF-8");
+      $dom->formatOutput = true;
+      $dom->loadHTML(file_get_contents($file));
+
+      $pageContent = $dom->saveXML();
 
       return $pageContent;
     } else {
@@ -85,7 +88,11 @@ class Page {
           throw new \Exception();
         }
       }
-      file_put_contents($filename, $content);
+      $dom = new \DOMDocument();
+      $dom->formatOutput = true;
+      $dom->loadHTML($content);
+
+      file_put_contents($filename, $dom->saveHTML());
     }
   }
 
@@ -131,7 +138,7 @@ class Page {
   public function getLinkedFiles() {
 
     $files = array(
-      'images'    => array(),
+      'images' => array(),
       'documents' => array()
     );
     $linkDir = $this->getFilePath();
@@ -174,9 +181,9 @@ class Page {
 
     for ($i = 0; $i < count($browser); $i++) {
       if (isset($browser[$i]['browserName'])) {
-        $name = str_replace(' ', '_', $browser[$i]['browserName']).'_default';
+        $name = str_replace(' ', '_', $browser[$i]['browserName']) . '_default';
       } else {
-        $name = str_replace(' ', '_', $browser[$i]['name']).'_'.$browser[$i]['browser'];
+        $name = str_replace(' ', '_', $browser[$i]['name']) . '_' . $browser[$i]['browser'];
       }
 
       if (file_exists($imageDir . "/" . $name . "/src/")) {
@@ -218,8 +225,9 @@ class Page {
    */
   public function getProjectRoot() {
     $explode = explode(".", $this->path);
-    return $this->root ."/".$explode[0];
+    return $this->root . "/" . $explode[0];
   }
+
   /**
    * @return mixed
    */
@@ -243,11 +251,13 @@ class Page {
   public function config($config = array()) {
 
     $file = $this->transCodePath() . '/config';
+
     if (empty($config)) {
       if (!file_exists($file) && is_dir($this->transCodePath())) {
         file_put_contents($file, '{"type":"static","browser":[]}');
       }
       if (file_exists($file)) {
+
         return json_decode(file_get_contents($file), TRUE);
       }
     } else {

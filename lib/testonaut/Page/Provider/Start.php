@@ -14,103 +14,57 @@
 
 namespace testonaut\Page\Provider;
 
+use mafflerbach\Page\ProviderInterface;
+use mafflerbach\Routing;
 use testonaut\Generate;
-use testonaut\Page\Breadcrumb;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use testonaut\Matrix;
+use testonaut\Settings\Profile;
 
-class Start implements ControllerProviderInterface {
 
-  private $edit = FALSE;
+class Start extends Base implements ProviderInterface {
 
-  public function __construct($edit = FALSE) {
+  private $routing;
 
-    $this->edit = $edit;
+  public function connect() {
+    $this->routing = new Routing();
+    $this->response = array(
+      'system' => $this->system()
+    );
+
+
+    $this->routing->route('(.*)$', function ($path) {
+      $path = urldecode($path);
+
+      $this->response['page'] = $this->getContent($path);
+      $this->response['menu'] = $this->getMenu($path, '');
+
+      $this->routing->response($this->response);
+      $this->routing->render('page.xsl');
+    });
+
+
+    $this->routing->route('', function () {
+
+      $this->response['page'] = $this->getContent('');
+      $this->response['menu'] = $this->getMenu('' , '');
+
+      $this->routing->response($this->response);
+      $this->routing->render('page.xsl');
+    });
   }
 
-  public function connect(Application $app) {
+  private function getContent($path) {
+    $page = new \testonaut\Page($path);
+    $browserSettings = new Profile();
+    $browsers = $browserSettings->get();
 
+    $matrix = new Matrix($page, $browsers);
+    $lastRun = $matrix->read();
 
-    $start = $app['controllers_factory'];
-
-    $start->get('/', function (Request $request) use ($app) {
-      if (!isset($_SESSION['testonaut']['userId'])) {
-        return $app->redirect($request->getBaseUrl() . '/login/');
-      }
-
-      $toc = $this->getToc();
-      $app['menu'] = $toc;
-
-      $page = new \testonaut\Page('');
-      $content = $page->content();
-
-      if ($this->edit) {
-        $app['request'] = array(
-          'content' => $content,
-          'path'    => 'edit',
-          'baseUrl' => $request->getBaseUrl(),
-          'mode'    => 'edit'
-        );
-        $crumb = new Breadcrumb('edit');
-        $app['crumb'] = $crumb->getBreadcrumb();
-
-        return $app['twig']->render('edit.twig');
-      } else {
-        $app['request'] = array(
-          'content' => $content,
-          'path'    => '',
-          'baseUrl' => $request->getBaseUrl(),
-          'mode'    => 'show',
-          'type'    => 'start',
-          'update'  => $this->checkVersion()
-        );
-        $foo = $app['twig']->render('index.twig');
-
-        return new Response($foo, 200, array(
-          'Cache-Control' => 'maxage=300',
-        ));
-      }
-    })
-    ;
-    $start->post('/', function (Request $request) use ($app) {
-
-      $path = $request->request->get('path');
-      $content = $request->request->get('content');
-      $page = new \testonaut\Page('');
-      $page->content($content, TRUE);
-
-      return $app->redirect($request->getBaseUrl() . '/');
-    })
-    ;
-
-    return $start;
+    return array(
+      'content' => $page->getCompiledPage(),
+      'config' => $page->config(),
+      'lastresult' => $lastRun
+    );
   }
-
-  protected function getToc() {
-
-    $toc = new Generate\Toc(\testonaut\Config::getInstance()->wikiPath);
-    $toc->runDir();
-
-    return $toc->generateMenu();
-  }
-
-  protected function checkVersion() {
-
-    $versionIni = \testonaut\Config::getInstance()->Path.'/version.ini';
-
-    $iniContent = parse_ini_file($versionIni);
-    $version = $iniContent['version'];
-    $gitUri = 'https://raw.githubusercontent.com/mafflerbach/testonaut/master/version.ini';
-    $rv = parse_ini_string(file_get_contents($gitUri));
-    $remoteVersion = $rv['version'];
-
-    if ($remoteVersion > $version) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
 }

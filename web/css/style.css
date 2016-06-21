@@ -1,0 +1,274 @@
+.login-form, .reset-form, .register-form {
+    width: 25rem;
+    height: 18.75rem;
+    position: fixed;
+    top: 50%;
+    margin-top: -9.375rem;
+    left: 50%;
+    margin-left: -12.5rem;
+    background-color: #ffffff;
+    opacity: 0;
+    -webkit-transform: scale(.8);
+    transform: scale(.8);
+}
+
+.reset-form, .register-form {
+    height: inherit;
+}
+
+.compForm {
+    width: 100%;
+    height: 100%;
+}
+
+#textarea {
+    width: 100%;
+    min-height: 500px;
+    height: 90%;
+    box-shadow: inset 0px 0px 7px -2px black;
+    padding: 0.5em;
+    font-family: "Segoe UI", "Open Sans", sans-serif, serif !important;
+}
+
+.notify {
+    max-width: inherit;
+}
+
+.list-unstyled {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.code {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+}
+
+a.active {
+    color: #000140;
+}
+
+.window {
+    display: none;
+    width: 400px;
+    z-index: 3;
+}
+.window .window-content{
+    height:auto !important;
+}
+
+
+.badge-default {
+    background-color: #777;
+}
+.badge-primary {
+    background-color: #337ab7;
+}
+.badge-success {
+    background-color: #5cb85c;
+}
+.badge-info {
+    background-color: #5bc0de;
+}
+.badge-warning {
+    background-color: #f0ad4e;
+}
+.badge-danger {
+    background-color: #d9534f;
+}
+
+
+.badge {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+
+
+.d-menu li a {
+    color: #727272;
+    display: block;
+    padding: .75rem 4rem .75rem 1.5rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    min-width: 12.5rem;
+    border: none;
+    position: relative;
+}
+
+@keyframes pulsar {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes pulsar {
+    0% {
+        -webkit-transform: scale(0);
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.pulsarbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.pulsar {
+    width: 40px;
+    height: 40px;
+    margin: 0px auto;
+    position: relative;
+}
+
+.result {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    z-index: 2;
+    box-shadow: 0px 0px 30px -5px black;
+}
+
+.result table {
+    float: left;
+}
+
+tr.success td {
+    background: rgb(201, 222, 150); /* Old browsers */
+    text-shadow: none;
+}
+
+tr.failed td {
+    background: rgb(254, 187, 187); /* Old browsers */
+    text-shadow: none;
+}
+
+.box {
+    border-bottom: #d1d1d1 1px solid;
+    margin: 0em 0em;
+}
+
+.box > div {
+}
+
+.box.hide div {
+    display: none;
+}
+
+.box .pageContent {
+    box-shadow: 0px 1px 4px -1px #000;
+
+}
+
+.box h5 {
+    padding: 1em;
+    margin: 0;
+    position: relative;
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+.suiteResult {
+    clear: both;
+    margin: 0 -1em;
+}
+
+.suiteResult .panel-body  {
+    display: none;
+}
+.box h5 a {
+
+    top: 2px;
+    position: relative;
+}
+
+.pulsar .ring {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 80, 0, 0.5);
+    box-shadow: inset 0 0 10px 0 rgba(0, 180, 0, 0.5);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    margin-top: -50%;
+    margin-left: -50%;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+.pulsar .ring:nth-child(1) {
+    -webkit-animation: pulsar 2s 0s linear infinite;
+    animation: pulsar 2s 0s linear infinite;
+}
+
+.pulsar .ring:nth-child(2) {
+    -webkit-animation: pulsar 2s .5s linear infinite;
+    animation: pulsar 2s .5s linear infinite;
+}
+
+.pulsar .ring:nth-child(3) {
+    -webkit-animation: pulsar 2s 1s linear infinite;
+    animation: pulsar 2s 1s linear infinite;
+}
+
+.pulsar .ring:nth-child(4) {
+    -webkit-animation: pulsar 2s 1.5s linear infinite;
+    animation: pulsar 2s 1.5s linear infinite;
+}
+
+
+.result .notify {
+    margin:0;
+}
+
+.result .notify .notify-text span{
+    margin:0;
+    display: inline-block;
+    margin: 0.2em;
+}
+
+#form-message {
+    width: 50%;
+    position: absolute;
+    margin: 25%;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #444;
+    box-shadow: 0px 0px 10px -2px;
+    padding: 1rem;
+}
+
+
+.flex-grid .row .cell {
+    display:inline-block;
+}
