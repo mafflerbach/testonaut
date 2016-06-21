@@ -78,10 +78,13 @@ class Db {
             "email" TEXT NOT NULL,
             "password" TEXT NOT NULL,
             "displayName" TEXT NOT NULL,
+            "active" INT NOT NULL,
             "group" INTEGER
         );';
 
-    $addRoot = 'insert into "User" (email, password, displayName, active , "group") values (\'root\',\'$2y$10$m/DbEBFPqPMYRLNVWpCTPuoQvCaYbBXs4heL7GzCSBvKHtsKp.uaS\', \'root\', 1, 1)';
+    $addRoot = 'insert into "User" 
+          (email, password, displayName, active , "group") values 
+          (\'root\',\'$2y$10$m/DbEBFPqPMYRLNVWpCTPuoQvCaYbBXs4heL7GzCSBvKHtsKp.uaS\', \'root\', 1, 1)';
 
     $this->dbInstance->query($files);
     $this->dbInstance->query($profile);

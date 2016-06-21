@@ -1,1 +1,1 @@
-{"appPath":"\/testonaut","cache":false,"theme":"bootstrap","seleniumAddress":"http:\/\/192.168.0.21:4444","ldapHostname":"localhost","ldapBaseDn":"dc=example,dc=com","ldapCn":"","ldapPassword":"","useLdap":null}
+{"appPath":"\/testonaut","cache":false,"theme":"bootstrap","seleniumAddress":"","ldapHostname":"","ldapBaseDn":"dc=example,dc=com","ldapCn":"","ldapPassword":"","useLdap":false}

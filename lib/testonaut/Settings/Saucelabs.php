@@ -23,11 +23,14 @@ class Saucelabs {
 
   public function __construct() {
     $cacheFile = Config::getInstance()->Path . '/saucelabsPlatforms.json';
-
-    $time = filemtime($cacheFile);
-    $timeplus1w = $time+604800;
-    $date = new \DateTime();
-    if ($timeplus1w <= $date->getTimestamp()) {
+    if (file_exists($cacheFile)){
+      $time = filemtime($cacheFile);
+      $timeplus1w = $time+604800;
+      $date = new \DateTime();
+      if ($timeplus1w <= $date->getTimestamp()) {
+        file_put_contents($cacheFile, file_get_contents('http://saucelabs.com/rest/v1/info/platforms/webdriver'));
+      }
+    } else {
       file_put_contents($cacheFile, file_get_contents('http://saucelabs.com/rest/v1/info/platforms/webdriver'));
     }
 
