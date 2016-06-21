@@ -20,11 +20,9 @@
           <small>Should be the startpage for each running projects. All children are running as test, too</small>
         </li>
       </ul>
-
-      You can set the Type under [Config].
-      After Click on [Config] You can on the one hand set thy page type and on the other hand different screenshots
-      settings.
-      <img src="images/doc/config01.png">
+      You can set the Type under [Config]. After Click on [Config] You can on the one hand set thy page type and on the
+      other hand different screenshots settings.
+      <img src="images/doc/config01.png"/>
       <br/>
       Under [Screenshot Settings] you can set automatical screenshots after every command btw step or after every Test.
       <br/>
