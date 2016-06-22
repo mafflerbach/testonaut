@@ -1,0 +1,47 @@
+<root>
+  <content id="history">
+    <section class="main-content">
+      <h2 id="history-header">History</h2>
+      <div>
+        <h4>Build history</h4>
+        <p>
+          In the History Section you can overwatch all runs.
+          <img src="images/doc/history01.png"/>
+        </p>
+
+        <h5>Delete history</h5>
+        <p>
+          You can delete the oldest run result, or the complete history.
+          <img src="images/doc/history02.png"/>
+          <img src="images/doc/history03.png"/>
+        </p>
+
+        <h4>Git history</h4>
+        <p>
+          All pages are under version control. You have under the tab section [git history] an overview over your page history.
+          You can make a checkout (btw a rewert) to older versions, or you can check the different between different revisions.
+          <br/>
+          <img src="images/doc/githistory01.png"/>
+        </p>
+        <h5>
+          Checkout a older revision
+        </h5>
+        <p>
+          With a click on the rewind button you make a checkout to a specific version.
+          <img src="images/doc/githistory05.png"/>
+          <img src="images/doc/githistory04.png"/>
+        </p>
+
+        <h5>
+          View a different
+        </h5>
+        <p>
+          For a comparison you selected two versions with a click on the compare symbol. And you get a different between the selected versions.<br/>
+          <img src="images/doc/githistory06.png"/>
+          <img src="images/doc/githistory02.png"/>
+          <img src="images/doc/githistory03.png"/>
+        </p>
+      </div>
+    </section>
+  </content>
+</root>

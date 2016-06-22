@@ -1,24 +1,34 @@
 <root>
   <content id="import">
-    <p>You can import your existing (html) selenium zip via zip File. Set Your Page as type 'Project'</p>
-    <p>You order your Files e.g</p>
-    <img src="images/doc/import01.png"/>
-    <img src="images/doc/import02.png"/>
-    <img src="images/doc/import03.png"/>
+    <section class="main-content">
+      <h2 id="import-header">
+        <a id="import-your-tests" class="anchor" href="#import-your-tests" aria-hidden="true"><span aria-hidden="true"
+                                                                                                    class="octicon octicon-link"></span></a>Import
+        your Tests</h2>
+      <div>
+        <p>You can import your existing (html) selenium zip via zip File. Set Your Page as type 'Project'</p>
+        <p>You order your Files e.g</p>
+        <img src="images/doc/import01.png"/>
+        <img src="images/doc/import02.png"/>
+        <img src="images/doc/import03.png"/>
 <pre>
 <code>importTest
   ├ foo.html
   └ baa
-  └ fobaa.html
+    └ fobaa.html
 </code>
 </pre>
-    <p>And you get in your wiki:</p>
+        <p>And you get in your wiki:</p>
 <pre>
 <code>importTest
   ├ foo
   └ baa
-  └ fobaa
+    └ fobaa
 </code>
 </pre>
+      </div>
+    </section>
+
+
   </content>
 </root>

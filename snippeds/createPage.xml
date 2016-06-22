@@ -1,19 +1,24 @@
 <root>
   <content id="create-page">
-    <p>
-      After Login add to the url any string for naming your new Page.<br/>
-      <img src="images/doc/newPage01.png"/><br/>
-      After a click on [Edit], the Editor opens.<br/>
-      <img src="images/doc/editPage01.png"/><br/>
-      Click on [Save], then [Back] and you see your new Page.<br/>
-      <img src="images/doc/editPage02.png"/><br/>
-      Would you like add a selenese test, you must switch the editor to the source view.
-      <img src="images/doc/sourceView01.png"/><br/>
-      <img src="images/doc/sourceView02.png"/><br/>
-    </p>
-    <p>
-      For Hirachical navigations, seperate the pagename with dots. <br/>
-      <img src="images/doc/childPage01.png"/><br/>
-    </p>
+    <section class="main-content">
+      <h2 id="create-header">Create a new Page</h2>
+      <div>
+        <p>
+          After Login add to the url any string for naming your new Page.<br/>
+          <img src="images/doc/newPage01.png"/><br/>
+          After a click on [Edit], the Editor opens.<br/>
+          <img src="images/doc/editPage01.png"/><br/>
+          Click on [Save], then [Back] and you see your new Page.<br/>
+          <img src="images/doc/editPage02.png"/><br/>
+          Would you like add a selenese test, you must switch the editor to the source view.
+          <img src="images/doc/sourceView01.png"/><br/>
+          <img src="images/doc/sourceView02.png"/><br/>
+        </p>
+        <p>
+          For Hirachical navigations, seperate the pagename with dots. <br/>
+          <img src="images/doc/childPage01.png"/><br/>
+        </p>
+      </div>
+    </section>
   </content>
 </root>

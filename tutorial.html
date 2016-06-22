@@ -12,155 +12,27 @@
 
 <div class="grid grid-pad">
   <div class="col-4-12">
-       <div class="content" id="menu">
-
-       </div>
-    </div>
+       <div class="content" id="menu"></div>
+  </div>
 
   <div class="col-8-12">
        <div class="content">
-         <section class="main-content">
-<h2 id="login-header">Login</h2>
-  <div>
-    <import href="snippeds/login.xml#login-content"/>
-  </div>
-</section>
-<section class="main-content">
-<h2 id="create-header">Create a new Page</h2>
-  <div>
-    <import href="snippeds/createPage.xml#create-page"/>
-  </div>
-</section>
-<section class="main-content">
-  <h2 id="oagesettings-header">
-    <a id="pagesettings" class="anchor" href="#pagesettings" aria-hidden="true">
-      <span aria-hidden="true" class="octicon octicon-link"></span>
-    </a>Pagesettings
-  </h2>
-  <div>
-    <import href="snippeds/pagetypes.xml#types"/>
-  </div>
-</section>
-<section class="main-content">
-<h2 id="run-header">Run a test</h2>
-  <div>
-    <import href="snippeds/runningTests.xml#runatest"/>
-  </div>
-</section>
-<section class="main-content">
-<h2 id="history-header">History</h2>
-  <div>
-    <h4>Build history</h4>
-    <p>
-      In the History Section you can overwatch all runs.
-      <img src="images/doc/history01.png"/>
-    </p>
-
-    <h5>Delete history</h5>
-    <p>
-      You can delete the oldest run result, or the complete history.
-      <img src="images/doc/history02.png">
-      <img src="images/doc/history03.png">
-    </p>
-
-    <h4>Git history</h4>
-    <p>
-      All pages are under version control. You have under the tab section [git history] an overview over your page history.
-      You can make a checkout (btw a rewert) to older versions, or you can check the different between different revisions.
-      <br/>
-      <img src="images/doc/githistory01.png">
-    </p>
-    <h5>
-      Checkout a older revision
-    </h5>
-    <p>
-      With a click on the rewind button you make a checkout to a specific version.
-      <img src="images/doc/githistory05.png">
-      <img src="images/doc/githistory04.png">
-    </p>
-
-    <h5>
-      View a different
-    </h5>
-    <p>
-      For a comparison you selected two versions with a click on the compare symbol. And you get a different between the selected versions.<br/>
-      <img src="images/doc/githistory06.png">
-      <img src="images/doc/githistory02.png">
-      <img src="images/doc/githistory03.png">
-    </p>
-  </div>
-</section>
-<section class="main-content">
-<h2 id="screenshot-header">Screenshot</h2>
-  <div>
-    <h4>Screenshot comparison</h4>
-    <import href="snippeds/screenshot.xml#screenshot"/>
-  </div>
-</section>
-<section class="main-content">
-<h2 id="globalconfig-header">Globalconfig</h2>
-  <div>
-    <h4>Basic</h4>
-    <p>
-      <img src="images/doc/globalconfig02.png">
-    </p>
-    <h4>User</h4>
-    <p>
-      <img src="images/doc/globalconfig03.png">
-      <img src="images/doc/useredit01.png">
-    </p>
-    <h4>Saucelabs</h4>
-    <p>
-      <img src="images/doc/globalconfig04.png">
-
-    </p>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2 id="prowser-profiles-header">
-    <a id="working-with-browserprofiles" class="anchor" href="#working-with-browserprofiles" aria-hidden="true"><span
-            aria-hidden="true" class="octicon octicon-link"></span></a>Working with Browserprofiles</h2>
-  <div>
-    <import href="snippeds/browserprofiles.xml#working-with-browserprofiles-section"/>
-  </div>
-</section>
-<section class="main-content">
-  <h2 id="import-header">
-    <a id="import-your-tests" class="anchor" href="#import-your-tests" aria-hidden="true"><span aria-hidden="true"
-                                                                                                class="octicon octicon-link"></span></a>Import
-    your Tests</h2>
-  <div>
-    <import href="snippeds/import.xml#import"/>
-  </div>
-</section>
-
-<section class="main-content">
-<h2>Profiles</h2>
-  <div>
-    <import href="snippeds/browserprofiles.xml#working-with-browserprofiles-section"/>
-  </div>
-</section>
-<section class="main-content">
-
-  <h2 id="runn-commandline-header">
-    <a id="running-tests-comandline" class="anchor" href="#running-tests-comandline" aria-hidden="true"><span
-            aria-hidden="true" class="octicon octicon-link"></span></a>Running
-    tests in commandline</h2>
-  <div>
-
-    <import href="snippeds/runInTerminal.xml#runInTerm"/>
-  </div>
-</section>
-
+        <import href="snippeds/login.xml#login-content"></import>
+        <import href="snippeds/createPage.xml#create-page"></import>
+        <import href="snippeds/pagetypes.xml#types"></import>
+        <import href="snippeds/runningTests.xml#runatest"></import>
+        <import href="snippeds/history.xml#history"></import>
+        <import href="snippeds/screenshot.xml#screenshot"></import>
+        <import href="snippeds/globalconfig.xml#config"></import>
+        <import href="snippeds/browserprofiles.xml#working-with-browserprofiles-section"></import>
+        <import href="snippeds/import.xml#import"></import>
+        <import href="snippeds/runInTerminal.xml#runInTerm"></import>
        </div>
     </div>
-
 </div>
 
 
 <section class="main-content">
-
     <import href="snippeds/general.xml#footer"></import>
 </section>
 
@@ -170,6 +42,6 @@
 </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
   <script src="custom.js"></script>
-</head>
+    </head>
 </body>
 </html>

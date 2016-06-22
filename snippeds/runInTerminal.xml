@@ -1,5 +1,12 @@
 <root>
   <content id="runInTerm">
+    <section class="main-content">
+
+      <h2 id="runn-commandline-header">
+        <a id="running-tests-comandline" class="anchor" href="#running-tests-comandline" aria-hidden="true"><span
+                aria-hidden="true" class="octicon octicon-link"></span></a>Running
+        tests in commandline</h2>
+      <div>
     <p>
       Start simple <code>php run.php -c [config.json]</code> your tests. You can overwrite your config file with follow additional parameters:
     </p>
@@ -51,5 +58,8 @@
     <p>
       The Parameters <em>fullscreen</em> and <em>dimensional</em> are conflicting. If fullscreen is set,the dimension parameters are overwrite.
     </p>
+
+      </div>
+    </section>
   </content>
 </root>

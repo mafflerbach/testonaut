@@ -1,37 +1,25 @@
 $(document).ready(function () {
-
   importHTML();
-  buildNavi();
-
-  $('h2').click(function () {
-    if ($(this).next('div:hidden').length == 1) {
-      $(this).next('div:hidden').show();
-    } else {
-      $(this).next('div').hide();
-    }
-  });
-
   $(window).bind('scroll', function () {
     if ($(window).scrollTop() > 400) {
       $('.menu').addClass('fixed');
     } else {
       $('.menu').removeClass('fixed');
     }
-
     if ($(window).scrollTop() > 400) {
       $('.jumper').fadeIn();
     } else {
       $('.jumper').fadeOut();
     }
   });
-
-  window.setTimeout(function() {
-    $('body').fadeIn();
-  }, 300);
+  window.setTimeout(function () {
+    $('body').fadeIn('slow');
+  }, 500);
 })
 
 
 function buildNavi() {
+
   if ($("h2[id]").length > 0) {
     var content = '<div class="menu"><ul>';
     $("h2[id]").each(function () {
@@ -43,14 +31,11 @@ function buildNavi() {
 
     $('#menu').append(content);
 
-    $('a[href^="#"]').on('click',function (e) {
+    $('a[href^="#"]').on('click', function (e) {
       e.preventDefault();
-
       var target = this.hash;
       var $target = $(target);
-
-      selector = "*[id='"+this.hash.replace('#', '')+"']";
-
+      selector = "*[id='" + this.hash.replace('#', '') + "']";
       $('html, body').stop().animate({
         'scrollTop': $target.offset().top
       }, 400, 'swing', function () {
@@ -62,18 +47,32 @@ function buildNavi() {
 }
 
 function importHTML() {
+  var deferreds = [];
   $('import').each(function () {
     var href = $(this).attr('href');
     var link = href.split('#');
     var _this = $(this);
-    $.ajax({
-      type: "GET",
-      url: link[0],
-      dataType: 'html',
-      success: function (data) {
-        var foo = $(data).find('#' + link[1]);
-        _this.replaceWith($(foo.html()));
-      }
-    });
+
+    var mee = {
+      "link": link,
+      "obj": _this
+    };
+    /**
+     * WTF: You can't use a multidimensional array for response, because you don't get the fucking responseText from the ajax return.
+     */
+    deferreds.push(
+      $.get(link[0])
+    )
+    deferreds.push(
+      mee
+    )
+  });
+  $.when.apply($, deferreds).then(function () {
+    for (var i = 0; i < deferreds.length; i = i + 2) {
+      var content = $(deferreds[i].responseText).find('#' + deferreds[i + 1].link[1]);
+      deferreds[i + 1].obj.replaceWith($(content.html()));
+    }
+    buildNavi();
   })
+
 }

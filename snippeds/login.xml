@@ -1,9 +1,14 @@
 <root>
   <content id="login-content">
-    <p>
-      If you click on Login in the main menu you get the loginpage.
-      For the first run, you can login with username:<code>root</code> password:<code>root</code>
-    </p>
-    <img src="images/doc/login01.png"/>
+    <section class="main-content">
+      <h2 id="login-header">Login</h2>
+      <div>
+        <p>
+          If you click on Login in the main menu you get the loginpage.
+          For the first run, you can login with username:<code>root</code> password:<code>root</code>
+        </p>
+        <img src="images/doc/login01.png"/>
+      </div>
+    </section>
   </content>
 </root>

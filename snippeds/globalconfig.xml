@@ -1,0 +1,51 @@
+<root>
+  <content id="config">
+    <section class="main-content">
+      <h2 id="globalconfig-header">Globalconfig</h2>
+      <div>
+        <h4>Basic</h4>
+        <p>
+          you can set some basic stuff here.
+          <ul>
+            <li>
+              <em>App Path</em>
+              must be set, if testonaut is not running under a subdomain.
+            </li>
+            <li>
+              <em>Selenium Hub</em> stands for your private selenium infrastructure.<br/>
+              You can useing it parallel yout saucelab accaount.
+            </li>
+            <li>
+              <em>LDAP Host</em> host to the LDAP server
+            </li>
+            <li>
+              <em>base dn</em> base dn for your domain
+            </li>
+            <li>
+              <em>LDAP CN</em> Common Name vor testonaut users
+            </li>
+            <li>
+              <em>LDAP Password</em> vor querry Authentification.
+            </li>
+          </ul>
+
+        </p>
+        <img src="images/doc/globalconfig02.png"/>
+        <h4>User</h4>
+        <p>
+          You can edit, delete, deactivate or activate User. These affect only user which are registered over the testonaut web interface. LDAP user are not showed and also not affected from changes.
+        </p>
+        <img src="images/doc/globalconfig03.png"/>
+        <img src="images/doc/useredit01.png"/>
+        <h4>Saucelabs</h4>
+        <p>
+          You can activate the account usage and save your saucelabs credentials
+        </p>
+        <img src="images/doc/globalconfig04.png"/>
+      </div>
+    </section>
+
+
+
+  </content>
+</root>
