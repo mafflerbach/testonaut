@@ -1,0 +1,3 @@
+[submodule "doconaut"]
+	path = doconaut
+	url = https://github.com/mafflerbach/doconaut.git
