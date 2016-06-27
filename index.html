@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <title>Testonaut by mafflerbach</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <import href="snippeds/general.xml#stylesheet"></import>
+    <import src="snippeds/general.xml#stylesheet"></import>
 </head>
 
 <body style="display: none">
-  <import href="snippeds/general.xml#header"></import>
+  <import src="snippeds/general.xml#header"></import>
   <div class="grid grid-pad">
     <div class="col-4-12">
        <div class="content" id="menu">
@@ -16,12 +16,10 @@
     </div>
     <div class="col-8-12">
       <div class="content">
-        <import href="snippeds/generalStuff.xml#generalStuff"></import>
+        <import src="snippeds/generalStuff.xml#generalStuff"></import>
 
         <section class="main-content">
-          <h2 id="tutorial-header">
-          <a id="tutorials" class="anchor" href="tutorial.html" aria-hidden="true">
-            <span aria-hidden="true" class="octicon octicon-link"></span>Documentation</a></h2>
+          <h2 id="tutorial-header">Documentation</h2>
           <div>
             <p>
               You find under <em><a href="tutorial.html">Documentation</a></em>  additional information.
@@ -29,6 +27,7 @@
           </div>
         </section>
        </div>
+    <div id="appendix"></div>
     </div>
   </div>
   <div class="jumper hide">
@@ -39,5 +38,6 @@
   </section>
 </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="doconaut/javascript/doconaut.js"></script>
   <script src="custom.js"></script>
 </html>

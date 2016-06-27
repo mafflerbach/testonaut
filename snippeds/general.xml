@@ -2,6 +2,8 @@
   <content id="stylesheet">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen"/>
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900|Roboto' rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" type="text/css" href="doconaut/css/doconaut.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="doconaut/css/print.css" media="print"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/simplegrid.css" media="screen"/>
@@ -34,10 +36,10 @@
     <section class="page-header" id="top">
       <div class="stars">
       <h1 class="project-name">Testonaut</h1>
-      <h2 class="project-tagline">Testonaut is a simple wiki, which you can running selenium test on every selenium node
+      <p class="project-tagline">Testonaut is a simple wiki, which you can running selenium test on every selenium node
         in
         your infrastructure.
-      </h2>
+      </p>
       <a href="https://github.com/mafflerbach/testonaut" class="btn">View on GitHub</a>
       <a href="https://github.com/mafflerbach/testonaut/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/mafflerbach/testonaut/tarball/master" class="btn">Download .tar.gz</a>

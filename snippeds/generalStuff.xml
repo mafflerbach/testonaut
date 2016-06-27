@@ -107,9 +107,11 @@
         <p>you need git and an apache installation with php greater then 5.3 with additional modules ldap, fileinfo and
           imagemagick. For dependencies installation you need a composer too.</p>
 
-        <pre><code>git clone https://github.com/mafflerbach/testonaut.git
-          composer install
-        </code></pre>
+<code title="installation">
+  <pre>git clone https://github.com/mafflerbach/testonaut.git
+composer install
+  </pre>
+</code>
 
         <p>Under <a href="http://youre.installation/*/globalconfig/">http://your.installation/*/globalconfig/</a>
           You can set your domain to your selenium hub.</p>

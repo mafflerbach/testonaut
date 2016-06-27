@@ -8,7 +8,7 @@
         tests in commandline</h2>
       <div>
     <p>
-      Start simple <code>php run.php -c [config.json]</code> your tests. You can overwrite your config file with follow additional parameters:
+      Start simple <code title="start in terminal">php run.php -c [config.json]</code> your tests. You can overwrite your config file with follow additional parameters:
     </p>
     <ul>
       <li>
@@ -24,7 +24,7 @@
 
     <p>Here is a example config file:</p>
 <pre>
-<code>
+<code title="example json" >
 {
   "testonaut": {
     "browsers": [
@@ -55,10 +55,9 @@
 }
 </code>
 </pre>
-    <p>
-      The Parameters <em>fullscreen</em> and <em>dimensional</em> are conflicting. If fullscreen is set,the dimension parameters are overwrite.
-    </p>
-
+        <p>
+          The Parameters <em>fullscreen</em> and <em>dimensional</em> are conflicting. If fullscreen is set,the dimension parameters are overwrite.
+        </p>
       </div>
     </section>
   </content>
